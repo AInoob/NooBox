@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "NooBox",
+  "short_name": "NB",
+  "description": "A useful Toolbox!",
+  "version": "0.0.1",
+  "browser_action": {
+    "default_icon": {
+      "128": "images/icon_128.png"
+    },
+    "default_title": "NoooBox~~~",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "images/icon_128.png"
+  },
+  "options_page": "options.html",
+  "background": {
+    "scripts":["thirdParty/jquery.min.js","js/background.js"]
+  },
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "https://*.google.com/",
+    "http://*.baidu.com/",
+    "http://*.tineye.com/",
+    "http://*.bing.com/"
+  ]
+}
