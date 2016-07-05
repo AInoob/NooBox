@@ -22,6 +22,7 @@ NooBox.Image.imageFromUrl=function(info,tab){
       $.ajax({url:url}).done(function(data){
         NooBox.Image.fetchFunctions[NooBox.Image.ids[i]](cursor,data);
       }).fail(function(error){
+        NooBox.Image.update(cursor);
         console.log(error);
       });
     })(i);
@@ -39,6 +40,7 @@ NooBox.Image.update=function(i){
 
 var page;
 NooBox.Image.fetchFunctions.google=function(cursor,data){
+  try{
   data=data.replace(/<img[^>]*>/g,"");
   page=$(data);
   var keyword=page.find('._gUb').text();
@@ -85,9 +87,15 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
   NooBox.Image.result[cursor].googleRelatedWebsites=relatedWebsites;
   NooBox.Image.result[cursor].googleWebsites=websites;
   NooBox.Image.update(cursor);
+  }
+  catch(e){
+    console.log(e);
+    NooBox.Image.update(cursor);
+  }
 };
 
 NooBox.Image.fetchFunctions.baidu=function(cursor,data){
+  try{
   data=data.replace(/<img[^>]*>/g,"");
   var page=$(data);
   var keyword=page.find('.guess-info-word-link').text()||page.find('.guess-info-text-link').text();
@@ -132,6 +140,11 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
   NooBox.Image.result[cursor].baiduRelatedWebsites=relatedWebsites;
   NooBox.Image.result[cursor].baiduWebsites=websites;
   NooBox.Image.update(cursor);
+  }
+  catch(e){
+    console.log(e);
+    NooBox.Image.update(cursor);
+  }
 };
 
 NooBox.Image.fetchFunctions.tineye=function(cursor,data){
@@ -139,10 +152,16 @@ NooBox.Image.fetchFunctions.tineye=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.bing=function(cursor,data){
+  try{
   data=data.replace(/<img[^>]*>/g,"");
   var keyword=$(data).find('.query').text();
   NooBox.Image.result[cursor].bingKeyword=keyword;
   NooBox.Image.update(cursor);
+  }
+  catch(e){
+    NooBox.Image.update(cursor);
+    console.log(e);
+  }
 };
 
 chrome.contextMenus.create({
