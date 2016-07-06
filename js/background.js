@@ -1,11 +1,12 @@
 var NooBox=NooBox||{};
 NooBox.Image={};
-NooBox.Image.ids=["google","baidu","tineye","bing"];
+NooBox.Image.ids=["google","baidu","tineye","bing","yandex"];
 NooBox.Image.apiUrls=[
   "https://www.google.com/searchbyimage?&image_url=",
   "http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=",
   "http://www.tineye.com/search/?url=",
-  "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:"
+  "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:",
+  "https://www.yandex.com/images/search?rpt=imageview&img_url="
 ];
 NooBox.Image.fetchFunctions={};
 NooBox.Image.result=[];
@@ -13,9 +14,12 @@ NooBox.Image.imageFromUrl=function(info,tab){
   var cursor=NooBox.Image.result.length;
   NooBox.Image.result.push({});
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
-  NooBox.Image.result[cursor].remains=NooBox.Image.ids.length;
+  //tineye is not in use for now
+  NooBox.Image.result[cursor].remains=NooBox.Image.ids.length-1+1;
   NooBox.Image.update(cursor);
   for(var i=0;i<NooBox.Image.ids.length;i++){
+    if(i==2)
+      i++;
     (function(i){
       var url=NooBox.Image.apiUrls[i]+info.srcUrl;
       NooBox.Image.result[cursor][NooBox.Image.ids[i]+'Url']=url;
@@ -38,11 +42,10 @@ NooBox.Image.update=function(i){
 }
 
 
-var page;
 NooBox.Image.fetchFunctions.google=function(cursor,data){
   try{
   data=data.replace(/<img[^>]*>/g,"");
-  page=$(data);
+  var page=$(data);
   var keyword=page.find('._gUb').text();
   var relatedWebsites=[];
   var relatedWebsiteList=$(page.find('#rso').find('.rgsep')[0]).prev().find('.rc')
@@ -58,13 +61,9 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
   }
   var websites=[];
   var websiteList=$(page.find('#rso').find('.rgsep')).last().prev().find('.rc');
-  var websiteLinks=page.find('.srg').last().find('.g').find('.r').find('a');
-  var websiteImages=page.find('.srg').last().find('._lyb').find('a');
-  var websiteDescriptions=page.find('.srg').last().find('.g').find('.s').find('.st');
   for(var i=0;i<websiteList.length;i++){
     var website={};
     var temp=$(websiteList[i]);
-    a=temp;
     var x=temp.find('a')[0];
     website.link=x.href;
     website.title=x.innerText;
@@ -80,7 +79,6 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
       else
         website.imageUrl=z.href.slice(start,end);
     }
-    website.description=websiteDescriptions[i].innerHTML;
     websites.push(website);
   }
   NooBox.Image.result[cursor].googleKeyword=keyword;
@@ -133,6 +131,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
       var start=z.style.backgroundImage.indexOf('http');
       var end=z.style.backgroundImage.indexOf('")');
       website.imageUrl=z.style.backgroundImage.slice(start,end);
+      website.imageUrl=website.imageUrl.replace(/&amp;/g,'');
     }
     websites.push(website);
   }
@@ -148,7 +147,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.tineye=function(cursor,data){
-  data=data.replace(/<img[^>]*>/g,"");
+//  data=data.replace(/<img[^>]*>/g,"");
 };
 
 NooBox.Image.fetchFunctions.bing=function(cursor,data){
@@ -156,6 +155,34 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
   data=data.replace(/<img[^>]*>/g,"");
   var keyword=$(data).find('.query').text();
   NooBox.Image.result[cursor].bingKeyword=keyword;
+  NooBox.Image.update(cursor);
+  }
+  catch(e){
+    NooBox.Image.update(cursor);
+    console.log(e);
+  }
+};
+
+NooBox.Image.fetchFunctions.yandex=function(cursor,data){
+  try{
+  data=data.replace(/<img[^>]*>/g,"");
+  var page=$(data);
+  var websites=[];
+  var websiteList=$(page.find('.other-sites__item'));
+  for(var i=0;i<websiteList.length;i++){
+    var website={};
+    var temp=$(websiteList[i]);
+    var x=temp.find('.other-sites__snippet').find('a')[0];
+    website.link=x.href;
+    website.title=x.innerText;
+    var y=temp.find('.other-sites__desc')[0];
+    website.description=y.innerHTML;
+    var z=temp.find('.other-sites__preview-link')[0];
+
+    website.imageUrl=z.href;
+    websites.push(website);
+  }
+  NooBox.Image.result[cursor].yandexWebsites=websites;
   NooBox.Image.update(cursor);
   }
   catch(e){

@@ -23,7 +23,9 @@
     "contextMenus",
     "https://*.google.com/",
     "http://*.baidu.com/",
+    "http://*.bdimg.com/",
     "http://*.tineye.com/",
-    "http://*.bing.com/"
+    "http://*.bing.com/",
+    "https://*.yandex.com/"
   ]
 }
