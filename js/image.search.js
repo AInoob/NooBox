@@ -47,14 +47,14 @@ function display(){
 function displayRelatedWebsites(websiteList){
   for(var i=0;i<websiteList.length;i++){
     var website=websiteList[i];
-    $('#relatedWebsites').append('<div class="websiteLink"><a target="_blank"  class="relatedWebsiteTitle" href="'+website.link+'">'+website.title+'</a><div class="relatedWebsiteDescription">'+website.description+'</div></div>');
+    $('#relatedWebsites').append('<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="relatedWebsiteTitle" href="'+website.link+'">'+website.title+'</a></div><div class="relatedWebsiteDescription">'+website.description+'</div></div>');
   }
 }
 
 function displayWebsites(websiteList){
   for(var i=0;i<websiteList.length;i++){
     var website=websiteList[i];
-    var html='<div class="websiteLink"><a target="_blank"  class="websiteTitle" href="'+website.link+'">'+website.title+'</a>';
+    var html='<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="websiteTitle" href="'+website.link+'">'+website.title+'</a></div>';
     if(website.imageUrl)
       html+='<img class="websiteImage" src="'+website.imageUrl+'"></img>';
     html+='<div class="websiteDescription">'+website.description+'</div></div>'

@@ -68,6 +68,7 @@
   margin-top: 10px;
   background:rgba(0, 100, 255, 0.2);
 }
+
 section{
   clear:both;
 }
@@ -76,14 +77,24 @@ h2{
   margin-left:5%;
 }
 
+.websiteSearchIcon{
+  width: 24px;
+  margin-right: 10px;
+}
+
+.websiteLinkHeader{
+  width:100% !important;
+}
+
 .websiteLink{
   clear:both;
   width: 75%;
   margin-left: 7%;
+  margin-bottom: 10px;
+  overflow: hidden;
 }
 .websiteLink a{
   font-size: 18px;
-  width: 100%;
   display:block;
   float:left;
 }

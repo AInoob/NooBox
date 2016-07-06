@@ -57,6 +57,7 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
     website.title=x.innerText;
     var y=temp.find('.s').find('.st')[0];
     website.description=y.innerHTML;
+    website.searchEngine='google';
     relatedWebsites.push(website);
   }
   var websites=[];
@@ -79,6 +80,7 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
       else
         website.imageUrl=z.href.slice(start,end);
     }
+    website.searchEngine='google';
     websites.push(website);
   }
   NooBox.Image.result[cursor].googleKeyword=keyword;
@@ -114,6 +116,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
     website.link=relatedWebsiteLinks[i].href;
     website.title=relatedWebsiteLinks[i].innerText;
     website.description=relatedWebsiteDescriptions[i].innerHTML;
+    website.searchEngine='baidu';
     relatedWebsites.push(website);
   }
   var websites=[];
@@ -133,6 +136,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
       website.imageUrl=z.style.backgroundImage.slice(start,end);
       website.imageUrl=website.imageUrl.replace(/&amp;/g,'');
     }
+    website.searchEngine='baidu';
     websites.push(website);
   }
   NooBox.Image.result[cursor].baiduKeyword=keyword;
@@ -180,6 +184,7 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
     var z=temp.find('.other-sites__preview-link')[0];
 
     website.imageUrl=z.href;
+    website.searchEngine='yandex';
     websites.push(website);
   }
   NooBox.Image.result[cursor].yandexWebsites=websites;
