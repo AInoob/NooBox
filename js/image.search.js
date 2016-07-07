@@ -1,5 +1,5 @@
 var parameters={};
-var ids=["google","baidu","tineye","bing","yandex","saucenao"];
+var ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
 var result;
 function getParameters(){
   var temp=window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -40,6 +40,9 @@ function display(){
   if(isOn('imageSearchUrl_google')){
     displayRelatedWebsites(result.googleRelatedWebsites||[]);
   }
+  if(isOn('imageSearchUrl_iqdb')){
+    displayWebsites(result.iqdbRelatedWebsites||[]);
+  }
   if(isOn('imageSearchUrl_google')){
     displayWebsites(result.googleWebsites||[]);
   }
@@ -49,12 +52,19 @@ function display(){
   if(isOn('imageSearchUrl_saucenao')){
     displayWebsites(result.saucenaoRelatedWebsites||[]);
   }
-  if(isOn('imageSearchUrl_yandex')){
-    displayWebsites(result.yandexWebsites||[]);
+  if(isOn('imageSearchUrl_yandex')&&result.yandexWebsites){
+    displayWebsites(result.yandexWebsites.slice(0,3));
+  }
+  if(isOn('imageSearchUrl_yandex')&&result.yandexWebsites){
+    displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length));
   }
   if(isOn('imageSearchUrl_saucenao')){
     displayWebsites(result.saucenaoWebsites||[]);
   }
+  if(isOn('imageSearchUrl_iqdb')){
+    displayWebsites(result.iqdbWebsites||[]);
+  }
+  
   
   for(var i=0;i<ids.length;i++){
     if(isOn('imageSearchUrl_'+ids[i])){

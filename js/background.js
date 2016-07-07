@@ -5,7 +5,7 @@ var defaultValues=[
 	['imageSearchUrl_bing','1'],	
 	['imageSearchUrl_yandex','1'],	
 	['imageSearchUrl_saucenao','1'],	
-	['imageSearchUrl_iqdb','-1'],	
+	['imageSearchUrl_iqdb','1'],	
 ];
 var NooBox=NooBox||{};
 NooBox.Image={};
@@ -257,6 +257,33 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
   }
 };
 
+NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
+  try{
+  data=data.replace(/ src=\'\/([^\/])/g," nb-src='$1");
+  data=data.replace(/ src=\"\/\//g,' nb1-src="');
+  var page=$(data);
+  var websites=[];
+  var websiteList=$(page.find('table'));
+  for(var i=1;i<websiteList.length-2;i++){
+    var description='<table>'+websiteList[i].innerHTML.replace(/nb-src="/g,'src="http://iqdb.org/')+'</table>';
+    description=description.replace(/nb1-src="/g,'src="http://');
+    var website={link:"",title:"",imageUrl:"",searchEngine:"iqdb",description:description};
+    console.log(website);
+    if(websiteList[i].innerHTML.indexOf("Best match")!=-1){
+      NooBox.Image.result[cursor].saucenaoRelatedWebsites=[website];
+    }
+    else{
+      websites.push(website);
+    }
+  }
+  NooBox.Image.result[cursor].iqdbWebsites=websites;
+  NooBox.Image.update(cursor);
+  }
+  catch(e){
+    NooBox.Image.update(cursor);
+    console.log(e);
+  }
+};
 
 
 

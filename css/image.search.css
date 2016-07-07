@@ -55,7 +55,7 @@ strong{
 #moreResultsDiv li{
   float: left;
   list-style-type:none;
-  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .moreResultsImages{
@@ -97,6 +97,7 @@ h2{
   margin-left: 7%;
   margin-bottom: 10px;
   overflow: hidden;
+  background:rgba(0,100,200,0.2);
 }
 .websiteLink a{
   font-size: 18px;
