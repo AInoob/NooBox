@@ -22,6 +22,8 @@ NooBox.Image.apiUrls={
 NooBox.Image.fetchFunctions={};
 NooBox.Image.result=[];
 NooBox.Image.imageFromUrl=function(info,tab){
+  if(NooBox.Image.result.length>30)
+    NooBox.Image.result=[];
   var cursor=NooBox.Image.result.length;
   NooBox.Image.result.push({});
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
