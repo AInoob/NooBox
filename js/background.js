@@ -1,13 +1,24 @@
+var defaultValues=[
+	['imageSearchUrl_google','1'],	
+	['imageSearchUrl_baidu','1'],	
+	['imageSearchUrl_tineye','-1'],	
+	['imageSearchUrl_bing','1'],	
+	['imageSearchUrl_yandex','1'],	
+	['imageSearchUrl_saucenao','1'],	
+	['imageSearchUrl_iqdb','-1'],	
+];
 var NooBox=NooBox||{};
 NooBox.Image={};
-NooBox.Image.ids=["google","baidu","tineye","bing","yandex"];
-NooBox.Image.apiUrls=[
-  "https://www.google.com/searchbyimage?&image_url=",
-  "http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=",
-  "http://www.tineye.com/search/?url=",
-  "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:",
-  "https://www.yandex.com/images/search?rpt=imageview&img_url="
-];
+NooBox.Image.ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
+NooBox.Image.apiUrls={
+  google:   "https://www.google.com/searchbyimage?&image_url=",
+  baidu:    "http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=",
+  tineye:   "http://www.tineye.com/search/?url=",
+  bing:     "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:",
+  yandex:   "https://www.yandex.com/images/search?rpt=imageview&img_url=",
+  saucenao: "http://saucenao.com/search.php?db=999&url=",
+  iqdb:     "http://iqdb.org/?url="
+};
 NooBox.Image.fetchFunctions={};
 NooBox.Image.result=[];
 NooBox.Image.imageFromUrl=function(info,tab){
@@ -15,29 +26,36 @@ NooBox.Image.imageFromUrl=function(info,tab){
   NooBox.Image.result.push({});
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
   //tineye is not in use for now
-  NooBox.Image.result[cursor].remains=NooBox.Image.ids.length-1+1;
+  NooBox.Image.result[cursor].remains=0;
+  for(var i=0;i<NooBox.Image.ids.length;i++){
+    var engine=NooBox.Image.ids[i];
+    if(isOn('imageSearchUrl_'+engine)){
+      NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains+1;
+    }
+  }
   NooBox.Image.update(cursor);
   for(var i=0;i<NooBox.Image.ids.length;i++){
-    if(i==2)
-      i++;
-    (function(i){
-      var url=NooBox.Image.apiUrls[i]+info.srcUrl;
-      NooBox.Image.result[cursor][NooBox.Image.ids[i]+'Url']=url;
-      $.ajax({url:url}).done(function(data){
-        NooBox.Image.fetchFunctions[NooBox.Image.ids[i]](cursor,data);
-      }).fail(function(error){
-        NooBox.Image.update(cursor);
-        console.log(error);
-      });
-    })(i);
-  }
-  var url='/image.search.html?cursor='+cursor;
-  chrome.tabs.create({url:url});
-}
+    var engine=NooBox.Image.ids[i];
+    if(isOn('imageSearchUrl_'+engine)){
+      (function(engine){
+        var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
+        NooBox.Image.result[cursor][engine+'Url']=url;
+        $.ajax({url:url}).done(function(data){
+          NooBox.Image.fetchFunctions[engine](cursor,data);
+        }).fail(function(error){
+          NooBox.Image.update(cursor);
+          console.log(error);
+        });
+      })(engine);
+    }
+    }
+    var url='/image.search.html?cursor='+cursor;
+    chrome.tabs.create({url:url});
+    }
 
-NooBox.Image.update=function(i){
-  NooBox.Image.result[i].remains=NooBox.Image.result[i].remains-1;
-  localStorage.setItem('NooBox.Image.result',JSON.stringify(NooBox.Image.result));
+    NooBox.Image.update=function(i){
+      NooBox.Image.result[i].remains=NooBox.Image.result[i].remains-1;
+      localStorage.setItem('NooBox.Image.result',JSON.stringify(NooBox.Image.result));
   chrome.runtime.sendMessage({job: 'update'}, function(response) {});
 }
 
@@ -107,6 +125,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
     website.link=relatedWebsiteLinks[i].href;
     website.title=relatedWebsiteLinks[i].innerText;
     website.description=relatedWebsiteDescriptions[i].innerHTML;
+    website.searchEngine='baidu';
     relatedWebsites.push(website);
   }
   var relatedWebsiteLinks=page.find('.guess-newbaike').find('.guess-newbaike-text-title').find('a');
@@ -196,8 +215,81 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
   }
 };
 
-chrome.contextMenus.create({
-  "title": "Search this Image",
-  "contexts": ["image"],
-  "onclick": NooBox.Image.imageFromUrl
+NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
+  try{
+  data=data.replace(/ src=/g," nb-src=");
+  var page=$(data);
+  var websites=[];
+  var websiteList=$(page.find('#result-hidden-notification').prevAll('.result'));
+  for(var i=0;i<websiteList.length;i++){
+    var website={};
+    var temp=$(websiteList[i]);
+    website.link="";
+    website.title="";
+    var y=temp.find('.resulttablecontent')[0];
+    website.description=y.innerHTML.replace(/(nb-src="\/image|nb-src="image)/g,'src="http://saucenao.com/image');
+    var z=temp.find('.resultimage').find('img')[0];
+    website.imageUrl=z.getAttribute('nb-src');
+    website.searchEngine='saucenao';
+    websites.push(website);
+  }
+  NooBox.Image.result[cursor].saucenaoRelatedWebsites=websites;
+  websites=[];
+  var websiteList=$(page.find('#result-hidden-notification').nextAll('.result'));
+  for(var i=0;i<websiteList.length;i++){
+    var website={};
+    var temp=$(websiteList[i]);
+    website.link="";
+    website.title="";
+    var y=temp.find('.resulttablecontent')[0];
+    website.description=y.innerHTML.replace(/(nb-src="\/image|nb-src="image)/g,'src="http://saucenao.com/image');
+    var z=temp.find('.resultimage').find('img')[0];
+    website.imageUrl=z.getAttribute('data-src');
+    website.searchEngine='saucenao';
+    websites.push(website);
+  }
+  NooBox.Image.result[cursor].saucenaoWebsites=websites;
+  NooBox.Image.update(cursor);
+  }
+  catch(e){
+    NooBox.Image.update(cursor);
+    console.log(e);
+  }
+};
+
+
+
+
+function init(){
+	for(var i=0;i<defaultValues.length;i++){
+		setIfNull(defaultValues[i][0],defaultValues[i][1]);
+	}
+    chrome.contextMenus.create({
+      "title": "Search this Image",
+      "contexts": ["image"],
+      "onclick": NooBox.Image.imageFromUrl
+    });
+}
+document.addEventListener('DOMContentLoaded', function(){
+  init();
 });
+	
+
+function isOn(key){
+  return localStorage.getItem(key)=='1';
+}
+
+function setIfNull(s,o){
+	if(getItem(s)==null){
+		setItem(s,o);
+	}
+}
+
+function setItem(key,value){
+  localStorage.setItem(key,value);
+}
+
+function getItem(key){
+  localStorage.getItem(key);
+}
+

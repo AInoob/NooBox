@@ -3,6 +3,11 @@
   max-height: 100px;
 }
 
+strong{
+  float: left;
+  clear: left;
+}
+
 #imageInput{
   max-width: 400px;
   max-height: 250px;

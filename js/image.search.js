@@ -1,5 +1,5 @@
 var parameters={};
-var ids=["google","baidu","tineye","bing","yandex"];
+var ids=["google","baidu","tineye","bing","yandex","saucenao"];
 var result;
 function getParameters(){
   var temp=window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -22,25 +22,44 @@ function clean(){
 function display(){
   clean();
   $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
-  var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
-  $('#keywords').append('<li>'+bingKeyword+'</li>');
-  var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
-  $('#keywords').append('<li>'+googleKeyword+'</li>');
-  var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
-  $('#keywords').append('<li>'+baiduKeyword+'</li>');
-  var baiduRelatedWebsites=(result.baiduRelatedWebsites||[]);
-  displayRelatedWebsites(baiduRelatedWebsites);
-  var googleRelatedWebsites=(result.googleRelatedWebsites||[]);
-  displayRelatedWebsites(googleRelatedWebsites);
-  var baiduWebsites=(result.baiduWebsites||[]);
-  displayWebsites(baiduWebsites);
-  var googleWebsites=(result.googleWebsites||[]);
-  displayWebsites(googleWebsites);
-  var yandexWebsites=(result.yandexWebsites||[]);
-  displayWebsites(yandexWebsites);
+  if(isOn('imageSearchUrl_bing')){
+    var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
+    $('#keywords').append('<li>'+bingKeyword+'</li>');
+  }
+  if(isOn('imageSearchUrl_bing')){
+    var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
+    $('#keywords').append('<li>'+googleKeyword+'</li>');
+  }
+  if(isOn('imageSearchUrl_bing')){
+    var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
+    $('#keywords').append('<li>'+baiduKeyword+'</li>');
+  }
+  if(isOn('imageSearchUrl_baidu')){
+    displayRelatedWebsites(result.baiduRelatedWebsites||[]);
+  }
+  if(isOn('imageSearchUrl_google')){
+    displayRelatedWebsites(result.googleRelatedWebsites||[]);
+  }
+  if(isOn('imageSearchUrl_google')){
+    displayWebsites(result.googleWebsites||[]);
+  }
+  if(isOn('imageSearchUrl_baidu')){
+    displayWebsites(result.baiduWebsites||[]);
+  }
+  if(isOn('imageSearchUrl_saucenao')){
+    displayWebsites(result.saucenaoRelatedWebsites||[]);
+  }
+  if(isOn('imageSearchUrl_yandex')){
+    displayWebsites(result.yandexWebsites||[]);
+  }
+  if(isOn('imageSearchUrl_saucenao')){
+    displayWebsites(result.saucenaoWebsites||[]);
+  }
   
   for(var i=0;i<ids.length;i++){
-    $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[i]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[i]+'.png" /></a></li>');
+    if(isOn('imageSearchUrl_'+ids[i])){
+      $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[i]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[i]+'.png" /></a></li>');
+    }
   }
 }
 
@@ -102,3 +121,8 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   init();
 });
+
+
+function isOn(key){
+  return localStorage.getItem(key)=='1';
+}
