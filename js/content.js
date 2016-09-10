@@ -9,6 +9,10 @@ NooBox.Converter.defaultUnit={
 },
 NooBox.Converter.inverseUnits,
 NooBox.Converter.valueMaxLength=30;
+NooBox.Converter.language={
+	ZH_CN: {
+	}
+}
 
 NooBox.Converter.data={
   weight: {
@@ -24,7 +28,43 @@ NooBox.Converter.data={
     stone: 1/14
   },
   area: {
-  }
+		'square foot': 1,
+		'square meter': 0.83612736,
+		'square kilometer': 0.00000083612736,
+		'square yard': 1/9,
+		'square mile': 1/27878400,
+		'square inch': 144,
+		'hectare': 1/107639,
+		'acre': 1/43560
+  },
+	'data transfer rate':{
+		'bit per second': 1,
+		'bytes per second': 1/8,
+		'kilobit per second': 1/1000,
+		'kilobyte per second': 1/8000,
+		'megabit per second': 1/1000000,
+		'megabyte per second': 1/8000000,
+		'gigabit per second': 1/1000000000,
+		'gigabyte per second': 1/8000000000,
+		'terabit per second': 1/1000000000000,
+		'terabyte per second': 1/8000000000000,
+		'petabit per second': 1/1000000000000000,
+		'petabyte per second': 1/8000000000000000,
+		'exabit per second': 1/1000000000000000000,
+		'exabyte per second': 1/8000000000000000000,
+		'kibibit per second': 1/Math.pow(2,10),
+		'kibibyte per second': 1/Math.pow(2,13),
+		'mebibit per second': 1/Math.pow(2,20),
+		'mebiyte per second': 1/Math.pow(2,23),
+		'gibibit per second': 1/Math.pow(2,30),
+		'gibibyte per second': 1/Math.pow(2,33),
+		'tebibit per second': 1/Math.pow(2,40),
+		'tebibyte per second': 1/Math.pow(2,43),
+		'pebibit per second': 1/Math.pow(2,50),
+		'pebibyte per second': 1/Math.pow(2,53),
+		'exbibit per second': 1/Math.pow(2,60),
+		'exbibyte per second': 1/Math.pow(2,63)
+	}
 };
 
 
