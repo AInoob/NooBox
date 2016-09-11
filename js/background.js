@@ -24,10 +24,8 @@ NooBox.Image.apiUrls={
   iqdb:     "http://iqdb.org/?url="
 };
 NooBox.Image.updateContextMenu=function(){
-  console.log('a');
   isOn('imageSearch',
     function(){
-      console.log('b');
       NooBox.Image.handle=chrome.contextMenus.create({
         "title": "Search this Image",
         "contexts": ["image"],
@@ -35,7 +33,6 @@ NooBox.Image.updateContextMenu=function(){
       });
     },
     function(){
-      console.log('c');
       if(NooBox.Image.handle){
         chrome.contextMenus.remove(NooBox.Image.handle);
       }
@@ -299,7 +296,6 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
       var description='<table>'+websiteList[i].innerHTML.replace(/nb-src="/g,'src="http://iqdb.org/')+'</table>';
       description=description.replace(/nb1-src="/g,'src="http://');
       var website={link:"",title:"",imageUrl:"",searchEngine:"iqdb",description:description};
-      console.log(website);
       if(websiteList[i].innerHTML.indexOf("Best match")!=-1){
         NooBox.Image.result[cursor].saucenaoRelatedWebsites=[website];
       }
@@ -378,7 +374,6 @@ function getDB(key,callback){
 function set(key,value,callback){
   var temp={};
   temp[key]=value;
-  console.log(temp);
   chrome.storage.sync.set(temp,callback);
 }
 
