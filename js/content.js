@@ -2,12 +2,14 @@ var NooBox={};
 NooBox.Converter={};
 NooBox.Converter.replace=false;
 NooBox.Converter.defaultUnit={
-  weight: 'kg',
+  weight: 'kilogram',
   area: 'm^2',
   length: 'meter',
-  temperature: 'celsius'
+  temperature: 'celsius',
+  'data transfer rate': 'kilobyte per second'
 },
 NooBox.Converter.inverseUnits,
+NooBox.Converter.inverseUnitAlias,
 NooBox.Converter.valueMaxLength=30;
 NooBox.Converter.language={
 	ZH_CN: {
@@ -17,7 +19,7 @@ NooBox.Converter.language={
 NooBox.Converter.data={
   weight: {
     pound: 1,
-    kg: 0.45359237,
+    kilogram: 0.45359237,
     ounce: 16,
     gram: 453.59237,
     milligram: 453592.37,
@@ -28,45 +30,76 @@ NooBox.Converter.data={
     stone: 1/14
   },
   area: {
-		'square foot': 1,
-		'square meter': 0.83612736,
-		'square kilometer': 0.00000083612736,
-		'square yard': 1/9,
-		'square mile': 1/27878400,
-		'square inch': 144,
-		'hectare': 1/107639,
-		'acre': 1/43560
+    'square foot': 1,
+    'square meter': 0.83612736,
+    'square kilometer': 0.00000083612736,
+    'square yard': 1/9,
+    'square mile': 1/27878400,
+    'square inch': 144,
+    'hectare': 1/107639,
+    'acre': 1/43560
   },
-	'data transfer rate':{
-		'bit per second': 1,
-		'bytes per second': 1/8,
-		'kilobit per second': 1/1000,
-		'kilobyte per second': 1/8000,
-		'megabit per second': 1/1000000,
-		'megabyte per second': 1/8000000,
-		'gigabit per second': 1/1000000000,
-		'gigabyte per second': 1/8000000000,
-		'terabit per second': 1/1000000000000,
-		'terabyte per second': 1/8000000000000,
-		'petabit per second': 1/1000000000000000,
-		'petabyte per second': 1/8000000000000000,
-		'exabit per second': 1/1000000000000000000,
-		'exabyte per second': 1/8000000000000000000,
-		'kibibit per second': 1/Math.pow(2,10),
-		'kibibyte per second': 1/Math.pow(2,13),
-		'mebibit per second': 1/Math.pow(2,20),
-		'mebiyte per second': 1/Math.pow(2,23),
-		'gibibit per second': 1/Math.pow(2,30),
-		'gibibyte per second': 1/Math.pow(2,33),
-		'tebibit per second': 1/Math.pow(2,40),
-		'tebibyte per second': 1/Math.pow(2,43),
-		'pebibit per second': 1/Math.pow(2,50),
-		'pebibyte per second': 1/Math.pow(2,53),
-		'exbibit per second': 1/Math.pow(2,60),
-		'exbibyte per second': 1/Math.pow(2,63)
-	}
+  'data transfer rate':{
+    'bit per second': 1,
+    'byte per second': 1/8,
+    'kilobit per second': 1/1000,
+    'kilobyte per second': 1/8000,
+    'megabit per second': 1/1000000,
+    'megabyte per second': 1/8000000,
+    'gigabit per second': 1/1000000000,
+    'gigabyte per second': 1/8000000000,
+    'terabit per second': 1/1000000000000,
+    'terabyte per second': 1/8000000000000,
+    'petabit per second': 1/1000000000000000,
+    'petabyte per second': 1/8000000000000000,
+    'exabit per second': 1/1000000000000000000,
+    'exabyte per second': 1/8000000000000000000,
+    'kibibit per second': 1/Math.pow(2,10),
+    'kibibyte per second': 1/Math.pow(2,13),
+    'mebibit per second': 1/Math.pow(2,20),
+    'mebiyte per second': 1/Math.pow(2,23),
+    'gibibit per second': 1/Math.pow(2,30),
+    'gibibyte per second': 1/Math.pow(2,33),
+    'tebibit per second': 1/Math.pow(2,40),
+    'tebibyte per second': 1/Math.pow(2,43),
+    'pebibit per second': 1/Math.pow(2,50),
+    'pebibyte per second': 1/Math.pow(2,53),
+    'exbibit per second': 1/Math.pow(2,60),
+    'exbibyte per second': 1/Math.pow(2,63)
+  }
 };
 
+NooBox.Converter.plural={
+  pound: 'pounds',
+  kilogram: 'kilograms',
+  ounce: 'ounces',
+  gram: 'grams',
+  gramme: 'grammes',
+  milligram: 'milligrams',
+  milligramme: 'milligrammes',
+  microgramme: 'microgrammes',
+  'imperial ton': 'imperial tons',
+  'long ton': 'long tons',
+  'weight ton': 'weight tons',
+  'us ton':'us tons',
+  'short ton': 'short tons',
+  'metric ton': 'metric tons',
+  'tonne': 'tonnes',
+  'stone': 'stones'
+}
+
+NooBox.Converter.alias={
+  pound: ['pound','lb','lbs','lbm','℔','磅','国际磅'],
+  kilogram: ['kg','kilogram','kilogramme','IPK','La Grande K','Big K'],
+  ounce: ['ounce','oz','℥'],
+  gram: ['gram','gramme','g','gm'],
+  milligram: ['milligram','milligramme','mg'],
+  microgram: ['microgram','microgramme','μg'],
+  'imperial ton': ['imperial ton','long ton','weight ton'],
+  'us ton': ['us ton','short ton'],
+  'metric ton': ['metric ton','tonne'],
+  stone: ['stone weight','stone']
+}
 
 
 function init(){
@@ -101,25 +134,51 @@ NooBox.Converter.createCSSStyle=function(){
   document.head.appendChild(theStyle);
 }
 
-NooBox.Converter.generateInverseUnits=function(){
-  NooBox.Converter.inverseUnits={};
-  for(var type in NooBox.Converter.data){
-    for(var unit in NooBox.Converter.data[type]){
-      NooBox.Converter.inverseUnits.unit=type;
+NooBox.Converter.pluralToSingle=function(plural){
+  if(!NooBox.Converter.inverseUnitPlural){
+    NooBox.Converter.inverseUnitPlural={};
+    for(var single in NooBox.Converter.plural){
+      NooBox.Converter.inverseUnitPlural[NooBox.Converter.plural[single]]=single;
     }
   }
+  if(plural in NooBox.Converter.inverseUnitPlural)
+    return NooBox.Converter.inverseUnitPlural[plural];
+  else
+    return plural;
+}
+
+NooBox.Converter.aliasToDefault=function(alias){
+  if(!NooBox.Converter.inverseUnitAlias){
+    NooBox.Converter.inverseUnitAlias={};
+    for(var type in NooBox.Converter.data){
+      for(var unit in NooBox.Converter.data[type]){
+        for(var index in NooBox.Converter.alias[unit]){
+          NooBox.Converter.inverseUnitAlias[NooBox.Converter.alias[unit][index]]=unit;
+        }
+      }
+    }
+  }
+  return NooBox.Converter.inverseUnitAlias[alias];
 }
 
 NooBox.Converter.unitToType=function(unit){
   if(!NooBox.Converter.inverseUnits){
-    NooBox.Converter.generateInverseUnits();
+    NooBox.Converter.inverseUnits={};
+    for(var type in NooBox.Converter.data){
+      for(var tempUnit in NooBox.Converter.data[type]){
+        NooBox.Converter.inverseUnits[tempUnit]=type;
+      }
+    }
   }
-  return NooBox.Converter.inverseUnits.unit;
+  return NooBox.Converter.inverseUnits[unit];
 }
 
 NooBox.Converter.generateInfo=function(value,unit){
-  if(unit[unit.length-1]=='s')
-      unit=unit.slice(0,unit.length-1);
+  console.log(unit);
+  unit=NooBox.Converter.pluralToSingle(unit);
+  console.log(unit);
+  unit=NooBox.Converter.aliasToDefault(unit);
+  console.log(unit);
   var type=NooBox.Converter.unitToType(unit);
   var defaultUnit=NooBox.Converter.defaultUnit[type];
   var ratio=NooBox.Converter.data[type][defaultUnit]/NooBox.Converter.data[type][unit];
@@ -130,11 +189,17 @@ NooBox.Converter.convert=function(){
   var allUnits='ainoob';
   for(var type in NooBox.Converter.data){
     for(var unit in NooBox.Converter.data[type]){
-      allUnits+='|'+unit;
+      for(var index in NooBox.Converter.alias[unit]){
+        var newUnit=NooBox.Converter.alias[unit][index];
+        if(NooBox.Converter.plural[newUnit])
+          allUnits+='|'+NooBox.Converter.plural[newUnit];
+        allUnits+='|'+newUnit;
+      }
     }
   }
-  var unitRegex=new RegExp('('+allUnits+')s*','g');
-  var valueRegex=new RegExp('([+-]?(((\\d*\\,*\\s*)*\\d+(\\.(\\d*\\s*)*)?)|(\\.(\\d*\\s*)*))(E[+-]?\\d+)?)(\\s\*)$','');
+  var unitRegex=new RegExp('('+allUnits+')','g');
+  console.log(unitRegex);
+  var valueRegex=new RegExp('([+-]?\\s?\\d+(((\\d*,*\\s*)*(.(\\d*\\s*)*)?)|(.(\\d*\\s*)*))(E[+-]?\\d+)?)(\\s*)$','');
   NooBox.Converter.highlight(unitRegex,valueRegex,unit);
 }
 
@@ -159,6 +224,7 @@ NooBox.Converter.highlight=function(unitRegex,valueRegex,unit) {
   var unitMatch;
   var valueMatch;
   while (unitMatch = unitRegex.exec(text)) {
+    var d=new Date();
     var unitMatchLength= unitMatch[0].length;
     // Prevent empty matches causing infinite loops        
     if (!unitMatchLength)
@@ -191,7 +257,7 @@ NooBox.Converter.highlight=function(unitRegex,valueRegex,unit) {
           continue;
         }
         // Split the end node if required
-        if (node.start + nodeLength > unitMatch.index + unitMatchLength) {
+        if (node.start + nodeLength > unitMatch.index + unitMatchLength +valueMatchLength*sameDOMFactor) {
           nodes.splice(i + 1, 0, {
             textNode: node.textNode.splitText(unitMatch.index + unitMatchLength +valueMatchLength*sameDOMFactor- node.start),
             start: unitMatch.index + unitMatchLength
@@ -242,7 +308,6 @@ function setIfNull(key,setValue,callback,callbackCallback){
 function set(key,value,callback){
   var temp={};
   temp[key]=value;
-  console.log(temp);
   chrome.storage.sync.set(temp,callback);
 }
 
