@@ -27,7 +27,9 @@ NooBox.Converter.data={
     'imperial ton': 1/2240,
     'us ton': 1/2000,
     'metric ton': 0.00045359237,
-    stone: 1/14
+    stone: 1/14,
+	catty: 0.45359237*2,
+	tael: 0.045359237/5
   },
   area: {
     'square foot': 1,
@@ -90,15 +92,17 @@ NooBox.Converter.plural={
 
 NooBox.Converter.alias={
   pound: ['pound','lb','lbs','lbm','℔','磅','国际磅'],
-  kilogram: ['kg','kilogram','kilogramme','IPK','La Grande K','Big K'],
-  ounce: ['ounce','oz','℥'],
-  gram: ['gram','gramme','g','gm'],
-  milligram: ['milligram','milligramme','mg'],
-  microgram: ['microgram','microgramme','μg'],
+  kilogram: ['kg','kilogramme','kilogram','IPK','La Grande K','Big K','公斤','千克'],
+  ounce: ['ounce','oz','℥','盎司'],
+  gram: ['gram','gramme','g','gm','克'],
+  milligram: ['milligram','milligramme','mg','毫克'],
+  microgram: ['microgram','microgramme','μg','微克'],
   'imperial ton': ['imperial ton','long ton','weight ton'],
   'us ton': ['us ton','short ton'],
   'metric ton': ['metric ton','tonne'],
-  stone: ['stone weight','stone']
+  stone: ['stone weight','stone'],
+  catty: ['catty','kati','斤','market catty','市斤'],
+  tael: ['tael','两']
 }
 
 
