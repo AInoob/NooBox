@@ -260,13 +260,15 @@ NooBox.Converter.highlight=function(unitRegex,valueRegex,unit) {
         // Break after the match
         if (node.start >= unitMatch.index + unitMatchLength)
           break;
+        if (node.start < valueMatch.index+sliceStart && node.start + nodeLength > unitMatch.index + unitMatchLength +valueMatchLength*sameDOMFactor){
+          sameDOMFactor=1;
+        }
         // Split the start node if required
         if (node.start < valueMatch.index+sliceStart) {
           nodes.splice(i + 1, 0, {
             textNode: node.textNode.splitText(valueMatch.index+sliceStart - node.start),
             start: unitMatch.index
           });
-          sameDOMFactor=1;
           continue;
         }
         // Split the end node if required
