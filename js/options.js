@@ -9,35 +9,52 @@ function init(){
   });
   var checkList=$('.check');
   for(var i=0;i<checkList.length;i++){
-    if(isOn(checkList[i].id)){
-      checkList[i].checked=true;
-    }
+    isOn(checkList[i].id,checkItem.bind(null,checkList[i]));
   }
 }
 
 
 document.addEventListener('DOMContentLoaded', function(){
-	init();
+  init();
 });
 
 function turnOn(key){
-  localStorage.setItem(key,'1');
+  set(key,'1');
 }
 
 
 function turnOff(key){
-  localStorage.setItem(key,'-1');
+  set(key,'-1');
 }
 
-function isOn(key){
-  return localStorage.getItem(key)=='1';
+function checkItem(item){
+  item.checked=true;
 }
 
-function setItem(key,value){
-  localStorage.setItem(key,value);
+function isOn(key,callbackTrue,callbackFalse){
+  get(key,function(value){
+    if(value=='1'){
+      if(callbackTrue){
+        callbackTrue();
+      }
+    }
+    else{
+      if(callbackFalse){
+        callbackFalse();
+      }
+    }
+  });
 }
 
-function getItem(key){
-  localStorage.getItem(key);
+function set(key,value,callback){
+  var temp={};
+  temp[key]=value;
+  chrome.storage.sync.set(temp,callback);
 }
 
+function get(key,callback){
+  chrome.storage.sync.get(key,function(result){
+    if(callback)
+      callback(result[key]);
+  });
+}
