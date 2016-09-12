@@ -25,6 +25,7 @@
         "https://*/*"
       ],
       "js":["thirdParty/jquery.min.js","js/content.js"],
+      "css":["css/converter.css"],
       "run_at":"document_idle"
     }
   ],
