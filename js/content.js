@@ -21,6 +21,7 @@ NooBox.Converter.data={
     pound: 1,
     kilogram: 0.45359237,
     ounce: 16,
+    grain: 7000,
     gram: 453.59237,
     milligram: 453592.37,
     microgram: 453592370,
@@ -28,8 +29,8 @@ NooBox.Converter.data={
     'us ton': 1/2000,
     'metric ton': 0.00045359237,
     stone: 1/14,
-	catty: 0.45359237*2,
-	tael: 0.045359237/5
+    catty: 0.45359237*2,
+    tael: 0.045359237/5
   },
   area: {
     'square foot': 1,
@@ -87,13 +88,15 @@ NooBox.Converter.plural={
   'short ton': 'short tons',
   'metric ton': 'metric tons',
   'tonne': 'tonnes',
-  'stone': 'stones'
+  'stone': 'stones',
+  'grain': 'grains'
 }
 
 NooBox.Converter.alias={
   pound: ['pound','lb','lbs','lbm','℔','磅','国际磅'],
   kilogram: ['kg','kilogramme','kilogram','IPK','La Grande K','Big K','公斤','千克'],
   ounce: ['ounce','oz','℥','盎司'],
+  grain: ['grain'],
   gram: ['gram','gramme','g','gm','克'],
   milligram: ['milligram','milligramme','mg','毫克'],
   microgram: ['microgram','microgramme','μg','微克'],
