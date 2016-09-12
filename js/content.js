@@ -110,7 +110,6 @@ NooBox.Converter.alias={
 
 
 function init(){
-  NooBox.Converter.createCSSStyle();
   isOn('unitsConverter',NooBox.Converter.convert);
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -128,17 +127,9 @@ NooBox.Converter.update=function(){
 }
 
 NooBox.Converter.revert=function(){
-  $('.noobox-convert').each(function(index,element){
+  $('.noobox-converter').each(function(index,element){
       $(element).contents().unwrap();
   })
-}
-
-NooBox.Converter.createCSSStyle=function(){
-  var css='.noobox-convert{background: rgba(255,255,100,0.3)}';
-  var theStyle=document.createElement('style');
-  theStyle.type='text/css';
-  theStyle.appendChild(document.createTextNode(css));
-  document.head.appendChild(theStyle);
 }
 
 NooBox.Converter.pluralToSingle=function(plural){
@@ -214,6 +205,25 @@ NooBox.Converter.convert=function(){
   var unitRegex=new RegExp('('+allUnits+')','g');
   var valueRegex=new RegExp('([+-]?\\s?\\d+(([\\d,\\s]*([\\.\\/][\\d\\s]*)?)|(\\.[\\d\\s]*))(E[+-]?\\d+)?)(\\s*)$','');
   NooBox.Converter.highlight(unitRegex,valueRegex,unit);
+  NooBox.Converter.hoverListener();
+}
+
+NooBox.Converter.hoverListener=function(){
+  $('.noobox-converter').off('mouseenter mouseleave');
+  $('.noobox-converter').hover(function(e){
+    var tooltip=document.createElement('div');
+    tooltip.className='noobox-converter-tooltip';
+    tooltip.textContent="hello";
+    tooltip.style.zIndex=100;
+    tooltip.style.position='absolute';
+    var pos=e.target.getBoundingClientRect();
+    tooltip.style.left=pos.left;
+    tooltip.style.top=pos.top-50;
+    tooltip.style.height=50;
+    e.target.appendChild(tooltip);
+  },function(e){
+    e.target.removeChild(e.target.childNodes[e.target.childNodes.length-1]);
+  });
 }
 
 /* bellow is the code from
@@ -280,12 +290,16 @@ NooBox.Converter.highlight=function(unitRegex,valueRegex,unit) {
         }
         // Highlight the current node
         var spanNode = document.createElement("span");
-        spanNode.className = 'noobox-convert';
-        spanNode.setAttribute('noobox-convert-value',valueMatch[0]);
-        spanNode.setAttribute('noobox-convert-unit',unitMatch[0]);
-        spanNode.setAttribute('title',NooBox.Converter.generateInfo(NooBox.Converter.parseFloat(valueMatch[0].replace(/[\,\s]/,'')),unitMatch[0]));
+        spanNode.className = 'noobox-converter';
+        spanNode.setAttribute('noobox-converter-value',valueMatch[0]);
+        spanNode.setAttribute('noobox-converter-unit',unitMatch[0]);
+        spanNode.setAttribute('title',NooBox.Converter.generateInfo(NooBox.Converter.parseFloat(valueMatch[0].replace(/[,\s]/g,'')),unitMatch[0]));
         node.textNode.parentNode.replaceChild(spanNode, node.textNode);
         spanNode.appendChild(node.textNode);
+        //var detailedInfo=document.createElement("span");
+        //detailedInfo.textContent='hello';
+        //detailedInfo.style.display='none';
+        //spanNode.appendChild(detailedInfo);
       }
     }
   }
