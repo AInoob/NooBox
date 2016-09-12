@@ -49,42 +49,52 @@ NooBox.Image.imageFromUrl=function(info,tab){
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
   //tineye is not in use for now
   NooBox.Image.result[cursor].remains=0;
-  for(var i=0;i<NooBox.Image.ids.length;i++){
-    var engine=NooBox.Image.ids[i];
-    isOn('imageSearchUrl_)'+engine,
-      function(){
-        NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains+1;
-      }
-    );
+  isOn('imageSearchUrl_'+NooBox.Image.ids[0],
+    NooBox.Image.imageFromUrlHelper.bind(null,cursor,info)
+  );
+}
+
+NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
+  if(!i)
+    i=0;
+  if(i<NooBox.Image.ids.length-1){
+    if(state)
+      NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains+1;
+    i++;
+    isOn('imageSearchUrl_'+NooBox.Image.ids[i], NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,true), NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,false));
   }
-  NooBox.Image.update(cursor);
-  for(var i=0;i<NooBox.Image.ids.length;i++){
-    var engine=NooBox.Image.ids[i];
-    isOn('imageSearchUrl_'+engine,
-      (function(engine){
-        var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
-        NooBox.Image.result[cursor][engine+'Url']=url;
-        $.ajax({url:url}).done(function(data){
-          NooBox.Image.fetchFunctions[engine](cursor,data);
-        }).fail(function(error){
-          NooBox.Image.update(cursor);
-          console.log(error);
-        });
-      })(engine)
-    );
+  else{
+    NooBox.Image.update(cursor);
+    for(var i=0;i<NooBox.Image.ids.length;i++){
+      var engine=NooBox.Image.ids[i];
+      isOn('imageSearchUrl_'+engine,
+        NooBox.Image.imageFromUrlHelperHelper.bind(null,engine,i,info,cursor)
+      );
+    }
+    var url='/image.search.html?cursor='+cursor;
+    chrome.tabs.create({url:url});
   }
-  var url='/image.search.html?cursor='+cursor;
-  chrome.tabs.create({url:url});
+}
+
+NooBox.Image.imageFromUrlHelperHelper=function(engine,i,info,cursor){
+  var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
+  NooBox.Image.result[cursor][engine+'Url']=url;
+  $.ajax({url:url}).done(function(data){
+    NooBox.Image.fetchFunctions[engine](cursor,data);
+  }).fail(function(error){
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
+    NooBox.Image.update(cursor);
+    console.log(error);
+  });
 }
 
 NooBox.Image.update=function(i){
-  NooBox.Image.result[i].remains=NooBox.Image.result[i].remains-1;
   setDB('NooBox.Image.result',
       JSON.stringify(NooBox.Image.result),
       function(){
         chrome.runtime.sendMessage({job: 'update'}, function(response) {});
       }
-  );
+      );
 }
 
 
@@ -132,10 +142,12 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
     NooBox.Image.result[cursor].googleKeyword=keyword;
     NooBox.Image.result[cursor].googleRelatedWebsites=relatedWebsites;
     NooBox.Image.result[cursor].googleWebsites=websites;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
   catch(e){
     console.log(e);
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
 };
@@ -189,16 +201,19 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
     NooBox.Image.result[cursor].baiduKeyword=keyword;
     NooBox.Image.result[cursor].baiduRelatedWebsites=relatedWebsites;
     NooBox.Image.result[cursor].baiduWebsites=websites;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
   catch(e){
     console.log(e);
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
 };
 
 NooBox.Image.fetchFunctions.tineye=function(cursor,data){
   //  data=data.replace(/<img[^>]*>/g,"");
+  console.log('oh');
 };
 
 NooBox.Image.fetchFunctions.bing=function(cursor,data){
@@ -206,9 +221,11 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
     data=data.replace(/<img[^>]*>/g,"");
     var keyword=$(data).find('.query').text();
     NooBox.Image.result[cursor].bingKeyword=keyword;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
   catch(e){
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
     console.log(e);
   }
@@ -235,9 +252,11 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
       websites.push(website);
     }
     NooBox.Image.result[cursor].yandexWebsites=websites;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
   catch(e){
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
     console.log(e);
   }
@@ -277,9 +296,11 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
       websites.push(website);
     }
     NooBox.Image.result[cursor].saucenaoWebsites=websites;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
   catch(e){
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
     console.log(e);
   }
@@ -304,23 +325,27 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
       }
     }
     NooBox.Image.result[cursor].iqdbWebsites=websites;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
   }
   catch(e){
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
     console.log(e);
   }
 };
 
-function initDefault(callback){
-  if(defaultInitNum<defaultValues.length)
-    setIfNull(defaultValues[defaultInitNum][0],defaultValues[defaultInitNum++][1],initDefault,callback);
-  else if(callback)
-    callback();
+function initDefault(i){
+  if(!i)
+    i=0;
+  if(i<defaultValues.length)
+    setIfNull(defaultValues[i][0],defaultValues[i][1],initDefault.bind(null,i+1));
+  else
+    NooBox.Image.updateContextMenu();
 }
 
 function init(){
-  initDefault(NooBox.Image.updateContextMenu);
+  initDefault();
 }
 document.addEventListener('DOMContentLoaded', function(){
   init();
@@ -348,14 +373,14 @@ function isOn(key,callbackTrue,callbackFalse){
   });
 }
 
-function setIfNull(key,setValue,callback,callbackCallback){
+function setIfNull(key,setValue,callback){
   get(key,function(value){
     if(!value){
       set(key,setValue,callback);
     }
     else{
       if(callback)
-        callback(callbackCallback);
+        callback();
     }
   });
 }

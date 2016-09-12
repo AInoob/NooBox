@@ -73,11 +73,9 @@ function display(){
   for(var i=0;i<ids.length;i++){
     isOn('imageSearchUrl_'+ids[i],
       (function(ii){
-        console.log('imageSearchUrl_'+ids[ii]+" true");
         $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
       }),
       function(){
-        console.log('not showing');
       },
       i
     );
@@ -110,6 +108,7 @@ function parse(){
 }
 
 function displayLoader(){
+  console.log(result.remains);
   var i=result.remains;
   for(var j=1;j<=ids.length;j++){
     $(".loading"+j).hide();
@@ -189,7 +188,6 @@ function set(key,value,callback){
 
 function get(key,callback){
   chrome.storage.sync.get(key,function(result){
-    console.log(result[key]);
     if(callback)
       callback(result[key]);
   });
