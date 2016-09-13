@@ -217,10 +217,15 @@ NooBox.Converter.hoverListener=function(){
     tooltip.style.zIndex=100;
     tooltip.style.position='absolute';
     var pos=e.target.getBoundingClientRect();
-    tooltip.style.left=pos.left;
-    tooltip.style.top=pos.top-50;
-    tooltip.style.height=50;
     e.target.appendChild(tooltip);
+    tooltip.style.left=(pos.left+window.pageXOffset)+'px';
+    tooltip.style.top=(pos.top+window.pageYOffset-50)+'px';
+    tooltip.style.height=50+'px';
+    console.log(tooltip.style);
+    console.log(e);
+    console.log(e.target);
+    console.log(e.target.getBoundingClientRect());
+    console.log(e.currentTarget.getBoundingClientRect());
   },function(e){
     e.target.removeChild(e.target.childNodes[e.target.childNodes.length-1]);
   });
