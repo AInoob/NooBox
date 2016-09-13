@@ -3,21 +3,28 @@
   <head>
     <title>Popup</title>
     <script src="thirdParty/jquery.min.js"></script>
-    <style>
-      body{
-        width: 400px;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
   </head>
   <body>
     <section>
-      <h2>Reverse Image search</h2>
-      <input type="checkbox" class="switch" id="imageSearch"></input>
+      <span class="blue f24">Reverse Image search</span>
+      <label class="switch20">
+        <input type="checkbox" class="switch hasSub" id="imageSearch"></input><div class="slider20 round"></div><br/>
+      </label>
+      <div class="sub">
+        <span class="blue f24">Engines</span><br/>
+        <span class="blue f14">Google</span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_google"></input><div class="slider14 round"></div></label><br/>
+        <span class="blue f14">Baidu</span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_baidu"></input><div class="slider14 round"></div></label><br/>
+        <span class="blue f14">Bing</span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_bing"></input><div class="slider14 round"></div></label><br/>
+        <span class="blue f14">Yandex</span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_yandex"></input><div class="slider14 round"></div></label><br/>
+        <span class="blue f14">IQDB</span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_iqdb"></input><div class="slider14 round"></div></label><br/>
+        <span class="blue f14">SauceNao</span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_saucenao"></input><div class="slider14 round"></div></label><br/>
+      </div>
     </section>
     <section>
-      <h2>Converter</h2>
-      <input type="checkbox" class="switch" id="unitsConverter"></input>
+      <span class="blue f24">Converter</span>
+      <label class="switch20 hasSub"><input type="checkbox" class="switch" id="unitsConverter"></input><div class="slider20 round"></div></label>
     </section>
     <script src="js/popup.js"></script>
-  </body>
+    </body>
 </html>
