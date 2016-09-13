@@ -81,10 +81,10 @@ NooBox.Image.imageFromUrlHelperHelper=function(engine,i,info,cursor){
   NooBox.Image.result[cursor][engine+'Url']=url;
   $.ajax({url:url}).done(function(data){
     NooBox.Image.fetchFunctions[engine](cursor,data);
-  }).fail(function(error){
+  }).fail(function(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.update(cursor);
-    console.log(error);
+    console.log(e);
   });
 }
 

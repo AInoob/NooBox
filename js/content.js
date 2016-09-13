@@ -221,11 +221,6 @@ NooBox.Converter.hoverListener=function(){
     tooltip.style.left=(pos.left+window.pageXOffset)+'px';
     tooltip.style.top=(pos.top+window.pageYOffset-50)+'px';
     tooltip.style.height=50+'px';
-    console.log(tooltip.style);
-    console.log(e);
-    console.log(e.target);
-    console.log(e.target.getBoundingClientRect());
-    console.log(e.currentTarget.getBoundingClientRect());
   },function(e){
     e.target.removeChild(e.target.childNodes[e.target.childNodes.length-1]);
   });
