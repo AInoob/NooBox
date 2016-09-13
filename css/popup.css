@@ -10,8 +10,16 @@ body{
   font-size: 24px;
 }
 
+.f18{
+  font-size: 18px;
+}
+
 .f14{
   font-size: 14px;
+}
+
+.firstSub{
+  margin-left: 30px;
 }
 
 .switch20 {
