@@ -15,6 +15,7 @@ var NooBox=NooBox||{};
 
 NooBox.Crypter={};
 NooBox.Crypter.handle=null;
+NooBox.Crypter.selection=null;
 NooBox.Crypter.updateContextMenu=function(){
   isOn('crypter',
     function(){
@@ -37,6 +38,8 @@ NooBox.Crypter.crypt=function(info,tab){
   //NNN
   console.log(info);
   console.log(tab);
+  NooBox.Crypter.selection=info.selectionText;
+  console.log(NooBox.Crypter.selection);
   var url='/crypter.html';
   chrome.tabs.create({url:url});
 }
@@ -389,6 +392,10 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       else if(request.job=="crypter"){
         NooBox.Crypter.updateContextMenu();
+      }
+      else if(request.job=="getSelection"){
+        sendResponse({selection: NooBox.Crypter.selection});
+        console.log("yay");
       }
     });
 });

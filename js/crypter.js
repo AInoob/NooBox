@@ -2,6 +2,12 @@ var Crypter = React.createClass({
   displayName: 'Crypter',
 
   getInitialState: function () {
+    chrome.runtime.sendMessage({
+      job: "getSelection"
+    }, function(response) {
+      $("#crypterInput").val(response.selection);
+      this.setState({input:response.selection});
+    }.bind(this));
     var freqTable = {
       'English': { a: 0.08167, b: 0.01492, c: 0.02782, d: 0.04253, e: 0.12702, f: 0.02228, g: 0.02015, h: 0.06094, i: 0.06966, j: 0.00153, k: 0.00772, l: 0.04025, m: 0.02406, n: 0.06749, o: 0.07507, p: 0.01929, q: 0.00095, r: 0.05987, s: 0.06327, t: 0.09056, u: 0.02758, v: 0.00978, w: 0.02360, x: 0.00150, y: 0.01974, z: 0.00074 },
       'Latin': { a: 0.0889, b: 0.0158, c: 0.0399, d: 0.0277, e: 0.1138, f: 0.0093, g: 0.0121, h: 0.0069, i: 0.1144, l: 0.0315, m: 0.0538, n: 0.0628, o: 0.0540, p: 0.0303, q: 0.0151, r: 0.0667, s: 0.0760, t: 0.0800, u: 0.0846, v: 0.0096, x: 0.0060, y: 0.0007, z: 0.0001 },
@@ -683,6 +689,14 @@ var Crypter = React.createClass({
       indexOfCoincDiv.style.display = 'none';
     }
   },
+  regexp: function () {
+    var regexpDiv = document.getElementById('regexpDiv');
+    if (this.state.regexp) {
+      regexpDiv.style.display = "block";
+    } else {
+      regexpDiv.style.display = "none";
+    }
+  },
   charFreqAnlys: function (noLoading) {
     var charFreqAnlysDiv = document.getElementById('charFreqAnlysDiv');
     if (this.state.charFreqAnlys && !noLoading) {
@@ -790,9 +804,22 @@ var Crypter = React.createClass({
     });
   },
   loadExample: function (e) {
+    $('#charFreqAnlys').prop('checked', false);
+    this.onOff({ target: $('#charFreqAnlys')[0] }, true);
+    $('#regexp').prop('checked', false);
+    this.onOff({ target: $('#regexp')[0] }, true);
+    $('#columnarTransposition').prop('checked', false);
+    this.onOff({ target: $('#columnarTransposition')[0] }, true);
+    $('#vigenereCipher').prop('checked', false);
+    this.onOff({ target: $('#vigenereCipher')[0] }, true);
+    $('#keywordCipher').prop('checked', false);
+    this.onOff({ target: $('#keywordCipher')[0] }, true);
+    $('#indexOfCoinc').prop('checked', false);
+    this.onOff({ target: $('#indexOfCoinc')[0] }, true);
+    $('#caesarCipher').prop('checked', false);
+    this.onOff({ target: $('#caesarCipher')[0] }, true);
     switch (e.target.value) {
       case '0':
-        this.onOff({ target: $('#charFreqAnlys')[0] }, true);
         $('#regexpPattern').val('');
         this.setRegExpFunc({ target: $('#regexpPattern')[0] }, true);
         $('#regexpFlag').val('');
@@ -804,8 +831,8 @@ var Crypter = React.createClass({
         $('#crypterOutput').val('');
         break;
       case '1':
-        $('#charFreqAnlys').prop('checked', true);
-        this.onOff({ target: $('#charFreqAnlys')[0] }, true);
+        $('#regexp').prop('checked', true);
+        this.onOff({ target: $('#regexp')[0] }, true);
         $('#regexpPattern').val('.');
         this.setRegExpFunc({ target: $('#regexpPattern')[0] }, true);
         $('#regexpFlag').val('g');
@@ -818,6 +845,8 @@ var Crypter = React.createClass({
       case '2':
         $('#charFreqAnlys').prop('checked', true);
         this.onOff({ target: $('#charFreqAnlys')[0] }, true);
+        $('#regexp').prop('checked', true);
+        this.onOff({ target: $('#regexp')[0] }, true);
         $('#caesarCipher').prop('checked', true);
         this.onOff({ target: $('#caesarCipher')[0] }, true);
         $('#regexpPattern').val('[A-Z]');
@@ -829,6 +858,13 @@ var Crypter = React.createClass({
         $('#crypterInput').val('BTWQI BFW N BFX YMJ QFXY RFOTW HTSKQNHY BMJWJYMJ UWNRFWD RJFSX TK JSHWDUYNSL FSI IJHWDUYNSL FSI GWJFPNSL HNUMJW RJXXFLJX BFX GD UJSHNQ FSI UFUJW. NY BFX FQXT YMJ KNWXY RFOTW HTSKQNHY BMJWJ WFINT BFX ZXJI YT YWFSXRNY HWDUYTLWFRX. XNSHJ WFINT NX F GWTFIHFXY RJINZR, YMNX RJFSY YMFY FSDGTID TS DTZW KWJVZJSHD HTZQI NSYJWHJUY DTZW RJXXFLJX.');
         this.changeInput({ target: $('#crypterInput')[0] });
         break;
+      case '3':
+        $('#crypterInput').val('Uqs Kxifwsgt golfnevjxb lpu uqs rggbcwdc qg cvt Utfwqw skqucbpv, Cuoxhg en Jxvgonft, 1523-1596. Akln Qptuba ocs cmu hwt eshdidisjdwttt cvpi hpuzdlge, qs sxf oxh kxuvjzxog uqs rxrinf xc opmiapt bawiwofcwrpn unfbh. Tbcvtg jf ewtlge cvt raqqsg pu b biqhvjciixqo lwewgs fvtgg b mwuugsnbi pnqqoqtv xjg jhge ocg ijf wsmi nfchtg qg cvt bgtbovt, yjcv iwg budwpdfcg gtrfjhxci qnfxdfjloaaa --- blqdgfjwu id upvs zta. Sjhwtt uqoc hgucwcv ufesgpn ertuttfwh parijptiu, uqs rgaqccvgcqqsg lqvur jhg uqs Kxifwsgt urdogt.');
+        this.changeInput({ target: $('#crypterInput')[0] });
+        $('#vigenereCipher').prop('checked', true);
+        this.onOff({ target: $('#vigenereCipher')[0] }, true);
+        $('#indexOfCoinc').prop('checked', true);
+        this.onOff({ target: $('#indexOfCoinc')[0] }, true);
     }
   },
   render: function () {
@@ -932,12 +968,17 @@ var Crypter = React.createClass({
         React.createElement(
           'option',
           { value: '1' },
-          'Basic one'
+          'Regular Expression'
         ),
         React.createElement(
           'option',
           { value: '2' },
-          'Dooley\'s examle'
+          'Dooley\'s examle (Caesar Cipher)'
+        ),
+        React.createElement(
+          'option',
+          { value: '3' },
+          'Vigenere Cipher'
         )
       ),
       React.createElement(
@@ -953,57 +994,6 @@ var Crypter = React.createClass({
       React.createElement('textarea', { placeholder: 'Put what you want to encipher or decipher here', id: 'crypterInput', onChange: this.changeInput, style: { width: '90%', height: '100px' } }),
       React.createElement('br', null),
       React.createElement(
-        'span',
-        { style: { float: 'left' } },
-        'Output: '
-      ),
-      React.createElement('textarea', { placeholder: 'Make sure you defined input, patter, flag and function, or load example to see how things work', id: 'crypterOutput', readOnly: true, value: this.state.output, style: { width: '90%', height: '100px' }, readOnly: true }),
-      React.createElement('br', null),
-      React.createElement(
-        'span',
-        { style: { float: 'left' } },
-        'RegExp(',
-        React.createElement(
-          'span',
-          { title: 'The command is input.replace(/pattern/flag,function(x){function})Write regular expression, and function to tell crypter how to translate the given input' },
-          '?'
-        ),
-        ') Pattern(',
-        React.createElement(
-          'span',
-          { title: 'things to match inside / and /' },
-          '?'
-        ),
-        ') :'
-      ),
-      ' ',
-      React.createElement('textarea', { placeholder: '\'.\' to match all characters, \'[A-Z]\' to match uppercase letters, \'\\\\d+\' to match numbers, etc', style: { float: 'left' }, id: 'regexpPattern', onChange: this.setRegExpFunc }),
-      React.createElement(
-        'span',
-        { style: { float: 'left' } },
-        'Flag(',
-        React.createElement(
-          'span',
-          { title: 'g, gi, m, any RegExp flag' },
-          '?'
-        ),
-        '): '
-      ),
-      React.createElement('textarea', { placeholder: 'things like \'g\', \'gi\', \'m\', etc', id: 'regexpFlag', onChange: this.setRegExpFunc }),
-      React.createElement('br', null),
-      React.createElement(
-        'span',
-        { style: { float: 'left' } },
-        'Function(',
-        React.createElement(
-          'span',
-          { title: 'what to replace the matching string, the variable x is the string' },
-          '?'
-        ),
-        '): '
-      ),
-      React.createElement('textarea', { placeholder: '\'return x;\' will return the exactly same thing, \'return \'1\' will make every matched string to \'1\'', id: 'func', onChange: this.setRegExpFunc, style: { width: '66%', height: '100px' } }),
-      React.createElement(
         'h2',
         null,
         'Crypter Analysis Tools'
@@ -1011,6 +1001,8 @@ var Crypter = React.createClass({
       React.createElement(
         'div',
         { id: 'crypterTools' },
+        React.createElement('input', { type: 'checkbox', id: 'regexp', onChange: this.onOff }),
+        'Regular Expression substitution',
         React.createElement('input', { type: 'checkbox', id: 'charFreqAnlys', onChange: this.onOff }),
         'Character Frequency Analysis',
         React.createElement('input', { type: 'checkbox', id: 'columnarTransposition', onChange: this.onOff }),
@@ -1035,6 +1027,61 @@ var Crypter = React.createClass({
           { title: 'Display total of 26 possibilities of shifting the alphabet' },
           'Caesar Cipher'
         )
+      ),
+      React.createElement(
+        'div',
+        { id: 'regexpDiv', style: { display: "none", border: "2px solid red", marginTop: 3 } },
+        React.createElement(
+          'span',
+          { style: { float: 'left' } },
+          'Output: '
+        ),
+        React.createElement('textarea', { placeholder: 'Make sure you defined input, patter, flag and function, or load example to see how things work', id: 'crypterOutput', readOnly: true, value: this.state.output, style: { width: '90%', height: '100px' }, readOnly: true }),
+        React.createElement('br', null),
+        React.createElement(
+          'span',
+          { style: { float: 'left' } },
+          'RegExp(',
+          React.createElement(
+            'span',
+            { title: 'The command is input.replace(/pattern/flag,function(x){function})Write regular expression, and function to tell crypter how to translate the given input' },
+            '?'
+          ),
+          ') Pattern(',
+          React.createElement(
+            'span',
+            { title: 'things to match inside / and /' },
+            '?'
+          ),
+          ') :'
+        ),
+        ' ',
+        React.createElement('textarea', { placeholder: '\'.\' to match all characters, \'[A-Z]\' to match uppercase letters, \'\\\\d+\' to match numbers, etc', style: { float: 'left' }, id: 'regexpPattern', onChange: this.setRegExpFunc }),
+        React.createElement(
+          'span',
+          { style: { float: 'left' } },
+          'Flag(',
+          React.createElement(
+            'span',
+            { title: 'g, gi, m, any RegExp flag' },
+            '?'
+          ),
+          '): '
+        ),
+        React.createElement('textarea', { placeholder: 'things like \'g\', \'gi\', \'m\', etc', id: 'regexpFlag', onChange: this.setRegExpFunc }),
+        React.createElement('br', null),
+        React.createElement(
+          'span',
+          { style: { float: 'left' } },
+          'Function(',
+          React.createElement(
+            'span',
+            { title: 'what to replace the matching string, the variable x is the string' },
+            '?'
+          ),
+          '): '
+        ),
+        React.createElement('textarea', { placeholder: '\'return x;\' will return the exactly same thing, \'return \'1\' will make every matched string to \'1\'', id: 'func', onChange: this.setRegExpFunc, style: { width: '66%', height: '100px' } })
       ),
       React.createElement(
         'div',
