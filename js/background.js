@@ -30,16 +30,13 @@ NooBox.Crypter.updateContextMenu=function(){
     function(){
       if(NooBox.Crypter.handle){
         chrome.contextMenus.remove(NooBox.Crypter.handle);
+        NooBox.Crypter.handle=null;
       }
     }
   );
 }
 NooBox.Crypter.crypt=function(info,tab){
-  //NNN
-  console.log(info);
-  console.log(tab);
   NooBox.Crypter.selection=info.selectionText;
-  console.log(NooBox.Crypter.selection);
   var url='/crypter.html';
   chrome.tabs.create({url:url});
 }
@@ -395,7 +392,6 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       else if(request.job=="getSelection"){
         sendResponse({selection: NooBox.Crypter.selection});
-        console.log("yay");
       }
     });
 });
