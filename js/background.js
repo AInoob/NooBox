@@ -1,6 +1,7 @@
 var defaultValues=[
   ['imageSearch','1'],
   ['unitsConverter','-1'],
+  ['crypter','-1'],
   ['imageSearchUrl_google','1'],	
   ['imageSearchUrl_baidu','1'],	
   ['imageSearchUrl_tineye','-1'],	
@@ -8,9 +9,39 @@ var defaultValues=[
   ['imageSearchUrl_yandex','1'],	
   ['imageSearchUrl_saucenao','1'],	
   ['imageSearchUrl_iqdb','-1'],	
-  ];
+];
 var defaultInitNum=0;
 var NooBox=NooBox||{};
+
+NooBox.Crypter={};
+NooBox.Crypter.handle=null;
+NooBox.Crypter.updateContextMenu=function(){
+  isOn('crypter',
+    function(){
+      if(!NooBox.Crypter.handle){
+        NooBox.Crypter.handle=chrome.contextMenus.create({
+          "title": "Crypting",
+          "contexts": ["selection"],
+          "onclick": NooBox.Crypter.crypt
+        });
+      }
+    },
+    function(){
+      if(NooBox.Crypter.handle){
+        chrome.contextMenus.remove(NooBox.Crypter.handle);
+      }
+    }
+  );
+}
+NooBox.Crypter.crypt=function(info,tab){
+  //NNN
+  console.log(info);
+  console.log(tab);
+  var url='/crypter.html';
+  chrome.tabs.create({url:url});
+}
+
+
 NooBox.Image={};
 NooBox.Image.handle=null;
 NooBox.Image.ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
@@ -26,11 +57,13 @@ NooBox.Image.apiUrls={
 NooBox.Image.updateContextMenu=function(){
   isOn('imageSearch',
     function(){
-      NooBox.Image.handle=chrome.contextMenus.create({
-        "title": "Search this Image",
-        "contexts": ["image"],
-        "onclick": NooBox.Image.imageFromUrl
-      });
+      if(!NooBox.Image.handle){
+        NooBox.Image.handle=chrome.contextMenus.create({
+          "title": "Search this Image",
+          "contexts": ["image"],
+          "onclick": NooBox.Image.imageFromUrl
+        });
+      }
     },
     function(){
       if(NooBox.Image.handle){
@@ -340,8 +373,8 @@ function initDefault(i){
     i=0;
   if(i<defaultValues.length)
     setIfNull(defaultValues[i][0],defaultValues[i][1],initDefault.bind(null,i+1));
-  else
-    NooBox.Image.updateContextMenu();
+  NooBox.Image.updateContextMenu();
+  NooBox.Crypter.updateContextMenu();
 }
 
 function init(){
@@ -353,6 +386,9 @@ document.addEventListener('DOMContentLoaded', function(){
     function(request, sender, sendResponse) {
       if (request.job == "imageSearch"){
         NooBox.Image.updateContextMenu();
+      }
+      else if(request.job=="crypter"){
+        NooBox.Crypter.updateContextMenu();
       }
     });
 });
