@@ -871,114 +871,122 @@ var Crypter = React.createClass({
     return React.createElement(
       'div',
       { id: 'crypter' },
-      'Plaintext Language:',
       React.createElement(
-        'select',
-        { onChange: this.updateLang },
+        'div',
+        { 'class': 'selectDiv' },
+        'Plaintext Language:',
         React.createElement(
-          'option',
-          { value: 'English' },
-          'English'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Latin' },
-          'Latin'
-        ),
-        React.createElement(
-          'option',
-          { value: 'French' },
-          'French'
-        ),
-        React.createElement(
-          'option',
-          { value: 'German' },
-          'German'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Spanish' },
-          'Spanish'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Portuguese' },
-          'Portuguese'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Esperanto' },
-          'Esperanto'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Italian' },
-          'Italian'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Turkish' },
-          'Turkish'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Swedish' },
-          'Swedish'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Polish' },
-          'Polish'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Dutch' },
-          'Dutch'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Danish' },
-          'Danish'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Icelandic' },
-          'Icelandic'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Finnish' },
-          'Finnish'
-        ),
-        React.createElement(
-          'option',
-          { value: 'Czech' },
-          'Czech'
+          'select',
+          { onChange: this.updateLang },
+          React.createElement(
+            'option',
+            { value: 'English' },
+            'English'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Latin' },
+            'Latin'
+          ),
+          React.createElement(
+            'option',
+            { value: 'French' },
+            'French'
+          ),
+          React.createElement(
+            'option',
+            { value: 'German' },
+            'German'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Spanish' },
+            'Spanish'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Portuguese' },
+            'Portuguese'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Esperanto' },
+            'Esperanto'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Italian' },
+            'Italian'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Turkish' },
+            'Turkish'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Swedish' },
+            'Swedish'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Polish' },
+            'Polish'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Dutch' },
+            'Dutch'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Danish' },
+            'Danish'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Icelandic' },
+            'Icelandic'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Finnish' },
+            'Finnish'
+          ),
+          React.createElement(
+            'option',
+            { value: 'Czech' },
+            'Czech'
+          )
         )
       ),
-      '   Load example:',
       React.createElement(
-        'select',
-        { onChange: this.loadExample },
+        'div',
+        { 'class': 'selectDiv' },
+        'Load example:',
         React.createElement(
-          'option',
-          { value: '0' },
-          ' '
-        ),
-        React.createElement(
-          'option',
-          { value: '1' },
-          'Regular Expression'
-        ),
-        React.createElement(
-          'option',
-          { value: '2' },
-          'Dooley\'s examle (Caesar Cipher)'
-        ),
-        React.createElement(
-          'option',
-          { value: '3' },
-          'Vigenere Cipher'
+          'select',
+          { onChange: this.loadExample },
+          React.createElement(
+            'option',
+            { value: '0' },
+            ' '
+          ),
+          React.createElement(
+            'option',
+            { value: '1' },
+            'Regular Expression'
+          ),
+          React.createElement(
+            'option',
+            { value: '2' },
+            'Dooley\'s examle (Caesar Cipher)'
+          ),
+          React.createElement(
+            'option',
+            { value: '3' },
+            'Vigenere Cipher'
+          )
         )
       ),
       React.createElement(
@@ -1001,31 +1009,59 @@ var Crypter = React.createClass({
       React.createElement(
         'div',
         { id: 'crypterTools' },
-        React.createElement('input', { type: 'checkbox', id: 'regexp', onChange: this.onOff }),
-        'Regular Expression substitution',
-        React.createElement('input', { type: 'checkbox', id: 'charFreqAnlys', onChange: this.onOff }),
-        'Character Frequency Analysis',
-        React.createElement('input', { type: 'checkbox', id: 'columnarTransposition', onChange: this.onOff }),
-        'Columnar Transposition',
-        React.createElement('input', { type: 'checkbox', id: 'vigenereCipher', onChange: this.onOff }),
-        'Vigenere Cipher',
-        React.createElement('input', { type: 'checkbox', id: 'keywordCipher', onChange: this.onOff }),
         React.createElement(
-          'span',
-          { title: 'Given keyword z, it will do monoalphabet cipher: zabcdefg...' },
-          'Keyword Cipher'
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'regexp', onChange: this.onOff }),
+          'Regular Expression substitution'
         ),
-        React.createElement('input', { type: 'checkbox', id: 'indexOfCoinc', onChange: this.onOff }),
         React.createElement(
-          'span',
-          { title: 'The chance that two random selected letter are equal, used in Vigenere decryption' },
-          'Index of Coincidence'
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'charFreqAnlys', onChange: this.onOff }),
+          'Character Frequency Analysis'
         ),
-        React.createElement('input', { type: 'checkbox', id: 'caesarCipher', onChange: this.onOff }),
         React.createElement(
-          'span',
-          { title: 'Display total of 26 possibilities of shifting the alphabet' },
-          'Caesar Cipher'
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'columnarTransposition', onChange: this.onOff }),
+          'Columnar Transposition'
+        ),
+        React.createElement(
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'vigenereCipher', onChange: this.onOff }),
+          'Vigenere Cipher'
+        ),
+        React.createElement(
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'keywordCipher', onChange: this.onOff }),
+          React.createElement(
+            'span',
+            { title: 'Given keyword z, it will do monoalphabet cipher: zabcdefg...' },
+            'Keyword Cipher'
+          )
+        ),
+        React.createElement(
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'indexOfCoinc', onChange: this.onOff }),
+          React.createElement(
+            'span',
+            { title: 'The chance that two random selected letter are equal, used in Vigenere decryption' },
+            'Index of Coincidence'
+          )
+        ),
+        React.createElement(
+          'div',
+          { 'class': 'checkDiv' },
+          React.createElement('input', { type: 'checkbox', id: 'caesarCipher', onChange: this.onOff }),
+          React.createElement(
+            'span',
+            { title: 'Display total of 26 possibilities of shifting the alphabet' },
+            'Caesar Cipher'
+          )
         )
       ),
       React.createElement(
