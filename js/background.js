@@ -1,7 +1,7 @@
 var defaultValues=[
   ['imageSearch','1'],
   ['unitsConverter','-1'],
-  ['crypter','-1'],
+  ['crypter','1'],
   ['imageSearchUrl_google','1'],	
   ['imageSearchUrl_baidu','1'],	
   ['imageSearchUrl_tineye','-1'],	
@@ -21,7 +21,7 @@ NooBox.Crypter.updateContextMenu=function(){
     function(){
       if(!NooBox.Crypter.handle){
         NooBox.Crypter.handle=chrome.contextMenus.create({
-          "title": "Crypting",
+          "title": "crypt it",
           "contexts": ["selection"],
           "onclick": NooBox.Crypter.crypt
         });
