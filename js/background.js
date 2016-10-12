@@ -2,6 +2,7 @@ var defaultValues=[
   ['imageSearch','1'],
   ['unitsConverter','-1'],
   ['crypter','1'],
+  ['webmaster','1'],
   ['imageSearchUrl_google','1'],	
   ['imageSearchUrl_baidu','1'],	
   ['imageSearchUrl_tineye','-1'],	
