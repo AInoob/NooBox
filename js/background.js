@@ -13,6 +13,7 @@ var defaultValues=[
 var defaultInitNum=0;
 var NooBox=NooBox||{};
 
+//Crypter
 NooBox.Crypter={};
 NooBox.Crypter.handle=null;
 NooBox.Crypter.selection=null;
@@ -41,7 +42,86 @@ NooBox.Crypter.crypt=function(info,tab){
   chrome.tabs.create({url:url});
 }
 
+//Webmaster
+NooBox.Webmaster={};
+NooBox.Webmaster.generateSitemap=function(host,url,maxDepth){
+  var linkSet=new Set();
+  var global={total:0,finished:0};
+  NooBox.Webmaster.crawl(global,linkSet,host,host+url,maxDepth,1);
+  xyz=linkSet;
+}
+NooBox.Webmaster.crawl=function(global,linkSet,host,url,maxDepth,currentDepth){
+  if(currentDepth<=maxDepth){
+    global.total++;
+    if(!url.match(/^((tel:)|(mailto:))/)){
+      $.ajax({url:url,dataType:"html"}).done(function(data){
+        global.finished++;
+        if(global.finished==global.total){
+          NooBox.Webmaster.toXML(linkSet);
+        }
+        if(data.indexOf('</html>')!=-1){
+          data=data.replace(/<img[^>]*>/g,"");
+          $(data).find('a').each(function(i){
+            var url=NooBox.Webmaster.getUrl(host,$(this).attr('href'));
+            if((!linkSet.has(url))&&NooBox.Webmaster.sameHost(url,host)){
+              linkSet.add(url);
+              //console.log(linkSet);
+              NooBox.Webmaster.crawl(global,linkSet,host,url,maxDepth,currentDepth+1);
+            }
+          });
+        }
+      }).fail(function(){
+        global.finished++;
+        if(global.finished==global.total){
+          NooBox.Webmaster.toXML(linkSet);
+        }
+      });
+    }
+  }
+}
+NooBox.Webmaster.toXML=function(linkSet){
+  var xmlDoc=document.implementation.createDocument('','xml',null);
+  var urlSet=xmlDoc.createElement('urlset');
+  urlSet.setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
+  for(var elem of linkSet){
+    var url=xmlDoc.createElement('url');
+    var loc=xmlDoc.createElement('loc');
+    var urlText=xmlDoc.createTextNode(elem);
+    loc.appendChild(urlText);
+    url.appendChild(loc);
+    urlSet.appendChild(url);
+  }
+  var xml='<?xml version="1.0" encoding="UTF-8"?>'+(new XMLSerializer()).serializeToString(urlSet)
+  console.log(xml);
+  return xml;
+}
 
+//working on
+NooBox.Webmaster.sameHost=function(urlA,urlB){
+  var infoA=NooBox.Webmaster.getURLInfo(urlA);
+  var infoB=NooBox.Webmaster.getURLInfo(urlB);
+  return infoA.host==infoB.host;
+}
+//working on
+NooBox.Webmaster.getURLInfo=function(url){
+  var info=document.createElement('a');
+  info.href=url;
+  return info;
+}
+//working on
+NooBox.Webmaster.getUrl=function(host,path){
+  if(path.match(/^http/)!=null){
+    return path;
+  }
+  if(path.match(/^\//)!=null){
+    return host+path;
+  }
+  else{
+    return path;
+  }
+}
+
+//Image
 NooBox.Image={};
 NooBox.Image.handle=null;
 NooBox.Image.ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
