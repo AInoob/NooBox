@@ -23,7 +23,7 @@ NooBox.Crypter.updateContextMenu=function(){
     function(){
       if(!NooBox.Crypter.handle){
         NooBox.Crypter.handle=chrome.contextMenus.create({
-          "title": "crypt it",
+          "title": chrome.i18n.getMessage("crypt_it"),
           "contexts": ["selection"],
           "onclick": NooBox.Crypter.crypt
         });
@@ -88,7 +88,7 @@ NooBox.Webmaster.crawl=function(global,host,url,ref,maxDepth,currentDepth){
 }
 NooBox.Webmaster.updateSitemap=function(global){
   var obj={};
-  obj.sitemap='generating...';
+  obj.sitemap=chrome.i18n.getMessage("generating");
   if(global.finished==global.total){
     obj.sitemap=NooBox.Webmaster.toXML(global.linkSet);
   }
@@ -172,7 +172,7 @@ NooBox.Image.updateContextMenu=function(){
     function(){
       if(!NooBox.Image.handle){
         NooBox.Image.handle=chrome.contextMenus.create({
-          "title": "Search this Image",
+          "title": chrome.i18n.getMessage("search_this_image"),
           "contexts": ["image"],
           "onclick": NooBox.Image.imageFromUrl
         });

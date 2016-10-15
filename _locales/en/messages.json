@@ -1,0 +1,86 @@
+{
+  "appName":{
+    "message":"NooBox"
+  },
+  "appDesc":{
+    "message":"A useful toolbox!"
+  },
+  "crypt_it":{
+	"message":"crypt it"
+  },
+  "generating":{
+	"message":"generating..."
+  },
+  "search_this_image":{
+	"message":"search this image"
+  },
+  "Reverse_Image_Search":{
+	"message":"Reverse Image Search"
+  },
+  "engines":{
+	"message":"engines"
+  },
+  "google":{
+	"message":"google"
+  },
+  "baidu":{
+	"message":"baidu"
+  },
+  "bing":{
+	"message":"bing"
+  },
+  "yandex":{
+	"message":"yandex"
+  },
+  "IQDB":{
+	"message":"IQDB"
+  },
+  "SauceNao":{
+	"message":"SauceNao"
+  },
+  "Unit_Converter":{
+	"message":"Unit Converter"
+  },
+  "crypter":{
+	"message":"crypter"
+  },
+  "webmaster":{
+	"message":"webmaster"
+  },
+  "Sitemap_Generator":{
+	"message":"Sitemap Generator"
+  },
+  "sitemap":{
+	"message":"sitemap"
+  },
+  "host":{
+	"message":"host"
+  },
+  "path":{
+	"message":"path"
+  },
+  "max_depth":{
+	"message":"max depth"
+  },
+  "crawl":{
+	"message":"crawl"
+  },
+  "status":{
+	"message":"status"
+  },
+  "broken_links":{
+	"message":"broken links"
+  },
+  "Related_Keywords":{
+	"message":"Related Keywords"
+  },
+  "More_Result":{
+	"message":"More Result"
+  },
+  "Related_Websites":{
+	"message":"Related Website"
+  },
+  "websites":{
+	"message":"websites"
+  }
+}

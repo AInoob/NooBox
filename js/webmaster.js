@@ -19,3 +19,4 @@ document.addEventListener('DOMContentLoaded', function(){
     chrome.runtime.sendMessage({webmaster: JSON.stringify(obj)}, function(response) {});
   });
 });
+
