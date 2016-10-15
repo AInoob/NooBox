@@ -1,5 +1,22 @@
-body{
-  width: 400px;
+.f-left{
+  float:left;
+}
+
+.col-1 {width: 8.33%}
+.col-2 {width: 16.66%}
+.col-3 {width: 25%}
+.col-4 {width: 33.33%}
+.col-5 {width: 41.66%}
+.col-6 {width: 50%}
+.col-7 {width: 58.33%}
+.col-8 {width: 66.66%}
+.col-9 {width: 75%}
+.col-10 {width: 83.33%}
+.col-11 {width: 91.66%}
+.col-12 {width: 100%}
+
+.cap-first{
+  text-transform: capitalize;
 }
 
 .blue{
@@ -130,4 +147,43 @@ input:checked + .slider14:before {
 
 .slider14.round:before {
   border-radius: 50%;
+}
+
+.loader {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.5;
+  border-radius: 50%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  margin:auto;
+  left: 50%;
+}
+.loading4{
+  border-top: 24px solid red;
+  width: 200px;
+  height: 200px;
+  margin-top: 102px;
+  margin-left: -118px;
+}
+.loading3{
+  border-right: 18px solid yellow;
+  width: 150px;
+  height: 150px;
+  margin-top: 132px;
+  margin-left: -87px;
+}
+.loading2{
+  border-bottom: 12px solid blue;
+  width: 100px;
+  height: 100px;
+  margin-top: 164px;
+  margin-left: -56px;
+}
+.loading1{
+  border-left: 6px solid green;
+  width: 50px;
+  height: 50px;
+  margin-top: 195px;
+  margin-left: -25px;
 }
