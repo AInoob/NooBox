@@ -4,7 +4,7 @@
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "short_name": "NB",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "browser_action": {
     "default_icon": {
       "128": "images/icon_128.png"
@@ -15,7 +15,6 @@
   "icons": {
     "128": "images/icon_128.png"
   },
-  "options_page": "options.html",
   "background": {
     "scripts":["thirdParty/jquery.min.js","js/background.js"]
   },
@@ -37,6 +36,8 @@
     "contextMenus",
     "http://*/*",
     "https://*/*",
-    "storage"
-  ]
+    "storage",
+    "activeTab"
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }

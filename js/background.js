@@ -95,7 +95,7 @@ NooBox.Webmaster.updateSitemap=function(global){
   obj.brokenLinks=NooBox.Webmaster.parseBrokenLinks(global.brokenLinks);
   obj.total=global.total;
   obj.finished=global.finished;
-  chrome.runtime.sendMessage({webmaster_sitemap: JSON.stringify(obj)}, function(response) {});
+  chrome.runtime.sendMessage({job:"webmaster_sitemap_update",data: JSON.stringify(obj)}, function(response) {});
 }
 NooBox.Webmaster.parseBrokenLinks=function(brokenLinks){
   var s="";
@@ -157,7 +157,14 @@ NooBox.Webmaster.getUrl=function(host,path){
 //Image
 NooBox.Image={};
 NooBox.Image.handle=null;
+NooBox.Image.handle2=null;
 NooBox.Image.ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
+//working on it 10/16/2016
+NooBox.Image.screenshotSearch=function(){
+  chrome.tabs.captureVisibleTab(function(dataUrl){
+    chrome.runtime.sendMessage({job:"image_dataUrl",data:"dataUrl"});
+  });
+}
 NooBox.Image.apiUrls={
   google:   "https://www.google.com/searchbyimage?&image_url=",
   baidu:    "http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=",
@@ -177,10 +184,20 @@ NooBox.Image.updateContextMenu=function(){
           "onclick": NooBox.Image.imageFromUrl
         });
       }
+      if(!NooBox.Image.handle2){
+        NooBox.Image.handle2=chrome.contextMenus.create({
+          "title": chrome.i18n.getMessage("screenshot_and_search"),
+          "contexts": ["page"],
+          "onclick": NooBox.Image.screenshotSearch
+        });
+      }
     },
     function(){
       if(NooBox.Image.handle){
         chrome.contextMenus.remove(NooBox.Image.handle);
+      }
+      if(NooBox.Image.handle2){
+        chrome.contextMenus.remove(NooBox.Image.handle2);
       }
     }
   );
@@ -238,7 +255,7 @@ NooBox.Image.update=function(i){
   setDB('NooBox.Image.result',
     JSON.stringify(NooBox.Image.result),
     function(){
-      chrome.runtime.sendMessage({image_job: 'update'}, function(response) {});
+      chrome.runtime.sendMessage({job:'image_result_update'}, function(response) {});
     }
   );
 }
@@ -504,13 +521,12 @@ document.addEventListener('DOMContentLoaded', function(){
         else if(request.job=="crypter"){
           NooBox.Crypter.updateContextMenu();
         }
-        else if(request.job=="getSelection"){
+        else if(request.job=="crypter_getSelection"){
           sendResponse({selection: NooBox.Crypter.selection});
         }
-      }
-      if('webmaster' in request){
-        var temp=JSON.parse(request.webmaster);
-        if(temp.job=='getSitemap'){
+        else if(request.job=="webmaster_sitemap_get"){
+          console.log('oh');
+          var temp=JSON.parse(request.data);
           NooBox.Webmaster.generateSitemap(temp.host,temp.path,temp.maxDepth);
         }
       }

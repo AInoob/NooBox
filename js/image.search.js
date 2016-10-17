@@ -134,10 +134,8 @@ function init(){
 document.addEventListener('DOMContentLoaded', function(){
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if('image_job' in request){
-        if (request.image_job.indexOf("update")!=-1){
+      if(request.job=='image_result_update'){
           update();
-        }
       }
     });
   init();

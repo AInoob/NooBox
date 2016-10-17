@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', function(){
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if('webmaster_sitemap' in request){
-        console.log(request.webmaster_sitemap);
-        var obj=JSON.parse(request.webmaster_sitemap);
+      if(request.job=='webmaster_sitemap_update'){
+        var obj=JSON.parse(request.data);
         $('#sitemap')[0].value=obj.sitemap;
         $('#brokenLinks')[0].value=obj.brokenLinks;
         $('#status').text(obj.finished+'/'+obj.total);
-        //$('#sitemap')[0].value=obj.sitemap;
+        console.log('oh');
       }
     });
   $('#crawl').click(function(){
@@ -15,8 +14,8 @@ document.addEventListener('DOMContentLoaded', function(){
     obj.host=$('#host')[0].value;
     obj.path=$('#path')[0].value;
     obj.maxDepth=$('#maxDepth')[0].value;
-    obj.job='getSitemap';
-    chrome.runtime.sendMessage({webmaster: JSON.stringify(obj)}, function(response) {});
+    console.log('click');
+    chrome.runtime.sendMessage({job:'webmaster_sitemap_get',data: JSON.stringify(obj)});
   });
 });
 
