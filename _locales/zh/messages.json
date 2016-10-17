@@ -11,6 +11,9 @@
   "search_this_image":{
 	"message":"以图搜图"
   },
+  "screenshot_and_search":{
+	"message":"截屏搜图"
+  },
   "Reverse_Image_Search":{
 	"message":"以图搜图"
   },

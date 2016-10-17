@@ -14,6 +14,9 @@
   "search_this_image":{
 	"message":"search this image"
   },
+  "screenshot_and_search":{
+	"message":"Screenshot and Search"
+  },
   "Reverse_Image_Search":{
 	"message":"Reverse Image Search"
   },
