@@ -38,7 +38,7 @@ strong{
   font-size: 20px;
 }
 
-#keywords li{
+#keywords .list{
   margin-bottom: 10px;
   background: rgba(255,100,100,0.5);
 }

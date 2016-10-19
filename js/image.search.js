@@ -11,93 +11,99 @@ function getParameters(){
   }
 }
 
-function clean(){
-  $('#keywords').html("");
-  $('#relatedWebsites').html("");
-  $('#moreResults').html("");
-  $('#moreResults').html("");
-  $('#websites').html("");
-}
+var firstDisplay=true;
 
-function display(){
-  clean();
-  $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
-  isOn('imageSearchUrl_bing',function(){
-    var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
-    $('#keywords').append('<li>'+bingKeyword+'</li>');
-  });
-  isOn('imageSearchUrl_bing',function(){
-    var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
-    $('#keywords').append('<li>'+googleKeyword+'</li>');
-  });
-  isOn('imageSearchUrl_bing',function(){
-    var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
-    $('#keywords').append('<li>'+baiduKeyword+'</li>');
-  });
-  isOn('imageSearchUrl_baidu',function(){
-    displayRelatedWebsites(result.baiduRelatedWebsites||[]);
-  });
-  isOn('imageSearchUrl_google',function(){
-    displayRelatedWebsites(result.googleRelatedWebsites||[]);
-  });
-  isOn('imageSearchUrl_iqdb',function(){
-    displayWebsites(result.iqdbRelatedWebsites||[]);
-  });
-  isOn('imageSearchUrl_google',function(){
-    displayWebsites(result.googleWebsites||[]);
-  });
-  isOn('imageSearchUrl_baidu',function(){
-    displayWebsites(result.baiduWebsites||[]);
-  });
-  isOn('imageSearchUrl_saucenao',function(){
-    displayWebsites(result.saucenaoRelatedWebsites||[]);
-  });
-  isOn('imageSearchUrl_yandex',function(){
-    if(result.yandexWebsites){
-      displayWebsites(result.yandexWebsites.slice(0,3));
+function display(engine){
+  if(firstDisplay){
+    firstDisplay=false;
+    $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
+    for(var i=0;i<ids.length;i++){
+      isOn('imageSearchUrl_'+ids[i],
+          (function(ii){
+            $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
+          }),
+          function(){
+          },
+          i
+          );
     }
-  });
-  isOn('imageSearchUrl_yandex',function(){
-    if(result.yandexWebsites){
-      displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length));
+    for(engine of result.finished){
+      switch(engine){
+        case 'google':
+          var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
+          $('#keywords_google').append(googleKeyword);
+          displayWebsites(result.googleRelatedWebsites||[],'relatedWebsites_google');
+          displayWebsites(result.googleWebsites||[],'websites_google');
+          break;
+        case 'bing':
+          var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
+          $('#keywords_bing').append(bingKeyword);
+          break;
+        case 'baidu':
+          var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
+          $('#keywords_baidu').append(baiduKeyword);
+          displayWebsites(result.baiduRelatedWebsites||[],'relatedWebsites_baidu');
+          displayWebsites(result.baiduWebsites||[],'websites_baidu');
+          break;
+        case 'yandex':
+          displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
+          displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+          break;
+        case 'saucenao':
+          displayWebsites(result.saucenaoRelatedWebsites||[],'relatedWebsites_saucenao');
+          displayWebsites(result.saucenaoWebsites||[],'websites_saucenao');
+          break;
+        case 'iqdb':
+          displayWebsites(result.iqdbRelatedWebsites||[],'relatedWebsites_iqdb');
+          displayWebsites(result.iqdbWebsites||[],'websites_iqdb');
+          break;
+      }
     }
-  });
-  isOn('imageSearchUrl_saucenao',function(){
-    displayWebsites(result.saucenaoWebsites||[]);
-  });
-  isOn('imageSearchUrl_iqdb',function(){
-    displayWebsites(result.iqdbWebsites||[]);
-  });
-  
-  
-  for(var i=0;i<ids.length;i++){
-    isOn('imageSearchUrl_'+ids[i],
-      (function(ii){
-        $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
-      }),
-      function(){
-      },
-      i
-    );
+  }
+  else{
+    switch(engine){
+      case 'google':
+        var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
+        $('#keywords_google').append(googleKeyword);
+        displayWebsites(result.googleRelatedWebsites||[],'relatedWebsites_google');
+        displayWebsites(result.googleWebsites||[],'websites_google');
+        break;
+      case 'bing':
+        var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
+        $('#keywords_bing').append(bingKeyword);
+        break;
+      case 'baidu':
+        var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
+        $('#keywords_baidu').append(baiduKeyword);
+        displayWebsites(result.baiduRelatedWebsites||[],'relatedWebsites_baidu');
+        displayWebsites(result.baiduWebsites||[],'websites_baidu');
+        break;
+      case 'yandex':
+        displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
+        displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+        break;
+      case 'saucenao':
+        displayWebsites(result.saucenaoRelatedWebsites||[],'relatedWebsites_saucenao');
+        displayWebsites(result.saucenaoWebsites||[],'websites_saucenao');
+        break;
+      case 'iqdb':
+        displayWebsites(result.iqdbRelatedWebsites||[],'relatedWebsites_iqdb');
+        displayWebsites(result.iqdbWebsites||[],'websites_iqdb');
+        break;
+    }
   }
 }
 
-function displayRelatedWebsites(websiteList){
+function displayWebsites(websiteList,id){
+  var html="";
   for(var i=0;i<websiteList.length;i++){
     var website=websiteList[i];
-    $('#relatedWebsites').append('<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="relatedWebsiteTitle" href="'+website.link+'">'+website.title+'</a></div><div class="relatedWebsiteDescription">'+website.description+'</div></div>');
-  }
-}
-
-function displayWebsites(websiteList){
-  for(var i=0;i<websiteList.length;i++){
-    var website=websiteList[i];
-    var html='<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="websiteTitle" href="'+website.link+'">'+website.title+'</a></div>';
+    html+='<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="websiteTitle" href="'+website.link+'">'+website.title+'</a></div>';
     if(website.imageUrl)
       html+='<img class="websiteImage" src="'+website.imageUrl+'"></img>';
     html+='<div class="websiteDescription">'+website.description+'</div></div>'
-    $('#websites').append(html);
   }
+  $('#'+id).append(html);
 }
 
 function style(){
@@ -118,11 +124,11 @@ function displayLoader(){
   }
 }
 
-function update(){
+function update(engine){
   getDB('NooBox.Image.result',function(value){
     result=JSON.parse(value);
     parse();
-    display();
+    display(engine);
     displayLoader();
   });
 }
@@ -135,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function(){
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if(request.job=='image_result_update'){
-          update();
+        update(request.engine);
       }
     });
   init();
@@ -182,7 +188,6 @@ function getDB(key,callback){
 function set(key,value,callback){
   var temp={};
   temp[key]=value;
-  console.log(temp);
   chrome.storage.sync.set(temp,callback);
 }
 

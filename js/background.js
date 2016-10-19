@@ -210,24 +210,22 @@ NooBox.Image.imageFromUrl=function(info,tab){
   var cursor=NooBox.Image.result.length;
   NooBox.Image.result.push({});
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
-  //tineye is not in use for now
   NooBox.Image.result[cursor].remains=0;
-  isOn('imageSearchUrl_'+NooBox.Image.ids[0],
-    NooBox.Image.imageFromUrlHelper.bind(null,cursor,info)
-  );
+  NooBox.Image.result[cursor].finished=[];
+  NooBox.Image.imageFromUrlHelper(cursor,info,0);
 }
 
 NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
-  if(!i)
-    i=0;
-  if(i<NooBox.Image.ids.length-1){
-    if(state)
-      NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains+1;
+  console.log(i+' '+state);
+  if(i<NooBox.Image.ids.length){
+    if(typeof(state)!='undefined'&&state)
+      ++NooBox.Image.result[cursor].remains;
     i++;
+    console.log('imageSearchUrl_'+NooBox.Image.ids[i]);
     isOn('imageSearchUrl_'+NooBox.Image.ids[i], NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,true), NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,false));
   }
   else{
-    NooBox.Image.update(cursor);
+    NooBox.Image.update(cursor,'none');
     for(var i=0;i<NooBox.Image.ids.length;i++){
       var engine=NooBox.Image.ids[i];
       isOn('imageSearchUrl_'+engine,
@@ -245,17 +243,17 @@ NooBox.Image.imageFromUrlHelperHelper=function(engine,i,info,cursor){
   $.ajax({url:url}).done(function(data){
     NooBox.Image.fetchFunctions[engine](cursor,data);
   }).fail(function(e){
-    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].remains--;
+    NooBox.Image.update(cursor,engine);
     console.log(e);
   });
 }
 
-NooBox.Image.update=function(i){
+NooBox.Image.update=function(i,engine){
   setDB('NooBox.Image.result',
     JSON.stringify(NooBox.Image.result),
     function(){
-      chrome.runtime.sendMessage({job:'image_result_update'}, function(response) {});
+      chrome.runtime.sendMessage({job:'image_result_update',engine:engine}, function(response) {});
     }
   );
 }
@@ -298,6 +296,18 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
           website.imageUrl=z.href.slice(start);
         else
           website.imageUrl=z.href.slice(start,end);
+        var cut=website.imageUrl.indexOf('jpg%');
+        if(cut!=-1){
+          website.imageUrl=website.imageUrl.slice(0,cut+3);
+        }
+        cut=website.imageUrl.indexOf('png%');
+        if(cut!=-1){
+          website.imageUrl=website.imageUrl.slice(0,cut+3);
+        }
+        cut=website.imageUrl.indexOf('gif%');
+        if(cut!=-1){
+          website.imageUrl=website.imageUrl.slice(0,cut+3);
+        }
       }
       website.searchEngine='google';
       websites.push(website);
@@ -306,12 +316,14 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
     NooBox.Image.result[cursor].googleRelatedWebsites=relatedWebsites;
     NooBox.Image.result[cursor].googleWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('google');
+    NooBox.Image.update(cursor,'google');
   }
   catch(e){
     console.log(e);
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('google');
+    NooBox.Image.update(cursor,'none');
   }
 };
 
@@ -365,12 +377,14 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
     NooBox.Image.result[cursor].baiduRelatedWebsites=relatedWebsites;
     NooBox.Image.result[cursor].baiduWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('baidu');
+    NooBox.Image.update(cursor,'baidu');
   }
   catch(e){
     console.log(e);
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('baidu');
+    NooBox.Image.update(cursor,'none');
   }
 };
 
@@ -385,11 +399,13 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
     var keyword=$(data).find('.query').text();
     NooBox.Image.result[cursor].bingKeyword=keyword;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('bing');
+    NooBox.Image.update(cursor,'bing');
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('bing');
+    NooBox.Image.update(cursor,'none');
     console.log(e);
   }
 };
@@ -416,11 +432,13 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
     }
     NooBox.Image.result[cursor].yandexWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('yandex');
+    NooBox.Image.update(cursor,'yandex');
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('yandex');
+    NooBox.Image.update(cursor,'none');
     console.log(e);
   }
 };
@@ -460,11 +478,13 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
     }
     NooBox.Image.result[cursor].saucenaoWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('saucenao');
+    NooBox.Image.update(cursor,'saucenao');
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('saucenao');
+    NooBox.Image.update(cursor,'none');
     console.log(e);
   }
 };
@@ -473,12 +493,14 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
   try{
     data=data.replace(/ src=\'\/([^\/])/g," nb-src='$1");
     data=data.replace(/ src=\"\/\//g,' nb1-src="');
+    data=data.replace(/ href=\"\/\//g,' nb-href="');
     var page=$(data);
     var websites=[];
     var websiteList=$(page.find('table'));
     for(var i=1;i<websiteList.length-2;i++){
       var description='<table>'+websiteList[i].innerHTML.replace(/nb-src="/g,'src="http://iqdb.org/')+'</table>';
       description=description.replace(/nb1-src="/g,'src="http://');
+      description=description.replace(/nb-href="/g,'href="http://');
       var website={link:"",title:"",imageUrl:"",searchEngine:"iqdb",description:description};
       if(websiteList[i].innerHTML.indexOf("Best match")!=-1){
         NooBox.Image.result[cursor].saucenaoRelatedWebsites=[website];
@@ -489,11 +511,13 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
     }
     NooBox.Image.result[cursor].iqdbWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('iqdb');
+    NooBox.Image.update(cursor,'iqdb');
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.update(cursor);
+    NooBox.Image.result[cursor].finished.push('iqdb');
+    NooBox.Image.update(cursor,'none');
     console.log(e);
   }
 };
