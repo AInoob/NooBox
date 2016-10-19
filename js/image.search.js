@@ -61,6 +61,17 @@ function display(engine){
     }
   }
   else{
+    $('#moreResults').html('');
+    for(var i=0;i<ids.length;i++){
+      isOn('imageSearchUrl_'+ids[i],
+          (function(ii){
+            $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
+          }),
+          function(){
+          },
+          i
+          );
+    }
     switch(engine){
       case 'google':
         var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
