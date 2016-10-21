@@ -170,7 +170,7 @@ function init(){
   window.addEventListener('error', function(e) {
         setTimeout(function(){
           var temp=e.target.src;
-          e.target.src='/images/loading.gif';
+          e.target.src='/images/loader.svg';
           setTimeout(function(){
             e.target.src=temp;
           },500);
