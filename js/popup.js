@@ -16,6 +16,22 @@ $('.switch').each(function(index,element){
   });
 });
 
+
+document.addEventListener('DOMContentLoaded', function(){
+  $('#upload').on('change',upload);
+});
+
+var x;
+
+var upload=function(e){
+  var url=URL.createObjectURL(e.target.files[0]);
+  $('#image').attr('src',url);
+  fetchBlob(url, function(blob) {
+    reader.readAsDataURL(blob);
+  });
+}
+
+
 var setOn=function(){
   updateSubSection.bind(this)(true);
   chrome.extension.sendMessage({job: this.id}, function() {});
@@ -90,3 +106,25 @@ function get(key,callback){
       callback(result[key]);
   });
 }
+
+function fetchBlob(uri, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', uri, true);
+  xhr.responseType = 'blob';
+
+  xhr.onload = function(e) {
+    if (this.status == 200) {
+      var blob = new Blob([this.response], {type: 'image/png'});;
+      if (callback) {
+        callback(blob);
+      }
+    }
+  };
+  xhr.send();
+};
+
+var reader = new window.FileReader();
+ reader.onloadend = function() {
+   base64data = reader.result;                
+   chrome.extension.sendMessage({job: 'image_search_upload',data:base64data });
+ }
