@@ -16,7 +16,6 @@ $('.switch').each(function(index,element){
   });
 });
 
-
 document.addEventListener('DOMContentLoaded', function(){
   $('#upload').on('change',upload);
   $('#uploadLabel').on('dragover',drag);
@@ -80,9 +79,9 @@ updateSubSection=function(display){
   }
   if(hasSub){
     if(display)
-      $(this).parent().next().show();
+      $(this).parent().nextAll().show();
     else
-      $(this).parent().next().hide();
+      $(this).parent().nextAll().hide();
   }
 }
 
