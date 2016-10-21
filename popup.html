@@ -7,12 +7,12 @@
     <link rel="stylesheet" type="text/css" href="css/noobox.css">
   </head>
   <body style="width:300px">
-    <section>
+    <section style="overflow:hidden">
       <span class="blue f24 word" word="Reverse_Image_Search"></span>
       <label class="switch20">
         <input type="checkbox" class="switch hasSub" id="imageSearch"></input><div class="slider20 round"></div><br/>
       </label>
-      <div class="sub firstSub">
+      <div class="sub firstSub" style="width:100px;float:left">
         <span class="blue f18 word cap-first" word="engines"></span><br/>
         <span class="blue f14 word cap-first" word="google"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_google"></input><div class="slider14 round"></div></label><br/>
         <span class="blue f14 word cap-first" word="baidu"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_baidu"></input><div class="slider14 round"></div></label><br/>
@@ -20,6 +20,10 @@
         <span class="blue f14 word cap-first" word="yandex"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_yandex"></input><div class="slider14 round"></div></label><br/>
         <span class="blue f14 word cap-first" word="IQDB"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_iqdb"></input><div class="slider14 round"></div></label><br/>
         <span class="blue f14 word cap-first" word="SauceNao"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_saucenao"></input><div class="slider14 round"></div></label><br/>
+      </div>
+      <div style="float:left;width:160px;height:120px">
+        <input type="file" id="upload" name="image"/>
+        <img id="image" src=""></img>
       </div>
     </section>
     <section>

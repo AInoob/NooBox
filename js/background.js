@@ -207,6 +207,7 @@ NooBox.Image.result=[];
 NooBox.Image.POST={};
 NooBox.Image.DataWrapper={};
 NooBox.Image.imageFromUrl=function(info,tab){
+  console.log(info);
   if(NooBox.Image.result.length>30)
     NooBox.Image.result=[];
   var cursor=NooBox.Image.result.length;
@@ -225,12 +226,10 @@ NooBox.Image.imageFromUrl=function(info,tab){
 }
 
 NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
-  console.log(i+' '+state);
   if(i<NooBox.Image.ids.length){
     if(typeof(state)!='undefined'&&state)
       ++NooBox.Image.result[cursor].remains;
     i++;
-    console.log('imageSearchUrl_'+NooBox.Image.ids[i]);
     isOn('imageSearchUrl_'+NooBox.Image.ids[i], NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,true), NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,false));
   }
   else{
@@ -249,7 +248,6 @@ NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
 NooBox.Image.POST.upload=function(cursor,engine,data,callback){
   var formData=new FormData();
   formData.append('upload',dataURItoBlob(data),'NooBox');
-  console.log(formData);
   $.ajax({
     type:'POST',
     url:'http://old.postimage.org/index.php',
@@ -259,7 +257,6 @@ NooBox.Image.POST.upload=function(cursor,engine,data,callback){
   }).done(function(data){
     data=data.replace(/ src=/g," nb-src=");
     var url=$(data).find('.gallery').find('img').attr("nb-src");
-    console.log(cursor);
     NooBox.Image.result[cursor].uploadedURL=url||"";
     callback();
   }).fail(function(err){
@@ -617,6 +614,23 @@ function initDefault(i){
 function init(){
   initDefault();
 }
+
+NooBox.Image.test=function(data){
+  x=data;
+  var formData=new FormData();
+  formData.append('upload',data,'NooBox');
+  console.log(formData);
+  $.ajax({
+    type:'POST',
+    url:'http://old.postimage.org/index.php',
+    contentType: false,
+    processData: false,
+    data: formData
+  }).done(function(data){
+    console.log(data);
+  })
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   init();
   chrome.runtime.onMessage.addListener(
@@ -624,6 +638,9 @@ document.addEventListener('DOMContentLoaded', function(){
       if('job' in request){
         if (request.job == "imageSearch"){
           NooBox.Image.updateContextMenu();
+        }
+        else if(request.job=="image_search_upload"){
+          NooBox.Image.imageFromUrl({srcUrl:request.data});
         }
         else if(request.job=="crypter"){
           NooBox.Crypter.updateContextMenu();
