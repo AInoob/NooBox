@@ -90,6 +90,7 @@ h2{
 }
 
 .websiteLink{
+  min-height:50px;
   clear:both;
   width: 75%;
   margin-left: 7%;
