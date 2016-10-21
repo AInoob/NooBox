@@ -204,6 +204,8 @@ NooBox.Image.updateContextMenu=function(){
 }
 NooBox.Image.fetchFunctions={};
 NooBox.Image.result=[];
+NooBox.Image.POST={};
+NooBox.Image.DataWrapper={};
 NooBox.Image.imageFromUrl=function(info,tab){
   if(NooBox.Image.result.length>30)
     NooBox.Image.result=[];
@@ -212,6 +214,13 @@ NooBox.Image.imageFromUrl=function(info,tab){
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
   NooBox.Image.result[cursor].remains=0;
   NooBox.Image.result[cursor].finished=[];
+  var blob=encodeURI(info.srcUrl);
+  if(blob.match(/^data/)){
+    info.isBlob=true;
+    info.blob=blob;
+    NooBox.Image.result[cursor].imageUrl='blob';
+    NooBox.Image.result[cursor].blob=blob;
+  }
   NooBox.Image.imageFromUrlHelper(cursor,info,0);
 }
 
@@ -232,28 +241,78 @@ NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
         NooBox.Image.imageFromUrlHelperHelper.bind(null,engine,i,info,cursor)
       );
     }
-    var url='/image.search.html?cursor='+cursor;
+    var url='/image.search.html?cursor='+cursor+'&image='+NooBox.Image.result[cursor].imageUrl;
     chrome.tabs.create({url:url});
   }
 }
 
+NooBox.Image.POST.google=function(data,fetchFunction){
+  fetchFunction("");
+}
+NooBox.Image.POST.bing=function(data,fetchFunction){
+  fetchFunction("");
+}
+NooBox.Image.POST.yandex=function(data,fetchFunction){
+  fetchFunction("");
+}
+NooBox.Image.POST.iqdb=function(data,fetchFunction){
+  fetchFunction("");
+}
+NooBox.Image.POST.saucenao=function(data,fetchFunction){
+  fetchFunction("");
+}
+
+NooBox.Image.POST.baidu=function(data,fetchFunction){
+  $.ajax({
+  type:'POST',
+  url:'http://stu.baidu.com/i?appid=4',
+  contentType:'multipart/form-data; boundary=----WebKitFormBoundary',
+  data:NooBox.Image.DataWrapper.baidu({data:data,name:'dragimage'},'----WebKitFormBoundary')
+  }).done(function(data){$.ajax({url:data}).done(fetchFunction)});
+}
+
+NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
+  var commonHeader = 'Content-Disposition: form-data; ';
+  var data = [];
+  data.push('--' + boundary + '\r\n');
+
+  data.push(commonHeader);
+
+  data.push('name="image";filename=""\r\n');
+  data.push('Content-Type: application/octet-stream\r\n\r\n\r\n');
+
+  data.push('--' + boundary + '\r\n');
+  data.push(commonHeader);
+
+  data.push('name="' + (binaryData.name || 'binaryfilename') + '"; \r\n\r\n');
+  data.push(binaryData.data + '\r\n');
+
+  data.push('--' + boundary + '--\r\n');
+  return data.join('');
+}
+
 NooBox.Image.imageFromUrlHelperHelper=function(engine,i,info,cursor){
-  var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
-  NooBox.Image.result[cursor][engine+'Url']=url;
-  $.ajax({url:url}).done(function(data){
-    NooBox.Image.fetchFunctions[engine](cursor,data);
-  }).fail(function(e){
-    NooBox.Image.result[cursor].remains--;
-    NooBox.Image.update(cursor,engine);
-    console.log(e);
-  });
+  if(info.isBlob){
+    NooBox.Image.POST[engine](info.blob,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+  }
+  else{
+    var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
+    NooBox.Image.result[cursor][engine+'Url']=url;
+    $.ajax({url:url}).done(function(data){
+      NooBox.Image.fetchFunctions[engine](cursor,data);
+    }).fail(function(e){
+      NooBox.Image.result[cursor].remains--;
+      NooBox.Image.update(cursor,engine);
+      console.log(e);
+    });
+  }
 }
 
 NooBox.Image.update=function(i,engine){
   setDB('NooBox.Image.result',
     JSON.stringify(NooBox.Image.result),
     function(){
-      chrome.runtime.sendMessage({job:'image_result_update',engine:engine}, function(response) {});
+      chrome.runtime.sendMessage({job:'image_result_update',engine:engine,cursor:i}, function(response) {});
     }
   );
 }

@@ -141,17 +141,23 @@ function update(engine){
     parse();
     display(engine);
     displayLoader();
+    if(parameters.image.match(/^blob/)){
+      $('#imageDiv').html('<img id="imageInput" src="'+result.blob+'"></img>');
+    }
   });
 }
 
 function init(){
   getParameters();
+  if(parameters.image.match(/^blob/)){
+    alert('Search Data block is not fully supported yet');
+  }
   update();
 }
 document.addEventListener('DOMContentLoaded', function(){
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if(request.job=='image_result_update'){
+      if(request.job=='image_result_update'&&request.cursor==parameters.cursor){
         update(request.engine);
       }
     });
