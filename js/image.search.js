@@ -242,3 +242,4 @@ function get(key,callback){
       callback(result[key]);
   });
 }
+
