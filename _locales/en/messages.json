@@ -6,84 +6,87 @@
     "message":"A useful toolbox!"
   },
   "crypt_it":{
-	"message":"crypt it"
+    "message":"crypt it"
   },
   "generating":{
-	"message":"generating..."
+    "message":"generating..."
   },
   "search_this_image":{
-	"message":"search this image"
+    "message":"search this image"
   },
   "screenshot_and_search":{
-	"message":"Screenshot and Search"
+    "message":"Screenshot and Search"
   },
   "Reverse_Image_Search":{
-	"message":"Reverse Image Search"
+    "message":"Reverse Image Search"
+  },
+  "drop_the_image_here":{
+    "message":"Drop the image here"
   },
   "engines":{
-	"message":"engines"
+    "message":"engines"
   },
   "google":{
-	"message":"google"
+    "message":"google"
   },
   "baidu":{
-	"message":"baidu"
+    "message":"baidu"
   },
   "bing":{
-	"message":"bing"
+    "message":"bing"
   },
   "yandex":{
-	"message":"yandex"
+    "message":"yandex"
   },
   "IQDB":{
-	"message":"IQDB"
+    "message":"IQDB"
   },
   "SauceNao":{
-	"message":"SauceNao"
+    "message":"SauceNao"
   },
   "Unit_Converter":{
-	"message":"Unit Converter"
+    "message":"Unit Converter"
   },
   "crypter":{
-	"message":"crypter"
+    "message":"crypter"
   },
   "webmaster":{
-	"message":"webmaster"
+    "message":"webmaster"
   },
   "Sitemap_Generator":{
-	"message":"Sitemap Generator"
+    "message":"Sitemap Generator"
   },
   "sitemap":{
-	"message":"sitemap"
+    "message":"sitemap"
   },
   "host":{
-	"message":"host"
+    "message":"host"
   },
   "path":{
-	"message":"path"
+    "message":"path"
   },
   "max_depth":{
-	"message":"max depth"
+    "message":"max depth"
   },
   "crawl":{
-	"message":"crawl"
+    "message":"crawl"
   },
   "status":{
-	"message":"status"
+    "message":"status"
   },
   "broken_links":{
-	"message":"broken links"
+    "message":"broken links"
   },
   "Related_Keywords":{
-	"message":"Related Keywords"
+    "message":"Related Keywords"
   },
   "More_Result":{
-	"message":"More Result"
+    "message":"More Result"
   },
   "Related_Websites":{
-	"message":"Related Website"
+    "message":"Related Website"
   },
   "websites":{
-	"message":"websites"
+    "message":"websites"
   }
 }

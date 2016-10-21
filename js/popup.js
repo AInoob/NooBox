@@ -19,9 +19,28 @@ $('.switch').each(function(index,element){
 
 document.addEventListener('DOMContentLoaded', function(){
   $('#upload').on('change',upload);
+  $('#uploadLabel').on('dragover',drag);
+  $('#uploadLabel').on('drop',drop);
 });
-
 var x;
+
+var drag=function(e){
+  e.stopPropagation();
+  e.preventDefault();
+  e.dataTransfer = e.originalEvent.dataTransfer;
+  e.dataTransfer.dropEffect = 'copy';
+}
+
+var drop=function(e){
+  e.stopPropagation();
+  e.preventDefault();
+  e.dataTransfer = e.originalEvent.dataTransfer;
+  var url=URL.createObjectURL(e.dataTransfer.files[0]);
+  $('#image').attr('src',url);
+  fetchBlob(url, function(blob) {
+    reader.readAsDataURL(blob);
+  });
+}
 
 var upload=function(e){
   var url=URL.createObjectURL(e.target.files[0]);
