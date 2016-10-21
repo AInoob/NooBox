@@ -187,3 +187,6 @@ input:checked + .slider14:before {
   margin-top: 195px;
   margin-left: -25px;
 }
+img[src='Error.src']{
+  display: none;
+}

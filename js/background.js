@@ -246,29 +246,32 @@ NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
   }
 }
 
-NooBox.Image.POST.google=function(data,fetchFunction){
-  fetchFunction("");
+NooBox.Image.POST.google=function(cursor,data,fetchFunction){
+  NooBox.Image.result[cursor].remains--;
 }
-NooBox.Image.POST.bing=function(data,fetchFunction){
-  fetchFunction("");
+NooBox.Image.POST.bing=function(cursor,data,fetchFunction){
+  NooBox.Image.result[cursor].remains--;
 }
-NooBox.Image.POST.yandex=function(data,fetchFunction){
-  fetchFunction("");
+NooBox.Image.POST.yandex=function(cursor,data,fetchFunction){
+  NooBox.Image.result[cursor].remains--;
 }
-NooBox.Image.POST.iqdb=function(data,fetchFunction){
-  fetchFunction("");
+NooBox.Image.POST.iqdb=function(cursor,data,fetchFunction){
+  NooBox.Image.result[cursor].remains--;
 }
 NooBox.Image.POST.saucenao=function(data,fetchFunction){
-  fetchFunction("");
+  NooBox.Image.result[cursor].remains--;
 }
 
-NooBox.Image.POST.baidu=function(data,fetchFunction){
+NooBox.Image.POST.baidu=function(cursor,data,fetchFunction){
   $.ajax({
   type:'POST',
   url:'http://stu.baidu.com/i?appid=4',
   contentType:'multipart/form-data; boundary=----WebKitFormBoundary',
   data:NooBox.Image.DataWrapper.baidu({data:data,name:'dragimage'},'----WebKitFormBoundary')
-  }).done(function(data){$.ajax({url:data}).done(fetchFunction)});
+  }).done(function(data){
+    NooBox.Image.result[cursor]['baiduUrl']=data;
+    $.ajax({url:data}).done(fetchFunction);
+  });
 }
 
 NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
@@ -293,7 +296,7 @@ NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
 
 NooBox.Image.imageFromUrlHelperHelper=function(engine,i,info,cursor){
   if(info.isBlob){
-    NooBox.Image.POST[engine](info.blob,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+    NooBox.Image.POST[engine](cursor,info.blob,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
   }
   else{
     var url=NooBox.Image.apiUrls[engine]+info.srcUrl;

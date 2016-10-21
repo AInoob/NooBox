@@ -12,20 +12,31 @@ function getParameters(){
 }
 
 var firstDisplay=true;
+var isBlob=false;
 
 function display(engine){
   if(firstDisplay){
     firstDisplay=false;
     $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
-    for(var i=0;i<ids.length;i++){
-      isOn('imageSearchUrl_'+ids[i],
-          (function(ii){
-            $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
-          }),
-          function(){
-          },
-          i
-          );
+    if(!isBlob){
+      for(var i=0;i<ids.length;i++){
+        isOn('imageSearchUrl_'+ids[i],
+            (function(ii){
+              $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
+            }),
+            function(){
+            },
+            i
+            );
+      }
+    }
+    else{
+      for(engine of ids){
+        if(result[engine+'Url']){
+          $('#loadImages').append('<iframe src="'+result[engine+'Url']+'"></iframe>');
+          $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
+        }
+      }
     }
     for(engine of result.finished){
       switch(engine){
@@ -61,16 +72,22 @@ function display(engine){
     }
   }
   else{
-    $('#moreResults').html('');
-    for(var i=0;i<ids.length;i++){
-      isOn('imageSearchUrl_'+ids[i],
-          (function(ii){
-            $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
-          }),
-          function(){
-          },
-          i
-          );
+    if(isBlob){
+      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
+      $('#loadImages').append('<iframe src="'+result[engine+'Url']+'"></iframe>');
+    }
+    else{
+      $('#moreResults').html('');
+      for(var i=0;i<ids.length;i++){
+        isOn('imageSearchUrl_'+ids[i],
+            (function(ii){
+              $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
+            }),
+            function(){
+            },
+            i
+            );
+      }
     }
     switch(engine){
       case 'google':
@@ -117,6 +134,7 @@ function displayWebsites(websiteList,id){
   $('#'+id).append(html);
 }
 
+
 function style(){
 }
 
@@ -147,10 +165,20 @@ function update(engine){
   });
 }
 
+
 function init(){
+  window.addEventListener('error', function(e) {
+        setTimeout(function(){
+          var temp=e.target.src;
+          e.target.src='/images/loading.gif';
+          setTimeout(function(){
+            e.target.src=temp;
+          },500);
+        },500);
+  }, true);
   getParameters();
   if(parameters.image.match(/^blob/)){
-    alert('Search Data block is not fully supported yet');
+    isBlob=true;
   }
   update();
 }
