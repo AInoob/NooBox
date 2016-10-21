@@ -8,6 +8,9 @@
   "crypt_it":{
 	"message":"加密解密"
   },
+  "generating":{
+    "message":"生成中..."
+  },
   "search_this_image":{
 	"message":"以图搜图"
   },
@@ -16,6 +19,9 @@
   },
   "Reverse_Image_Search":{
 	"message":"以图搜图"
+  },
+  "drop_the_image_here":{
+    "message":"拖拽图片到这里来搜索"
   },
   "engines":{
 	"message":"引擎"
