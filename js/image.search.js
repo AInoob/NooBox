@@ -72,9 +72,9 @@ function display(engine){
     }
   }
   else{
+    $('#loadImages').append('<iframe src="'+result[engine+'Url']+'"></iframe>');
     if(isBlob){
       $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
-      $('#loadImages').append('<iframe src="'+result[engine+'Url']+'"></iframe>');
     }
     else{
       $('#moreResults').html('');
