@@ -74,7 +74,6 @@ var updateBackgroundImage=function(){
 }
 
 var drag=function(e){
-  console.log(currentFocus);
   e.stopPropagation();
   e.preventDefault();
   e.dataTransfer = e.originalEvent.dataTransfer;
@@ -82,7 +81,6 @@ var drag=function(e){
 }
 
 var drop=function(e){
-  console.log(currentFocus);
   e.stopPropagation();
   e.stopPropagation();
   e.preventDefault();
@@ -94,7 +92,6 @@ var drop=function(e){
 }
 
 var updateBackground=function(e){
-  console.log(e);
   var url=URL.createObjectURL(e.target.files[0]);
   fetchBlob(url, function(blob) {
     reader.readAsDataURL(blob);

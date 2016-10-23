@@ -1,3 +1,7 @@
+a{
+  text-decoration: none;
+  border-bottom: 1px solid #2196F3;
+}
 .f-left{
   float:left;
 }
@@ -189,4 +193,32 @@ input:checked + .slider14:before {
 }
 img[src='Error.src']{
   display: none;
+}
+
+.dropDiv label{
+  border:2px dashed grey;
+  cursor:pointer;
+  display:block;
+  width:100px;
+  height:65px;
+  margin-top:10px;
+  padding-top:35px;
+  text-align:center;
+}
+
+.dropDiv img{
+  max-width:100px;
+  max-height:100px;
+}
+
+.dropDiv input{
+  display:none;
+}
+
+section{
+  clear:both;
+}
+
+.clear{
+  clear:both;
 }
