@@ -4,7 +4,7 @@
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "short_name": "NB",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "browser_action": {
     "default_icon": {
       "128": "images/icon_128.png"
@@ -18,6 +18,7 @@
   "background": {
     "scripts":["thirdParty/jquery.min.js","js/background.js"]
   },
+  "options_page": "options.html",
   "content_scripts":[
     {
       "matches":[

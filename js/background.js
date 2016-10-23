@@ -181,7 +181,7 @@ NooBox.Image.updateContextMenu=function(){
         NooBox.Image.handle=chrome.contextMenus.create({
           "title": chrome.i18n.getMessage("search_this_image"),
           "contexts": ["image"],
-          "onclick": NooBox.Image.imageFromUrl
+          "onclick": NooBox.Image.imageFromURL
         });
       }
       if(!NooBox.Image.handle2){
@@ -206,8 +206,7 @@ NooBox.Image.fetchFunctions={};
 NooBox.Image.result=[];
 NooBox.Image.POST={};
 NooBox.Image.DataWrapper={};
-NooBox.Image.imageFromUrl=function(info,tab){
-  console.log(info);
+NooBox.Image.imageFromURL=function(info,tab){
   if(NooBox.Image.result.length>30)
     NooBox.Image.result=[];
   var cursor=NooBox.Image.result.length;
@@ -222,22 +221,22 @@ NooBox.Image.imageFromUrl=function(info,tab){
     NooBox.Image.result[cursor].imageUrl='blob';
     NooBox.Image.result[cursor].blob=blob;
   }
-  NooBox.Image.imageFromUrlHelper(cursor,info,0);
+  NooBox.Image.imageFromURLHelper(cursor,info,0);
 }
 
-NooBox.Image.imageFromUrlHelper=function(cursor,info,i,state){
+NooBox.Image.imageFromURLHelper=function(cursor,info,i,state){
   if(i<NooBox.Image.ids.length){
     if(typeof(state)!='undefined'&&state)
       ++NooBox.Image.result[cursor].remains;
     i++;
-    isOn('imageSearchUrl_'+NooBox.Image.ids[i], NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,true), NooBox.Image.imageFromUrlHelper.bind(null,cursor,info,i,false));
+    isOn('imageSearchUrl_'+NooBox.Image.ids[i], NooBox.Image.imageFromURLHelper.bind(null,cursor,info,i,true), NooBox.Image.imageFromURLHelper.bind(null,cursor,info,i,false));
   }
   else{
     NooBox.Image.update(cursor,'none');
     for(var i=0;i<NooBox.Image.ids.length;i++){
       var engine=NooBox.Image.ids[i];
       isOn('imageSearchUrl_'+engine,
-        NooBox.Image.imageFromUrlHelperHelper.bind(null,engine,i,info,cursor)
+        NooBox.Image.imageFromURLHelperHelper.bind(null,engine,i,info,cursor)
       );
     }
     var url='/image.search.html?cursor='+cursor+'&image='+NooBox.Image.result[cursor].imageUrl;
@@ -307,7 +306,7 @@ NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
   return data.join('');
 }
 
-NooBox.Image.imageFromUrlHelperHelper=function(engine,i,info,cursor){
+NooBox.Image.imageFromURLHelperHelper=function(engine,i,info,cursor){
   if(info.isBlob){
     if(engine=='baidu'){
       NooBox.Image.POST[engine](cursor,engine,info.blob,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
@@ -640,7 +639,7 @@ document.addEventListener('DOMContentLoaded', function(){
           NooBox.Image.updateContextMenu();
         }
         else if(request.job=="image_search_upload"){
-          NooBox.Image.imageFromUrl({srcUrl:request.data});
+          NooBox.Image.imageFromURL({srcUrl:request.data});
         }
         else if(request.job=="crypter"){
           NooBox.Crypter.updateContextMenu();

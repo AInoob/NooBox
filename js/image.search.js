@@ -181,7 +181,15 @@ function init(){
     isBlob=true;
   }
   update();
+  updateBackgroundImage();
 }
+
+var updateBackgroundImage=function(){
+  getDB('NooBox.Image.background',function(data){
+    $('body').css('background-image','url('+data+')');
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {

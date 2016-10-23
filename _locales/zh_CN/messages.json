@@ -85,5 +85,14 @@
   },
   "websites":{
 	"message":"网站"
+  },
+  "current":{
+    "message":"当前"
+  },
+  "change":{
+    "message":"更改"
+  },
+  "ImageSearchBackground":{
+    "message":"图片搜索背景"
   }
 }
