@@ -20,9 +20,18 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#imageSearchBackground').on('change',imageSearchBackground);
   $('#uploadLabel').on('dragover',drag);
   $('#uploadLabel').on('drop',drop);
+  $('#clearImageBackground').on('click',clearImageBackground);
   updateBackgroundImage();
 });
 var x;
+
+var clearImageBackground=function(){
+  setDB('NooBox.Image.background',
+  '',
+  function(){
+    updateBackgroundImage();
+  });
+}
 
 var updateBackgroundImage=function(){
   getDB('NooBox.Image.background',function(data){
