@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#upload').on('change',upload);
   $('#uploadLabel').on('dragover',drag);
   $('#uploadLabel').on('drop',drop);
+  updateBackgroundImage();
 });
 var x;
 
@@ -38,6 +39,12 @@ var drop=function(e){
   $('#image').attr('src',url);
   fetchBlob(url, function(blob) {
     reader.readAsDataURL(blob);
+  });
+}
+
+var updateBackgroundImage=function(){
+  getDB('NooBox.Configuration.popupBackground',function(data){
+    $('body').css('background-image','url('+data+')');
   });
 }
 
@@ -142,7 +149,18 @@ function fetchBlob(uri, callback) {
 };
 
 var reader = new window.FileReader();
- reader.onloadend = function() {
-   base64data = reader.result;                
-   chrome.extension.sendMessage({job: 'image_search_upload',data:base64data });
- }
+reader.onloadend = function() {
+ base64data = reader.result;                
+ chrome.extension.sendMessage({job: 'image_search_upload',data:base64data });
+}
+
+function setDB(key,value,callback){
+  localStorage.setItem(key,value);
+  callback();
+}
+
+function getDB(key,callback){
+  if(callback){
+    callback(localStorage.getItem(key));
+  }
+}

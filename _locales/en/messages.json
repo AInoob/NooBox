@@ -95,12 +95,19 @@
   "change":{
     "message":"change"
   },
-  "ImageSearchBackground":{
+  "Image_Search_Background":{
     "message":"Image Search Background"
   },
   "clear":{
     "message":"clear"
+  },
+  "Customize_Backgrounds":{
+    "message":"Customize Backgrounds"
+  },
+  "Popup_Background":{
+    "message":"Popup Background"
   }
+
 
 
 }

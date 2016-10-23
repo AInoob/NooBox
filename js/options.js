@@ -17,16 +17,47 @@ $('.switch').each(function(index,element){
 });
 
 document.addEventListener('DOMContentLoaded', function(){
-  $('#imageSearchBackground').on('change',imageSearchBackground);
-  $('#uploadLabel').on('dragover',drag);
-  $('#uploadLabel').on('drop',drop);
-  $('#clearImageBackground').on('click',clearImageBackground);
+  $('#imageSearchBackground').on('change',function(e){
+    currentFocus="NooBox.Image.background";
+    updateBackground(e);
+  });
+  $('#labelImageSearchBackground').on('dragover',function(e){
+    currentFocus="NooBox.Image.background";
+    drag(e);
+  });
+  $('#labelImageSearchBackground').on('drop',function(e){
+    currentFocus="NooBox.Image.background";
+    drop(e);
+  });
+  $('#clearImageSearchBackground').on('click',function(e){
+    currentFocus="NooBox.Image.background";
+    $('#imageSearchBackground').val('');
+    clearBackground(e);
+  });
+  $('#popupBackground').on('change',function(e){
+    currentFocus="NooBox.Configuration.popupBackground";
+    updateBackground(e);
+  });
+  $('#labelpopupBackground').on('dragover',function(e){
+    currentFocus="NooBox.Configuration.popupBackground";
+    drag(e);
+  });
+  $('#labelpopupBackground').on('drop',function(e){
+    currentFocus="NooBox.Configuration.popupBackground";
+    drop(e);
+  });
+  $('#clearPopupBackground').on('click',function(e){
+    currentFocus="NooBox.Configuration.popupBackground";
+    $('#popupBackground').val('');
+    clearBackground(e);
+    clearBackground(e);
+  });
   updateBackgroundImage();
 });
-var x;
+var currentFocus;
 
-var clearImageBackground=function(){
-  setDB('NooBox.Image.background',
+var clearBackground=function(){
+  setDB(currentFocus,
   '',
   function(){
     updateBackgroundImage();
@@ -35,12 +66,15 @@ var clearImageBackground=function(){
 
 var updateBackgroundImage=function(){
   getDB('NooBox.Image.background',function(data){
-    $('#backgroundImage').attr('src',data);
+    $('#imageSearchBackgroundImage').attr('src',data);
+  });
+  getDB('NooBox.Configuration.popupBackground',function(data){
+    $('#popupBackgroundImage').attr('src',data);
   });
 }
 
 var drag=function(e){
-  console.log('drag');
+  console.log(currentFocus);
   e.stopPropagation();
   e.preventDefault();
   e.dataTransfer = e.originalEvent.dataTransfer;
@@ -48,22 +82,20 @@ var drag=function(e){
 }
 
 var drop=function(e){
-  console.log('drop');
+  console.log(currentFocus);
   e.stopPropagation();
   e.stopPropagation();
   e.preventDefault();
   e.dataTransfer = e.originalEvent.dataTransfer;
   var url=URL.createObjectURL(e.dataTransfer.files[0]);
-  $('#image').attr('src',url);
   fetchBlob(url, function(blob) {
     reader.readAsDataURL(blob);
   });
 }
 
-var imageSearchBackground=function(e){
-  console.log('a');
+var updateBackground=function(e){
+  console.log(e);
   var url=URL.createObjectURL(e.target.files[0]);
-  $('#image').attr('src',url);
   fetchBlob(url, function(blob) {
     reader.readAsDataURL(blob);
   });
@@ -164,8 +196,7 @@ function fetchBlob(uri, callback) {
 var reader = new window.FileReader();
 reader.onloadend = function() {
   base64data = reader.result;                
-  chrome.extension.sendMessage({job: 'image_search_background',data:base64data });
-  setDB('NooBox.Image.background',
+  setDB(currentFocus,
     base64data,
     function(){
       updateBackgroundImage();
