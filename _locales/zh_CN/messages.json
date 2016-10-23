@@ -92,7 +92,16 @@
   "change":{
     "message":"更改"
   },
-  "ImageSearchBackground":{
-    "message":"图片搜索背景"
+  "Image_Search_Background":{
+    "message":"图片搜索界面背景"
+  },
+  "clear":{
+    "message":"清空"
+  },
+  "Customize_Backgrounds":{
+    "message":"自定义背景"
+  },
+  "Popup_Background":{
+    "message":"弹框背景"
   }
 }

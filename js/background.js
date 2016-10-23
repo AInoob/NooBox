@@ -3,6 +3,7 @@ var defaultValues=[
   ['unitsConverter','-1'],
   ['crypter','1'],
   ['webmaster','1'],
+  ['background','-1'],
   ['imageSearchUrl_google','1'],	
   ['imageSearchUrl_baidu','1'],	
   ['imageSearchUrl_tineye','-1'],	

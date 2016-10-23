@@ -6,12 +6,14 @@
     <script src="js/noobox.js"></script>
     <link rel="stylesheet" type="text/css" href="css/noobox.css">
   </head>
-  <body style="width:300px">
+  <body style="width:300px;background-repeat: no-repeat;background-attachment: fixed;background-position: center">
+  <div id="background" style="background-color:rgba(255,255,255,0.5)">
     <section style="overflow:hidden">
       <span class="blue f24 word" word="Reverse_Image_Search"></span>
       <label class="switch20">
         <input type="checkbox" class="switch hasSub" id="imageSearch"></input><div class="slider20 round"></div><br/>
       </label>
+      <br />
       <div class="sub firstSub" style="width:100px;float:left">
         <span class="blue f18 word cap-first" word="engines"></span><br/>
         <span class="blue f14 word cap-first" word="google"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_google"></input><div class="slider14 round"></div></label><br/>
@@ -26,22 +28,23 @@
         <label for="upload" id="uploadLabel" class="word" word="drop_the_image_here" style="border:2px dashed grey;cursor:pointer;display:block;width:100px;height:65px;margin-top:10px;padding-top:35px;text-align:center"></label>
         <img id="image" src="" style="max-width:100px;max-height:100px;position:absolute;margin-top:-100px"></img>
       </div>
-    </section>
-    <section>
-      <span class="blue f24 word cap-first" word="Unit_Converter"></span>
-      <label class="switch20 hasSub"><input type="checkbox" class="switch" id="unitsConverter"></input><div class="slider20 round"></div></label>
-    </section>
-    <section>
-      <span class="blue f24 word cap-first" word="crypter"></span>
-      <label class="switch20 hasSub"><input type="checkbox" class="switch" id="crypter"></input><div class="slider20 round"></div></label>
-    </section>
-    <section>
-      <span class="blue f24 word cap-first" word="webmaster"></span>
-      <label class="switch20 "><input type="checkbox" class="switch hasSub" id="webmaster"></input><div class="slider20 round"></div></label>
-      <div class="sub firstSub">
-        <a href="/webmaster.html" target="_blank"><span class="blue f14 word cap-first" word="Sitemap_Generator"></span></a>
-      </div>
-    </section>
-    <script src="js/popup.js"></script>
+      </section>
+      <section>
+        <span class="blue f24 word cap-first" word="Unit_Converter"></span>
+        <label class="switch20 hasSub"><input type="checkbox" class="switch" id="unitsConverter"></input><div class="slider20 round"></div></label>
+      </section>
+      <section>
+        <span class="blue f24 word cap-first" word="crypter"></span>
+        <label class="switch20 hasSub"><input type="checkbox" class="switch" id="crypter"></input><div class="slider20 round"></div></label>
+      </section>
+      <section>
+        <span class="blue f24 word cap-first" word="webmaster"></span>
+        <label class="switch20 "><input type="checkbox" class="switch hasSub" id="webmaster"></input><div class="slider20 round"></div></label>
+        <div class="sub firstSub">
+          <a href="/webmaster.html" target="_blank"><span class="blue f14 word cap-first" word="Sitemap_Generator"></span></a>
+        </div>
+      </section>
+      <script src="js/popup.js"></script>
+    </div>
     </body>
 </html>
