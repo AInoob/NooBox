@@ -277,7 +277,7 @@ NooBox.Image.POST.general=function(cursor,engine,data,fetchFunction){
   }
 }
 
-NooBox.Image.POST.baidu=function(cursor,data,fetchFunction){
+NooBox.Image.POST.baidu=function(cursor,engine,data,fetchFunction){
   $.ajax({
   type:'POST',
   url:'http://stu.baidu.com/i?appid=4',
