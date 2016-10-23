@@ -38,11 +38,11 @@ document.addEventListener('DOMContentLoaded', function(){
     currentFocus="NooBox.Configuration.popupBackground";
     updateBackground(e);
   });
-  $('#labelpopupBackground').on('dragover',function(e){
+  $('#labelPopupBackground').on('dragover',function(e){
     currentFocus="NooBox.Configuration.popupBackground";
     drag(e);
   });
-  $('#labelpopupBackground').on('drop',function(e){
+  $('#labelPopupBackground').on('drop',function(e){
     currentFocus="NooBox.Configuration.popupBackground";
     drop(e);
   });
