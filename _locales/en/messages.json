@@ -97,6 +97,9 @@
   },
   "ImageSearchBackground":{
     "message":"Image Search Background"
+  },
+  "clear":{
+    "message":"clear"
   }
 
 
