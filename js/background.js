@@ -39,6 +39,7 @@ NooBox.Crypter.updateContextMenu=function(){
   );
 }
 NooBox.Crypter.crypt=function(info,tab){
+  console.log(info.selectionText);
   NooBox.Crypter.selection=info.selectionText;
   var url='/crypter.html';
   chrome.tabs.create({url:url});
@@ -647,6 +648,7 @@ document.addEventListener('DOMContentLoaded', function(){
           NooBox.Crypter.updateContextMenu();
         }
         else if(request.job=="crypter_getSelection"){
+          console.log(NooBox.Crypter.selection);
           sendResponse({selection: NooBox.Crypter.selection});
         }
         else if(request.job=="webmaster_sitemap_get"){
