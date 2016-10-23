@@ -3,8 +3,9 @@ var Crypter = React.createClass({
 
   getInitialState: function () {
     chrome.runtime.sendMessage({
-      job: "getSelection"
+      job: "crypter_getSelection"
     }, function(response) {
+      console.log(response);
       $("#crypterInput").val(response.selection);
       this.setState({input:response.selection});
     }.bind(this));
@@ -997,7 +998,7 @@ var Crypter = React.createClass({
       React.createElement(
         'span',
         { style: { float: 'left' } },
-        'Input:    '
+        'Input:'
       ),
       React.createElement('textarea', { placeholder: 'Put what you want to encipher or decipher here', id: 'crypterInput', onChange: this.changeInput, style: { width: '90%', height: '100px' } }),
       React.createElement('br', null),
@@ -1070,7 +1071,7 @@ var Crypter = React.createClass({
         React.createElement(
           'span',
           { style: { float: 'left' } },
-          'Output: '
+          'Output:'
         ),
         React.createElement('textarea', { placeholder: 'Make sure you defined input, patter, flag and function, or load example to see how things work', id: 'crypterOutput', readOnly: true, value: this.state.output, style: { width: '90%', height: '100px' }, readOnly: true }),
         React.createElement('br', null),
@@ -1089,9 +1090,9 @@ var Crypter = React.createClass({
             { title: 'things to match inside / and /' },
             '?'
           ),
-          ') :'
+          '):'
         ),
-        ' ',
+        '',
         React.createElement('textarea', { placeholder: '\'.\' to match all characters, \'[A-Z]\' to match uppercase letters, \'\\\\d+\' to match numbers, etc', style: { float: 'left' }, id: 'regexpPattern', onChange: this.setRegExpFunc }),
         React.createElement(
           'span',
@@ -1102,7 +1103,7 @@ var Crypter = React.createClass({
             { title: 'g, gi, m, any RegExp flag' },
             '?'
           ),
-          '): '
+          '):'
         ),
         React.createElement('textarea', { placeholder: 'things like \'g\', \'gi\', \'m\', etc', id: 'regexpFlag', onChange: this.setRegExpFunc }),
         React.createElement('br', null),
@@ -1115,7 +1116,7 @@ var Crypter = React.createClass({
             { title: 'what to replace the matching string, the variable x is the string' },
             '?'
           ),
-          '): '
+          '):'
         ),
         React.createElement('textarea', { placeholder: '\'return x;\' will return the exactly same thing, \'return \'1\' will make every matched string to \'1\'', id: 'func', onChange: this.setRegExpFunc, style: { width: '66%', height: '100px' } })
       ),
@@ -1156,7 +1157,7 @@ var Crypter = React.createClass({
       React.createElement(
         'div',
         { id: 'vigenereCipherDiv', style: { display: "none", border: "2px solid red", marginTop: 3 } },
-        'Action: ',
+        'Action:',
         React.createElement(
           'select',
           { onChange: this.updateVigenereCipherAction, value: this.state.vigenereCipherAction },
@@ -1250,7 +1251,7 @@ var Crypter = React.createClass({
           null,
           'Keyword Cipher'
         ),
-        'Action: ',
+        'Action:',
         React.createElement(
           'select',
           { onChange: this.updateKeywordCipherAction },
@@ -1265,9 +1266,9 @@ var Crypter = React.createClass({
             'Decipher'
           )
         ),
-        '     keyword(lower case): ',
+        'keyword(lower case):',
         React.createElement('input', { id: 'keywordCipher', onChange: this.keywordCipher }),
-        '    ',
+        '',
         React.createElement('br', null),
         'Result: ',
         React.createElement('textarea', { id: 'keywordCipherResult', style: { width: '90%', height: '50px' } }),
