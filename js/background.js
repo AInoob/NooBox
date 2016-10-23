@@ -185,6 +185,7 @@ NooBox.Image.updateContextMenu=function(){
           "onclick": NooBox.Image.imageFromURL
         });
       }
+      /*
       if(!NooBox.Image.handle2){
         NooBox.Image.handle2=chrome.contextMenus.create({
           "title": chrome.i18n.getMessage("screenshot_and_search"),
@@ -192,6 +193,7 @@ NooBox.Image.updateContextMenu=function(){
           "onclick": NooBox.Image.screenshotSearch
         });
       }
+      */
     },
     function(){
       if(NooBox.Image.handle){
