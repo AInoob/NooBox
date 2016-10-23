@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#uploadLabel').on('drop',drop);
   updateBackgroundImage();
 });
-var x;
 
 var drag=function(e){
   e.stopPropagation();

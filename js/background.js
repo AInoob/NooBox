@@ -58,7 +58,6 @@ NooBox.Webmaster.generateSitemap=function(host,url,maxDepth){
   xyz=global;
 }
 NooBox.Webmaster.crawl=function(global,host,url,ref,maxDepth,currentDepth){
-  console.log(host+'***'+url);
   if(currentDepth<=maxDepth||maxDepth==-1){
     global.total++;
     NooBox.Webmaster.updateSitemap(global);
@@ -651,7 +650,6 @@ document.addEventListener('DOMContentLoaded', function(){
           sendResponse({selection: NooBox.Crypter.selection});
         }
         else if(request.job=="webmaster_sitemap_get"){
-          console.log('oh');
           var temp=JSON.parse(request.data);
           NooBox.Webmaster.generateSitemap(temp.host,temp.path,temp.maxDepth);
         }
