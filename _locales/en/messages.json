@@ -88,5 +88,16 @@
   },
   "websites":{
     "message":"websites"
+  },
+  "current":{
+    "message":"current"
+  },
+  "change":{
+    "message":"change"
+  },
+  "ImageSearchBackground":{
+    "message":"Image Search Background"
   }
+
+
 }
