@@ -109,6 +109,9 @@
   },
   "options":{
     "message":"options"
+  },
+  "popup":{
+    "message":"popup"
   }
 
 
