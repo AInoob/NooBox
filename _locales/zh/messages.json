@@ -106,5 +106,11 @@
   },
   "Popup_Background":{
     "message":"弹框背景"
+  },
+  "options":{
+    "message":"选项"
+  },
+  "popup":{
+    "message":"弹框"
   }
 }
