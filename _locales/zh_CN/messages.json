@@ -109,5 +109,8 @@
   },
   "popup":{
     "message":"弹框"
+  },
+  "Uploading_image_to_get_more_results":{
+    "message":"正在上传图片以获取更多结果..."
   }
 }
