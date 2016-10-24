@@ -224,7 +224,7 @@ NooBox.Image.imageFromURL=function(info,tab){
     NooBox.Image.result[cursor].imageUrl='blob';
     NooBox.Image.result[cursor].blob=blob;
   }
-  NooBox.Image.imageFromURLHelper(cursor,info,0);
+  NooBox.Image.imageFromURLHelper(cursor,info,-1);
 }
 
 NooBox.Image.imageFromURLHelper=function(cursor,info,i,state){
@@ -640,6 +640,16 @@ document.addEventListener('DOMContentLoaded', function(){
       if('job' in request){
         if (request.job == "imageSearch"){
           NooBox.Image.updateContextMenu();
+        }
+        else if(request.job=="image_search_re_search"){
+          console.log('yay');
+          NooBox.Image.imageFromURL({srcUrl:request.data});
+          chrome.notifications.create({
+            type:'basic',
+            iconUrl: '/images/icon_128.png',
+            title: chrome.i18n.getMessage("Reverse_Image_Search"),
+            message: chrome.i18n.getMessage("Uploading_image_to_get_more_results")
+          });
         }
         else if(request.job=="image_search_upload"){
           NooBox.Image.imageFromURL({srcUrl:request.data});

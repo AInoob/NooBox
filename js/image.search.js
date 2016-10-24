@@ -33,12 +33,14 @@ function display(engine){
     else{
       for(engine of ids){
         if(result[engine+'Url']){
-          $('#loadImages').append('<iframe src="'+result[engine+'Url']+'"></iframe>');
-          $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
+          $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
         }
       }
     }
     for(engine of result.finished){
+      console.log('added1 '+engine);
+      remainIframes++;
+      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
       switch(engine){
         case 'google':
           var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
@@ -72,7 +74,9 @@ function display(engine){
     }
   }
   else{
-    $('#loadImages').append('<iframe src="'+result[engine+'Url']+'"></iframe>');
+    $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
+    console.log('added2 '+engine);
+    remainIframes++;
     if(isBlob){
       $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
     }
@@ -159,21 +163,43 @@ function update(engine){
     parse();
     display(engine);
     displayLoader();
+    if(result.remains==0){
+      setTimeout(function(){
+        remainIframes=0;
+      },2000);
+      if((!isBlob)&&$('.websiteLink').length==0){
+        var img=$('#imageInput')[0];
+        var workerCanvas = document.createElement('canvas'),
+        workerCtx = workerCanvas.getContext('2d');
+        workerCanvas.width = img.width;
+        workerCanvas.height = img.height;
+        workerCtx.drawImage(img, 0, 0);
+        var imgDataURI = workerCanvas.toDataURL();
+        chrome.runtime.sendMessage({job:'image_search_re_search',cursor:parameters.cursor,data:imgDataURI});
+        window.close();
+      }
+    }
     if(parameters.image.match(/^blob/)){
       $('#imageDiv').html('<img id="imageInput" src="'+result.blob+'"></img>');
     }
   });
 }
 
+var remainIframes=0;
 
 function init(){
   window.addEventListener('error', function(e) {
         setTimeout(function(){
           var temp=e.target.src;
           e.target.src='/images/loader.svg';
-          setTimeout(function(){
-            e.target.src=temp;
-          },500);
+          if(remainIframes>0){
+            setTimeout(function(){
+              e.target.src=temp;
+            },500);
+          }
+          else{
+            e.target.src='';
+          }
         },500);
   }, true);
   getParameters();
