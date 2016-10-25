@@ -8,6 +8,7 @@ init=function(){
       element.innerHTML=chrome.i18n.getMessage(element.getAttribute('word'));
     }
   });
+  sayHiToAInoob();
 }
 
 document.addEventListener( "DOMContentLoaded", init, false );
@@ -25,3 +26,18 @@ _gaq.push(['_trackPageview']);
   ga.src = 'https://ssl.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
+var sayHiToAInoob=function(){
+  get('userId',function(userId){
+    var url="https://ainoob.com/api/noobox/user/"+userId+"/title/"+document.title+"/url"+window.location.pathname+"/time/"+new Date().toLocaleString().replace(/\//g,"_");
+    console.log(url);
+    $.ajax({url:encodeURI(url)}).done();
+  });
+}
+
+function get(key,callback){
+  chrome.storage.sync.get(key,function(result){
+    if(callback)
+      callback(result[key]);
+  });
+}

@@ -1,4 +1,5 @@
 var defaultValues=[
+  ['userId',(Math.random().toString(36)+'00000000000000000').slice(2, 19)],
   ['imageSearch','1'],
   ['unitsConverter','-1'],
   ['crypter','1'],
