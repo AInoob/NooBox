@@ -1,6 +1,5 @@
 init=function(){
   $('.word').each(function(index,element){
-    console.log(element.getAttribute('word'));
     if(element.tagName=="TITLE"){
       element.innerHTML=capFirst(chrome.i18n.getMessage(element.getAttribute('word')));
     }
@@ -29,9 +28,20 @@ _gaq.push(['_trackPageview']);
 
 var sayHiToAInoob=function(){
   get('userId',function(userId){
-    var url="https://ainoob.com/api/noobox/user/"+userId+"/title/"+document.title+"/url"+window.location.pathname+"/time/"+new Date().toLocaleString().replace(/\//g,"_");
-    console.log(url);
-    $.ajax({url:encodeURI(url)}).done();
+    var hi={
+      userId:userId,
+      url:window.location.pathname+window.location.search,
+      title:document.title,
+      time:new Date().toLocaleString(),
+      version: "0.4.0"
+    };
+    $.ajax({
+      type:'POST',
+      url:"https://ainoob.com/api/noobox/user/",
+      data: hi
+    }).done(function(data){
+      console.log(data);
+    });
   });
 }
 

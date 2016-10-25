@@ -40,7 +40,6 @@ NooBox.Crypter.updateContextMenu=function(){
   );
 }
 NooBox.Crypter.crypt=function(info,tab){
-  console.log(info.selectionText);
   NooBox.Crypter.selection=info.selectionText;
   var url='/crypter.html';
   chrome.tabs.create({url:url});
@@ -618,22 +617,6 @@ function init(){
   initDefault();
 }
 
-NooBox.Image.test=function(data){
-  x=data;
-  var formData=new FormData();
-  formData.append('upload',data,'NooBox');
-  console.log(formData);
-  $.ajax({
-    type:'POST',
-    url:'http://old.postimage.org/index.php',
-    contentType: false,
-    processData: false,
-    data: formData
-  }).done(function(data){
-    console.log(data);
-  })
-}
-
 document.addEventListener('DOMContentLoaded', function(){
   init();
   chrome.runtime.onMessage.addListener(
@@ -643,7 +626,6 @@ document.addEventListener('DOMContentLoaded', function(){
           NooBox.Image.updateContextMenu();
         }
         else if(request.job=="image_search_re_search"){
-          console.log('yay');
           NooBox.Image.imageFromURL({srcUrl:request.data});
           chrome.notifications.create({
             type:'basic',
@@ -651,6 +633,7 @@ document.addEventListener('DOMContentLoaded', function(){
             title: chrome.i18n.getMessage("Reverse_Image_Search"),
             message: chrome.i18n.getMessage("Uploading_image_to_get_more_results")
           });
+          sendResponse({'status':'done'});
         }
         else if(request.job=="image_search_upload"){
           NooBox.Image.imageFromURL({srcUrl:request.data});
@@ -659,7 +642,6 @@ document.addEventListener('DOMContentLoaded', function(){
           NooBox.Crypter.updateContextMenu();
         }
         else if(request.job=="crypter_getSelection"){
-          console.log(NooBox.Crypter.selection);
           sendResponse({selection: NooBox.Crypter.selection});
         }
         else if(request.job=="webmaster_sitemap_get"){
