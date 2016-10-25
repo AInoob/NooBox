@@ -156,6 +156,7 @@ function displayLoader(){
     $(".loading"+j).show();
   }
 }
+var x;
 
 function update(engine){
   getDB('NooBox.Image.result',function(value){
@@ -169,14 +170,16 @@ function update(engine){
       },2000);
       if((!isBlob)&&$('.websiteLink').length==0){
         var img=$('#imageInput')[0];
+        x=img;
         var workerCanvas = document.createElement('canvas'),
         workerCtx = workerCanvas.getContext('2d');
-        workerCanvas.width = img.width;
-        workerCanvas.height = img.height;
+        workerCanvas.width = img.naturalWidth;
+        workerCanvas.height = img.naturalHeight;
         workerCtx.drawImage(img, 0, 0);
         var imgDataURI = workerCanvas.toDataURL();
-        chrome.runtime.sendMessage({job:'image_search_re_search',cursor:parameters.cursor,data:imgDataURI});
-        window.close();
+        chrome.runtime.sendMessage({job:'image_search_re_search',cursor:parameters.cursor,data:imgDataURI},function(response){
+          window.close();
+        });
       }
     }
     if(parameters.image.match(/^blob/)){
