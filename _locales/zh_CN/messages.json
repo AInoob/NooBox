@@ -112,5 +112,8 @@
   },
   "Uploading_image_to_get_more_results":{
     "message":"正在上传图片以获取更多结果..."
+  },
+  "update_browser":{
+    "message":"浏览器内核版本太低，二箱受不鸟，少年快自己去更新吧~"
   }
 }

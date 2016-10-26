@@ -63,31 +63,40 @@ NooBox.Webmaster.crawl=function(global,host,url,ref,maxDepth,currentDepth){
     global.total++;
     NooBox.Webmaster.updateSitemap(global);
     if(!url.match(/^((tel:)|(mailto:))/)){
-      $.ajax({url:url,dataType:"html"}).done(function(data){
+      $.ajax({url:url}).done(function(data){
         global.finished++;
         NooBox.Webmaster.updateSitemap(global);
         if(data.indexOf('</html>')!=-1){
           data=data.replace(/ src=/g," nb-src=");
           $(data).find('a').each(function(i){
+            console.log('a link '+$(this).attr('href'));
             var url2=NooBox.Webmaster.getUrl(host,$(this).attr('href'));
             if((!global.linkSet.has(url2))&&NooBox.Webmaster.sameHost(url2,host)){
               global.linkSet.add(url2);
               NooBox.Webmaster.crawl(global,host,url2,url,maxDepth,currentDepth+1);
             }
+            else{
+              console.log((!global.linkSet.has(url2))+'   '+NooBox.Webmaster.sameHost(url2,host));
+            }
           });
+        }
+        else{
+          alert('the request address is not html');
         }
       }).fail(function(){
         global.finished++;
+        NooBox.Webmaster.updateSitemap(global);
         if(global.brokenLinks.get(url)==undefined){
           global.brokenLinks.set(url,[]);
         }
         global.brokenLinks.get(url).push(ref);
-        NooBox.Webmaster.updateSitemap(global);
       });
     }
   }
 }
 NooBox.Webmaster.updateSitemap=function(global){
+  console.log('update');
+  console.log(global);
   var obj={};
   obj.sitemap=chrome.i18n.getMessage("generating");
   if(global.finished==global.total){
@@ -129,6 +138,8 @@ NooBox.Webmaster.toXML=function(linkSet){
 NooBox.Webmaster.sameHost=function(urlA,urlB){
   var infoA=NooBox.Webmaster.getURLInfo(urlA);
   var infoB=NooBox.Webmaster.getURLInfo(urlB);
+  console.log(infoA.host);
+  console.log(infoB.host);
   return infoA.host==infoB.host;
 }
 //working on
@@ -614,6 +625,9 @@ function initDefault(i){
 }
 
 function init(){
+  if(parseInt(/Chrome\/([0-9.]+)/.exec(navigator.userAgent)[1])<50){
+    alert(chrome.i18n.getMessage("update_browser"));
+  }
   initDefault();
 }
 
