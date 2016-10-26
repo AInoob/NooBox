@@ -109,19 +109,29 @@ NooBox.Webmaster.updateSitemap=function(global){
 }
 NooBox.Webmaster.parseBrokenLinks=function(brokenLinks){
   var s="";
-  for(var [link,refList] of brokenLinks){
+  brokenLinks.forEach(function(link,refList){
     s+=link+'\n';
     s+='  from:\n';
-    for(ref of refList){
-      s+='    '+ref+'\n';
+    for(var i=0;i<refList.length;i++){
+      s+='    '+refList[i]+'\n';
     }
-  }
+  });
+  //for(var [link,refList] of brokenLinks){
   return s;
 }
 NooBox.Webmaster.toXML=function(linkSet){
   var xmlDoc=document.implementation.createDocument('','xml',null);
   var urlSet=xmlDoc.createElement('urlset');
   urlSet.setAttribute('xmlns','http://www.sitemaps.org/schemas/sitemap/0.9');
+  linkSet.forEach(function(elem){
+    var url=xmlDoc.createElement('url');
+    var loc=xmlDoc.createElement('loc');
+    var urlText=xmlDoc.createTextNode(elem);
+    loc.appendChild(urlText);
+    url.appendChild(loc);
+    urlSet.appendChild(url);
+  });
+  /*
   for(var elem of linkSet){
     var url=xmlDoc.createElement('url');
     var loc=xmlDoc.createElement('loc');
@@ -129,7 +139,7 @@ NooBox.Webmaster.toXML=function(linkSet){
     loc.appendChild(urlText);
     url.appendChild(loc);
     urlSet.appendChild(url);
-  }
+  }*/
   var xml='<?xml version="1.0" encoding="UTF-8"?>'+(new XMLSerializer()).serializeToString(urlSet)
   return xml;
 }
@@ -625,9 +635,6 @@ function initDefault(i){
 }
 
 function init(){
-  if(parseInt(/Chrome\/([0-9.]+)/.exec(navigator.userAgent)[1])<50){
-    alert(chrome.i18n.getMessage("update_browser"));
-  }
   initDefault();
 }
 
