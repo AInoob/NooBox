@@ -41,5 +41,6 @@
     "activeTab",
     "notifications"
   ],
+  "minimum_chrome_version": "30",
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }

@@ -18,7 +18,9 @@ function display(engine){
   if(firstDisplay){
     firstDisplay=false;
     $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
-    for(engine of result.finished){
+    for(var i=0;i<result.finished.length;i++){
+      var engine=result.finished[i];
+    //for(engine of result.finished){
       $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
       remainIframes++;
       $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
