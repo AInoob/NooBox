@@ -18,27 +18,8 @@ function display(engine){
   if(firstDisplay){
     firstDisplay=false;
     $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
-    if(!isBlob){
-      for(var i=0;i<ids.length;i++){
-        isOn('imageSearchUrl_'+ids[i],
-            (function(ii){
-              $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
-            }),
-            function(){
-            },
-            i
-            );
-      }
-    }
-    else{
-      for(engine of ids){
-        if(result[engine+'Url']){
-          $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
-        }
-      }
-    }
     for(engine of result.finished){
-      console.log('added1 '+engine);
+      $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
       remainIframes++;
       $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
       switch(engine){
@@ -75,7 +56,6 @@ function display(engine){
   }
   else{
     $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
-    console.log('added2 '+engine);
     remainIframes++;
     if(isBlob){
       $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
@@ -124,6 +104,16 @@ function display(engine){
         break;
     }
   }
+  setTimeout(updateImageSize,100);
+}
+
+function updateImageSize(){
+  $('.websiteLink').each(function(){
+    var img=$(this).find('.websiteImage')[0];
+    if(img){
+      $(this).find('.websiteImageSize').text(img.naturalWidth+' × '+img.naturalHeight+' - ');
+    }
+  });
 }
 
 function displayWebsites(websiteList,id){
@@ -133,7 +123,12 @@ function displayWebsites(websiteList,id){
     html+='<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="websiteTitle" href="'+website.link+'">'+website.title+'</a></div>';
     if(website.imageUrl)
       html+='<img class="websiteImage" src="'+website.imageUrl+'"></img>';
-    html+='<div class="websiteDescription">'+website.description+'</div></div>'
+    if(id.indexOf("google")==-1){
+      html+='<div class="websiteDescription"><span class="websiteImageSize"></span>'+website.description+'</div></div>'
+    }
+    else{
+      html+='<div class="websiteDescription">'+website.description+'</div></div>'
+    }
   }
   $('#'+id).append(html);
 }
@@ -147,7 +142,6 @@ function parse(){
 }
 
 function displayLoader(){
-  console.log(result.remains);
   var i=result.remains;
   for(var j=1;j<=ids.length;j++){
     $(".loading"+j).hide();
@@ -156,7 +150,6 @@ function displayLoader(){
     $(".loading"+j).show();
   }
 }
-var x;
 
 function update(engine){
   getDB('NooBox.Image.result',function(value){
@@ -170,7 +163,6 @@ function update(engine){
       },2000);
       if((!isBlob)&&$('.websiteLink').length==0){
         var img=$('#imageInput')[0];
-        x=img;
         var workerCanvas = document.createElement('canvas'),
         workerCtx = workerCanvas.getContext('2d');
         workerCanvas.width = img.naturalWidth;

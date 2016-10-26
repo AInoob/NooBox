@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function(){
+  alert('still testing');
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if(request.job=='webmaster_sitemap_update'){
+        console.log(request.data);
         var obj=JSON.parse(request.data);
         $('#sitemap')[0].value=obj.sitemap;
         $('#brokenLinks')[0].value=obj.brokenLinks;

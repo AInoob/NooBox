@@ -115,6 +115,9 @@
   },
   "Uploading_image_to_get_more_results":{
     "message":"Uploading image to get more results..."
+  },
+  "update_browser":{
+    "message":"NooBox cannot run on this old version of Chrome, update Chrome by yourself~"
   }
 
 
