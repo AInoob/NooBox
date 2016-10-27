@@ -47,15 +47,12 @@ NooBox.Crypter.crypt=function(info,tab){
 
 //Webmaster
 NooBox.Webmaster={};
-NooBox.Webmaster.generateSitemap=function(host,url,maxDepth){
+NooBox.Webmaster.host=window.location.hostname;
+NooBox.Webmaster.generateSitemap=function(URL,maxDepth){
   var linkSet=new Set();
   var brokenLinks=new Map();
   var global={total:0,finished:0,linkSet:linkSet,brokenLinks:brokenLinks};
-  var url=NooBox.Webmaster.getUrl(host,url);
-  if(host.match(/^http/)==null){
-    host='http://'+host;
-  }
-  NooBox.Webmaster.crawl(global,host,url,'',maxDepth,1);
+  NooBox.Webmaster.crawl(global,URL,URL,'',maxDepth,1);
   xyz=global;
 }
 NooBox.Webmaster.crawl=function(global,host,url,ref,maxDepth,currentDepth){
@@ -64,49 +61,52 @@ NooBox.Webmaster.crawl=function(global,host,url,ref,maxDepth,currentDepth){
     NooBox.Webmaster.updateSitemap(global);
     if(!url.match(/^((tel:)|(mailto:))/)){
       $.ajax({url:url}).done(function(data){
-        global.finished++;
-        NooBox.Webmaster.updateSitemap(global);
-        if(data.indexOf('</html>')!=-1){
+        if(data&&data.indexOf('</html>')!=-1){
           data=data.replace(/ src=/g," nb-src=");
           $(data).find('a').each(function(i){
-            console.log('a link '+$(this).attr('href'));
-            var url2=NooBox.Webmaster.getUrl(host,$(this).attr('href'));
+            var url2=NooBox.Webmaster.getURL(host,$(this).attr('href'));
             if((!global.linkSet.has(url2))&&NooBox.Webmaster.sameHost(url2,host)){
               global.linkSet.add(url2);
               NooBox.Webmaster.crawl(global,host,url2,url,maxDepth,currentDepth+1);
             }
-            else{
-              console.log((!global.linkSet.has(url2))+'   '+NooBox.Webmaster.sameHost(url2,host));
-            }
           });
         }
         else{
-          alert('the request address is not html');
+          console.log('the request address is not html: '+url);
         }
-      }).fail(function(){
         global.finished++;
         NooBox.Webmaster.updateSitemap(global);
+      }).fail(function(){
         if(global.brokenLinks.get(url)==undefined){
           global.brokenLinks.set(url,[]);
         }
         global.brokenLinks.get(url).push(ref);
+        global.finished++;
+        NooBox.Webmaster.updateSitemap(global);
       });
+    }
+    else{
+      global.total--;
+      NooBox.Webmaster.updateSitemap(global);
     }
   }
 }
 NooBox.Webmaster.updateSitemap=function(global){
-  console.log('update');
-  console.log(global);
   var obj={};
   obj.sitemap=chrome.i18n.getMessage("generating");
-  if(global.finished==global.total){
-    obj.sitemap=NooBox.Webmaster.toXML(global.linkSet);
-  }
   obj.brokenLinks=NooBox.Webmaster.parseBrokenLinks(global.brokenLinks);
   obj.total=global.total;
   obj.finished=global.finished;
+  if(global.finished==global.total){
+    setTimeout(function(){
+      if(global.finished==global.total){
+        download('sitemap.xml',NooBox.Webmaster.toXML(global.linkSet));
+      }
+    },100);
+  }
   chrome.runtime.sendMessage({job:"webmaster_sitemap_update",data: JSON.stringify(obj)}, function(response) {});
 }
+
 NooBox.Webmaster.parseBrokenLinks=function(brokenLinks){
   var s="";
   brokenLinks.forEach(function(link,refList){
@@ -148,8 +148,6 @@ NooBox.Webmaster.toXML=function(linkSet){
 NooBox.Webmaster.sameHost=function(urlA,urlB){
   var infoA=NooBox.Webmaster.getURLInfo(urlA);
   var infoB=NooBox.Webmaster.getURLInfo(urlB);
-  console.log(infoA.host);
-  console.log(infoB.host);
   return infoA.host==infoB.host;
 }
 //working on
@@ -159,21 +157,16 @@ NooBox.Webmaster.getURLInfo=function(url){
   return info;
 }
 //working on
-NooBox.Webmaster.getUrl=function(host,path){
-  if(path.match(/^http/)!=null){
-    return path;
+NooBox.Webmaster.getURL=function(host,URL){
+  var tempHost=NooBox.Webmaster.getURLInfo(URL).host;
+  var r=URL;
+  if(tempHost==NooBox.Webmaster.host){
+    r=host+URL;
   }
-  if(path.match(/^\//)!=null){
-    if(host.match(/^http/)!=null){
-      return host+path;
-    }
-    else{
-      return 'http://'+host+path;
-    }
+  if(r.indexOf('http')==-1){
+    r='http://'+r;
   }
-  else{
-    return path;
-  }
+  return r;
 }
 
 //Image
@@ -667,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         else if(request.job=="webmaster_sitemap_get"){
           var temp=JSON.parse(request.data);
-          NooBox.Webmaster.generateSitemap(temp.host,temp.path,temp.maxDepth);
+          NooBox.Webmaster.generateSitemap(temp.URL,temp.maxDepth);
         }
       }
     });
@@ -734,4 +727,17 @@ function dataURItoBlob(dataURI) {
   }
   var blob = new Blob([ab], {type: mimeString});
   return blob;
+}
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 }
