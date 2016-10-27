@@ -221,22 +221,23 @@ NooBox.Image.updateContextMenu=function(){
 }
 NooBox.Image.fetchFunctions={};
 NooBox.Image.result=[];
+NooBox.Image.cursor=0;
 NooBox.Image.POST={};
 NooBox.Image.DataWrapper={};
 NooBox.Image.imageFromURL=function(info,tab){
-  if(NooBox.Image.result.length>30)
-    NooBox.Image.result=[];
-  var cursor=NooBox.Image.result.length;
-  NooBox.Image.result.push({});
+  NooBox.Image.cursor++;
+  NooBox.Image.cursor%=30;
+  cursor=NooBox.Image.cursor;
+  NooBox.Image.result[cursor]={};
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
   NooBox.Image.result[cursor].remains=0;
   NooBox.Image.result[cursor].finished=[];
-  var blob=encodeURI(info.srcUrl);
-  if(blob.match(/^data/)){
-    info.isBlob=true;
-    info.blob=blob;
-    NooBox.Image.result[cursor].imageUrl='blob';
-    NooBox.Image.result[cursor].blob=blob;
+  var dataURI=encodeURI(info.srcUrl);
+  if(dataURI.match(/^data/)){
+    info.isDataURI=true;
+    info.dataURI=dataURI;
+    NooBox.Image.result[cursor].imageUrl='dataURI';
+    NooBox.Image.result[cursor].dataURI=dataURI;
     NooBox.Image.imageFromURLHelper(cursor,info,-1);
   }
   else{
@@ -327,12 +328,12 @@ NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
 }
 
 NooBox.Image.imageFromURLHelperHelper=function(engine,i,info,cursor){
-  if(info.isBlob){
+  if(info.isDataURI){
     if(engine=='baidu'){
-      NooBox.Image.POST[engine](cursor,engine,info.blob,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+      NooBox.Image.POST[engine](cursor,engine,info.dataURI,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
     }
     else{
-      NooBox.Image.POST.general(cursor,engine,info.blob,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+      NooBox.Image.POST.general(cursor,engine,info.dataURI,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
     }
   }
   else{
@@ -349,8 +350,14 @@ NooBox.Image.imageFromURLHelperHelper=function(engine,i,info,cursor){
 }
 
 NooBox.Image.update=function(i,engine){
-  setDB('NooBox.Image.result',
+  /*setDB('NooBox.Image.result',
     JSON.stringify(NooBox.Image.result),
+    function(){
+      chrome.runtime.sendMessage({job:'image_result_update',engine:engine,cursor:i}, function(response) {});
+    }
+  );*/
+  setDB('NooBox.Image.result_'+i,
+    NooBox.Image.result[i],
     function(){
       chrome.runtime.sendMessage({job:'image_result_update',engine:engine,cursor:i}, function(response) {});
     }
@@ -669,103 +676,3 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 
-
-function isOn(key,callbackTrue,callbackFalse){
-  get(key,function(value){
-    if(value=='1'){
-      if(callbackTrue){
-        callbackTrue();
-      }
-    }
-    else{
-      if(callbackFalse){
-        callbackFalse();
-      }
-    }
-  });
-}
-
-function setIfNull(key,setValue,callback){
-  get(key,function(value){
-    if(!value){
-      set(key,setValue,callback);
-    }
-    else{
-      if(callback)
-        callback();
-    }
-  });
-}
-
-function setDB(key,value,callback){
-  /*var indexedDB = window.indexedDB;
-  var open = indexedDB.open("NooBox", 1);
-  open.onupgradeneeded = function() {
-    var db = open.result;
-    var store = db.createObjectStore("Store", {keyPath: "key"});
-    //var index = store.createIndex("keyIndex", ["key"]);
-  };
-  open.onsuccess = function() {
-    var db = open.result;
-    var tx = db.transaction("Store", "readwrite");
-    var store = tx.objectStore("Store");
-    //var index = store.index("keyIndex");
-    var action1=store.put({key:key, value:value});
-    action1.onsuccess=function(){
-      console.log('settDB done');
-    }
-    action1.onerror=function(){
-      console.log('setDB fail');
-    }
-  }
-  */
-  localStorage.setItem(key,value);
-  callback();
-}
-
-function getDB(key,callback){
-  if(callback){
-    callback(localStorage.getItem(key));
-  }
-}
-
-function set(key,value,callback){
-  var temp={};
-  temp[key]=value;
-  chrome.storage.sync.set(temp,callback);
-}
-
-function get(key,callback){
-  chrome.storage.sync.get(key,function(result){
-    if(callback)
-      callback(result[key]);
-  });
-}
-function dataURItoBlob(dataURI) {
-  try{
-    var byteString = atob(dataURI.split(',')[1]);
-  }catch(e){
-    console.log(e);
-  }
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-  var ab = new ArrayBuffer(byteString.length);
-  var ia = new Uint8Array(ab);
-  for (var i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-  var blob = new Blob([ab], {type: mimeString});
-  return blob;
-}
-
-function download(filename, text) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
-
-  element.style.display = 'none';
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
-}

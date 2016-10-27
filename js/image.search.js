@@ -12,7 +12,7 @@ function getParameters(){
 }
 
 var firstDisplay=true;
-var isBlob=false;
+var isDataURI=false;
 
 function display(engine){
   if(firstDisplay){
@@ -23,7 +23,7 @@ function display(engine){
     //for(engine of result.finished){
       $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
       remainIframes++;
-      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
+      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" id="moreResult'+engine+'" src="/thirdParty/'+engine+'.png" /></a></li>');
       switch(engine){
         case 'google':
           var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
@@ -57,23 +57,10 @@ function display(engine){
     }
   }
   else{
-    $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
-    remainIframes++;
-    if(isBlob){
-      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+engine+'.png" /></a></li>');
-    }
-    else{
-      $('#moreResults').html('');
-      for(var i=0;i<ids.length;i++){
-        isOn('imageSearchUrl_'+ids[i],
-            (function(ii){
-              $('#moreResults').append('<li><a target="_blank"  href="'+result[ids[ii]+'Url']+'"><img class="moreResultsImages" src="thirdParty/'+ids[ii]+'.png" /></a></li>');
-            }),
-            function(){
-            },
-            i
-            );
-      }
+    if(engine!="none"&&(!$('#moreResult'+engine).length)){
+      $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
+      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" id="moreResult'+engine+'" src="/thirdParty/'+engine+'.png" /></a></li>');
+      remainIframes++;
     }
     switch(engine){
       case 'google':
@@ -135,14 +122,6 @@ function displayWebsites(websiteList,id){
   $('#'+id).append(html);
 }
 
-
-function style(){
-}
-
-function parse(){
-  result=result[parameters.cursor];
-}
-
 function displayLoader(){
   var i=result.remains;
   for(var j=1;j<=ids.length;j++){
@@ -154,16 +133,15 @@ function displayLoader(){
 }
 
 function update(engine){
-  getDB('NooBox.Image.result',function(value){
-    result=JSON.parse(value);
-    parse();
+  getDB('NooBox.Image.result_'+parameters.cursor,function(value){
+    result=value;
     display(engine);
     displayLoader();
     if(result.remains==0){
       setTimeout(function(){
         remainIframes=0;
-      },2000);
-      if((!isBlob)&&$('.websiteLink').length==0){
+      },1000);
+      if((!isDataURI)&&$('.websiteLink').length==0){
         var img=$('#imageInput')[0];
         var workerCanvas = document.createElement('canvas'),
         workerCtx = workerCanvas.getContext('2d');
@@ -176,32 +154,32 @@ function update(engine){
         });
       }
     }
-    if(parameters.image.match(/^blob/)){
-      $('#imageDiv').html('<img id="imageInput" src="'+result.blob+'"></img>');
+    if(parameters.image.match(/^dataURI/)){
+      $('#imageDiv').html('<img id="imageInput" src="'+result.dataURI+'"></img>');
     }
   });
 }
 
 var remainIframes=0;
-
 function init(){
   window.addEventListener('error', function(e) {
+    console.log(e.target);
+    setTimeout(function(){
+      var temp=e.target.src;
+      e.target.src='/images/loader.svg';
+      if(remainIframes>0){
         setTimeout(function(){
-          var temp=e.target.src;
-          e.target.src='/images/loader.svg';
-          if(remainIframes>0){
-            setTimeout(function(){
-              e.target.src=temp;
-            },500);
-          }
-          else{
-            e.target.src='';
-          }
+          e.target.src=temp;
         },500);
+      }
+      else{
+        e.target.src='';
+      }
+    },500);
   }, true);
   getParameters();
-  if(parameters.image.match(/^blob/)){
-    isBlob=true;
+  if(parameters.image.match(/^dataURI/)){
+    isDataURI=true;
   }
   update();
   updateBackgroundImage();
@@ -222,55 +200,4 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   init();
 });
-
-function isOn(key,callbackTrue,callbackFalse,parameter){
-  get(key,function(value){
-    if(value=='1'){
-      if(callbackTrue){
-        callbackTrue(parameter);
-      }
-    }
-    else{
-      if(callbackFalse){
-        callbackFalse(parameter);
-      }
-    }
-  });
-}
-
-function setIfNull(key,setValue,callback,callbackCallback){
-  get(key,function(value){
-    if(!value){
-      set(key,setValue,callback);
-    }
-    else{
-      if(callback)
-        callback(callbackCallback);
-    }
-  });
-}
-
-function setDB(key,value,callback){
-  localStorage.setItem(key,value);
-  callback();
-}
-
-function getDB(key,callback){
-  if(callback){
-    callback(localStorage.getItem(key));
-  }
-}
-
-function set(key,value,callback){
-  var temp={};
-  temp[key]=value;
-  chrome.storage.sync.set(temp,callback);
-}
-
-function get(key,callback){
-  chrome.storage.sync.get(key,function(result){
-    if(callback)
-      callback(result[key]);
-  });
-}
 

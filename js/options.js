@@ -134,46 +134,6 @@ updateSubSection=function(display){
   }
 }
 
-function isOn(key,callbackTrue,callbackFalse){
-  get(key,function(value){
-    if(value=='1'){
-      if(callbackTrue){
-        callbackTrue();
-      }
-    }
-    else{
-      if(callbackFalse){
-        callbackFalse();
-      }
-    }
-  });
-}
-
-function setIfNull(key,setValue,callback,callbackCallback){
-  get(key,function(value){
-    if(!value){
-      set(key,setValue,callback);
-    }
-    else{
-      if(callback)
-        callback(callbackCallback);
-    }
-  });
-}
-
-function set(key,value,callback){
-  var temp={};
-  temp[key]=value;
-  chrome.storage.sync.set(temp,callback);
-}
-
-function get(key,callback){
-  chrome.storage.sync.get(key,function(result){
-    if(callback)
-      callback(result[key]);
-  });
-}
-
 function fetchBlob(uri, callback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', uri, true);
@@ -199,15 +159,4 @@ reader.onloadend = function() {
       updateBackgroundImage();
     }
   );
-}
-
-function setDB(key,value,callback){
-  localStorage.setItem(key,value);
-  callback();
-}
-
-function getDB(key,callback){
-  if(callback){
-    callback(localStorage.getItem(key));
-  }
 }
