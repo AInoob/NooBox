@@ -163,7 +163,6 @@ function update(engine){
 var remainIframes=0;
 function init(){
   window.addEventListener('error', function(e) {
-    console.log(e.target);
     setTimeout(function(){
       var temp=e.target.src;
       e.target.src='/images/loader.svg';
