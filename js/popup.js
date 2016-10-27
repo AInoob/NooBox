@@ -150,7 +150,18 @@ function fetchBlob(uri, callback) {
 var reader = new window.FileReader();
 reader.onloadend = function() {
  base64data = reader.result;                
- chrome.extension.sendMessage({job: 'image_search_upload',data:base64data });
+ //To-do
+ if(false){
+   chrome.notifications.create({
+     type:'basic',
+     iconUrl: '/images/icon_128.png',
+     title: chrome.i18n.getMessage("Reverse_Image_Search"),
+     message: chrome.i18n.getMessage("Not_An_Image_Type")
+   });
+ }
+ else{
+   chrome.extension.sendMessage({job: 'image_search_upload',data:base64data });
+ }
 }
 
 function setDB(key,value,callback){

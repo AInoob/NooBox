@@ -237,8 +237,11 @@ NooBox.Image.imageFromURL=function(info,tab){
     info.blob=blob;
     NooBox.Image.result[cursor].imageUrl='blob';
     NooBox.Image.result[cursor].blob=blob;
+    NooBox.Image.imageFromURLHelper(cursor,info,-1);
   }
-  NooBox.Image.imageFromURLHelper(cursor,info,-1);
+  else{
+    NooBox.Image.imageFromURLHelper(cursor,info,-1);
+  }
 }
 
 NooBox.Image.imageFromURLHelper=function(cursor,info,i,state){
@@ -695,6 +698,27 @@ function setIfNull(key,setValue,callback){
 }
 
 function setDB(key,value,callback){
+  /*var indexedDB = window.indexedDB;
+  var open = indexedDB.open("NooBox", 1);
+  open.onupgradeneeded = function() {
+    var db = open.result;
+    var store = db.createObjectStore("Store", {keyPath: "key"});
+    //var index = store.createIndex("keyIndex", ["key"]);
+  };
+  open.onsuccess = function() {
+    var db = open.result;
+    var tx = db.transaction("Store", "readwrite");
+    var store = tx.objectStore("Store");
+    //var index = store.index("keyIndex");
+    var action1=store.put({key:key, value:value});
+    action1.onsuccess=function(){
+      console.log('settDB done');
+    }
+    action1.onerror=function(){
+      console.log('setDB fail');
+    }
+  }
+  */
   localStorage.setItem(key,value);
   callback();
 }
@@ -718,7 +742,11 @@ function get(key,callback){
   });
 }
 function dataURItoBlob(dataURI) {
-  var byteString = atob(dataURI.split(',')[1]);
+  try{
+    var byteString = atob(dataURI.split(',')[1]);
+  }catch(e){
+    console.log(e);
+  }
   var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
   var ab = new ArrayBuffer(byteString.length);
   var ia = new Uint8Array(ab);
