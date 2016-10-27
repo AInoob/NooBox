@@ -141,17 +141,28 @@ function update(engine){
       setTimeout(function(){
         remainIframes=0;
       },1000);
-      if((!isDataURI)&&$('.websiteLink').length==0){
-        var img=$('#imageInput')[0];
-        var workerCanvas = document.createElement('canvas'),
-        workerCtx = workerCanvas.getContext('2d');
-        workerCanvas.width = img.naturalWidth;
-        workerCanvas.height = img.naturalHeight;
-        workerCtx.drawImage(img, 0, 0);
-        var imgDataURI = workerCanvas.toDataURL();
-        chrome.runtime.sendMessage({job:'image_search_re_search',cursor:parameters.cursor,data:imgDataURI},function(response){
-          window.close();
+      if((!isDataURI)){
+        getImageSearchEngines(ids,function(engines){
+          var noResult=true;
+          for(var i=0;i<engines.length;i++){
+            if(result[engines[i]+'Url']){
+              noResult=false;
+            }
+          }
+          if(noResult){
+            var img=$('#imageInput')[0];
+            var workerCanvas = document.createElement('canvas');
+            workerCtx = workerCanvas.getContext('2d');
+            workerCanvas.width = img.naturalWidth;
+            workerCanvas.height = img.naturalHeight;
+            workerCtx.drawImage(img, 0, 0);
+            var imgDataURI = workerCanvas.toDataURL();
+            chrome.runtime.sendMessage({job:'image_search_re_search',cursor:parameters.cursor,data:imgDataURI},function(response){
+              window.close();
+            });
+          }
         });
+        
       }
     }
     if(parameters.image.match(/^dataURI/)){
