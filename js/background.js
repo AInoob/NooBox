@@ -232,19 +232,36 @@ NooBox.Image.imageFromURL=function(info,tab){
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
   NooBox.Image.result[cursor].remains=0;
   NooBox.Image.result[cursor].finished=[];
-  var dataURI=encodeURI(info.srcUrl);
-  if(dataURI.match(/^data/)){
-    info.isDataURI=true;
-    info.dataURI=dataURI;
-    NooBox.Image.result[cursor].imageUrl='dataURI';
-    NooBox.Image.result[cursor].dataURI=dataURI;
-    NooBox.Image.imageFromURLHelper(cursor,info,-1);
-  }
-  else{
-    NooBox.Image.imageFromURLHelper(cursor,info,-1);
-  }
+  getImageSearchEngines(NooBox.Image.ids,function(engines){
+    NooBox.Image.result[cursor].remains=engines.length;
+    var dataURI=encodeURI(info.srcUrl);
+    if(dataURI.match(/^data/)){
+      info.isDataURI=true;
+      info.dataURI=dataURI;
+      NooBox.Image.result[cursor].imageUrl='dataURI';
+      NooBox.Image.result[cursor].dataURI=dataURI;
+      NooBox.Image.POST.general(cursor,engines,info.dataURI);
+    }
+    else{
+      for(var i=0;i<engines.length;i++){
+        var engine=engines[i];
+        var url2=NooBox.Image.apiUrls[engine]+info.srcUrl;
+        NooBox.Image.result[cursor][engine+'Url']=url;
+        $.ajax({url:url2}).done(function(data){
+          NooBox.Image.fetchFunctions[engine](cursor,data);
+        }).fail(function(e){
+          NooBox.Image.result[cursor].remains--;
+          NooBox.Image.update(cursor,engine);
+          console.log(e);
+        });
+      }
+    }  
+    var url='/image.search.html?cursor='+cursor+'&image='+NooBox.Image.result[cursor].imageUrl;
+    chrome.tabs.create({url:url});
+    NooBox.Image.update(cursor,'none');
+  });
 }
-
+/*
 NooBox.Image.imageFromURLHelper=function(cursor,info,i,state){
   if(i<NooBox.Image.ids.length){
     if(typeof(state)!='undefined'&&state)
@@ -265,7 +282,29 @@ NooBox.Image.imageFromURLHelper=function(cursor,info,i,state){
   }
 }
 
-NooBox.Image.POST.upload=function(cursor,engine,data,callback){
+NooBox.Image.imageFromURLHelperHelper=function(engine,i,info,cursor){
+  if(info.isDataURI){
+    if(engine=='baidu'){
+      NooBox.Image.POST[engine](cursor,engine,info.dataURI,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+    }
+    else{
+      NooBox.Image.POST.general(cursor,engine,info.dataURI,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+    }
+  }
+  else{
+    var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
+    NooBox.Image.result[cursor][engine+'Url']=url;
+    $.ajax({url:url}).done(function(data){
+      NooBox.Image.fetchFunctions[engine](cursor,data);
+    }).fail(function(e){
+      NooBox.Image.result[cursor].remains--;
+      NooBox.Image.update(cursor,engine);
+      console.log(e);
+    });
+  }
+}*/
+
+NooBox.Image.POST.upload=function(cursor,data,callback){
   var formData=new FormData();
   formData.append('upload',dataURItoBlob(data),'NooBox');
   $.ajax({
@@ -284,14 +323,17 @@ NooBox.Image.POST.upload=function(cursor,engine,data,callback){
   });
 }
 
-NooBox.Image.POST.general=function(cursor,engine,data,fetchFunction){
+NooBox.Image.POST.general=function(cursor,engines,data){
   if(NooBox.Image.result[cursor].uploadedURL){
-    var url=NooBox.Image.apiUrls[engine]+NooBox.Image.result[cursor].uploadedURL;
-    NooBox.Image.result[cursor][engine+'Url']=url;
-    $.ajax({url:url}).done(fetchFunction);
+    for(var i=0;i<engines.length;i++){
+      var engine=engines[i];
+      var url=NooBox.Image.apiUrls[engine]+NooBox.Image.result[cursor].uploadedURL;
+      NooBox.Image.result[cursor][engine+'Url']=url;
+      $.ajax({url:url}).done(NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+    }
   }
   else{
-    NooBox.Image.POST.upload(cursor,engine,data,NooBox.Image.POST.general.bind(null,cursor,engine,null,fetchFunction));
+    NooBox.Image.POST.upload(cursor,data,NooBox.Image.POST.general.bind(null,cursor,engines,null));
   }
 }
 
@@ -327,29 +369,8 @@ NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
   return data.join('');
 }
 
-NooBox.Image.imageFromURLHelperHelper=function(engine,i,info,cursor){
-  if(info.isDataURI){
-    if(engine=='baidu'){
-      NooBox.Image.POST[engine](cursor,engine,info.dataURI,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
-    }
-    else{
-      NooBox.Image.POST.general(cursor,engine,info.dataURI,NooBox.Image.fetchFunctions[engine].bind(null,cursor));
-    }
-  }
-  else{
-    var url=NooBox.Image.apiUrls[engine]+info.srcUrl;
-    NooBox.Image.result[cursor][engine+'Url']=url;
-    $.ajax({url:url}).done(function(data){
-      NooBox.Image.fetchFunctions[engine](cursor,data);
-    }).fail(function(e){
-      NooBox.Image.result[cursor].remains--;
-      NooBox.Image.update(cursor,engine);
-      console.log(e);
-    });
-  }
-}
-
 NooBox.Image.update=function(i,engine){
+  console.log(NooBox.Image.result[i].remains);
   /*setDB('NooBox.Image.result',
     JSON.stringify(NooBox.Image.result),
     function(){

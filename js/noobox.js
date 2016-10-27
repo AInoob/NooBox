@@ -164,3 +164,21 @@ function download(filename, text) {
 
   document.body.removeChild(element);
 }
+
+function getImageSearchEngines(list,callback,i,result,shared){
+  if(i==null){
+    i=-1;
+    shared=[];
+  }
+  else{
+    if(result){
+      shared.push(list[i]);
+    }
+    if(i==list.length-1){
+      callback(shared);
+    }
+  }
+  if(i<list.length-1){
+    isOn("imageSearchUrl_"+list[i+1],getImageSearchEngines.bind(null,list,callback,i+1,true,shared),getImageSearchEngines.bind(null,list,callback,i+1,false,shared));
+  }
+}
