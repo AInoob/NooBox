@@ -16,7 +16,7 @@
     "128": "images/icon_128.png"
   },
   "background": {
-    "scripts":["thirdParty/jquery.min.js","js/background.js"]
+    "scripts":["thirdParty/jquery.min.js","js/noobox.js","js/background.js"]
   },
   "options_page": "options.html",
   "content_scripts":[
