@@ -1,5 +1,6 @@
 var parameters={};
 var ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
+var activeEngines;
 var result;
 function getParameters(){
   var temp=window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -68,6 +69,7 @@ function display(engine){
 
   }
   else{
+    console.log(engine);
     if(engine!="none"){
       $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
         $('#moreResult'+engine).find('.moreResultLoader').hide();
@@ -138,7 +140,7 @@ function update(engine){
   getDB('NooBox.Image.result_'+parameters.cursor,function(value){
     result=value;
     display(engine);
-    if(result.remains==0){
+    if(result.remains==0||(result.remains==-1&&((!activeEngines)||activeEngines.indexOf('saucenao')!=-1)&&result.finished.indexOf('saucenao')==-1)){
       setTimeout(function(){
         remainIframes=0;
       },1000);
@@ -171,6 +173,9 @@ function update(engine){
 
 var remainIframes=0;
 function init(){
+  getImageSearchEngines(ids,function(engines){
+    activeEngines=engines;
+  });
   window.addEventListener('error', function(e) {
     setTimeout(function(){
       var temp=e.target.src;
