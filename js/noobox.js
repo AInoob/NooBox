@@ -80,6 +80,7 @@ function getDB(key,callback){
       var tx = db.transaction("Store", "readwrite");
       var store = tx.objectStore("Store");
       //var index = store.index("keyIndex");
+      console.log(key);
       var action1=store.get(key);
       action1.onsuccess=function(e){
         callback(e.target.result.value);

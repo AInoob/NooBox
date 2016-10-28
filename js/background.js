@@ -4,6 +4,7 @@ var defaultValues=[
   ['unitsConverter','-1'],
   ['crypter','1'],
   ['webmaster','1'],
+  ['general','1'],
   ['background','-1'],
   ['imageSearchUrl_google','1'],	
   ['imageSearchUrl_baidu','1'],	
@@ -12,9 +13,12 @@ var defaultValues=[
   ['imageSearchUrl_yandex','1'],	
   ['imageSearchUrl_saucenao','1'],	
   ['imageSearchUrl_iqdb','-1'],	
+  ['extractImage','1'],
 ];
 var defaultInitNum=0;
 var NooBox=NooBox||{};
+
+NooBox.General={};
 
 //Crypter
 NooBox.Crypter={};
@@ -170,6 +174,27 @@ NooBox.Image.screenshotSearch=function(){
     chrome.runtime.sendMessage({job:"image_dataUrl",data:"dataUrl"});
   });
 }
+NooBox.General.extractImage=function(info,tab){
+  chrome.tabs.sendMessage(tab.id,{job:"extractImage"});
+};
+NooBox.General.updateContextMenu=function(){
+  isOn('extractImage',
+    function(){
+    if(!NooBox.Image.handle2){
+      NooBox.Image.handle2=chrome.contextMenus.create({
+        "title": chrome.i18n.getMessage("extract_image"),
+        "contexts": ["page","selection","frame","link","editable","video","audio"],
+        "onclick": NooBox.General.extractImage
+      });
+    }},
+    function(){
+      if(NooBox.Image.handle2){
+        chrome.contextMenus.remove(NooBox.Image.handle2);
+      }
+    }
+  );
+}
+  
 NooBox.Image.apiUrls={
   google:   "https://www.google.com/searchbyimage?&image_url=",
   baidu:    "http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=",
@@ -189,22 +214,10 @@ NooBox.Image.updateContextMenu=function(){
           "onclick": NooBox.Image.imageFromURL
         });
       }
-      /*
-      if(!NooBox.Image.handle2){
-        NooBox.Image.handle2=chrome.contextMenus.create({
-          "title": chrome.i18n.getMessage("screenshot_and_search"),
-          "contexts": ["page"],
-          "onclick": NooBox.Image.screenshotSearch
-        });
-      }
-      */
     },
     function(){
       if(NooBox.Image.handle){
         chrome.contextMenus.remove(NooBox.Image.handle);
-      }
-      if(NooBox.Image.handle2){
-        chrome.contextMenus.remove(NooBox.Image.handle2);
       }
     }
   );
@@ -604,6 +617,7 @@ function initDefault(i){
     setIfNull(defaultValues[i][0],defaultValues[i][1],initDefault.bind(null,i+1));
   NooBox.Image.updateContextMenu();
   NooBox.Crypter.updateContextMenu();
+  NooBox.General.updateContextMenu();
 }
 
 function init(){
@@ -640,6 +654,12 @@ document.addEventListener('DOMContentLoaded', function(){
         else if(request.job=="webmaster_sitemap_get"){
           var temp=JSON.parse(request.data);
           NooBox.Webmaster.generateSitemap(temp.URL,temp.maxDepth);
+        }
+        else if(request.job=="general"){
+          NooBox.General.updateContextMenu();
+        }
+        else if(request.job=="extractImage"){
+          NooBox.General.updateContextMenu();
         }
       }
     });
