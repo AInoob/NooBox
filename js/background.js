@@ -116,7 +116,6 @@ NooBox.Webmaster.parseBrokenLinks=function(brokenLinks){
       s+='    '+refList[i]+'\n';
     }
   });
-  //for(var [link,refList] of brokenLinks){
   return s;
 }
 NooBox.Webmaster.toXML=function(linkSet){
@@ -131,15 +130,6 @@ NooBox.Webmaster.toXML=function(linkSet){
     url.appendChild(loc);
     urlSet.appendChild(url);
   });
-  /*
-  for(var elem of linkSet){
-    var url=xmlDoc.createElement('url');
-    var loc=xmlDoc.createElement('loc');
-    var urlText=xmlDoc.createTextNode(elem);
-    loc.appendChild(urlText);
-    url.appendChild(loc);
-    urlSet.appendChild(url);
-  }*/
   var xml='<?xml version="1.0" encoding="UTF-8"?>'+(new XMLSerializer()).serializeToString(urlSet)
   return xml;
 }
@@ -240,6 +230,9 @@ NooBox.Image.imageFromURL=function(info,tab){
       info.dataURI=dataURI;
       NooBox.Image.result[cursor].imageUrl='dataURI';
       NooBox.Image.result[cursor].dataURI=dataURI;
+      if(engines.indexOf('baidu')!=-1){
+        NooBox.Image.POST.baidu(cursor,info.dataURI);
+      }
       NooBox.Image.POST.general(cursor,engines,info.dataURI);
     }
     else{
@@ -285,6 +278,9 @@ NooBox.Image.POST.general=function(cursor,engines,data){
   if(NooBox.Image.result[cursor].uploadedURL){
     for(var i=0;i<engines.length;i++){
       var engine=engines[i];
+      if(engine=='baidu'){
+        continue;
+      }
       var url=NooBox.Image.apiUrls[engine]+NooBox.Image.result[cursor].uploadedURL;
       NooBox.Image.result[cursor][engine+'Url']=url;
       $.ajax({url:url}).done(NooBox.Image.fetchFunctions[engine].bind(null,cursor));
@@ -295,7 +291,7 @@ NooBox.Image.POST.general=function(cursor,engines,data){
   }
 }
 
-NooBox.Image.POST.baidu=function(cursor,engine,data,fetchFunction){
+NooBox.Image.POST.baidu=function(cursor,data){
   $.ajax({
   type:'POST',
   url:'http://stu.baidu.com/i?appid=4',
@@ -303,7 +299,7 @@ NooBox.Image.POST.baidu=function(cursor,engine,data,fetchFunction){
   data:NooBox.Image.DataWrapper.baidu({data:data,name:'dragimage'},'----WebKitFormBoundary')
   }).done(function(data){
     NooBox.Image.result[cursor]['baiduUrl']=data;
-    $.ajax({url:data}).done(fetchFunction);
+    $.ajax({url:data}).done(NooBox.Image.fetchFunctions.baidu.bind(null,cursor));
   });
 }
 
@@ -329,12 +325,6 @@ NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
 
 NooBox.Image.update=function(i,engine){
   console.log(NooBox.Image.result[i].remains);
-  /*setDB('NooBox.Image.result',
-    JSON.stringify(NooBox.Image.result),
-    function(){
-      chrome.runtime.sendMessage({job:'image_result_update',engine:engine,cursor:i}, function(response) {});
-    }
-  );*/
   setDB('NooBox.Image.result_'+i,
     NooBox.Image.result[i],
     function(){
@@ -654,4 +644,3 @@ document.addEventListener('DOMContentLoaded', function(){
       }
     });
 });
-
