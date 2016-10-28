@@ -112,7 +112,7 @@ function updateImageSize(){
   $('.websiteLink').each(function(){
     var img=$(this).find('.websiteImage')[0];
     if(img){
-      $(this).find('.websiteImageSize').text(img.naturalWidth+' × '+img.naturalHeight+' - ');
+      $(this).find('.websiteImageSize').text(img.naturalWidth+' * '+img.naturalHeight+' - ');
     }
   });
 }
