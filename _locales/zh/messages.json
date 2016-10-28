@@ -118,5 +118,11 @@
   },
   "update_browser":{
     "message":"浏览器内核版本太低，二箱受不鸟，少年快自己去更新吧~"
+  },
+  "general":{
+    "message":"通用"
+  },
+  "extract_image":{
+    "message":"提取图片"
   }
 }
