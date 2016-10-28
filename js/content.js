@@ -337,9 +337,12 @@ init=function(){
       function(request, sender, sendResponse) {
         if('job' in request){
           if(request.job=="extractImage"){
-            console.log(focus);
             var position=$(focus).offset();
             var images=[];
+            var div = $('<div class="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
+            div.append('<input type="range" class="NooBox-extractImage-range" value="1" min="0" max="10" step="1">');
+            div.append('<div class="NooBox-extractImage-switch" style="color:white;float:right;width:30%;font-size:99px";>X</>');
+            focus=$(focus).parent()[0];
             $(focus).find('*').each(function(){
               if(this.tagName=="IMG"){
                 var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
@@ -356,40 +359,37 @@ init=function(){
                 }
               }
             });
-            $(focus).parent().find('*').each(function(){
-              if(this.tagName=="IMG"){
-                var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
-                images.push(img);
-              }
-              else{
-                var bg=$(this).css('background-image');
-                if(bg){
-                  var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                  if(url!="none"){
-                    var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
-                    images.push(img);
-                  }
-                }
-              }
-            });
-            /*var temp=$(focus).find('img');
-            if(temp.length==0){
-              console.log('no ima inside');
-            }
-            else{
-              for(var i=0;i<temp.length;i++){
-                var img = $('<img src="'+temp[i].src+'" style="max-width:100%;max-height:300px" />');
-                images.push(img);
-              }
-            }*/
-            var div = $('<div class="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
-            div.append('<div class="NooBox-extractImage-switch" style="color:white;float:right;width:30%;font-size:99px";>X</>');
             var div2 = $('<div class="NooBox-extractImage-gallery" style="width:70%"></div>');
             for(var i=0;i<images.length;i++){
               div2.append(images[i]);
             }
             div.append(div2);
             $(document.body).append(div);
+            $('.NooBox-extractImage-range').on('change',function(e){
+              console.log(e.target.value);
+              var gallery=$(e.target).parent().find('.NooBox-extractImage-gallery')[0];
+              $(gallery).empty();
+              var tempFocus=focus;
+              for(var i=0;i<e.target.value;i++){
+                tempFocus=$(tempFocus).parent()[0];
+              }
+              $(tempFocus).find('*').each(function(){
+                if(this.tagName=="IMG"){
+                  var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
+                  $(gallery).append(img);
+                }
+                else{
+                  var bg=$(this).css('background-image');
+                  if(bg){
+                    var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+                    if(url!="none"){
+                      var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
+                      $(gallery).append(img);
+                    }
+                  }
+                }
+              }); 
+            });
             $('.NooBox-extractImage-switch').on('click',function(e){
               $(e.target).parent().remove();
             });
