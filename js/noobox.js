@@ -7,42 +7,12 @@ init=function(){
       element.innerHTML=chrome.i18n.getMessage(element.getAttribute('word'));
     }
   });
-  sayHiToAInoob();
 }
 
 document.addEventListener( "DOMContentLoaded", init, false );
 
 var capFirst=function(word){
   return word[0].toUpperCase()+word.slice(1);
-}
-
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-77112662-2']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-
-var sayHiToAInoob=function(){
-  get('userId',function(userId){
-    var hi={
-      userId:userId,
-      url:window.location.pathname+window.location.search,
-      title:document.title,
-      time:new Date().toLocaleString(),
-      version: "0.4.4"
-    };
-    $.ajax({
-      type:'POST',
-      url:"https://ainoob.com/api/noobox/user/",
-      data: hi
-    }).done(function(data){
-      console.log(data);
-    });
-  });
 }
 
 function isOn(key,callbackTrue,callbackFalse,param){
@@ -87,7 +57,6 @@ function setDB(key,value,callback){
     //var index = store.index("keyIndex");
     var action1=store.put({key:key, value:value});
     action1.onsuccess=function(){
-      console.log('setDB done');
       callback();
     }
     action1.onerror=function(){
@@ -113,7 +82,6 @@ function getDB(key,callback){
       //var index = store.index("keyIndex");
       var action1=store.get(key);
       action1.onsuccess=function(e){
-        console.log('getDB done');
         callback(e.target.result.value);
       }
       action1.onerror=function(){

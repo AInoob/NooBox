@@ -22,6 +22,13 @@ strong{
   clear: left;
 }
 
+.moreResultLoader{
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  background: rgba(0,0,0,0.5);
+}
+
 #imageInput{
   max-width: 100%;
   max-height: 100%;

@@ -17,49 +17,61 @@ var isDataURI=false;
 function display(engine){
   if(firstDisplay){
     firstDisplay=false;
-    $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
-    for(var i=0;i<result.finished.length;i++){
-      var engine=result.finished[i];
-    //for(engine of result.finished){
-      $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
-      remainIframes++;
-      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" id="moreResult'+engine+'" src="/thirdParty/'+engine+'.png" /></a></li>');
-      switch(engine){
-        case 'google':
-          var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
-          $('#keywords_google').append(googleKeyword);
-          displayWebsites(result.googleRelatedWebsites||[],'relatedWebsites_google');
-          displayWebsites(result.googleWebsites||[],'websites_google');
-          break;
-        case 'bing':
-          var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
-          $('#keywords_bing').append(bingKeyword);
-          break;
-        case 'baidu':
-          var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
-          $('#keywords_baidu').append(baiduKeyword);
-          displayWebsites(result.baiduRelatedWebsites||[],'relatedWebsites_baidu');
-          displayWebsites(result.baiduWebsites||[],'websites_baidu');
-          break;
-        case 'yandex':
-          displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
-          displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
-          break;
-        case 'saucenao':
-          displayWebsites(result.saucenaoRelatedWebsites||[],'relatedWebsites_saucenao');
-          displayWebsites(result.saucenaoWebsites||[],'websites_saucenao');
-          break;
-        case 'iqdb':
-          displayWebsites(result.iqdbRelatedWebsites||[],'relatedWebsites_iqdb');
-          displayWebsites(result.iqdbWebsites||[],'websites_iqdb');
-          break;
-      }
+    if(parameters.image.match(/^dataURI/)){
+      $('#imageDiv').html('<img id="imageInput" src="'+result.dataURI+'"></img>');
     }
+    else{
+      $('#imageDiv').html('<img id="imageInput" src="'+result.imageUrl+'"></img>');
+    }
+    getImageSearchEngines(ids,function(engines){
+      for(var i=0;i<engines.length;i++){
+        $('#moreResults').append('<li id="moreResult'+engines[i]+'"><a target="_blank"  href=""><img class="moreResultLoader"" src="/images/loader.svg" /><img class="moreResultsImages" id="moreResultIcon'+engines[i]+'" src="/thirdParty/'+engines[i]+'.png" /></a></li>');
+      }
+      for(var i=0;i<result.finished.length;i++){
+        var engine=result.finished[i];
+        $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
+        remainIframes++;
+        $('#moreResult'+engine).find('.moreResultLoader').hide();
+        $('#moreResult'+engine).find('a').attr('href',result[engine+'Url']);
+        switch(engine){
+          case 'google':
+            var googleKeyword=(result.googleKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.googleUrl+'">'+'(by Google)'+'</a>';
+            $('#keywords_google').append(googleKeyword);
+            displayWebsites(result.googleRelatedWebsites||[],'relatedWebsites_google');
+            displayWebsites(result.googleWebsites||[],'websites_google');
+            break;
+          case 'bing':
+            var bingKeyword=(result.bingKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.bingUrl+'">'+'(by Bing)'+'</a>';
+            $('#keywords_bing').append(bingKeyword);
+            break;
+          case 'baidu':
+            var baiduKeyword=(result.baiduKeyword||'(None)')+'&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank"  href="'+result.baiduUrl+'">'+'(by Baidu)'+'</a>';
+            $('#keywords_baidu').append(baiduKeyword);
+            displayWebsites(result.baiduRelatedWebsites||[],'relatedWebsites_baidu');
+            displayWebsites(result.baiduWebsites||[],'websites_baidu');
+            break;
+          case 'yandex':
+            displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
+            displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+            break;
+          case 'saucenao':
+            displayWebsites(result.saucenaoRelatedWebsites||[],'relatedWebsites_saucenao');
+            displayWebsites(result.saucenaoWebsites||[],'websites_saucenao');
+            break;
+          case 'iqdb':
+            displayWebsites(result.iqdbRelatedWebsites||[],'relatedWebsites_iqdb');
+            displayWebsites(result.iqdbWebsites||[],'websites_iqdb');
+            break;
+        }
+      }
+    });
+
   }
   else{
-    if(engine!="none"&&(!$('#moreResult'+engine).length)){
+    if(engine!="none"){
       $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
-      $('#moreResults').append('<li><a target="_blank"  href="'+result[engine+'Url']+'"><img class="moreResultsImages" id="moreResult'+engine+'" src="/thirdParty/'+engine+'.png" /></a></li>');
+        $('#moreResult'+engine).find('.moreResultLoader').hide();
+        $('#moreResult'+engine).find('a').attr('href',result[engine+'Url']);
       remainIframes++;
     }
     switch(engine){
@@ -122,21 +134,10 @@ function displayWebsites(websiteList,id){
   $('#'+id).append(html);
 }
 
-function displayLoader(){
-  var i=result.remains;
-  for(var j=1;j<=ids.length;j++){
-    $(".loading"+j).hide();
-  }
-  for(var j=1;j<=i;j++){
-    $(".loading"+j).show();
-  }
-}
-
 function update(engine){
   getDB('NooBox.Image.result_'+parameters.cursor,function(value){
     result=value;
     display(engine);
-    displayLoader();
     if(result.remains==0){
       setTimeout(function(){
         remainIframes=0;
@@ -164,9 +165,6 @@ function update(engine){
         });
         
       }
-    }
-    if(parameters.image.match(/^dataURI/)){
-      $('#imageDiv').html('<img id="imageInput" src="'+result.dataURI+'"></img>');
     }
   });
 }
