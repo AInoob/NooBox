@@ -411,7 +411,7 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
     console.log(e);
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('google');
-    NooBox.Image.update(cursor,'none');
+    NooBox.Image.update(cursor,'google');
   }
 };
 
@@ -472,7 +472,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
     console.log(e);
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('baidu');
-    NooBox.Image.update(cursor,'none');
+    NooBox.Image.update(cursor,'baidu');
   }
 };
 
@@ -493,7 +493,7 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('bing');
-    NooBox.Image.update(cursor,'none');
+    NooBox.Image.update(cursor,'bing');
     console.log(e);
   }
 };
@@ -526,7 +526,7 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('yandex');
-    NooBox.Image.update(cursor,'none');
+    NooBox.Image.update(cursor,'yandex');
     console.log(e);
   }
 };
@@ -572,7 +572,7 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('saucenao');
-    NooBox.Image.update(cursor,'none');
+    NooBox.Image.update(cursor,'saucenao');
     console.log(e);
   }
 };
@@ -605,7 +605,7 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('iqdb');
-    NooBox.Image.update(cursor,'none');
+    NooBox.Image.update(cursor,'iqdb');
     console.log(e);
   }
 };
