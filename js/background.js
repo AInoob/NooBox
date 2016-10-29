@@ -292,13 +292,14 @@ NooBox.Image.POST.upload=function(cursor,data,callback){
 NooBox.Image.POST.general=function(cursor,engines,data){
   if(NooBox.Image.result[cursor].uploadedURL){
     for(var i=0;i<engines.length;i++){
-      var engine=engines[i];
-      if(engine=='baidu'){
-        continue;
-      }
-      var url=NooBox.Image.apiUrls[engine]+NooBox.Image.result[cursor].uploadedURL;
-      NooBox.Image.result[cursor][engine+'Url']=url;
-      $.ajax({url:url}).done(NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+      (function(engine){
+        var engine=engines[i];
+        if(engine!='baidu'){
+          var url=NooBox.Image.apiUrls[engine]+NooBox.Image.result[cursor].uploadedURL;
+          NooBox.Image.result[cursor][engine+'Url']=url;
+          $.ajax({url:url}).done(NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+        }
+      })(engines[i])
     }
   }
   else{
