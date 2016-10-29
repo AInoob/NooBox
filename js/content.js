@@ -327,7 +327,27 @@ function isOn(key,callbackTrue,callbackFalse,param){
 }
 
 var focus;
-
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-77112662-2']);
+_gaq.push(['_trackPageview']);
+var sayHiToAInoob=function(){
+  get('userId',function(userId){
+    var hi={
+      userId:userId,
+    url:window.location.pathname+window.location.search,
+    title:document.title,
+    time:new Date().toLocaleString(),
+    version: "0.4.9"
+    };
+    $.ajax({
+      type:'POST',
+      url:"https://ainoob.com/api/noobox/user/",
+      data: hi
+    }).done(function(data){
+      console.log(data);
+    });
+  });
+}
 init=function(){
   window.oncontextmenu = function (e){
     focus=e.target;
@@ -335,8 +355,15 @@ init=function(){
   isOn("extractImage",function(){
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
+
         if('job' in request){
           if(request.job=="extractImage"){
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = 'https://ssl.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+            sayHiToAInoob();
             var position=$(focus).offset();
             var images=[];
             var div = $('<div class="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});

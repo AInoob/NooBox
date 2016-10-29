@@ -11,7 +11,7 @@ var defaultValues=[
   ['imageSearchUrl_tineye','-1'],	
   ['imageSearchUrl_bing','1'],	
   ['imageSearchUrl_yandex','1'],	
-  ['imageSearchUrl_saucenao','1'],	
+  ['imageSearchUrl_saucenao','-1'],	
   ['imageSearchUrl_iqdb','-1'],	
   ['extractImage','1'],
 ];
