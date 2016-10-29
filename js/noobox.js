@@ -43,6 +43,9 @@ function setIfNull(key,setValue,callback){
 }
 
 function setDB(key,value,callback){
+  console.log('setDB');
+  console.log(key);
+  console.log(value);
   var indexedDB = window.indexedDB;
   var open = indexedDB.open("NooBox", 1);
   open.onupgradeneeded = function() {
@@ -67,6 +70,8 @@ function setDB(key,value,callback){
 }
 
 function getDB(key,callback){
+  console.log('getDB');
+  console.log(key);
   if(callback){
     var indexedDB = window.indexedDB;
     var open = indexedDB.open("NooBox", 1);
@@ -83,6 +88,8 @@ function getDB(key,callback){
       console.log(key);
       var action1=store.get(key);
       action1.onsuccess=function(e){
+        console.log(key);
+        console.log(e.target.result);
         callback(e.target.result.value);
       }
       action1.onerror=function(){

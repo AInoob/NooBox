@@ -161,7 +161,7 @@ function update(engine){
             workerCtx.drawImage(img, 0, 0);
             var imgDataURI = workerCanvas.toDataURL();
             chrome.runtime.sendMessage({job:'image_search_re_search',cursor:parameters.cursor,data:imgDataURI},function(response){
-              window.close();
+              //window.close();
             });
           }
         });

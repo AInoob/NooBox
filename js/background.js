@@ -250,16 +250,18 @@ NooBox.Image.imageFromURL=function(info,tab){
     }
     else{
       for(var i=0;i<engines.length;i++){
-        var engine=engines[i];
-        var url2=NooBox.Image.apiUrls[engine]+info.srcUrl;
-        NooBox.Image.result[cursor][engine+'Url']=url;
-        $.ajax({url:url2}).done(function(data){
-          NooBox.Image.fetchFunctions[engine](cursor,data);
-        }).fail(function(e){
-          NooBox.Image.result[cursor].remains--;
-          NooBox.Image.update(cursor,engine);
-          console.log(e);
-        });
+        (function(cursor,engine){
+          var url2=NooBox.Image.apiUrls[engine]+info.srcUrl;
+          NooBox.Image.result[cursor][engine+'Url']=url2;
+          $.ajax({url:url2}).done(function(data){
+            console.log(engine+ "done");
+            NooBox.Image.fetchFunctions[engine](cursor,data);
+          }).fail(function(e){
+            NooBox.Image.result[cursor].remains--;
+            NooBox.Image.update(cursor,engine);
+            console.log(e);
+          });
+        })(cursor,engines[i]);
       }
     }  
     var url='/image.search.html?cursor='+cursor+'&image='+NooBox.Image.result[cursor].imageUrl;
@@ -348,6 +350,7 @@ NooBox.Image.update=function(i,engine){
 
 
 NooBox.Image.fetchFunctions.google=function(cursor,data){
+  console.log('google '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
@@ -416,6 +419,7 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.baidu=function(cursor,data){
+  console.log('baidu '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
@@ -482,6 +486,7 @@ NooBox.Image.fetchFunctions.tineye=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.bing=function(cursor,data){
+  console.log('bing '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var keyword=$(data).find('.query').text();
@@ -499,6 +504,7 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.yandex=function(cursor,data){
+  console.log('yandex '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
@@ -518,6 +524,7 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
       website.searchEngine='yandex';
       websites.push(website);
     }
+    console.log(websites);
     NooBox.Image.result[cursor].yandexWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('yandex');
@@ -532,6 +539,7 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
+  console.log('saucenao '+cursor);
   try{
     data=data.replace(/ src=/g," nb-src=");
     var page=$(data);
@@ -578,6 +586,7 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
+  console.log('iqdb '+cursor);
   try{
     data=data.replace(/ src=\'\/([^\/])/g," nb-src='$1");
     data=data.replace(/ src=\"\/\//g,' nb1-src="');
