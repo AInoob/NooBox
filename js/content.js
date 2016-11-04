@@ -334,10 +334,10 @@ var sayHiToAInoob=function(){
   get('userId',function(userId){
     var hi={
       userId:userId,
-    url:window.location.pathname+window.location.search,
+    url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.4.9.5"
+    version: "0.5.1"
     };
     $.ajax({
       type:'POST',
@@ -367,7 +367,13 @@ init=function(){
             var position=$(focus).offset();
             var images=[];
             var div = $('<div class="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
-            div.append('<input type="range" class="NooBox-extractImage-range" value="1" min="0" max="10" step="1">');
+            var max=1;
+            var tempFocus=focus;
+            while(tempFocus.tagName!='BODY'){
+              tempFocus=$(tempFocus).parent()[0];
+              max++;
+            }
+            div.append('<input type="range" class="NooBox-extractImage-range" value="1" min="1" max="'+max+'" step="1">');
             div.append('<div class="NooBox-extractImage-switch" style="color:white;float:right;width:30%;font-size:99px";>X</>');
             focus=$(focus).parent()[0];
             $(focus).find('*').each(function(){
@@ -396,11 +402,11 @@ init=function(){
               console.log(e.target.value);
               var gallery=$(e.target).parent().find('.NooBox-extractImage-gallery')[0];
               $(gallery).empty();
-              var tempFocus=focus;
+              var tempFocus2=focus;
               for(var i=0;i<e.target.value;i++){
-                tempFocus=$(tempFocus).parent()[0];
+                tempFocus2=$(tempFocus2).parent()[0];
               }
-              $(tempFocus).find('*').each(function(){
+              $(tempFocus2).find('*').each(function(){
                 if(this.tagName=="IMG"){
                   var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
                   $(gallery).append(img);
