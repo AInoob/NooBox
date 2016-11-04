@@ -327,6 +327,9 @@ function isOn(key,callbackTrue,callbackFalse,param){
 }
 
 var focus;
+var imgSet;
+var notImgSet=new Set();
+var isImgSet=new Set();
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-77112662-2']);
 _gaq.push(['_trackPageview']);
@@ -348,14 +351,73 @@ var sayHiToAInoob=function(){
     });
   });
 }
-init=function(){
-  window.oncontextmenu = function (e){
-    focus=e.target;
+
+function getImages(){
+  var val=$('#NooBox-extractImage-selector-range').val();
+  var gallery=$('#NooBox-extractImage-gallery')[0];
+  $(gallery).empty();
+  var imgSet=new Set();
+  var tempFocus2=focus;
+  for(var i=0;i<val;i++){
+    tempFocus2=$(tempFocus2).parent()[0];
   }
+  $(tempFocus2).find('*').each(function(){
+    if(this.tagName=="IMG"){
+      //var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
+      imgSet.add(this.src);
+    }
+    else{
+      var bg=$(this).css('background-image');
+      if(bg){
+        var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+        if(url!="none"&&(!url.match(/^gradient/))&&(!url.match(/^linear-gradient/))){
+          //var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
+          imgSet.add(url);
+        }
+      }
+    }
+    if(this.tagName=='A'){
+      if(isImgSet.has(this.href)){
+        imgSet.add(this.href);
+      }
+      else{
+        if(!notImgSet.has(this.href)){
+          getValidImage(this.href);
+        }
+      }
+    }
+  });
+  imgSet.forEach(function(elem){
+    $(gallery).append('<img src="'+elem+'" style="max-width:100%;max-height:300px" />');
+  });
+  location.href = "#NooBox-extractImage-gallery"; 
+}
+
+function getValidImage(url) {
+  if(url&&url.length>0&&(!notImgSet.has(url))){
+    var img=$('<img src="'+url+'">');
+    $(img).on('error',function(){
+      notImgSet.add(url);
+    });
+    $(img).on('load',function(){
+      if(!imgSet.has(url)){
+        console.log(url+' is an image');
+        var gallery=$('#NooBox-extractImage-gallery')[0];
+        imgSet.add(url);
+        isImgSet.add(url);
+        $(gallery).append('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
+      }
+    });
+  }
+}
+
+window.oncontextmenu = function (e){
+  focus=e.target;
+}
+init=function(){
   isOn("extractImage",function(){
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
-
         if('job' in request){
           if(request.job=="extractImage"){
             (function() {
@@ -366,64 +428,38 @@ init=function(){
             sayHiToAInoob();
             var position=$(focus).offset();
             var images=[];
-            var div = $('<div class="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
+            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
             var max=1;
             var tempFocus=focus;
             while(tempFocus.tagName!='BODY'){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<input type="range" class="NooBox-extractImage-range" value="1" min="1" max="'+max+'" step="1">');
-            div.append('<div class="NooBox-extractImage-switch" style="color:white;float:right;width:30%;font-size:99px";>X</>');
+            div.append('<span id="NooBox-extractImage-selector-left" style="margin-top:-40px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:-40px;display:block;float:left;color:white;font-size:60px">></span>');
+            div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:fixed;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8)">X</>');
+            div.append('<div style="clear:both"></div>');
             focus=$(focus).parent()[0];
-            $(focus).find('*').each(function(){
-              if(this.tagName=="IMG"){
-                var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
-                images.push(img);
-              }
-              else{
-                var bg=$(this).css('background-image');
-                if(bg){
-                  var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                  if(url!="none"){
-                    var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
-                    images.push(img);
-                  }
-                }
-              }
-            });
-            var div2 = $('<div class="NooBox-extractImage-gallery" style="width:70%"></div>');
-            for(var i=0;i<images.length;i++){
-              div2.append(images[i]);
-            }
+            var div2 = $('<div id="NooBox-extractImage-gallery" style="width:70%"></div>');
             div.append(div2);
             $(document.body).append(div);
-            $('.NooBox-extractImage-range').on('change',function(e){
-              console.log(e.target.value);
-              var gallery=$(e.target).parent().find('.NooBox-extractImage-gallery')[0];
-              $(gallery).empty();
-              var tempFocus2=focus;
-              for(var i=0;i<e.target.value;i++){
-                tempFocus2=$(tempFocus2).parent()[0];
-              }
-              $(tempFocus2).find('*').each(function(){
-                if(this.tagName=="IMG"){
-                  var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
-                  $(gallery).append(img);
-                }
-                else{
-                  var bg=$(this).css('background-image');
-                  if(bg){
-                    var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                    if(url!="none"){
-                      var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
-                      $(gallery).append(img);
-                    }
-                  }
-                }
-              }); 
+            getImages();
+            $('#NooBox-extractImage-selector-left').on('click',function(e){
+              var val=parseInt($('.NooBox-extractImage-selector-range').val());
+              val--;
+              $('#NooBox-extractImage-selector-range').val(val);
+              getImages();
             });
-            $('.NooBox-extractImage-switch').on('click',function(e){
+            $('#NooBox-extractImage-selector-right').on('click',function(e){
+              var val=parseInt($('#NooBox-extractImage-selector-range').val());
+              val++;
+              $('#NooBox-extractImage-selector-range').val(val);
+              getImages();
+            });
+            $('#NooBox-extractImage-selector-range').on('change',function(e){
+              getImages();
+            });
+
+            $('#NooBox-extractImage-switch').on('click',function(e){
               $(e.target).parent().remove();
             });
           }
