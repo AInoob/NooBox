@@ -15,7 +15,7 @@ var sayHiToAInoob=function(){
       url:window.location.pathname+window.location.search,
       title:document.title,
       time:new Date().toLocaleString(),
-      version: "0.4.9.5"
+      version: "0.5.1"
     };
     $.ajax({
       type:'POST',
