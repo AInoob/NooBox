@@ -182,7 +182,7 @@ NooBox.General.updateContextMenu=function(){
     function(){
     if(!NooBox.Image.handle2){
       NooBox.Image.handle2=chrome.contextMenus.create({
-        "title": chrome.i18n.getMessage("extract_image"),
+        "title": chrome.i18n.getMessage("extract_images"),
         "contexts": ["page","selection","frame","link","editable","video","audio"],
         "onclick": NooBox.General.extractImage
       });
