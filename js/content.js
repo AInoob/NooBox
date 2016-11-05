@@ -326,7 +326,7 @@ function isOn(key,callbackTrue,callbackFalse,param){
   });
 }
 
-var focus;
+var focus=document.body;
 var imgSet;
 var notImgSet=new Set();
 var isImgSet=new Set();
@@ -340,12 +340,13 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.5.1"
+    version: "0.5.2"
     };
     $.ajax({
       type:'POST',
       url:"https://ainoob.com/api/noobox/user/",
-      data: hi
+      contentType: "application/json",
+      data: JSON.stringify(hi)
     }).done(function(data){
       console.log(data);
     });
@@ -390,7 +391,7 @@ function getImages(){
   imgSet.forEach(function(elem){
     $(gallery).append('<img src="'+elem+'" style="max-width:100%;max-height:300px" />');
   });
-  location.href = "#NooBox-extractImage-gallery"; 
+  //location.href = "#NooBox-extractImage-selector-range"; 
 }
 
 function getValidImage(url) {
@@ -435,8 +436,8 @@ init=function(){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<span id="NooBox-extractImage-selector-left" style="margin-top:-40px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:-40px;display:block;float:left;color:white;font-size:60px">></span>');
-            div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:fixed;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8)">X</>');
+            div.append('<span id="NooBox-extractImage-selector-left" style="margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
+            div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:fixed;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
             div.append('<div style="clear:both"></div>');
             focus=$(focus).parent()[0];
             var div2 = $('<div id="NooBox-extractImage-gallery" style="width:70%"></div>');
