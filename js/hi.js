@@ -15,12 +15,13 @@ var sayHiToAInoob=function(){
       url:window.location.pathname+window.location.search,
       title:document.title,
       time:new Date().toLocaleString(),
-      version: "0.5.1"
+      version: "0.5.2"
     };
     $.ajax({
       type:'POST',
       url:"https://ainoob.com/api/noobox/user/",
-      data: hi
+      contentType: "application/json",
+      data: JSON.stringify(hi)
     }).done(function(data){
       console.log(data);
     });

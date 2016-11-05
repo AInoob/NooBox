@@ -90,7 +90,12 @@ function getDB(key,callback){
       action1.onsuccess=function(e){
         console.log(key);
         console.log(e.target.result);
-        callback(e.target.result.value);
+        if(e.target.result){
+          callback(e.target.result.value);
+        }
+        else{
+          callback(null);
+        }
       }
       action1.onerror=function(){
         console.log('getDB fail');
