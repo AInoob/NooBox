@@ -254,7 +254,6 @@ NooBox.Image.imageFromURL=function(info,tab){
           var url2=NooBox.Image.apiUrls[engine]+info.srcUrl;
           NooBox.Image.result[cursor][engine+'Url']=url2;
           $.ajax({url:url2}).done(function(data){
-            console.log(engine+ "done");
             NooBox.Image.fetchFunctions[engine](cursor,data);
           }).fail(function(e){
             NooBox.Image.result[cursor].remains--;
@@ -340,7 +339,6 @@ NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
 }
 
 NooBox.Image.update=function(i,engine){
-  console.log(NooBox.Image.result[i].remains);
   setDB('NooBox.Image.result_'+i,
     NooBox.Image.result[i],
     function(){
@@ -351,7 +349,6 @@ NooBox.Image.update=function(i,engine){
 
 
 NooBox.Image.fetchFunctions.google=function(cursor,data){
-  console.log('google '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
@@ -420,7 +417,6 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.baidu=function(cursor,data){
-  console.log('baidu '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
@@ -482,12 +478,50 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.tineye=function(cursor,data){
-  //  data=data.replace(/<img[^>]*>/g,"");
-  console.log('oh');
+  data=data.replace(/<img[^>]*>/g,"");
+  try{
+    data=data.replace(/<img[^>]*>/g,"");
+    var page=$(data);
+    var websites=[];
+    var relatedWebsites=[];
+    var websiteList=$(page.find('.match'));
+    for(var i=0;i<websiteList.length;i++){
+      var website={};
+      var temp=$(websiteList[i]);
+      if(temp.find('.top-padding').length>0){
+        var x=temp.find('.top-padding').find('a')[0];
+        website.link=x.href;
+        website.title=x.title;
+        website.searchEngine='tineye';
+        website.description="";
+        relatedWebsites.push(website);
+      }
+      else{
+        var x=$(temp).find('p').find('a')[2];
+        website.link=x.href;
+        website.description=x.href;
+        website.title=x.title;
+        var y=$(temp).find('p').find('a')[1];
+        website.imageUrl=y.href;
+        website.searchEngine='tineye';
+        websites.push(website);
+      }
+    }
+    NooBox.Image.result[cursor].tineyeWebsites=websites;
+    NooBox.Image.result[cursor].tineyeRelatedWebsites=relatedWebsites;
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
+    NooBox.Image.result[cursor].finished.push('tineye');
+    NooBox.Image.update(cursor,'tineye');
+  }
+  catch(e){
+    NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
+    NooBox.Image.result[cursor].finished.push('tineye');
+    NooBox.Image.update(cursor,'tineye');
+    console.log(e);
+  }
 };
 
 NooBox.Image.fetchFunctions.bing=function(cursor,data){
-  console.log('bing '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var keyword=$(data).find('.query').text();
@@ -505,7 +539,6 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.yandex=function(cursor,data){
-  console.log('yandex '+cursor);
   try{
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
@@ -525,7 +558,6 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
       website.searchEngine='yandex';
       websites.push(website);
     }
-    console.log(websites);
     NooBox.Image.result[cursor].yandexWebsites=websites;
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
     NooBox.Image.result[cursor].finished.push('yandex');
@@ -540,7 +572,6 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
-  console.log('saucenao '+cursor);
   try{
     data=data.replace(/ src=/g," nb-src=");
     var page=$(data);
@@ -587,7 +618,6 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
 };
 
 NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
-  console.log('iqdb '+cursor);
   try{
     data=data.replace(/ src=\'\/([^\/])/g," nb-src='$1");
     data=data.replace(/ src=\"\/\//g,' nb1-src="');

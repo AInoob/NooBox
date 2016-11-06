@@ -3,7 +3,7 @@
     "message":"NooBox"
   },
   "appDesc":{
-    "message":"A useful toolbox!"
+    "message":"A useful Toolbox! Reverse image search with multiple engines + Extract images + Webmaster + Crypter"
   },
   "crypt_it":{
     "message":"crypt it"
@@ -31,6 +31,9 @@
   },
   "baidu":{
     "message":"baidu"
+  },
+  "tineye":{
+    "message":"tineye"
   },
   "bing":{
     "message":"bing"
