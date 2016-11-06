@@ -52,9 +52,19 @@ function display(engine){
             displayWebsites(result.baiduRelatedWebsites||[],'relatedWebsites_baidu');
             displayWebsites(result.baiduWebsites||[],'websites_baidu');
             break;
+          case 'tineye':
+            if(result.tineyeRelatedWebsites)
+              displayWebsites(result.tineyeRelatedWebsites||[],'relatedWebsites_tineye');
+            if(result.tineyeWebsites){
+              displayWebsites(result.tineyeWebsites.slice(0,8)||[],'websites_tineye_0');
+              displayWebsites(result.tineyeWebsites.slice(8,result.tineyeWebsites.length)||[],'websites_tineye_1');
+            }
+            break;
           case 'yandex':
-            displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
-            displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+            if(result.yandexWebsites){
+              displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
+              displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+            }
             break;
           case 'saucenao':
             displayWebsites(result.saucenaoRelatedWebsites||[],'relatedWebsites_saucenao');
@@ -94,9 +104,19 @@ function display(engine){
         displayWebsites(result.baiduRelatedWebsites||[],'relatedWebsites_baidu');
         displayWebsites(result.baiduWebsites||[],'websites_baidu');
         break;
+      case 'tineye':
+        if(result.tineyeRelatedWebsites)
+          displayWebsites(result.tineyeRelatedWebsites||[],'relatedWebsites_tineye');
+        if(result.tineyeWebsites){
+          displayWebsites(result.tineyeWebsites.slice(0,8)||[],'websites_tineye_0');
+          displayWebsites(result.tineyeWebsites.slice(8,result.tineyeWebsites.length)||[],'websites_tineye_1');
+        }
+        break;
       case 'yandex':
-        displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
-        displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+        if(result.yandexWebsites){
+          displayWebsites(result.yandexWebsites.slice(0,3)||[],'relatedWebsites_yandex');
+          displayWebsites(result.yandexWebsites.slice(3,result.yandexWebsites.length)||[],'websites_yandex');
+        }
         break;
       case 'saucenao':
         displayWebsites(result.saucenaoRelatedWebsites||[],'relatedWebsites_saucenao');
@@ -126,7 +146,7 @@ function displayWebsites(websiteList,id){
     var website=websiteList[i];
     html+='<div class="websiteLink"><div class="websiteLinkHeader"><img class="websiteSearchIcon" src="thirdParty/'+website.searchEngine+'.png" /><a target="_blank"  class="websiteTitle" href="'+website.link+'">'+website.title+'</a></div>';
     if(website.imageUrl)
-      html+='<img class="websiteImage" src="'+website.imageUrl+'"></img>';
+      html+='<a href="'+website.imageUrl+'"><img class="websiteImage" src="'+website.imageUrl+'"></img></a>';
     if(id.indexOf("google")==-1){
       html+='<div class="websiteDescription"><span class="websiteImageSize"></span>'+website.description+'</div></div>'
     }

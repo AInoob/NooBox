@@ -340,7 +340,7 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.5.2"
+    version: "0.5.3"
     };
     $.ajax({
       type:'POST',

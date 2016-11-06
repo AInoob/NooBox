@@ -3,7 +3,7 @@
     "message":"二箱"
   },
   "appDesc":{
-    "message":"一个有用的工具箱~"
+    "message":"一个实用的工具箱！多引擎 以图搜图+提取图片+站长工具+加密解密器"
   },
   "crypt_it":{
 	"message":"加密解密"
@@ -28,6 +28,9 @@
   },
   "baidu":{
 	"message":"百度"
+  },
+  "tineye":{
+    "message":"tineye"
   },
   "bing":{
 	"message":"必应"
