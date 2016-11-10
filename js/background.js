@@ -111,15 +111,30 @@ NooBox.Webmaster.updateSitemap=function(global){
   chrome.runtime.sendMessage({job:"webmaster_sitemap_update",data: JSON.stringify(obj)}, function(response) {});
 }
 
+var t;
+
 NooBox.Webmaster.parseBrokenLinks=function(brokenLinks){
+  console.log(brokenLinks);
+  t=brokenLinks;
   var s="";
-  brokenLinks.forEach(function(link,refList){
+  var keysIt=brokenLinks.keys();
+  var link;
+  var refList;
+  var i;
+  while(true){
+    it=keysIt.next();
+    if(it.done)
+      break;
+    link=it.value;
+    console.log(link);
+    refList=brokenLinks.get(link);
+    console.log(refList);
     s+=link+'\n';
     s+='  from:\n';
-    for(var i=0;i<refList.length;i++){
+    for(i=0;i<refList.length;i++){
       s+='    '+refList[i]+'\n';
     }
-  });
+  }
   return s;
 }
 NooBox.Webmaster.toXML=function(linkSet){
