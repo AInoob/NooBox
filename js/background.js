@@ -59,6 +59,7 @@ NooBox.General.updateContextMenu=function(){
     function(){
       if(NooBox.General.handle_extractImage){
         chrome.contextMenus.remove(NooBox.General.handle_extractImage);
+        NooBox.General.handle_extractImage=null;
       }
     }
   );
@@ -75,6 +76,7 @@ NooBox.General.updateContextMenu=function(){
     function(){
       if(NooBox.General.handle_screenshotSearch){
         chrome.contextMenus.remove(NooBox.General.handle_screenshotSearch);
+        NooBox.General.handle_screenshotSearch=null;
       }
     }
   );
