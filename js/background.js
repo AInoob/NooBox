@@ -14,11 +14,71 @@ var defaultValues=[
   ['imageSearchUrl_saucenao','-1'],	
   ['imageSearchUrl_iqdb','-1'],	
   ['extractImage','1'],
+  ['screenshotSearch','1']
 ];
 var defaultInitNum=0;
 var NooBox=NooBox||{};
 
 NooBox.General={};
+NooBox.General.extractImage=function(info,tab){
+  chrome.tabs.sendMessage(tab.id,{job:"extractImage"},function(response){
+    if(!response){
+      chrome.notifications.create({
+        type:'basic',
+        iconUrl: '/images/icon_128.png',
+        title: chrome.i18n.getMessage("extract_images"),
+        message: chrome.i18n.getMessage("please_reload_the_page_to_initialize_noobox_component")
+      });
+    }
+  });
+};
+NooBox.General.screenshotSearch=function(info,tab){
+  chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
+    chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL},function(response){
+      if(!response){
+        chrome.notifications.create({
+          type:'basic',
+          iconUrl: '/images/icon_128.png',
+          title: chrome.i18n.getMessage("screenshot_search"),
+          message: chrome.i18n.getMessage("please_reload_the_page_to_initialize_noobox_component")
+        });
+      }
+    });
+  });
+}
+NooBox.General.updateContextMenu=function(){
+  isOn('extractImage',
+    function(){
+    if(!NooBox.General.handle_extractImage){
+      NooBox.General.handle_extractImage=chrome.contextMenus.create({
+        "title": chrome.i18n.getMessage("extract_images"),
+        "contexts": ["page","selection","frame","link","editable","video","audio"],
+        "onclick": NooBox.General.extractImage
+      });
+    }},
+    function(){
+      if(NooBox.General.handle_extractImage){
+        chrome.contextMenus.remove(NooBox.General.handle_extractImage);
+      }
+    }
+  );
+  isOn('screenshotSearch',
+    function(){
+      if(!NooBox.General.handle_screenshotSearch){
+        NooBox.General.handle_screenshotSearch=chrome.contextMenus.create({
+          "title": chrome.i18n.getMessage("screenshot_search"),
+          "contexts": ["all"],
+          "onclick": NooBox.General.screenshotSearch
+        });
+      }
+    },
+    function(){
+      if(NooBox.General.handle_screenshotSearch){
+        chrome.contextMenus.remove(NooBox.General.handle_screenshotSearch);
+      }
+    }
+  );
+}
 
 //Crypter
 NooBox.Crypter={};
@@ -181,7 +241,6 @@ NooBox.Webmaster.getURL=function(host,URL){
 //Image
 NooBox.Image={};
 NooBox.Image.handle=null;
-NooBox.Image.handle2=null;
 NooBox.Image.ids=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
 //working on it 10/16/2016
 NooBox.Image.screenshotSearch=function(){
@@ -189,26 +248,7 @@ NooBox.Image.screenshotSearch=function(){
     chrome.runtime.sendMessage({job:"image_dataUrl",data:"dataUrl"});
   });
 }
-NooBox.General.extractImage=function(info,tab){
-  chrome.tabs.sendMessage(tab.id,{job:"extractImage"});
-};
-NooBox.General.updateContextMenu=function(){
-  isOn('extractImage',
-    function(){
-    if(!NooBox.Image.handle2){
-      NooBox.Image.handle2=chrome.contextMenus.create({
-        "title": chrome.i18n.getMessage("extract_images"),
-        "contexts": ["page","selection","frame","link","editable","video","audio"],
-        "onclick": NooBox.General.extractImage
-      });
-    }},
-    function(){
-      if(NooBox.Image.handle2){
-        chrome.contextMenus.remove(NooBox.Image.handle2);
-      }
-    }
-  );
-}
+
   
 NooBox.Image.apiUrls={
   google:   "https://www.google.com/searchbyimage?&image_url=",
@@ -219,6 +259,7 @@ NooBox.Image.apiUrls={
   saucenao: "http://saucenao.com/search.php?db=999&url=",
   iqdb:     "http://iqdb.org/?url="
 };
+
 NooBox.Image.updateContextMenu=function(){
   isOn('imageSearch',
     function(){
@@ -714,6 +755,9 @@ document.addEventListener('DOMContentLoaded', function(){
           NooBox.General.updateContextMenu();
         }
         else if(request.job=="extractImage"){
+          NooBox.General.updateContextMenu();
+        }
+        else if(request.job=="screenshotSearch"){
           NooBox.General.updateContextMenu();
         }
       }

@@ -326,6 +326,7 @@ function isOn(key,callbackTrue,callbackFalse,param){
   });
 }
 
+var screenshotDataURL;
 var focus=document.body;
 var imgSet;
 var notImgSet=new Set();
@@ -340,7 +341,7 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.5.4"
+    version: "0.5.5"
     };
     $.ajax({
       type:'POST',
@@ -421,6 +422,7 @@ init=function(){
       function(request, sender, sendResponse) {
         if('job' in request){
           if(request.job=="extractImage"){
+            sendResponse({success:true});
             (function() {
               var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
               ga.src = 'https://ssl.google-analytics.com/ga.js';
@@ -429,14 +431,14 @@ init=function(){
             sayHiToAInoob();
             var position=$(focus).offset();
             var images=[];
-            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
+            var div = $('<div id="NooBox-extractImage">').css({"z-index":"1111","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
             var max=1;
             var tempFocus=focus;
             while(tempFocus.tagName!='BODY'){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<span id="NooBox-extractImage-selector-left" style="margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
+            div.append('<span id="NooBox-extractImage-selector-left" style="z-index:1111;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
             div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:fixed;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
             div.append('<div style="clear:both"></div>');
             focus=$(focus).parent()[0];
@@ -463,6 +465,27 @@ init=function(){
             $('#NooBox-extractImage-switch').on('click',function(e){
               $(e.target).parent().remove();
             });
+          }
+          else if(request.job=="screenshotSearch"){
+            sendResponse({success:true});
+            var div=$('<div id="NooBox-screenshot" style="border: 10px solid #6e64df;position:absolute;left:0;top:0;" ></div>');
+            var img=new Image;
+            img.src=request.data;
+            img.onload=function(){
+              div.append('<canvas width='+img.width+' height='+img.height+' style="width:'+($(window).width()-20)+'px;height:'+($(window).height()-20)+'px" id="NooBox-screenshot-canvas"></canvas>');
+              $('body').append(div);
+              setTimeout(loadScreenshot,300);
+            }
+            var loadScreenshot=function(){
+              var canvas=document.getElementById('NooBox-screenshot-canvas');
+              if(!canvas){
+                setTimeout(loadScreenshot,300);
+              }
+              else{
+                var ctx=canvas.getContext('2d');
+                ctx.drawImage(img,0,0);
+              }
+            }
           }
         }
       }
