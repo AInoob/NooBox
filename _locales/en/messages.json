@@ -132,10 +132,10 @@
     "message":"Too few result? Click here to upload and search"
   },
   "screenshot_search":{
-    "message":"screenshot & search"
+    "message":"截图&搜索"
   },
   "please_reload_the_page_to_initialize_noobox_component":{
-    "message":"Please reload the page to initialize NooBox component..."
+    "message":"请刷新页面以加载二箱组件..."
   }
 
 

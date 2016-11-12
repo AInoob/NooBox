@@ -127,5 +127,11 @@
   },
   "Too_few_result_Click_here_to_upload_and_search":{
     "message":"结果太少？点击上传图片搜索~"
+  },
+  "screenshot_search":{
+    "message":"截图&搜索"
+  },
+  "please_reload_the_page_to_initialize_noobox_component":{
+    "message":"请刷新页面以加载二箱组件..."
   }
 }
