@@ -130,6 +130,12 @@
   },
   "Too_few_result_Click_here_to_upload_and_search":{
     "message":"Too few result? Click here to upload and search"
+  },
+  "screenshot_search":{
+    "message":"screenshot & search"
+  },
+  "please_reload_the_page_to_initialize_noobox_component":{
+    "message":"Please reload the page to initialize NooBox component..."
   }
 
 
