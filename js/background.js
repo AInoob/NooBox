@@ -739,6 +739,7 @@ document.addEventListener('DOMContentLoaded', function(){
           sendResponse({'status':'done'});
         }
         else if(request.job=="image_search_upload"){
+          console.log(request.data);
           NooBox.Image.imageFromURL({srcUrl:request.data});
         }
         else if(request.job=="crypter"){

@@ -468,16 +468,26 @@ init=function(){
           }
           else if(request.job=="screenshotSearch"){
             sendResponse({success:true});
-            var div=$('<div id="NooBox-screenshot" style="border: 10px solid #6e64df;position:absolute;left:0;top:0;" ></div>');
+            var div=$('<div id="NooBox-screenshot" style="border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
             var img=new Image;
             img.src=request.data;
             img.onload=function(){
-              div.append('<canvas width='+img.width+' height='+img.height+' style="width:'+($(window).width()-20)+'px;height:'+($(window).height()-20)+'px" id="NooBox-screenshot-canvas"></canvas>');
+              div.append('<div class="NooBox-screenshot-search" style="cursor:pointer;height: '+($(window).height()-52-($(window).height()-250)/2)+'px;width: 35px;float: right;padding-top: '+($(window).height()-250)/2+'px;text-align: center;background-color:rgba(130,255,130,0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">Search</div>');
+              div.append('<canvas width='+img.width+' height='+img.height+' style="border:6px dashed pink;height:'+($(window).height()-52)+'px" class="NooBox-screenshot-canvas"></canvas>');
+              div.append('<div class="NooBox-screenshot-switch" style="margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(255,133,155,0.7);">Close XXX</div>');
               $('body').append(div);
+              $('.NooBox-screenshot-switch').on('click',function(e){
+                $(e.target).parent().remove();
+              });
+              $('.NooBox-screenshot-search').on('click',function(e){
+                console.log($(e.target).parent());
+                var dataURL=$(e.target).parent().find('.NooBox-screenshot-canvas')[0].toDataURL();
+                chrome.extension.sendMessage({job: 'image_search_upload',data:dataURL});
+              });
               setTimeout(loadScreenshot,300);
             }
             var loadScreenshot=function(){
-              var canvas=document.getElementById('NooBox-screenshot-canvas');
+              var canvas=$('.NooBox-screenshot-canvas').last()[0];
               if(!canvas){
                 setTimeout(loadScreenshot,300);
               }
