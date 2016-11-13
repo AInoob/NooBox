@@ -3,7 +3,7 @@
     "message":"二箱"
   },
   "appDesc":{
-    "message":"一个实用的工具箱！多引擎 以图搜图+提取图片+站长工具+加密解密器"
+    "message":"一个实用的工具箱！多引擎 以图搜图+提取图片++截图搜索+站长工具+加密解密器"
   },
   "crypt_it":{
 	"message":"加密解密"
@@ -130,5 +130,11 @@
   },
   "Too_few_result_Click_here_to_upload_and_search":{
     "message":"结果太少？点击上传图片搜索~"
+  },
+  "screenshot_search":{
+    "message":"截图&搜索"
+  },
+  "please_reload_the_page_to_initialize_noobox_component":{
+    "message":"请刷新页面以加载二箱组件..."
   }
 }
