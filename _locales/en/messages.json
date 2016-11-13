@@ -3,7 +3,7 @@
     "message":"NooBox"
   },
   "appDesc":{
-    "message":"A useful Toolbox! Reverse image search with multiple engines + Extract images + Webmaster + Crypter"
+    "message":"A useful Toolbox! Reverse image search with multiple engines + Extract images + Screenshot & Search + Webmaster + Crypter"
   },
   "crypt_it":{
     "message":"crypt it"
@@ -132,10 +132,10 @@
     "message":"Too few result? Click here to upload and search"
   },
   "screenshot_search":{
-    "message":"截图&搜索"
+    "message":"screenshot & search"
   },
   "please_reload_the_page_to_initialize_noobox_component":{
-    "message":"请刷新页面以加载二箱组件..."
+    "message":"please reload the page to initialize NooBox components..."
   }
 
 
