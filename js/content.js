@@ -352,7 +352,7 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.5.7"
+    version: "0.5.8"
     };
     $.ajax({
       type:'POST',
@@ -366,40 +366,55 @@ var sayHiToAInoob=function(){
 }
 
 function getImages(){
+  var notification=false;
   var val=$('#NooBox-extractImage-selector-range').val();
   var gallery=$('#NooBox-extractImage-gallery')[0];
   $(gallery).empty();
   var imgSet=new Set();
+  console.log(focus.tagName);
+  console.log(focus);
   var tempFocus2=focus;
-  for(var i=0;i<val;i++){
+  for(var i=1;i<val;i++){
     tempFocus2=$(tempFocus2).parent()[0];
   }
-  $(tempFocus2).find('*').each(function(){
-    if(this.tagName=="IMG"){
-      //var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
-      imgSet.add(this.src);
-    }
-    else{
-      var bg=$(this).css('background-image');
-      if(bg){
-        var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-        if(url!="none"&&(!url.match(/^gradient/))&&(!url.match(/^linear-gradient/))){
-          //var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
-          imgSet.add(url);
-        }
-      }
-    }
-    if(this.tagName=='A'){
-      if(isImgSet.has(this.href)){
-        imgSet.add(this.href);
+  console.log(tempFocus2);
+  getAllImgs=function(elem){
+    $(elem).find('*').each(function(){
+      if(this.tagName=="IMG"){
+        //var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
+        imgSet.add(this.src);
       }
       else{
-        if(!notImgSet.has(this.href)){
-          getValidImage(this.href);
+        var bg=$(this).css('background-image');
+        if(bg){
+          var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+          if(url!="none"&&(!url.match(/^gradient/))&&(!url.match(/^linear-gradient/))){
+            //var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
+            imgSet.add(url);
+          }
         }
       }
-    }
-  });
+      if(this.tagName=='A'){
+        if(isImgSet.has(this.href)){
+          imgSet.add(this.href);
+        }
+        else{
+          if(!notImgSet.has(this.href)){
+            getValidImage(this.href);
+          }
+        }
+      }
+      if(this.tagName=='IFRAME'){
+        console.log(this);
+        if(!notification){
+          chrome.extension.sendMessage({job: 'notification',data:'NooBox_does_not_support_iframe_image_extraction'});
+          notification=true;
+        }
+        //getAllImgs(this.contentDocument);
+      }
+    });
+  }
+  getAllImgs(tempFocus2);
   imgSet.forEach(function(elem){
     $(gallery).append('<img src="'+elem+'" style="max-width:100%;max-height:300px" />');
   });
@@ -433,6 +448,9 @@ init=function(){
       function(request, sender, sendResponse) {
         if('job' in request){
           if(request.job=="extractImage"){
+            if(!focus||focus.tagName=='HTML'){
+              focus=document.body;
+            }
             sendResponse({success:true});
             (function() {
               var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -442,17 +460,18 @@ init=function(){
             sayHiToAInoob();
             var position=$(focus).offset();
             var images=[];
-            var div = $('<div id="NooBox-extractImage">').css({"z-index":"2147483646","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
+            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999999999999999999999","height":"90%","overflow":"scroll","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
             var max=1;
             var tempFocus=focus;
             while(tempFocus.tagName!='BODY'){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<span id="NooBox-extractImage-selector-left" style="z-index:2147483646;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
+            div.append('<span id="NooBox-extractImage-selector-left" style="z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
             div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:fixed;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
             div.append('<div style="clear:both"></div>');
-            focus=$(focus).parent()[0];
+            if(focus.tagName!='BODY'&&focus.tagName!='HTML')
+              focus=$(focus).parent()[0];
             var div2 = $('<div id="NooBox-extractImage-gallery" style="width:70%"></div>');
             div.append(div2);
             $(document.body).append(div);
@@ -479,7 +498,7 @@ init=function(){
           }
           else if(request.job=="screenshotSearch"){
             sendResponse({success:true});
-            var div=$('<div id="NooBox-screenshot" style="z-index:2147483646;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
+            var div=$('<div id="NooBox-screenshot" style="z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
             var img=new Image;
             img.src=request.data;
             img.onload=function(){

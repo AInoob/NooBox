@@ -136,5 +136,11 @@
   },
   "please_reload_the_page_to_initialize_noobox_component":{
     "message":"请刷新页面以加载二箱组件..."
+  },
+  "Extract_Images2":{
+    "message":"提取图片"
+  },
+  "NooBox_does_not_support_iframe_image_extraction":{
+    "message":"二箱不支持IFrame图片提取~~~"
   }
 }

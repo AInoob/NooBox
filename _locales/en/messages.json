@@ -136,7 +136,14 @@
   },
   "please_reload_the_page_to_initialize_noobox_component":{
     "message":"please reload the page to initialize NooBox components..."
+  },
+  "Extract_Images2":{
+    "message":"Extract Images"
+  },
+  "NooBox_does_not_support_iframe_image_extraction":{
+    "message":"NooBox does not support IFrame image extraction"
   }
+
 
 
 

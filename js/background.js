@@ -763,6 +763,17 @@ document.addEventListener('DOMContentLoaded', function(){
         else if(request.job=="screenshotSearch"){
           NooBox.General.updateContextMenu();
         }
+        else if(request.job=="notification"){
+          if(request.data=="NooBox_does_not_support_iframe_image_extraction"){
+            chrome.notifications.create({
+              type:'basic',
+              iconUrl: '/images/icon_128.png',
+              title: chrome.i18n.getMessage("Extract_Images2"),
+              message: chrome.i18n.getMessage("NooBox_does_not_support_iframe_image_extraction")
+            });
+          }
+        }
+
       }
     });
 });
