@@ -479,7 +479,7 @@ init=function(){
           }
           else if(request.job=="screenshotSearch"){
             sendResponse({success:true});
-            var div=$('<div id="NooBox-screenshot" style="z-index:999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
+            var div=$('<div id="NooBox-screenshot" style="z-index:2147483646;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
             var img=new Image;
             img.src=request.data;
             img.onload=function(){
