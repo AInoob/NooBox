@@ -352,7 +352,7 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.5.8"
+    version: "0.5.9"
     };
     $.ajax({
       type:'POST',
@@ -460,7 +460,7 @@ init=function(){
             sayHiToAInoob();
             var position=$(focus).offset();
             var images=[];
-            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999999999999999999999","height":"90%","overflow":"scroll","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
+            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999999999999999999999","height":"90%","overflow":"auto","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
             var max=1;
             var tempFocus=focus;
             while(tempFocus.tagName!='BODY'){
@@ -468,11 +468,11 @@ init=function(){
               max++;
             }
             div.append('<span id="NooBox-extractImage-selector-left" style="z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
-            div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:fixed;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
+            div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:absolute;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
             div.append('<div style="clear:both"></div>');
             if(focus.tagName!='BODY'&&focus.tagName!='HTML')
               focus=$(focus).parent()[0];
-            var div2 = $('<div id="NooBox-extractImage-gallery" style="width:70%"></div>');
+            var div2 = $('<div id="NooBox-extractImage-gallery" style="width:80%;height:90%;overflow:scroll;margin-top:32px"></div>');
             div.append(div2);
             $(document.body).append(div);
             getImages();
