@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#crawl').click(function(){
     var obj={};
     obj.URL=$('#URL')[0].value;
+    if(obj.URL.match(/\/$/)){
+      obj.URL=obj.URL.slice(0,obj.URL.length-1);
+    }
     obj.maxDepth=$('#maxDepth')[0].value;
     console.log('click');
     chrome.runtime.sendMessage({job:'webmaster_sitemap_get',data: JSON.stringify(obj)});
