@@ -56,7 +56,10 @@ var Crypter = React.createClass({
   },
   columnarTranspositionGuess: function () {
     if (!this.state.quadgram) {
-      $.ajax({ url: 'https://ainoob.com/third_party/english_quadgrams.txt' }).done(function (data) {
+      chrome.runtime.sendMessage({
+        job: 'crypter_quadgram'
+      },function(response){
+        var data=response.data;
         var list = data.split('\n');
         var len = 0;
         var quadgram = {};

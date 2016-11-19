@@ -84,6 +84,7 @@ NooBox.General.updateContextMenu=function(){
 
 //Crypter
 NooBox.Crypter={};
+NooBox.quadgram=null;
 NooBox.Crypter.handle=null;
 NooBox.Crypter.selection=null;
 NooBox.Crypter.updateContextMenu=function(){
@@ -744,11 +745,18 @@ document.addEventListener('DOMContentLoaded', function(){
           console.log(request.data);
           NooBox.Image.imageFromURL({srcUrl:request.data});
         }
+        else if(request.job=="crypter_quadgram"){
+          console.log(sender);
+          sendResponse({data:NooBox.Crypter.quadgram});
+        }
         else if(request.job=="crypter"){
           NooBox.Crypter.updateContextMenu();
         }
         else if(request.job=="crypter_getSelection"){
           sendResponse({selection: NooBox.Crypter.selection});
+          $.ajax({url: 'https://ainoob.com/third_party/english_quadgrams.txt' }).done(function(data){
+            NooBox.Crypter.quadgram=data;
+          });
         }
         else if(request.job=="webmaster_sitemap_get"){
           var temp=JSON.parse(request.data);
