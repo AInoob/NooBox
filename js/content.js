@@ -352,7 +352,7 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.5.9"
+    version: "0.6.0"
     };
     $.ajax({
       type:'POST',
