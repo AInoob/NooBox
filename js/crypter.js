@@ -5,7 +5,6 @@ var Crypter = React.createClass({
     chrome.runtime.sendMessage({
       job: "crypter_getSelection"
     }, function(response) {
-      console.log(response);
       $("#crypterInput").val(response.selection);
       this.setState({input:response.selection});
     }.bind(this));
