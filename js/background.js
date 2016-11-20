@@ -189,9 +189,7 @@ NooBox.Webmaster.parseBrokenLinks=function(brokenLinks){
     if(it.done)
       break;
     link=it.value;
-    console.log(link);
     refList=brokenLinks.get(link);
-    console.log(refList);
     s+=link+'\n';
     s+='  from:\n';
     for(i=0;i<refList.length;i++){
@@ -509,7 +507,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
       var x=temp.find('a')[0];
       website.link=x.href;
       website.title=x.innerText;
-      var y=temp.find('.source-card-topic-content')[0];
+      var y=temp.find('.source-card-topic-content')[0]||{};
       website.description=y.innerHTML;
       var z=temp.find('.source-card-topic-same-image')[0];
       if(z){
@@ -742,11 +740,9 @@ document.addEventListener('DOMContentLoaded', function(){
           sendResponse({'status':'done'});
         }
         else if(request.job=="image_search_upload"){
-          console.log(request.data);
           NooBox.Image.imageFromURL({srcUrl:request.data});
         }
         else if(request.job=="crypter_quadgram"){
-          console.log(sender);
           sendResponse({data:NooBox.Crypter.quadgram});
         }
         else if(request.job=="crypter"){
