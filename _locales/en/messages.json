@@ -142,6 +142,9 @@
   },
   "NooBox_does_not_support_iframe_image_extraction":{
     "message":"NooBox does not support IFrame image extraction"
+  },
+  "shortcut":{
+    "message":"shortcut"
   }
 
 
