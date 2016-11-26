@@ -1,6 +1,7 @@
 var defaultValues=[
   ['userId',(Math.random().toString(36)+'00000000000000000').slice(2, 19)],
   ['imageSearch','1'],
+  ['shorcut','-1'],
   ['unitsConverter','-1'],
   ['crypter','1'],
   ['webmaster','1'],
@@ -51,6 +52,7 @@ NooBox.General.updateContextMenu=function(){
     function(){
     if(!NooBox.General.handle_extractImage){
       NooBox.General.handle_extractImage=chrome.contextMenus.create({
+        "id" : "extractImage",
         "title": chrome.i18n.getMessage("extract_images"),
         "contexts": ["page","selection","frame","link","editable","video","audio"],
         "onclick": NooBox.General.extractImage
@@ -67,6 +69,7 @@ NooBox.General.updateContextMenu=function(){
     function(){
       if(!NooBox.General.handle_screenshotSearch){
         NooBox.General.handle_screenshotSearch=chrome.contextMenus.create({
+          "id" : "screenshotSearch",
           "title": chrome.i18n.getMessage("screenshot_search"),
           "contexts": ["all"],
           "onclick": NooBox.General.screenshotSearch

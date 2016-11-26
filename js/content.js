@@ -352,7 +352,7 @@ var sayHiToAInoob=function(){
     url:window.location.href,
     title:document.title,
     time:new Date().toLocaleString(),
-    version: "0.6.1"
+    version: "0.6.2"
     };
     $.ajax({
       type:'POST',
@@ -381,7 +381,6 @@ function getImages(){
   getAllImgs=function(elem){
     $(elem).find('*').each(function(){
       if(this.tagName=="IMG"){
-        //var img = $('<img src="'+this.src+'" style="max-width:100%;max-height:300px" />');
         imgSet.add(this.src);
       }
       else{
@@ -389,7 +388,6 @@ function getImages(){
         if(bg){
           var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
           if(url!="none"&&(!url.match(/^gradient/))&&(!url.match(/^linear-gradient/))){
-            //var img = $('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
             imgSet.add(url);
           }
         }
@@ -416,7 +414,7 @@ function getImages(){
   }
   getAllImgs(tempFocus2);
   imgSet.forEach(function(elem){
-    $(gallery).append('<img src="'+elem+'" style="max-width:100%;max-height:300px" />');
+    $(gallery).append('<img src="'+elem+'" style="margin:0px;border:0px;padding:0px;max-width:100%;max-height:300px" />');
   });
   //location.href = "#NooBox-extractImage-selector-range"; 
 }
@@ -433,7 +431,7 @@ function getValidImage(url) {
         var gallery=$('#NooBox-extractImage-gallery')[0];
         imgSet.add(url);
         isImgSet.add(url);
-        $(gallery).append('<img src="'+url+'" style="max-width:100%;max-height:300px" />');
+        $(gallery).append('<img src="'+url+'" style="margin:0px;border:0px;padding:0px;max-width:100%;max-height:300px" />');
       }
     });
   }
@@ -467,12 +465,12 @@ init=function(){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<span id="NooBox-extractImage-selector-left" style="z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
-            div.append('<div id="NooBox-extractImage-switch" style="color:black;font-size:99px;position:absolute;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
-            div.append('<div style="clear:both"></div>');
+            div.append('<span id="NooBox-extractImage-selector-left" style="margin:0px;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImage-selector-range" style="margin:0px;border:0px;padding:0px;display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImage-selector-right" style="margin:0px;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
+            div.append('<div id="NooBox-extractImage-switch" style="margin:0px;border:0px;padding:0px;color:black;font-size:99px;position:absolute;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
+            div.append('<div style="margin:0px;border:0px;padding:0px;clear:both"></div>');
             if(focus.tagName!='BODY'&&focus.tagName!='HTML')
               focus=$(focus).parent()[0];
-            var div2 = $('<div id="NooBox-extractImage-gallery" style="width:80%;height:90%;overflow:scroll;margin-top:32px"></div>');
+            var div2 = $('<div id="NooBox-extractImage-gallery" style="margin:0px;border:0px;padding:0px;width:80%;height:90%;overflow:scroll;margin-top:32px"></div>');
             div.append(div2);
             $(document.body).append(div);
             getImages();
@@ -498,19 +496,19 @@ init=function(){
           }
           else if(request.job=="screenshotSearch"){
             sendResponse({success:true});
-            var div=$('<div id="NooBox-screenshot" style="z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
+            var div=$('<div id="NooBox-screenshot" style="margin:0px;border:0px;padding:0px;z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
             var img=new Image;
             img.src=request.data;
             img.onload=function(){
-              div.append('<div class="NooBox-screenshot-search" style="cursor:pointer;height: '+($(window).height()-52-($(window).height()-250)/2)+'px;width: 35px;float: right;padding-top: '+($(window).height()-250)/2+'px;text-align: center;background-color:rgba(130,255,130,0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">GO!!!</div>');
-              div.append('<canvas width='+img.width+' height='+img.height+' style="border:6px dashed pink;height:'+($(window).height()-52)+'px" class="NooBox-screenshot-canvas"></canvas>');
-              div.append('<div class="NooBox-screenshot-switch" style="margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(255,133,155,0.7);">XXX</div>');
-              div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:13px;height:13px"></div>');
-              div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="z-index:3;cursor:crosshair;left:'+($(window).height()-52)/img.height*img.width+'px;top:'+($(window).height()-52)+'px;position:absolute;border-radius:50%;width:13px;height:13px"></div>');
-              div.append('<div class="NooBox-screenshot-coverTop" style="position:absolute;top:7px;background-color:rgba(0,0,0,0.618)"></div>');
-              div.append('<div class="NooBox-screenshot-coverRight" style="position:absolute;right:41px;background-color:rgba(0,0,0,0.618)"></div>');
-              div.append('<div class="NooBox-screenshot-coverBottom" style="position:absolute;bottom:35px;background-color:rgba(0,0,0,0.618)"></div>');
-              div.append('<div class="NooBox-screenshot-coverLeft" style="position:absolute;left:6px;background-color:rgba(0,0,0,0.618)"></div>');
+              div.append('<div class="NooBox-screenshot-search" style="margin:0px;border:0px;padding:0px;cursor:pointer;height: '+($(window).height()-52-($(window).height()-250)/2)+'px;width: 35px;float: right;padding-top: '+($(window).height()-250)/2+'px;text-align: center;background-color:rgba(130,255,130,0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">GO!!!</div>');
+              div.append('<canvas width='+img.width+' height='+img.height+' style="margin:0px;border:0px;padding:0px;margin:0px;border:6px dashed pink;height:'+($(window).height()-52)+'px" class="NooBox-screenshot-canvas"></canvas>');
+              div.append('<div class="NooBox-screenshot-switch" style="margin:0px;border:0px;padding:0px;margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(255,133,155,0.7);">XXX</div>');
+              div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:13px;height:13px"></div>');
+              div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:'+($(window).height()-52)/img.height*img.width+'px;top:'+($(window).height()-52)+'px;position:absolute;border-radius:50%;width:13px;height:13px"></div>');
+              div.append('<div class="NooBox-screenshot-coverTop" style="margin:0px;border:0px;padding:0px;position:absolute;top:7px;background-color:rgba(0,0,0,0.618)"></div>');
+              div.append('<div class="NooBox-screenshot-coverRight" style="margin:0px;border:0px;padding:0px;position:absolute;right:41px;background-color:rgba(0,0,0,0.618)"></div>');
+              div.append('<div class="NooBox-screenshot-coverBottom" style="margin:0px;border:0px;padding:0px;position:absolute;bottom:35px;background-color:rgba(0,0,0,0.618)"></div>');
+              div.append('<div class="NooBox-screenshot-coverLeft" style="margin:0px;border:0px;padding:0px;position:absolute;left:6px;background-color:rgba(0,0,0,0.618)"></div>');
               $('body').append(div);
               $('body').append('<style>@keyframes shiny{0%{background-color:white}20%{background-color:yellow}40%{background-color:red}60%{background-color:black}80%{background-color:blue}} .NooBox-shiny{animation: shiny 5s infinite}</style>');
               $('.NooBox-screenshot-switch').on('click',function(e){
