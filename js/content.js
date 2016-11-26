@@ -456,9 +456,9 @@ init=function(){
               var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
             sayHiToAInoob();
-            var position=$(focus).offset();
             var images=[];
-            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999999999999999999999","height":"90%","overflow":"auto","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "absolute","margin-left":"20%","width":"60%","top":position.top+"px"});
+            var height=window.innerHeight-66;
+            var div = $('<div id="NooBox-extractImage">').css({"z-index":"999999999999999999999","height":height*0.9+"px","overflow":"auto","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "fixed","margin-left":"20%","width":"60%","top":height*0.05+"px"});
             var max=1;
             var tempFocus=focus;
             while(tempFocus.tagName!='BODY'){
