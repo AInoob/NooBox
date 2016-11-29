@@ -27,7 +27,12 @@ function display(engine){
     }
     getImageSearchEngines(ids,function(engines){
       for(var i=0;i<engines.length;i++){
-        $('#moreResults').append('<li id="moreResult'+engines[i]+'"><a target="_blank"  href=""><img class="moreResultLoader"" src="/images/loader.svg" /><img class="moreResultsImages" id="moreResultIcon'+engines[i]+'" src="/thirdParty/'+engines[i]+'.png" /></a></li>');
+        $('#moreResults').append('<li id="moreResult'+engines[i]+'"><a target="_blank"  href=""><img class="connErr" style="display:none" src="/images/connErr.png" /><a target="_blank"  href=""><img class="moreResultLoader" src="/images/loader.svg" /><img class="moreResultsImages" id="moreResultIcon'+engines[i]+'" src="/thirdParty/'+engines[i]+'.png" /></a></li>');
+      }
+      for(var i=0;i<result.connErr.length;i++){
+        var engine2=result.connErr[i];
+        $('#moreResult'+engine2).find('.connErr').show();
+        $('#moreResult'+engine2).find('.moreResultLoader').hide();
       }
       for(var i=0;i<result.finished.length;i++){
         var engine=result.finished[i];
@@ -83,9 +88,14 @@ function display(engine){
     console.log(engine);
     if(engine!="none"){
       $('#'+engine+'Iframe').attr('src',result[engine+'Url']);
-        $('#moreResult'+engine).find('.moreResultLoader').hide();
-        $('#moreResult'+engine).find('a').attr('href',result[engine+'Url']);
+      $('#moreResult'+engine).find('.moreResultLoader').hide();
+      $('#moreResult'+engine).find('a').attr('href',result[engine+'Url']);
       remainIframes++;
+    }
+    for(var i=0;i<result.connErr.length;i++){
+      var engine2=result.connErr[i];
+      $('#moreResult'+engine2).find('.connErr').show();
+      $('#moreResult'+engine2).find('.moreResultLoader').hide();
     }
     switch(engine){
       case 'google':
@@ -184,6 +194,9 @@ function update(engine){
 }
 
 var reSearch=function(){
+  if(_gaq){
+    _gaq.push(['_trackEvent','_reSearch']);
+  }
   var img=$('#imageInput')[0];
   var workerCanvas = document.createElement('canvas');
   workerCtx = workerCanvas.getContext('2d');

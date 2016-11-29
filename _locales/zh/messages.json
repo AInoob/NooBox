@@ -142,5 +142,11 @@
   },
   "NooBox_does_not_support_iframe_image_extraction":{
     "message":"二箱不支持IFrame图片提取~~~"
+  },
+  "image_uploading":{
+    "message":"图片上传"
+  },
+  "NooBox_cannot_reach_image_uploading_server":{
+    "message":"二箱连接不到图片上传服务器"
   }
 }

@@ -22,7 +22,7 @@ strong{
   clear: left;
 }
 
-.moreResultLoader{
+.moreResultLoader, .connErr{
   width: 64px;
   height: 64px;
   position: absolute;

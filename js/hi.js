@@ -8,6 +8,10 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
+var clickLink=function(e){
+  console.log(e.target);
+}
+
 var sayHiToAInoob=function(){
   get('userId',function(userId){
     var hi={
@@ -15,7 +19,7 @@ var sayHiToAInoob=function(){
       url:window.location.pathname+window.location.search,
       title:document.title,
       time:new Date().toLocaleString(),
-      version: "0.6.2"
+      version: "0.6.3"
     };
     $.ajax({
       type:'POST',
