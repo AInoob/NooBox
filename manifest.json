@@ -35,8 +35,6 @@
   "permissions": [
     "tabs",
     "contextMenus",
-    "http://*/*",
-    "https://*/*",
     "storage",
     "activeTab",
     "notifications"
