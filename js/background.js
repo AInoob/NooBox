@@ -295,6 +295,7 @@ NooBox.Image.imageFromURL=function(info,tab){
   NooBox.Image.result[cursor].imageUrl=info.srcUrl;
   NooBox.Image.result[cursor].remains=0;
   NooBox.Image.result[cursor].finished=[];
+  NooBox.Image.result[cursor].connErr=[];
   getImageSearchEngines(NooBox.Image.ids,function(engines){
     NooBox.Image.result[cursor].remains=engines.length;
     var dataURI=encodeURI(info.srcUrl);
@@ -316,6 +317,7 @@ NooBox.Image.imageFromURL=function(info,tab){
           $.ajax({url:url2}).done(function(data){
             NooBox.Image.fetchFunctions[engine](cursor,data);
           }).fail(function(e){
+            NooBox.Image.result[cursor].connErr.push(engine);
             NooBox.Image.result[cursor].remains--;
             NooBox.Image.update(cursor,engine);
             console.log(e);
@@ -345,6 +347,12 @@ NooBox.Image.POST.upload=function(cursor,data,callback){
     callback();
   }).fail(function(err){
     console.log(err);
+    chrome.notifications.create({
+      type:'basic',
+      iconUrl: '/images/icon_128.png',
+      title: chrome.i18n.getMessage("upload_image"),
+      message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
+    });
   });
 }
 
@@ -356,7 +364,14 @@ NooBox.Image.POST.general=function(cursor,engines,data){
         if(engine!='baidu'){
           var url=NooBox.Image.apiUrls[engine]+NooBox.Image.result[cursor].uploadedURL;
           NooBox.Image.result[cursor][engine+'Url']=url;
-          $.ajax({url:url}).done(NooBox.Image.fetchFunctions[engine].bind(null,cursor));
+          $.ajax({url:url}).done(
+            NooBox.Image.fetchFunctions[engine].bind(null,cursor)
+          ).fail(function(e){
+            NooBox.Image.result[cursor].connErr.push(engine);
+            NooBox.Image.result[cursor].remains--;
+            NooBox.Image.update(cursor,engine);
+            console.log(e);
+          });
         }
       })(engines[i])
     }
@@ -471,7 +486,7 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
   catch(e){
     console.log(e);
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('google');
+    NooBox.Image.result[cursor].connErr.push('google');
     NooBox.Image.update(cursor,'google');
   }
 };
@@ -532,7 +547,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,data){
   catch(e){
     console.log(e);
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('baidu');
+    NooBox.Image.result[cursor].connErr.push('baidu');
     NooBox.Image.update(cursor,'baidu');
   }
 };
@@ -575,7 +590,7 @@ NooBox.Image.fetchFunctions.tineye=function(cursor,data){
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('tineye');
+    NooBox.Image.result[cursor].connErr.push('tineye');
     NooBox.Image.update(cursor,'tineye');
     console.log(e);
   }
@@ -592,7 +607,7 @@ NooBox.Image.fetchFunctions.bing=function(cursor,data){
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('bing');
+    NooBox.Image.result[cursor].connErr.push('bing');
     NooBox.Image.update(cursor,'bing');
     console.log(e);
   }
@@ -625,7 +640,7 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,data){
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('yandex');
+    NooBox.Image.result[cursor].connErr.push('yandex');
     NooBox.Image.update(cursor,'yandex');
     console.log(e);
   }
@@ -671,7 +686,7 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,data){
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('saucenao');
+    NooBox.Image.result[cursor].connErr.push('saucenao');
     NooBox.Image.update(cursor,'saucenao');
     console.log(e);
   }
@@ -704,7 +719,7 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,data){
   }
   catch(e){
     NooBox.Image.result[cursor].remains=NooBox.Image.result[cursor].remains-1;
-    NooBox.Image.result[cursor].finished.push('iqdb');
+    NooBox.Image.result[cursor].connErr.push('iqdb');
     NooBox.Image.update(cursor,'iqdb');
     console.log(e);
   }

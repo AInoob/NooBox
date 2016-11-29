@@ -110,7 +110,6 @@ function fetchBlob(uri, callback) {
 var reader = new window.FileReader();
 reader.onloadend = function() {
  base64data = reader.result;                
- //To-do
  if(false){
    chrome.notifications.create({
      type:'basic',
