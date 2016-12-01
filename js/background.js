@@ -17,7 +17,6 @@ var defaultValues=[
   ['extractImage','1'],
   ['screenshotSearch','1']
 ];
-var defaultInitNum=0;
 var NooBox=NooBox||{};
 
 NooBox.General={};
@@ -287,6 +286,12 @@ NooBox.Image.result=[];
 NooBox.Image.cursor=0;
 NooBox.Image.POST={};
 NooBox.Image.DataWrapper={};
+NooBox.Image.POST.servers=['chuantu.biz','postimage.org'];
+NooBox.Image.POST.serverOrder=[];
+for(var i=0;i<NooBox.Image.POST.servers.length;i++){
+  NooBox.Image.POST.serverOrder.push(i);
+}
+NooBox.Image.POST.server={};
 NooBox.Image.imageFromURL=function(info,tab){
   NooBox.Image.cursor++;
   NooBox.Image.cursor%=30;
@@ -332,6 +337,43 @@ NooBox.Image.imageFromURL=function(info,tab){
 }
 
 NooBox.Image.POST.upload=function(cursor,data,callback){
+  var serverOrder=NooBox.Image.POST.serverOrder;
+  NooBox.Image.POST.server[NooBox.Image.POST.servers[serverOrder[0]]](cursor,data,callback,serverOrder,0);
+}
+NooBox.Image.POST.server['chuantu.biz']=function(cursor,data,callback,serverOrder,i){
+  var formData=new FormData();
+  formData.append('uploadimg',dataURItoBlob(data),'NooBox.jpg');
+  $.ajax({
+    type:'POST',
+    url:'http://www.chuantu.biz/upload.php',
+    contentType: false,
+    processData: false,
+    data: formData
+  }).done(function(data){
+    console.log(data);
+    data=data.replace(/ src=/g," nb-src=");
+    var url=$(data).find('input').attr("value");
+    NooBox.Image.result[cursor].uploadedURL=url||"";
+    NooBox.Image.POST.serverOrder=serverOrder.concat(serverOrder.splice(0,i));
+    callback();
+  }).fail(function(err){
+    if(i<NooBox.Image.POST.servers.length){
+      console.log('next server');
+      NooBox.Image.POST.server[NooBox.Image.POST.servers[serverOrder[++i]]](cursor,data,callback,serverOrder,i);
+    }
+    else{
+      console.log(err);
+      chrome.notifications.create({
+        type:'basic',
+        iconUrl: '/images/icon_128.png',
+        title: chrome.i18n.getMessage("upload_image"),
+        message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
+      });
+    }
+  });
+}
+
+NooBox.Image.POST.server['postimage.org']=function(cursor,data,callback,serverOrder,i){
   var formData=new FormData();
   formData.append('upload',dataURItoBlob(data),'NooBox');
   $.ajax({
@@ -344,15 +386,26 @@ NooBox.Image.POST.upload=function(cursor,data,callback){
     data=data.replace(/ src=/g," nb-src=");
     var url=$(data).find('.gallery').find('img').attr("nb-src");
     NooBox.Image.result[cursor].uploadedURL=url||"";
+    NooBox.Image.POST.serverOrder=serverOrder.concat(serverOrder.splice(0,i));
     callback();
   }).fail(function(err){
-    console.log(err);
-    chrome.notifications.create({
-      type:'basic',
-      iconUrl: '/images/icon_128.png',
-      title: chrome.i18n.getMessage("upload_image"),
-      message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
-    });
+    if(i<NooBox.Image.POST.server.length){
+      chrome.notifications.create({
+        type:'basic',
+        iconUrl: '/images/icon_128.png',
+        title: chrome.i18n.getMessage("upload_image"),
+        message: 'next server'
+      });
+    }
+    else{
+      console.log(err);
+      chrome.notifications.create({
+        type:'basic',
+        iconUrl: '/images/icon_128.png',
+        title: chrome.i18n.getMessage("upload_image"),
+        message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
+      });
+    }
   });
 }
 
