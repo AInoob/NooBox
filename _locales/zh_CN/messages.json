@@ -145,5 +145,8 @@
   },
   "NooBox_cannot_reach_image_uploading_server":{
     "message":"二箱连接不到图片上传服务器"
+  },
+  "share":{
+    "message":"分享"
   }
 }

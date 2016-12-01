@@ -148,6 +148,9 @@
   },
   "NooBox_cannot_reach_image_uploading_server":{
     "message":"NooBox cannot reach image uploading server"
+  },
+  "share":{
+    "message":"Share"
   }
 
 
