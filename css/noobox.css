@@ -222,3 +222,21 @@ section{
 .clear{
   clear:both;
 }
+
+.shareIcon{
+  width: 16px;
+  height: 16px;
+}
+
+#share{
+  float: right;
+  color: #ff8da1;
+}
+
+#share a{
+  display: none;
+}
+
+#share:hover a{
+  display: inline-block;
+}
