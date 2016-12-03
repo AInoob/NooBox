@@ -23,12 +23,12 @@ NooBox.General={};
 NooBox.General.extractImage=function(info,tab){
   chrome.tabs.sendMessage(tab.id,{job:"extractImage"},function(response){
     if(!response){
-      chrome.notifications.create({
+      chrome.notifications.create('extractImage',{
         type:'basic',
         iconUrl: '/images/icon_128.png',
         title: chrome.i18n.getMessage("extract_images"),
         message: chrome.i18n.getMessage("please_reload_the_page_to_initialize_noobox_component")
-      });
+      },function(){});
     }
   });
 };
@@ -36,12 +36,12 @@ NooBox.General.screenshotSearch=function(info,tab){
   chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
     chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL},function(response){
       if(!response){
-        chrome.notifications.create({
+        chrome.notifications.create('screenshotSearch',{
           type:'basic',
           iconUrl: '/images/icon_128.png',
           title: chrome.i18n.getMessage("screenshot_search"),
           message: chrome.i18n.getMessage("please_reload_the_page_to_initialize_noobox_component")
-        });
+        },function(){});
       }
     });
   });
@@ -286,7 +286,7 @@ NooBox.Image.result=[];
 NooBox.Image.cursor=0;
 NooBox.Image.POST={};
 NooBox.Image.DataWrapper={};
-NooBox.Image.POST.servers=['chuantu.biz','postimage.org'];
+NooBox.Image.POST.servers=['postimage.org','chuantu.biz'];
 NooBox.Image.POST.serverOrder=[];
 for(var i=0;i<NooBox.Image.POST.servers.length;i++){
   NooBox.Image.POST.serverOrder.push(i);
@@ -357,18 +357,18 @@ NooBox.Image.POST.server['chuantu.biz']=function(cursor,data,callback,serverOrde
     NooBox.Image.POST.serverOrder=serverOrder.concat(serverOrder.splice(0,i));
     callback();
   }).fail(function(err){
-    if(i<NooBox.Image.POST.servers.length){
+    if(i<NooBox.Image.POST.servers.length-1){
       console.log('next server');
       NooBox.Image.POST.server[NooBox.Image.POST.servers[serverOrder[++i]]](cursor,data,callback,serverOrder,i);
     }
     else{
       console.log(err);
-      chrome.notifications.create({
+      chrome.notifications.create('uploadServer',{
         type:'basic',
         iconUrl: '/images/icon_128.png',
         title: chrome.i18n.getMessage("upload_image"),
         message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
-      });
+      },function(){});
     }
   });
 }
@@ -389,22 +389,18 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,data,callback,serverOr
     NooBox.Image.POST.serverOrder=serverOrder.concat(serverOrder.splice(0,i));
     callback();
   }).fail(function(err){
-    if(i<NooBox.Image.POST.server.length){
-      chrome.notifications.create({
-        type:'basic',
-        iconUrl: '/images/icon_128.png',
-        title: chrome.i18n.getMessage("upload_image"),
-        message: 'next server'
-      });
+    if(i<NooBox.Image.POST.servers.length-1){
+      console.log('next server');
+      NooBox.Image.POST.server[NooBox.Image.POST.servers[serverOrder[++i]]](cursor,data,callback,serverOrder,i);
     }
     else{
       console.log(err);
-      chrome.notifications.create({
+      chrome.notifications.create('uploadServer2',{
         type:'basic',
         iconUrl: '/images/icon_128.png',
         title: chrome.i18n.getMessage("upload_image"),
         message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
-      });
+      },function(){});
     }
   });
 }
@@ -802,12 +798,12 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         else if(request.job=="image_search_re_search"){
           NooBox.Image.imageFromURL({srcUrl:request.data});
-          chrome.notifications.create({
+          chrome.notifications.create('uploading',{
             type:'basic',
             iconUrl: '/images/icon_128.png',
             title: chrome.i18n.getMessage("Reverse_Image_Search"),
             message: chrome.i18n.getMessage("Uploading_image_to_get_more_results")
-          });
+          },function(){});
           sendResponse({'status':'done'});
         }
         else if(request.job=="image_search_upload"){
@@ -840,12 +836,12 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         else if(request.job=="notification"){
           if(request.data=="NooBox_does_not_support_iframe_image_extraction"){
-            chrome.notifications.create({
+            chrome.notifications.create('notIframe',{
               type:'basic',
               iconUrl: '/images/icon_128.png',
               title: chrome.i18n.getMessage("Extract_Images2"),
               message: chrome.i18n.getMessage("NooBox_does_not_support_iframe_image_extraction")
-            });
+            },function(){});
           }
         }
 
