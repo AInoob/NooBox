@@ -477,8 +477,9 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
     var keyword=page.find('._gUb').text();
+    console.log(keyword);
     var relatedWebsites=[];
-    var relatedWebsiteList=$(page.find('#rso').find('.rgsep')[0]).prev().find('.rc')
+    var relatedWebsiteList=$(page.find('#rso').find('._NId')[0]).find('.rc')
       for(var i=0;i<relatedWebsiteList.length;i++){
         var website={};
         var temp=$(relatedWebsiteList[i]);
@@ -491,7 +492,7 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
         relatedWebsites.push(website);
       }
     var websites=[];
-    var websiteList=$(page.find('#rso').find('.rgsep')).last().prev().find('.rc');
+    var websiteList=$(page.find('#rso').find('._NId')).last().find('.rc');
     for(var i=0;i<websiteList.length;i++){
       var website={};
       var temp=$(websiteList[i]);
