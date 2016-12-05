@@ -479,20 +479,26 @@ NooBox.Image.fetchFunctions.google=function(cursor,data){
     var keyword=page.find('._gUb').text();
     console.log(keyword);
     var relatedWebsites=[];
-    var relatedWebsiteList=$(page.find('#rso').find('._NId')[0]).find('.rc')
-      for(var i=0;i<relatedWebsiteList.length;i++){
-        var website={};
-        var temp=$(relatedWebsiteList[i]);
-        var x=temp.find('a')[0];
-        website.link=x.href;
-        website.title=x.innerText;
-        var y=temp.find('.s').find('.st')[0];
-        website.description=y.innerHTML;
-        website.searchEngine='google';
-        relatedWebsites.push(website);
-      }
+    var relatedWebsiteList=$(page.find('#rso').find('._NId')[0]).find('.rc');
+    if(relatedWebsiteList.length==0){
+      relatedWebsiteList=$(page.find('#rso').find('.rgsep')[0]).prev().find('.rc');
+    }
+    for(var i=0;i<relatedWebsiteList.length;i++){
+      var website={};
+      var temp=$(relatedWebsiteList[i]);
+      var x=temp.find('a')[0];
+      website.link=x.href;
+      website.title=x.innerText;
+      var y=temp.find('.s').find('.st')[0];
+      website.description=y.innerHTML;
+      website.searchEngine='google';
+      relatedWebsites.push(website);
+    }
     var websites=[];
     var websiteList=$(page.find('#rso').find('._NId')).last().find('.rc');
+    if(websiteList.length==0){
+      websiteList=$(page.find('#rso').find('.rgsep')).last().prev().find('.rc');
+    }
     for(var i=0;i<websiteList.length;i++){
       var website={};
       var temp=$(websiteList[i]);
