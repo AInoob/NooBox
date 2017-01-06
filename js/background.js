@@ -41,7 +41,10 @@ NooBox.Image.apiUrls=null;
 NooBox.Image.imageSearch=null;
 //update result in DB and send message to image.search.html
 NooBox.Image.update=null;
-
+//inject and run scripts to current tab
+NooBox.Image.screenshotSearch=null;
+//inject and run scripts to current tab
+NooBox.Image.extractImages=null;
 
 
 
@@ -63,14 +66,15 @@ NooBox.Options.defaultValues=[
   ['imageSearchUrl_yandex',true],
   ['imageSearchUrl_saucenao',false],
   ['imageSearchUrl_iqdb',false],
-  ['extractImage',true],
-  ['screenshotSearch',true]
+  ['extractImages',true],
+  ['screenshotSearch',true],
+  ['modules',['imageSearch','notifier','reader']]
 ];
 
 NooBox.Options.init=function(i){
   var defaultValues=NooBox.Options.defaultValues;
   if(i<defaultValues.length){
-    setIfNull(defaultValues[0],defaultValues[1],NooBox.Options.init.bind(null,i+1));
+    setIfNull(defaultValues[i][0],defaultValues[i][1],NooBox.Options.init.bind(null,i+1));
   }
   else{
     NooBox.Image.updateContextMenu();
@@ -94,21 +98,21 @@ NooBox.Image.updateContextMenu=function(){
       }
     }
   );
-  isOn('extractImage',
+  isOn('extractImages',
     function(){
-      if(!NooBox.Image.handles.extractImage){
-        NooBox.Image.handles.extractImage=chrome.contextMenus.create({
-          "id" : "extractImage",
+      if(!NooBox.Image.handles.extractImages){
+        NooBox.Image.handles.extractImages=chrome.contextMenus.create({
+          "id" : "extractImages",
           "title": chrome.i18n.getMessage("extract_images"),
           "contexts": ["page","selection","frame","link","editable","video","audio"],
-          "onclick": NooBox.Image.extractImage
+          "onclick": NooBox.Image.extractImages
         });
       }
     },
     function(){
-      if(NooBox.Image.handles.extractImage){
-        chrome.contextMenus.remove(NooBox.General.handle_extractImage);
-        NooBox.Image.handles.extractImage=null;
+      if(NooBox.Image.handles.extractImages){
+        chrome.contextMenus.remove(NooBox.Image.handles,extractImages);
+        NooBox.Image.handles.extractImages=null;
       }
     }
   );
@@ -118,14 +122,14 @@ NooBox.Image.updateContextMenu=function(){
         NooBox.Image.handles.screenshotSearch=chrome.contextMenus.create({
           "id" : "screenshotSearch",
           "title": chrome.i18n.getMessage("screenshot_search"),
-          "contexts": ["all"],
+          "contexts": ["browser_action"],
           "onclick": NooBox.Image.screenshotSearch
         });
       }
     },
     function(){
       if(NooBox.Image.handles.screenshotSearch){
-        chrome.contextMenus.remove(NooBox.General.handle_screenshotSearch);
+        chrome.contextMenus.remove(NooBox.Image.handles.screenshotSearch);
         NooBox.Image.handles.screenshotSearch=null;
       }
     }
@@ -623,11 +627,50 @@ NooBox.Image.update=function(i,result){
 }
 
 
+NooBox.Image.extractImages=function(info,tab){
+  console.log(info);
+  chrome.tabs.executeScript(tab.id,{
+    file: 'js/extractImage.js'
+  },voidFunc);
+}
 
+NooBox.Image.screenshotSearch=function(info,tab){
+  chrome.tabs.sendMessage(tab.id,'loaded',function(response){
+    console.log(response);
+    if(response=='yes'){
+      chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
+        chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
+      });
+    }
+    else{
+      chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
+        chrome.tabs.executeScript(tab.id,{file:'thirdParty/jquery.min.js'},function(){
+          chrome.tabs.executeScript(tab.id,{
+            file: 'js/screenshotSearch.js'
+          },function(){
+            chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
+          });
+        });
+      });
+    }
+  });
+}
 
 
 NooBox.init=function(){
   NooBox.Options.init(0);
+  chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      if('job' in request){
+        if (request.job=="imageSearch_upload"){
+          NooBox.Image.imageSearch(request.data);
+        }
+        else if(request.job=='imageSearch'||request.job=='extractImages'||request.job=='screenshotSearch'){
+          NooBox.Image.updateContextMenu();
+        }
+      }
+    }
+  );
 }
 
 document.addEventListener('DOMContentLoaded', NooBox.init);

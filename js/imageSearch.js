@@ -27663,6 +27663,7 @@
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
+	//basically Website will display the website block and update image size if the image is loaded
 	var React = __webpack_require__(1);
 	module.exports = React.createClass({
 	  displayName: 'Website',

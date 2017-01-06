@@ -68,9 +68,9 @@
 	    { component: __webpack_require__(244) },
 	    React.createElement(Route, { path: 'popup.html', component: __webpack_require__(245) }),
 	    React.createElement(Route, { path: 'overview', component: __webpack_require__(245) }),
-	    React.createElement(Route, { path: 'options', component: __webpack_require__(246) }),
-	    React.createElement(Route, { path: 'history', component: __webpack_require__(247) }),
-	    React.createElement(Route, { path: 'about', component: __webpack_require__(248) })
+	    React.createElement(Route, { path: 'options', component: __webpack_require__(250) }),
+	    React.createElement(Route, { path: 'history', component: __webpack_require__(251) }),
+	    React.createElement(Route, { path: 'about', component: __webpack_require__(252) })
 	  )
 	), document.getElementById('noobox'));
 
@@ -27491,8 +27491,12 @@
 	var React = __webpack_require__(1);
 	var Helmet = __webpack_require__(179);
 	var Link = __webpack_require__(188).Link;
+	var Module = __webpack_require__(246);
 	module.exports = React.createClass({
 	  displayName: 'Overview',
+	  getInitialState: function () {
+	    return { modules: [] };
+	  },
 	  componentDidMount: function () {
 	    shared.goTo = this.props.router.push;
 	    if (window.location.pathname.indexOf('popup') != -1) {
@@ -27514,12 +27518,20 @@
 	      this.getInitialData();
 	    }
 	  },
-	  getInitialData: function () {},
+	  getInitialData: function () {
+	    get('modules', function (modules) {
+	      this.setState({ modules: modules });
+	    }.bind(this));
+	  },
 	  render: function () {
+	    console.log(this.state);
+	    var modules = this.state.modules.map(function (elem, index) {
+	      return React.createElement(Module, { key: index, name: elem });
+	    });
 	    return React.createElement(
 	      'div',
-	      null,
-	      'Overview'
+	      { id: 'overview' },
+	      modules
 	    );
 	  }
 	});
@@ -27529,21 +27541,186 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Helmet = __webpack_require__(179);
-	var Link = __webpack_require__(188).Link;
+	var ImageSearch = __webpack_require__(247);
+	var Reader = __webpack_require__(248);
+	var Notifier = __webpack_require__(249);
 	module.exports = React.createClass({
-	  displayName: 'Options',
+	  displayName: 'Module',
 	  render: function () {
+	    var core = null;
+	    switch (this.props.name) {
+	      case 'imageSearch':
+	        core = React.createElement(ImageSearch, null);
+	        break;
+	      case 'notifier':
+	        core = React.createElement(Notifier, null);
+	        break;
+	      case 'reader':
+	        core = React.createElement(Reader, null);
+	        break;
+	    }
 	    return React.createElement(
 	      'div',
-	      null,
-	      'Options'
+	      { className: 'module' },
+	      core
 	    );
 	  }
 	});
 
 /***/ },
 /* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	module.exports = React.createClass({
+	  displayName: 'ImageSearch',
+	  reader: new window.FileReader(),
+	  componentDidMount: function () {
+	    this.reader.onloadend = function () {
+	      base64data = this.reader.result;
+	      chrome.extension.sendMessage({ job: 'imageSearch_upload', data: base64data });
+	    }.bind(this);
+	  },
+	  onDragOver: function (e) {
+	    e.stopPropagation();
+	    e.preventDefault();
+	    e.dataTransfer.dropEffect = 'copy';
+	  },
+	  onDrop: function (e) {
+	    e.stopPropagation();
+	    e.preventDefault();
+	    var url = URL.createObjectURL(e.dataTransfer.files[0]);
+	    $('#uploadedImage').attr('src', url);
+	  },
+	  upload: function (e) {
+	    var url = URL.createObjectURL(e.target.files[0]);
+	    $('#uploadedImage').attr('src', url);
+	  },
+	  search: function (e) {
+	    fetchBlob(e.target.src, function (blob) {
+	      this.reader.readAsDataURL(blob);
+	    }.bind(this));
+	  },
+	  notImage: function (e) {
+	    chrome.notifications.create({
+	      type: 'basic',
+	      iconUrl: '/images/icon_128.png',
+	      title: GL('reverse_image_search'),
+	      message: GL('ls_0')
+	    });
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'imageSearch' },
+	      React.createElement('input', { onChange: this.upload, type: 'file', id: 'imageUpload' }),
+	      React.createElement('label', { onDrop: this.onDrop, onDragOver: this.onDragOver, id: 'imageUploadLabel', htmlFor: 'imageUpload' }),
+	      React.createElement('img', { onError: this.notImage, onLoad: this.search, id: 'uploadedImage' })
+	    );
+	  }
+	});
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	module.exports = React.createClass({
+	  displayName: 'Reader',
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Reader'
+	    );
+	  }
+	});
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	module.exports = React.createClass({
+	  displayName: 'Notifier',
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Notifier'
+	    );
+	  }
+	});
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Helmet = __webpack_require__(179);
+	var Link = __webpack_require__(188).Link;
+	module.exports = React.createClass({
+	  displayName: 'Options',
+	  getInitialState: function () {
+	    return { settings: { extractImage: false, imageSearch: false, screenshotSearch: false } };
+	  },
+	  componentDidMount: function () {
+	    var switchList = ['extractImage', 'imageSearch', 'screenshotSearch'];
+	    for (var i = 0; i < switchList.length; i++) {
+	      isOn(switchList[i], function (ii) {
+	        this.setState(function (prevState) {
+	          prevState.settings[switchList[ii]] = true;
+	          return prevState;
+	        });
+	      }.bind(this, i), function (ii) {
+	        this.setState(function (prevState) {
+	          prevState.settings[switchList[ii]] = false;
+	          return prevState;
+	        });
+	      }.bind(this, i));
+	    }
+	  },
+	  toggleSetting: function (id) {
+	    var newValue = !this.state.settings[id];
+	    set(id, newValue, function () {
+	      this.setState(function (prevState) {
+	        prevState.settings[id] = newValue;
+	        return prevState;
+	      });
+	      chrome.extension.sendMessage({ job: id });
+	    }.bind(this));
+	  },
+	  getSwitch: function (id, handler) {
+	    return React.createElement(
+	      'div',
+	      { className: 'switch' },
+	      React.createElement('input', { type: 'checkbox', onChange: CW.bind(null, handler || this.toggleSetting.bind(this, id), 'Options', 'option-switch', id), checked: this.state.settings[id], id: id }),
+	      React.createElement('label', { htmlFor: id, className: 'checkbox' }),
+	      GL(id)
+	    );
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'section' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          GL('images')
+	        ),
+	        this.getSwitch('imageSearch'),
+	        this.getSwitch('extractImage'),
+	        this.getSwitch('screenshotSearch')
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27561,7 +27738,7 @@
 	});
 
 /***/ },
-/* 248 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27573,7 +27750,12 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      'About'
+	      'About',
+	      React.createElement(
+	        'p',
+	        null,
+	        'Coming soon~'
+	      )
 	    );
 	  }
 	});

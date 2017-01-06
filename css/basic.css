@@ -439,3 +439,16 @@ select {
 #imageSearchResult .filter .button.focus {
   font-size: 22px;
 }
+#overview #imageSearch #imageUpload {
+  display: none;
+}
+#overview #imageSearch #imageUploadLabel {
+  border: 2px dashed grey;
+  cursor: pointer;
+  display: block;
+  width: 100px;
+  height: 65px;
+  margin-top: 10px;
+  padding-top: 35px;
+  text-align: center;
+}

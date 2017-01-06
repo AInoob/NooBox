@@ -1,8 +1,12 @@
 var React = require('react');
 var Helmet = require('react-helmet');
 var Link = require('react-router').Link;
+var Module = require('./Module.jsx');
 module.exports = React.createClass({
   displayName: 'Overview',
+  getInitialState: function(){
+    return {modules:[]};
+  },
   componentDidMount: function(){
     shared.goTo=this.props.router.push;
     if(window.location.pathname.indexOf('popup')!=-1){
@@ -27,8 +31,15 @@ module.exports = React.createClass({
     }
   },
   getInitialData: function(){
+    get('modules',function(modules){
+      this.setState({modules:modules});
+    }.bind(this));
   },
   render: function(){
-    return <div>Overview</div>;
+    console.log(this.state);
+    var modules=this.state.modules.map(function(elem,index){
+      return <Module key={index} name={elem} />
+    });
+    return <div id="overview">{modules}</div>;
   }
 });
