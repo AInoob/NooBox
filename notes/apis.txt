@@ -1,5 +1,0 @@
-Image search:
-  Google:   https://www.google.com/searchbyimage?&image_url=
-  Baidu:    http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=
-  Tineye:   http://www.tineye.com/search/?url=
-  Bing:     http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:

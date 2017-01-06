@@ -4,7 +4,7 @@
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "short_name": "NB",
-  "version": "0.6.9",
+  "version": "0.8.0",
   "browser_action": {
     "default_icon": "images/icon_128.png",
     "default_title": "NoooBox~~~",
@@ -14,7 +14,7 @@
     "128": "images/icon_128.png"
   },
   "background": {
-    "scripts":["thirdParty/jquery.min.js","js/noobox.js","js/background.js"]
+    "scripts":["thirdParty/jquery.min.js","js/util.js","js/background.js"]
   },
   "options_page": "options.html",
   "content_scripts":[
