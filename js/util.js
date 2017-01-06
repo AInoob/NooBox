@@ -289,3 +289,19 @@ function loadIframe(url,callback){
 
 function voidFunc(){
 }
+
+function fetchBlob(uri, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', uri, true);
+  xhr.responseType = 'blob';
+
+  xhr.onload = function(e) {
+    if (this.status == 200) {
+      var blob = new Blob([this.response], {type: 'image/png'});;
+      if (callback) {
+        callback(blob);
+      }
+    }
+  };
+  xhr.send();
+};

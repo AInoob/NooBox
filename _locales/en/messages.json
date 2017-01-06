@@ -50,7 +50,22 @@
   "sortBy":{
     "message":"Sort by "
   },
+  "reverse_image_search":{
+    "message":"Reverse Image Search"
+  },
+  "imageSearch":{
+    "message":"Reverse image search"
+  },
+  "extractImage":{
+    "message":"Extract images"
+  },
+  "screenshotSearch":{
+    "message":"Screenshot & Search"
+  },
   "j":{
     "message":"j"
+  },
+  "ls_0":{
+    "message":"Not supported file type"
   }
 }
