@@ -1,64 +1,14 @@
 <!doctype html>
 <html>
   <head>
-    <title class="word" word="Reverse_Image_Search"></title>
+    <meta charset="UTF-8">
     <script src="thirdParty/jquery.min.js"></script>
-    <script src="js/noobox.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/hi.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/noobox.css">
-    <link rel="stylesheet" type="text/css" href="css/image.search.css">
+    <link rel="stylesheet" type="text/css" href="css/basic.css">
   </head>
-  <body>
-  <div id="background">
-    <section id="brief">
-      <div id="imageDiv" class="col-4 f-left"></div>
-      <div id="keywordsDiv" class="col-4 f-left">
-        <h2 class="word" word="Related_Keywords"></h2>
-        <div id="keywords">
-          <div class="list" id="keywords_bing"></div>
-          <div class="list" id="keywords_google"></div>
-          <div class="list" id="keywords_baidu"></div>
-        </div>
-      </div>
-      <div id="moreResultsDiv" class="col-4 f-left">
-        <h2 class="word" word="More_Result">More Results</h2>
-        <ul id="moreResults">
-        </ul>
-      </div>
-    </section>
-    <section id="relatedWebsitesDiv">
-      <h2 class="word" word="Related_Website">Related Websites</h2>
-      <div id="relatedWebsites">
-        <div id="relatedWebsites_google"></div>
-        <div id="relatedWebsites_bing"></div>
-        <div id="relatedWebsites_baidu"></div>
-        <div id="relatedWebsites_saucenao"></div>
-        <div id="relatedWebsites_tineye"></div>
-        <div id="relatedWebsites_iqdb"></div>
-      </div>
-    </section>
-    <!--<section>
-      <h2>Similar Images</h2>
-      <ul id="similarImages"></ul>
-    </section>-->
-    <section id="websitesDiv" class="col-12">
-      <h2 class="word cap-first" word="websites">Websites</h2>
-      <div id="websites">
-        <div id="websites_google"></div>
-        <div id="websites_tineye_0"></div>
-        <div id="websites_baidu"></div>
-        <div id="relatedWebsites_yandex"></div>
-        <div id="websites_tineye_1"></div>
-        <div id="websites_yandex"></div>
-        <div id="websites_saucenao"></div>
-        <div id="websites_iqdb"></div>
-      </div>
-    </section>
-    <a id="reSearch" href="/#" style="display:none"><h2 class="word" word="Too_few_result_Click_here_to_upload_and_search"><h2></a>
-    <section id="loadImages" style="display:none">
-      <iframe class="theFrame" id="baiduIframe" src=""></iframe>
-    </section>
-    <script src="js/image.search.js"></script>
-  </div>
+  <body style="width:100%;border:0px;">
+    <div id="imageSearch"></div>
+    <script src="js/imageSearch.js"></script>
   </body>
 </html>

@@ -5,156 +5,52 @@
   "appDesc":{
     "message":"A useful Toolbox! Reverse image search with multiple engines + Extract images + Screenshot & Search + Webmaster + Crypter"
   },
-  "crypt_it":{
-    "message":"crypt it"
+  "overview":{
+    "message":"Overview"
   },
-  "generating":{
-    "message":"generating..."
-  },
-  "search_this_image":{
-    "message":"search this image"
-  },
-  "screenshot_and_search":{
-    "message":"Screenshot and Search"
-  },
-  "Reverse_Image_Search":{
-    "message":"Reverse Image Search"
-  },
-  "drop_the_image_here":{
-    "message":"Drop the image here"
-  },
-  "engines":{
-    "message":"engines"
-  },
-  "google":{
-    "message":"google"
-  },
-  "baidu":{
-    "message":"baidu"
-  },
-  "tineye":{
-    "message":"tineye"
-  },
-  "bing":{
-    "message":"bing"
-  },
-  "yandex":{
-    "message":"yandex"
-  },
-  "IQDB":{
-    "message":"IQDB"
-  },
-  "SauceNao":{
-    "message":"SauceNao"
-  },
-  "Unit_Converter":{
-    "message":"Unit Converter"
-  },
-  "crypter":{
-    "message":"crypter"
-  },
-  "webmaster":{
-    "message":"webmaster"
-  },
-  "Sitemap_Generator":{
-    "message":"Sitemap Generator"
-  },
-  "sitemap":{
-    "message":"sitemap"
-  },
-  "host":{
-    "message":"host"
-  },
-  "path":{
-    "message":"path"
-  },
-  "max_depth":{
-    "message":"max depth"
-  },
-  "crawl":{
-    "message":"crawl"
-  },
-  "status":{
-    "message":"status"
-  },
-  "broken_links":{
-    "message":"broken links"
-  },
-  "Related_Keywords":{
-    "message":"Related Keywords"
-  },
-  "More_Result":{
-    "message":"More Result"
-  },
-  "Related_Websites":{
-    "message":"Related Website"
-  },
-  "websites":{
-    "message":"websites"
-  },
-  "current":{
-    "message":"current"
-  },
-  "change":{
-    "message":"change"
-  },
-  "Image_Search_Background":{
-    "message":"Image Search Background"
-  },
-  "clear":{
-    "message":"clear"
-  },
-  "Customize_Backgrounds":{
-    "message":"Customize Backgrounds"
-  },
-  "Popup_Background":{
-    "message":"Popup Background"
+  "history":{
+    "message":"History"
   },
   "options":{
-    "message":"options"
+    "message":"Options"
   },
-  "popup":{
-    "message":"popup"
-  },
-  "Uploading_image_to_get_more_results":{
-    "message":"Uploading image to get more results..."
-  },
-  "update_browser":{
-    "message":"NooBox cannot run on this old version of Chrome, update Chrome by yourself~"
-  },
-  "general":{
-    "message":"general"
+  "about":{
+    "message":"About"
   },
   "extract_images":{
-    "message":"extract images"
+    "message":"Extract images"
   },
-  "Too_few_result_Click_here_to_upload_and_search":{
-    "message":"Too few result? Click here to upload and search"
+  "search_this_image":{
+    "message":"Search this image"
   },
   "screenshot_search":{
-    "message":"screenshot & search"
+    "message":"Screenshot search"
   },
-  "please_reload_the_page_to_initialize_noobox_component":{
-    "message":"please reload the page to initialize NooBox components..."
+  "image":{
+    "message":"Image"
   },
-  "Extract_Images2":{
-    "message":"Extract Images"
+  "keywords":{
+    "message":"Keywords"
   },
-  "NooBox_does_not_support_iframe_image_extraction":{
-    "message":"NooBox does not support IFrame image extraction"
+  "more":{
+    "message":"More"
   },
-  "image_uploading":{
-    "message":"Image uploading"
+  "relavance":{
+    "message":"Relavance"
   },
-  "NooBox_cannot_reach_image_uploading_server":{
-    "message":"NooBox cannot reach image uploading server"
+  "area":{
+    "message":"Area"
   },
-  "share":{
-    "message":"Share"
+  "width":{
+    "message":"Width"
+  },
+  "height":{
+    "message":"Height"
+  },
+  "sortBy":{
+    "message":"Sort by "
+  },
+  "j":{
+    "message":"j"
   }
-
-
-
-
-
 }

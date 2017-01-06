@@ -1,85 +1,9 @@
 <!doctype html>
 <html>
   <head>
-    <title class="word" word="options"></title>
-    <script src="thirdParty/jquery.min.js"></script>
-    <script src="js/noobox.js"></script>
-    <script src="js/hi.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/noobox.css">
+    <meta charset="UTF-8">
+    <script src="js/options.js"></script>
   </head>
   <body>
-    <section>
-      <span class="blue f24 word" word="Reverse_Image_Search"></span>
-      <label class="switch20" style="margin-top:10px">
-        <input type="checkbox" class="switch hasSub" id="imageSearch"></input><div class="slider20 round"></div><br/>
-      </label>
-      <div class="sub firstSub" style="width:100%;float:left">
-        <span class="blue f18 word cap-first" word="engines"></span><br/>
-        <span class="blue f14 word cap-first" word="google"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_google"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="baidu"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_baidu"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="tineye"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_tineye"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="bing"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_bing"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="yandex"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_yandex"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="IQDB"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_iqdb"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="SauceNao"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_saucenao"></input><div class="slider14 round"></div></label>
-      </div>
-    </section>
-    <section>
-      <span class="blue f24 word cap-first" word="general"></span>
-      <label class="switch20 "><input type="checkbox" class="switch hasSub" id="general"></input><div class="slider20 round"></div></label>
-      <div class="firstSub">
-        <span class="blue f18 word cap-first" word="screenshot_search"></span><label class="switch14"><input type="checkbox" class="switch" id="screenshotSearch"></input><div class="slider14 round"></div></label><br/>
-        <span class="blue f14 word cap-first" word="extract_images"></span><label class="switch14"><input type="checkbox" class="switch" id="extractImage"></input><div class="slider14 round"></div></label><br/>
-      </div>
-    </section>
-    <!--
-    <section>
-      <a href="/shortcut.html" target="_blank"><span class="blue f24 word cap-first" word="shortcut"></span></a>
-      <label class="switch20 hasSub"><input type="checkbox" class="switch" id="shortcut"></input><div class="slider20 round"></div></label>
-    </section>
-    -->
-    <section>
-      <span class="blue f24 word cap-first" word="crypter"></span>
-      <label class="switch20 hasSub"><input type="checkbox" class="switch" id="crypter"></input><div class="slider20 round"></div></label>
-    </section>
-    <section>
-      <span class="blue f24 word cap-first" word="webmaster"></span>
-      <label class="switch20 "><input type="checkbox" class="switch hasSub" id="webmaster"></input><div class="slider20 round"></div></label>
-      <div class="sub firstSub">
-        <a href="/webmaster.html" target="_blank"><span class="blue f14 word cap-first" word="Sitemap_Generator"></span></a>
-      </div>
-    </section>
-    <section>
-      <span class="blue f24 word" word="Customize_Backgrounds" style="float:left"></span>
-      <label class="switch20" style="margin-top:10px"><input type="checkbox" class="switch hasSub" id="background"></input><div class="slider20 round"></div></label>
-      <div class="firstSub" style="width:100%;height:160px;float:left">
-        <span class="blue f18 word" style="width:100%;float:left" word="Image_Search_Background"></span>
-        <div style="float:left;width:200px;height:120px;">
-          <span style="display:block;float:left;margin-right:10px" class="word blue f14 cap-first" word="current"></span>
-          <img id="imageSearchBackgroundImage" src="" style="max-width:100px;max-height:100px"></img>
-        </div>
-        <div id="dropDiv" style="float:left;width:200px;height:120px">
-          <span style="display:block;float:left;margin-right:10px" class="word blue f14 cap-first" word="change"></span>
-          <input type="file" id="imageSearchBackground" style="display:none"/>
-          <label for="imageSearchBackground" id="labelImageSearchBackground" class="word" word="drop_the_image_here" style="float:left;border:2px dashed grey;cursor:pointer;display:block;width:100px;height:65px;padding-top:35px;text-align:center"></label>
-          <label class="word blue f14 cap-first" id="clearImageSearchBackground" word="clear" style="margin-left:6px;border:solid 1px;cursor:pointer"></label>
-        </div>
-      </div>
-      <div class="firstSub" style="width:100%;height:160px;float:left">
-        <span class="blue f18 word" style="float:left" word="Popup_Background"></span>
-        <span class="blue" style="float:left;margin-top:6px"> ~=300*290 </span>
-        <div style="float:left;width:200px;height:120px;clear:left">
-          <span style="display:block;float:left;margin-right:10px" class="word blue f14 cap-first" word="current"></span>
-          <img id="popupBackgroundImage" src="" style="max-width:100px;max-height:100px"></img>
-        </div>
-        <div id="dropDiv" style="float:left;width:200px;height:120px">
-          <span style="display:block;float:left;margin-right:10px" class="word blue f14 cap-first" word="change"></span>
-          <input type="file" id="popupBackground" style="display:none"/>
-          <label for="popupBackground" id="labelPopupBackground" class="word" word="drop_the_image_here" style="float:left;border:2px dashed grey;cursor:pointer;display:block;width:100px;height:65px;padding-top:35px;text-align:center"></label>
-          <label class="word blue f14 cap-first" id="clearPopupBackground" word="clear" style="margin-left:6px;border:solid 1px;cursor:pointer"></label>
-        </div>
-      </div>
-    </section>
-    <script src="js/options.js"></script>
-    </body>
+  </body>
 </html>

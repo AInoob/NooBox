@@ -1,75 +1,15 @@
 <!doctype html>
 <html>
   <head>
-    <title class="word" word="popup">Popup</title>
+    <meta charset="UTF-8">
     <script src="thirdParty/jquery.min.js"></script>
-    <script src="js/noobox.js"></script>
+    <script src="thirdParty/timeago.min.js"></script>
     <script src="js/hi.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/noobox.css">
-  </head>
-  <body style="background-repeat: no-repeat;background-attachment: fixed;background-position: center;width:300px">
-  <div id="background" style="background-color:rgba(255,255,255,0.5)">
-    <section>
-      <span class="blue f24 word" word="Reverse_Image_Search"></span>
-      <label class="switch20">
-        <input type="checkbox" class="switch hasSub" id="imageSearch"></input><div class="slider20 round"></div>
-      </label>
-      <div>
-        <div class="firstSub f-left" style="width:120px">
-          <span class="blue f18 word cap-first" word="engines"></span><br/>
-          <span class="blue f14 word cap-first" word="google"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_google"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f14 word cap-first" word="baidu"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_baidu"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f14 word cap-first" word="tineye"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_tineye"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f14 word cap-first" word="bing"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_bing"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f14 word cap-first" word="yandex"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_yandex"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f14 word cap-first" word="IQDB"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_iqdb"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f14 word cap-first" word="SauceNao"></span><label class="switch14"><input type="checkbox" class="switch" id="imageSearchUrl_saucenao"></input><div class="slider14 round"></div></label><br/>
-        </div>
-        <div id="dropDiv" class="dropDiv f-left" style="width:120px">
-          <input type="file" id="upload"/>
-          <label for="upload" id="uploadLabel" class="word" word="drop_the_image_here" ></label>
-          <img id="image" src="" style="position:absolute;margin-top:-102px"></img>
-        </div>
-      </div>
-      </section>
-      <section>
-        <span class="blue f24 word cap-first" word="general"></span>
-        <label class="switch20 "><input type="checkbox" class="switch hasSub" id="general"></input><div class="slider20 round"></div></label>
-        <div class="firstSub">
-          <span class="blue f18 word cap-first" word="screenshot_search"></span><label class="switch14"><input type="checkbox" class="switch" id="screenshotSearch"></input><div class="slider14 round"></div></label><br/>
-          <span class="blue f18 word cap-first" word="extract_images"></span><label class="switch14"><input type="checkbox" class="switch" id="extractImage"></input><div class="slider14 round"></div></label><br/>
-        </div>
-      </section>
-      <!--
-      <section>
-        <a href="/shortcut.html" target="_blank"><span class="blue f24 word cap-first" word="shortcut"></span></a>
-        <label class="switch20 hasSub"><input type="checkbox" class="switch" id="shortcut"></input><div class="slider20 round"></div></label>
-      </section>
-      -->
-      <section>
-        <a href="/crypter.html" target="_blank"><span class="blue f24 word cap-first" word="crypter"></span></a>
-        <label class="switch20 hasSub"><input type="checkbox" class="switch" id="crypter"></input><div class="slider20 round"></div></label>
-      </section>
-      <section>
-        <span class="blue f24 word cap-first" word="webmaster"></span>
-        <label class="switch20 "><input type="checkbox" class="switch hasSub" id="webmaster"></input><div class="slider20 round"></div></label>
-        <div class="firstSub">
-          <a href="/webmaster.html" target="_blank"><span class="blue f14 word cap-first" word="Sitemap_Generator"></span></a>
-        </div>
-      </section>
-      <a href="/options.html" target="_blank"><span class="blue f24 word cap-first" word="options"></span></a>
-      <div id="share">
-        <span class="word" word="share"></span>
-        <a class="shareItem" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//chrome.google.com/webstore/detail/noobox/kidibbfcblfbbafhnlanccjjdehoahep"><img class="shareIcon" src="thirdParty/facebookShare.png" /></a>
-        <a class="shareItem" target="_blank" href="https://plus.google.com/share?url=https%3A//chrome.google.com/webstore/detail/noobox/kidibbfcblfbbafhnlanccjjdehoahep"><img class="shareIcon" src="thirdParty/googleShare.png" /></a>
-        <a class="shareItem" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//chrome.google.com/webstore/detail/noobox/kidibbfcblfbbafhnlanccjjdehoahep&title=NooBox%20---%20A%20useful%20toolbox%20for%20Chrome&summary=&source="><img class="shareIcon" src="thirdParty/linkedinShare.png" /></a>
-        <a class="shareItem" target="_blank" href="https://twitter.com/home?status=https%3A//chrome.google.com/webstore/detail/noobox/kidibbfcblfbbafhnlanccjjdehoahep"><img class="shareIcon" src="thirdParty/twitterShare.png" /></a>
-        <a class="shareItem" target="_blank" href="http://www.jiathis.com/send/?webid=tsina&url=https://ainoob.com/#/article/21&title=NooBox"><img class="shareIcon" src="thirdParty/sinaShare.png" /></a>
-        <a class="shareItem" target="_blank" href="http://www.jiathis.com/send/?webid=weixin&url=https://ainoob.com/#/article/21&title=NooBox"><img class="shareIcon" src="thirdParty/wechatShare.png" /></a>
-        <a class="shareItem" target="_blank" href="http://www.jiathis.com/send/?webid=renren&url=https://ainoob.com/#/article/21&title=NooBox"><img class="shareIcon" src="thirdParty/renrenShare.png" /></a>
-      </div>
-
-      <script src="js/popup.js"></script>
-    </div>
-    </body>
+    <script src="js/util.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/basic.css">
+    </head>
+    <body>
+    <div id="noobox"></div>
+    <script src="js/noobox.js"></script>
+  </body>
 </html>
