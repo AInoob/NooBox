@@ -3,7 +3,8 @@ body {
   width: 400px;
   font-family: Arial;
   margin: 0px;
-  border: 8px solid #cccccc;
+  border: 5px solid #cccccc;
+  border-bottom: 0px;
 }
 body::-webkit-scrollbar {
   background-color: #cccccc;
@@ -33,7 +34,7 @@ nav ul {
   height: 38px;
   text-align: center;
   margin-top: 0px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 nav ul li {
   height: 100%;
@@ -63,9 +64,9 @@ nav ul li.active a {
   overflow: hidden;
   background: #fafafa;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  margin-bottom: 8px;
-  padding: 16px;
-  padding-bottom: 8px;
+  margin-bottom: 5px;
+  padding: 8px;
+  padding-bottom: 5px;
 }
 .section .header {
   font-size: 14px;
@@ -126,12 +127,12 @@ tbody tr td {
   font-size: 15px;
 }
 tbody tr td img {
-  height: 23px;
-  width: 23px;
+  max-height: 100px;
+  max-width: 100px;
   vertical-align: middle;
 }
 tbody tr td:nth-child(1) {
-  width: 60px;
+  width: 100px;
   font-size: 13px;
 }
 tbody tr td:nth-child(2) {
@@ -139,13 +140,13 @@ tbody tr td:nth-child(2) {
   width: 100px;
 }
 tbody tr td:nth-child(3) {
-  width: 100px;
+  width: 110px;
 }
 tbody tr td:nth-child(4) {
   display: block;
   overflow: hidden;
   white-space: nowrap;
-  width: 180px;
+  width: 20px;
 }
 tbody tr td:nth-child(5),
 tbody tr td:nth-child(6) {
@@ -299,6 +300,9 @@ select {
   float: right;
   height: 20px;
   filter: invert(50%);
+}
+#options .switch {
+  margin-bottom: 4px;
 }
 #imageSearchResult * {
   transition: none;

@@ -16,7 +16,8 @@ body{
   width: 400px;
   font-family: Arial;
   margin: 0px;
-  border: 8px solid @md-color-2;
+  border: 5px solid @md-color-2;
+  border-bottom: 0px;
   &::-webkit-scrollbar {
     background-color: @md-color-2;
     width: 10px;
@@ -48,7 +49,7 @@ nav{
     height: @nav-height;
     text-align: center;
     margin-top:0px;
-    margin-bottom:8px;
+    margin-bottom:5px;
     li{
       height: 100%;
       width: 25%;
@@ -81,9 +82,9 @@ nav{
   overflow: hidden;
   background: @md-color-1;
   box-shadow: @md-box-shadow;
-  margin-bottom: 8px;
-  padding: 16px;
-  padding-bottom: 8px;
+  margin-bottom: 5px;
+  padding: 8px;
+  padding-bottom: 5px;
   .header{
     font-size: 14px;
     font-weight: bold;
@@ -153,12 +154,12 @@ nav{
       td {
         font-size: 15px;
         img {
-          height: 23px;
-          width: 23px;
+          max-height: 100px;
+          max-width: 100px;
           vertical-align: middle;
         }
         &:nth-child(1) {
-          width: 60px;
+          width: 100px;
           font-size: 13px;
         }
         &:nth-child(2) {
@@ -166,13 +167,13 @@ nav{
           width: 100px;
         }
         &:nth-child(3) {
-          width: 100px;
+          width: 110px;
         }
         &:nth-child(4) {
           display: block;
           overflow: hidden;
           white-space: nowrap;
-          width: 180px;
+          width: 20px;
         }
         &:nth-child(5),&:nth-child(6) {
           font-weight: bold;
@@ -294,6 +295,7 @@ select {
     float: left;
   }
 }
+
 .app-switch, .app-options, .app-remove, .app-add,.viewGrid,.viewList{
   background-repeat: no-repeat;
   cursor: pointer;
@@ -329,6 +331,12 @@ select {
     float: right;
     height: 20px;
     filter: invert(50%);
+  }
+}
+
+#options{
+  .switch{
+    margin-bottom: 4px;
   }
 }
 

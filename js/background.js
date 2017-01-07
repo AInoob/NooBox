@@ -45,6 +45,8 @@ NooBox.Image.update=null;
 NooBox.Image.screenshotSearch=null;
 //inject and run scripts to current tab
 NooBox.Image.extractImages=null;
+//record the search history
+NooBox.History.recordImageSearch=null;
 
 
 
@@ -146,6 +148,7 @@ NooBox.Image.imageSearch=function(info){
       cursor=0;
     }
     setDB('imageCursor',cursor);
+    NooBox.History.recordImageSearch(cursor,info);
     getImageSearchEngines(NooBox.Image.engines,function(engines){
       var result={
         engines: engines
@@ -668,6 +671,13 @@ NooBox.Image.screenshotSearch=function(info,tab){
   });
 }
 
+NooBox.History.recordImageSearch=function(cursor,info){
+  getDB('history_records',function(records){
+    records=records||[];
+    records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:info});
+    setDB('history_records',records);
+  });
+}
 
 NooBox.init=function(){
   NooBox.Options.init(0);
