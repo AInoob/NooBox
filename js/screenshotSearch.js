@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener(
           div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
           div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:'+($(window).height()-52)/img.height*img.width+'px;top:'+($(window).height()-52)+'px;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
           div.append('<div class="NooBox-screenshot-coverTop" style="pointer-events: none;margin:0px;border:0px;padding:0px;position:absolute;top:6px;background-color:rgba(0,0,0,0.418)"></div>');
-          div.append('<div class="NooBox-screenshot-coverRight" style="pointer-events: none;margin:0px;border:0px;padding:0px;position:absolute;right:41px;background-color:rgba(0,0,0,0.418)"></div>');
+          div.append('<div class="NooBox-screenshot-coverRight" style="left:initial;pointer-events: none;margin:0px;border:0px;padding:0px;position:absolute;right:41px;background-color:rgba(0,0,0,0.418)"></div>');
           div.append('<div class="NooBox-screenshot-coverBottom" style="pointer-events: none;margin:0px;border:0px;padding:0px;position:absolute;bottom:37px;background-color:rgba(0,0,0,0.418)"></div>');
           div.append('<div class="NooBox-screenshot-coverLeft" style="pointer-events: none;margin:0px;border:0px;padding:0px;position:absolute;left:6px;background-color:rgba(0,0,0,0.418)"></div>');
           $('body').append(div);

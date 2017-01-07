@@ -27530,7 +27530,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { id: 'overview' },
+	      { id: 'overview', className: 'section' },
 	      modules
 	    );
 	  }
@@ -27662,10 +27662,10 @@
 	module.exports = React.createClass({
 	  displayName: 'Options',
 	  getInitialState: function () {
-	    return { settings: { extractImage: false, imageSearch: false, screenshotSearch: false } };
+	    return { settings: { extractImages: false, imageSearch: false, screenshotSearch: false } };
 	  },
 	  componentDidMount: function () {
-	    var switchList = ['extractImage', 'imageSearch', 'screenshotSearch'];
+	    var switchList = ['extractImages', 'imageSearch', 'screenshotSearch'];
 	    for (var i = 0; i < switchList.length; i++) {
 	      isOn(switchList[i], function (ii) {
 	        this.setState(function (prevState) {
@@ -27702,7 +27702,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { id: 'options' },
 	      React.createElement(
 	        'div',
 	        { className: 'section' },
@@ -27712,7 +27712,7 @@
 	          GL('images')
 	        ),
 	        this.getSwitch('imageSearch'),
-	        this.getSwitch('extractImage'),
+	        this.getSwitch('extractImages'),
 	        this.getSwitch('screenshotSearch')
 	      )
 	    );
@@ -27728,11 +27728,86 @@
 	var Link = __webpack_require__(188).Link;
 	module.exports = React.createClass({
 	  displayName: 'History',
+	  getInitialState: function () {
+	    initTimeago();
+	    return {};
+	  },
+	  componentDidMount: function () {
+	    getDB('history_records', function (recordList) {
+	      this.setState({ recordList: recordList });
+	    }.bind(this));
+	  },
 	  render: function () {
+	    var recordList = (this.state.recordList || [{ name: 'Nothing is here yet', id: 'mgehojanhfgnndgffijeglgahakgmgkj' }]).map(function (record, index) {
+	      return React.createElement(
+	        'tr',
+	        { key: index },
+	        React.createElement(
+	          'td',
+	          null,
+	          timeagoInstance.format(record.date, 'locale')
+	        ),
+	        React.createElement(
+	          'td',
+	          { className: record.event },
+	          GL(record.event)
+	        ),
+	        React.createElement(
+	          'td',
+	          null,
+	          React.createElement(
+	            'a',
+	            { target: '_blank', href: '/image.search.html?cursor=' + record.cursor + '&image=history' },
+	            React.createElement('img', { src: record.info })
+	          )
+	        ),
+	        React.createElement(
+	          'td',
+	          null,
+	          'x'
+	        )
+	      );
+	    }).reverse();
 	    return React.createElement(
 	      'div',
-	      null,
-	      'History'
+	      { className: 'section' },
+	      React.createElement(
+	        'table',
+	        { className: 'history-table' },
+	        React.createElement(
+	          'thead',
+	          null,
+	          React.createElement(
+	            'tr',
+	            null,
+	            React.createElement(
+	              'th',
+	              null,
+	              capFirst(GL('when'))
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              capFirst(GL('event'))
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              capFirst(GL('detail'))
+	            ),
+	            React.createElement(
+	              'th',
+	              null,
+	              capFirst(GL(''))
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'tbody',
+	          null,
+	          recordList
+	        )
+	      )
 	    );
 	  }
 	});

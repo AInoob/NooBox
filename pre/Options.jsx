@@ -44,7 +44,7 @@ module.exports = React.createClass({
   },
   render: function(){
     return (
-      <div>
+      <div id="options">
         <div className="section">
           <div className="header">{GL('images')}</div>
           {this.getSwitch('imageSearch')}
