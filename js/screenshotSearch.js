@@ -21,15 +21,14 @@ chrome.runtime.onMessage.addListener(
         var img=new Image;
         img.src=request.data;
         img.onload=function(){
-          console.log('load');
-          div.append('<div class="NooBox-screenshot-search" style="margin:0px;border:0px;padding:0px;cursor:pointer;height: '+($(window).height()-52-($(window).height()-250)/2)+'px;width: 35px;float: right;padding-top: '+($(window).height()-250)/2+'px;text-align: center;background-color:rgba(130,255,130,0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">GO!!!</div>');
+          div.append('<div class="NooBox-screenshot-search" style="margin:0px;border:0px;padding:0px;cursor:pointer;height: '+($(window).height()-52-($(window).height()-250)/2)+'px;width: 35px;float: right;padding-top: '+($(window).height()-250)/2+'px;text-align: center;background-color:rgba(130, 186, 255, 0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">'+chrome.i18n.getMessage('search')+'!!!</div>');
           div.append('<canvas width='+img.width+' height='+img.height+' style="margin:0px;border:0px;padding:0px;margin:0px;border:6px dashed pink;height:'+($(window).height()-52)+'px" class="NooBox-screenshot-canvas"></canvas>');
-          div.append('<div class="NooBox-screenshot-switch" style="margin:0px;border:0px;padding:0px;margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(255,133,155,0.7);">XXX</div>');
-          div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:13px;height:13px"></div>');
-          div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:'+($(window).height()-52)/img.height*img.width+'px;top:'+($(window).height()-52)+'px;position:absolute;border-radius:50%;width:13px;height:13px"></div>');
-          div.append('<div class="NooBox-screenshot-coverTop" style="margin:0px;border:0px;padding:0px;position:absolute;top:7px;background-color:rgba(0,0,0,0.618)"></div>');
+          div.append('<div class="NooBox-screenshot-switch" style="margin:0px;border:0px;padding:0px;margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(193, 22, 59, 0.8);">'+chrome.i18n.getMessage('close')+'</div>');
+          div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
+          div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="margin:0px;border:0px;padding:0px;z-index:3;cursor:crosshair;left:'+($(window).height()-52)/img.height*img.width+'px;top:'+($(window).height()-52)+'px;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
+          div.append('<div class="NooBox-screenshot-coverTop" style="margin:0px;border:0px;padding:0px;position:absolute;top:6px;background-color:rgba(0,0,0,0.618)"></div>');
           div.append('<div class="NooBox-screenshot-coverRight" style="margin:0px;border:0px;padding:0px;position:absolute;right:41px;background-color:rgba(0,0,0,0.618)"></div>');
-          div.append('<div class="NooBox-screenshot-coverBottom" style="margin:0px;border:0px;padding:0px;position:absolute;bottom:35px;background-color:rgba(0,0,0,0.618)"></div>');
+          div.append('<div class="NooBox-screenshot-coverBottom" style="margin:0px;border:0px;padding:0px;position:absolute;bottom:37px;background-color:rgba(0,0,0,0.618)"></div>');
           div.append('<div class="NooBox-screenshot-coverLeft" style="margin:0px;border:0px;padding:0px;position:absolute;left:6px;background-color:rgba(0,0,0,0.618)"></div>');
           $('body').append(div);
           $('body').append('<style>@keyframes shiny{0%{background-color:white}20%{background-color:yellow}40%{background-color:red}60%{background-color:black}80%{background-color:blue}} .NooBox-shiny{animation: shiny 5s infinite}</style>');
@@ -75,12 +74,13 @@ chrome.runtime.onMessage.addListener(
               var top=Math.min(top1,top2);
               var width=Math.abs(left1-left2);
               var height=Math.abs(top1-top2);
-              var temp;
-              $(e.target).parent().find('.NooBox-screenshot-coverTop').css({left:(left-canvasLeft+7)+'px',width:(canvasWidth-(left-canvasLeft))+'px',height:(top-canvasTop)+'px'});
-              temp=Math.max((top-canvasTop+7),6);
-              $(e.target).parent().find('.NooBox-screenshot-coverRight').css({top:temp+'px',width:(canvasWidth-(left+width)+6)+'px',height:(canvasHeight-temp+6)+'px'});
-              $(e.target).parent().find('.NooBox-screenshot-coverBottom').css({left:'6px',width:(canvasWidth-(canvasWidth-(left+width))-6)+'px',height:(canvasHeight-height-top+canvasTop)+'px'});
-              $(e.target).parent().find('.NooBox-screenshot-coverLeft').css({top:'6px',width:(left-4)+'px',height:(top+height-canvasTop+1)+'px'});
+              var halfBall=6;
+              $(e.target).parent().find('.NooBox-screenshot-coverTop').css({left:(left)+'px',width:(canvasWidth-left+halfBall)+'px',height:(top-canvasTop)+'px'});
+              var temp1=(6+top-canvasTop);
+              var temp2=(canvasWidth-(left+width)+halfBall);
+              $(e.target).parent().find('.NooBox-screenshot-coverRight').css({top:temp1+'px',width:temp2+'px',height:(canvasHeight-temp1+halfBall)+'px'});
+              $(e.target).parent().find('.NooBox-screenshot-coverBottom').css({left:'6px',width:(canvasWidth-temp2-0.5)+'px',height:(canvasHeight-(height+top-canvasTop))+'px'});
+              $(e.target).parent().find('.NooBox-screenshot-coverLeft').css({top:6+'px',width:(left-halfBall)+'px',height:(top+height-canvasTop+0.19)+'px'});
             }
           });
           $(document).mouseup(function() {
