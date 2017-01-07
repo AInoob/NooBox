@@ -62,10 +62,22 @@
   "screenshotSearch":{
     "message":"Screenshot & Search"
   },
+  "search":{
+    "message":"Search"
+  },
+  "close":{
+    "message":"Close"
+  },
   "j":{
     "message":"j"
   },
   "ls_0":{
     "message":"Not supported file type"
+  },
+  "ls_1":{
+    "message":"Screenshot search failed"
+  },
+  "ls_2":{
+    "message":"Cannot perform screenshot search on this tab"
   }
 }

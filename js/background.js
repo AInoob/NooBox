@@ -86,7 +86,7 @@ NooBox.Image.updateContextMenu=function(){
     function(){
       if(!NooBox.Image.handles.imageSearch){
         NooBox.Image.handles.imageSearch=chrome.contextMenus.create({
-          "title": chrome.i18n.getMessage("search_this_image"),
+          "title": GL("search_this_image"),
           "contexts": ["image"],
           "onclick": NooBox.Image.imageSearch
         });
@@ -103,7 +103,7 @@ NooBox.Image.updateContextMenu=function(){
       if(!NooBox.Image.handles.extractImages){
         NooBox.Image.handles.extractImages=chrome.contextMenus.create({
           "id" : "extractImages",
-          "title": chrome.i18n.getMessage("extract_images"),
+          "title": GL("extract_images"),
           "contexts": ["page","selection","frame","link","editable","video","audio"],
           "onclick": NooBox.Image.extractImages
         });
@@ -121,7 +121,7 @@ NooBox.Image.updateContextMenu=function(){
       if(!NooBox.Image.handles.screenshotSearch){
         NooBox.Image.handles.screenshotSearch=chrome.contextMenus.create({
           "id" : "screenshotSearch",
-          "title": chrome.i18n.getMessage("screenshot_search"),
+          "title": GL("screenshot_search"),
           "contexts": ["browser_action"],
           "onclick": NooBox.Image.screenshotSearch
         });
@@ -550,8 +550,8 @@ NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,ser
       chrome.notifications.create('uploadServer',{
         type:'basic',
         iconUrl: '/images/icon_128.png',
-        title: chrome.i18n.getMessage("upload_image"),
-        message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
+        title: GL("upload_image"),
+        message: GL("NooBox_cannot_reach_image_uploading_server")
       },function(){});
     }
   });
@@ -582,8 +582,8 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
       chrome.notifications.create('uploadServer2',{
         type:'basic',
         iconUrl: '/images/icon_128.png',
-        title: chrome.i18n.getMessage("upload_image"),
-        message: chrome.i18n.getMessage("NooBox_cannot_reach_image_uploading_server")
+        title: GL("upload_image"),
+        message: GL("NooBox_cannot_reach_image_uploading_server")
       },function(){});
     }
   });
@@ -592,12 +592,15 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
 NooBox.Image.POST.baidu=function(cursor,result,data){
   $.ajax({
     type:'POST',
-    url:'http://stu.baidu.com/i?appid=4',
+    url:'http://stu.baidu.com/i?appid=4&appname=extend.chrome.capture&rt=0&rn=10&ct=0&stt=0&tn=shituresult',
     contentType:'multipart/form-data; boundary=----WebKitFormBoundary',
     data:NooBox.Image.DataWrapper.baidu({data:data,name:'dragimage'},'----WebKitFormBoundary')
   }).done(function(data){
     result.baidu.url=data;
     $.ajax({url:data}).done(NooBox.Image.fetchFunctions.baidu.bind(null,cursor,result));
+  }).fail(function(){
+    result.baidu.result='failed'
+    NooBox.Image.update(cursor,result);
   });
 }
 
@@ -644,13 +647,22 @@ NooBox.Image.screenshotSearch=function(info,tab){
     }
     else{
       chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
-        chrome.tabs.executeScript(tab.id,{file:'thirdParty/jquery.min.js'},function(){
-          chrome.tabs.executeScript(tab.id,{
-            file: 'js/screenshotSearch.js'
-          },function(){
-            chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
+          chrome.tabs.executeScript(tab.id,{file:'thirdParty/jquery.min.js'},function(){
+            if(chrome.runtime.lastError){
+              chrome.notifications.create('screenshotFailed',{
+                type:'basic',
+                iconUrl: '/images/icon_128.png',
+                title: GL("ls_1"),
+                message: GL("ls_2")
+              },voidFunc);
+              return;
+            }
+            chrome.tabs.executeScript(tab.id,{
+              file: 'js/screenshotSearch.js'
+            },function(){
+              chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
+            });
           });
-        });
       });
     }
   });
