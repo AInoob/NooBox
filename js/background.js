@@ -698,7 +698,8 @@ NooBox.Image.screenshotSearch=function(info,tab){
 NooBox.History.recordImageSearch=function(cursor,info){
   getDB('history_records',function(records){
     records=records||[];
-    records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:info});
+    var source=info.srcUrl||info;
+    records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:source});
     setDB('history_records',records);
     get('totalImageSearch',function(data){
       data=data||0;
