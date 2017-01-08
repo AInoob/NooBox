@@ -7,7 +7,7 @@ module.exports = React.createClass({
     return {settings:{extractImages:false,imageSearch:false,screenshotSearch:false}};
   },
   componentDidMount: function(){
-    var switchList=['extractImages','imageSearch','screenshotSearch'];
+    var switchList=['extractImages','imageSearch','screenshotSearch','imageSearchUrl_google','imageSearchUrl_baidu','imageSearchUrl_yandex','imageSearchUrl_bing','imageSearchUrl_tineye','imageSearchUrl_saucenao','imageSearchUrl_iqdb'];
     for(var i=0;i<switchList.length;i++){
       isOn(
         switchList[i],
@@ -38,16 +38,23 @@ module.exports = React.createClass({
   },
   getSwitch: function(id,handler){
     return <div className="switch">
-      <input type="checkbox" onChange={CW.bind(null,(handler||this.toggleSetting.bind(this,id)),'Options','option-switch',id)} checked={this.state.settings[id]} id={id} />
+      <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
       <label htmlFor={id} className="checkbox"></label>{GL(id)}
     </div>;
   },
   render: function(){
+    var imageSearchEngines=null;
+    if(this.state.settings['imageSearch']){
+      imageSearchEngines=["imageSearchUrl_google","imageSearchUrl_baidu","imageSearchUrl_tineye","imageSearchUrl_bing","imageSearchUrl_yandex","imageSearchUrl_saucenao","imageSearchUrl_iqdb"].map(function(elem,index){
+        return <div className="tab-1" key={index}>{this.getSwitch(elem)}</div>;
+      }.bind(this));
+    }
     return (
       <div id="options">
         <div className="section">
           <div className="header">{GL('images')}</div>
           {this.getSwitch('imageSearch')}
+          {imageSearchEngines}
           {this.getSwitch('extractImages')}
           {this.getSwitch('screenshotSearch')}
         </div>

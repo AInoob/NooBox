@@ -23,8 +23,9 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js":["thirdParty/jquery.min.js","js/content.js"],
-      "run_at":"document_start"
+      "js":["thirdParty/jquery.min.js","js/extractImages.js"],
+      "run_at":"document_start",
+      "all_frames":true
     }
   ],
   "sandbox": {

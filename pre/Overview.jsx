@@ -40,6 +40,6 @@ module.exports = React.createClass({
     var modules=this.state.modules.map(function(elem,index){
       return <Module key={index} name={elem} />
     });
-    return <div id="overview" className="section">{modules}</div>;
+    return <div id="overview">{modules}</div>;
   }
 });

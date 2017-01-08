@@ -54,22 +54,6 @@ function getLocale(string){
 
 var GL=getLocale;
 
-//Community wrapper
-function CW(callback,category,action,label,e){
-  newCommunityRecord(true,['_trackEvent', category, action,label]);
-  callback(e);
-}
-
-//Click link rich
-//Open a tag element and add community record
-function CLR(url,category,action,label,e){
-  e.preventDefault();
-  newCommunityRecord(true,['_trackEvent', category, action,label]);
-  setTimeout(function(){
-    chrome.tabs.create({url:url});
-  },100);
-}
-
 function getChromeVersion(){
   var match = window.navigator.userAgent.match(/Chrom(?:e|ium)\/([0-9\.]+)/);
   return match ? match[1] : null;
@@ -104,22 +88,6 @@ function getString(elem){
   else{
     return elem.toString();
   }
-}
-
-function newCommunityRecord(ga,data){
-  isOn('joinCommunity',function(){
-    if(ga){
-      _gaq.push(data);
-    }
-    else{
-      $.ajax({
-        type:'POST',
-        contentType: "application/json",
-        data: JSON.stringify(data),
-        url:'https://ainoob.com/api/noobox/hi'
-      });
-    }
-  });
 }
 
 function getParameterByName(name, url) {
