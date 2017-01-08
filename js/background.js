@@ -443,9 +443,11 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,result,data){
 NooBox.Image.fetchFunctions.saucenao=function(cursor,result,data){
   try{
     data=data.replace(/ src=/g," nb-src=");
+    console.log($(data));
     var page=$(data);
     var websites=[];
-    var websiteList=$(page.find('#result-hidden-notification').prevAll('.result'));
+    var relatedWebsites=[];
+    var websiteList=$(page.find('.result'));
     for(var i=0;i<websiteList.length;i++){
       var website={};
       var temp=$(websiteList[i]);
@@ -457,23 +459,15 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,result,data){
       website.imageUrl=z.getAttribute('nb-src');
       website.searchEngine='saucenao';
       website.related=true;
-      websites.push(website);
+      var rate=temp.find('.resultsimilarityinfo').text();
+      if(rate.replace('%','')>90){
+        relatedWebsites.push(website);
+      }
+      else{
+        websites.push(website);
+      }
     }
-    result.saucenao.relatedWebsites=websites;
-    websites=[];
-    var websiteList=$(page.find('#result-hidden-notification').nextAll('.result'));
-    for(var i=0;i<websiteList.length;i++){
-      var website={};
-      var temp=$(websiteList[i]);
-      website.link="";
-      website.title="";
-      var y=temp.find('.resulttablecontent')[0];
-      website.description=y.innerHTML.replace(/(nb-src="\/image|nb-src="image)/g,'src="http://saucenao.com/image');
-      var z=temp.find('.resultimage').find('img')[0];
-      website.imageUrl=z.getAttribute('data-src');
-      website.searchEngine='saucenao';
-      websites.push(website);
-    }
+    result.saucenao.relatedWebsites=relatedWebsites;
     result.saucenao.websites=websites;
     result.saucenao.result='done';
     NooBox.Image.update(cursor,result);
