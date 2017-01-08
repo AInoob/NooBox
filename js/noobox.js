@@ -55,9 +55,7 @@
 	var browserHistory = ReactRouter.browserHistory;
 
 	//Log page views
-	function logPageView() {
-	  newCommunityRecord(true, ['_trackPageview']);
-	}
+	function logPageView() {}
 
 	//popup.html will be update to different pathname based on the parameter
 	ReactDOM.render(React.createElement(
@@ -27530,7 +27528,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { id: 'overview', className: 'section' },
+	      { id: 'overview' },
 	      modules
 	    );
 	  }
@@ -27575,11 +27573,22 @@
 	module.exports = React.createClass({
 	  displayName: 'ImageSearch',
 	  reader: new window.FileReader(),
+	  getInitialState: function () {
+	    return {};
+	  },
 	  componentDidMount: function () {
 	    this.reader.onloadend = function () {
 	      base64data = this.reader.result;
+	      chrome.extension.sendMessage({ job: 'analytics', category: 'uploadSearch', action: 'run' }, function (response) {});
 	      chrome.extension.sendMessage({ job: 'imageSearch_upload', data: base64data });
 	    }.bind(this);
+	    get('totalImageSearch', function (count) {
+	      count = count || 0;
+	      this.setState({ totalImageSearch: count });
+	    }.bind(this));
+	    getImageSearchEngines(["google", "baidu", "tineye", "bing", "yandex", "saucenao", "iqdb"], function (engines) {
+	      this.setState({ engines: engines });
+	    }.bind(this));
 	  },
 	  onDragOver: function (e) {
 	    e.stopPropagation();
@@ -27610,12 +27619,38 @@
 	    });
 	  },
 	  render: function () {
+	    var icons = (this.state.engines || []).map(function (elem, index) {
+	      return React.createElement('img', { key: index, src: '/thirdParty/' + elem + '.png' });
+	    });
 	    return React.createElement(
 	      'div',
-	      { id: 'imageSearch' },
+	      { className: 'section', id: 'imageSearch' },
+	      React.createElement(
+	        'div',
+	        { className: 'header' },
+	        GL('imageSearch')
+	      ),
 	      React.createElement('input', { onChange: this.upload, type: 'file', id: 'imageUpload' }),
-	      React.createElement('label', { onDrop: this.onDrop, onDragOver: this.onDragOver, id: 'imageUploadLabel', htmlFor: 'imageUpload' }),
-	      React.createElement('img', { onError: this.notImage, onLoad: this.search, id: 'uploadedImage' })
+	      React.createElement(
+	        'label',
+	        { onDrop: this.onDrop, onDragOver: this.onDragOver, id: 'imageUploadLabel', htmlFor: 'imageUpload' },
+	        GL('ls_3')
+	      ),
+	      React.createElement('img', { onError: this.notImage, onLoad: this.search, id: 'uploadedImage' }),
+	      React.createElement(
+	        'div',
+	        { id: 'info' },
+	        React.createElement(
+	          'div',
+	          { className: 'infoLine' },
+	          GL('totalSearches') + ' : ' + this.state.totalImageSearch
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: 'icons' },
+	          icons
+	        )
+	      )
 	    );
 	  }
 	});
@@ -27631,7 +27666,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      'Reader'
+	      GL('reader')
 	    );
 	  }
 	});
@@ -27647,7 +27682,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      'Notifier'
+	      GL('notifier')
 	    );
 	  }
 	});
@@ -27665,7 +27700,7 @@
 	    return { settings: { extractImages: false, imageSearch: false, screenshotSearch: false } };
 	  },
 	  componentDidMount: function () {
-	    var switchList = ['extractImages', 'imageSearch', 'screenshotSearch'];
+	    var switchList = ['extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
 	    for (var i = 0; i < switchList.length; i++) {
 	      isOn(switchList[i], function (ii) {
 	        this.setState(function (prevState) {
@@ -27694,12 +27729,22 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'switch' },
-	      React.createElement('input', { type: 'checkbox', onChange: CW.bind(null, handler || this.toggleSetting.bind(this, id), 'Options', 'option-switch', id), checked: this.state.settings[id], id: id }),
+	      React.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
 	      React.createElement('label', { htmlFor: id, className: 'checkbox' }),
 	      GL(id)
 	    );
 	  },
 	  render: function () {
+	    var imageSearchEngines = null;
+	    if (this.state.settings['imageSearch']) {
+	      imageSearchEngines = ["imageSearchUrl_google", "imageSearchUrl_baidu", "imageSearchUrl_tineye", "imageSearchUrl_bing", "imageSearchUrl_yandex", "imageSearchUrl_saucenao", "imageSearchUrl_iqdb"].map(function (elem, index) {
+	        return React.createElement(
+	          'div',
+	          { className: 'tab-1', key: index },
+	          this.getSwitch(elem)
+	        );
+	      }.bind(this));
+	    }
 	    return React.createElement(
 	      'div',
 	      { id: 'options' },
@@ -27712,6 +27757,7 @@
 	          GL('images')
 	        ),
 	        this.getSwitch('imageSearch'),
+	        imageSearchEngines,
 	        this.getSwitch('extractImages'),
 	        this.getSwitch('screenshotSearch')
 	      )
@@ -27737,6 +27783,11 @@
 	      this.setState({ recordList: recordList });
 	    }.bind(this));
 	  },
+	  clearHistory: function () {
+	    setDB('history_records', [], function () {
+	      this.setState({ recordList: [] });
+	    }.bind(this));
+	  },
 	  render: function () {
 	    var recordList = (this.state.recordList || [{ name: 'Nothing is here yet', id: 'mgehojanhfgnndgffijeglgahakgmgkj' }]).map(function (record, index) {
 	      return React.createElement(
@@ -27760,17 +27811,21 @@
 	            { target: '_blank', href: '/image.search.html?cursor=' + record.cursor + '&image=history' },
 	            React.createElement('img', { src: record.info })
 	          )
-	        ),
-	        React.createElement(
-	          'td',
-	          null,
-	          'x'
 	        )
 	      );
 	    }).reverse();
 	    return React.createElement(
 	      'div',
 	      { className: 'section' },
+	      React.createElement(
+	        'div',
+	        { className: 'actionBar' },
+	        React.createElement(
+	          'div',
+	          { className: 'button', onClick: this.clearHistory },
+	          GL('clearAll')
+	        )
+	      ),
 	      React.createElement(
 	        'table',
 	        { className: 'history-table' },
@@ -27794,11 +27849,6 @@
 	              'th',
 	              null,
 	              capFirst(GL('detail'))
-	            ),
-	            React.createElement(
-	              'th',
-	              null,
-	              capFirst(GL(''))
 	            )
 	          )
 	        ),

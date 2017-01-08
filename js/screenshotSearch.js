@@ -62,7 +62,8 @@ chrome.runtime.onMessage.addListener(
     }
     if('job' in request){
       if(request.job=='screenshotSearch'){
-        var div=$('<div id="NooBox-screenshot" style="margin:0px;border:0px;padding:0px;z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
+        chrome.runtime.sendMessage({job:'analytics',category:'screenshotSearch',action:'run'}, function(response) {});
+        var div=$('<div id="NooBox-screenshot" style="width:initial;margin:0px;border:0px;padding:0px;z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>');
         var img=new Image;
         img.src=request.data;
         img.onload=function(){

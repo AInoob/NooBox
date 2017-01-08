@@ -68,6 +68,72 @@
   "close":{
     "message":"Close"
   },
+  "notifier":{
+    "message":"Notifier"
+  },
+  "reader":{
+    "message":"Reader"
+  },
+  "clearAll":{
+    "message":"Clear All"
+  },
+  "totalSearches":{
+    "message":"Total searches"
+  },
+  "when":{
+    "message":"When"
+  },
+  "event":{
+    "message":"Event"
+  },
+  "detail":{
+    "message":"Detail"
+  },
+  "google":{
+    "message":"Google"
+  },
+  "baidu":{
+    "message":"Baidu"
+  },
+  "tineye":{
+    "message":"Tineye"
+  },
+  "yandex":{
+    "message":"Yandex"
+  },
+  "saucenao":{
+    "message":"SauceNao"
+  },
+  "iqdb":{
+    "message":"IQDB"
+  },
+  "bing":{
+    "message":"Bing"
+  },
+  "imageSearchUrl_google":{
+    "message":"Google"
+  },
+  "imageSearchUrl_baidu":{
+    "message":"Baidu"
+  },
+  "imageSearchUrl_tineye":{
+    "message":"Tineye"
+  },
+  "imageSearchUrl_yandex":{
+    "message":"Yandex"
+  },
+  "imageSearchUrl_saucenao":{
+    "message":"SauceNao"
+  },
+  "imageSearchUrl_iqdb":{
+    "message":"IQDB"
+  },
+  "imageSearchUrl_bing":{
+    "message":"Bing"
+  },
+  "images":{
+    "message":"Images"
+  },
   "j":{
     "message":"j"
   },
@@ -79,5 +145,11 @@
   },
   "ls_2":{
     "message":"Cannot perform screenshot search on this tab"
+  },
+  "ls_3":{
+    "message":"Drop the image here"
+  },
+  "ls_4":{
+    "message":"Reload this page to load NooBox components, if fail again, this page is not supported"
   }
 }

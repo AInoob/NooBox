@@ -1,5 +1,20 @@
 //Using object as a class to wrap different sections and functions
 var NooBox={};
+var analyticsOnce=false;
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-77112662-5']);
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = 'https://ssl.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+function analytics(request){
+  if(!analyticsOnce){
+    _gaq.push(['_trackPageview','background']);
+    analyticsOnce=true;
+  }
+  _gaq.push(['_trackEvent', request.category, request.action,request.label]);
+}
 NooBox.Image={};
 NooBox.Webmaster={};
 NooBox.History={};
@@ -70,7 +85,7 @@ NooBox.Options.defaultValues=[
   ['imageSearchUrl_iqdb',false],
   ['extractImages',true],
   ['screenshotSearch',true],
-  ['modules',['imageSearch','notifier','reader']]
+  ['modules',['imageSearch']]
 ];
 
 NooBox.Options.init=function(i){
@@ -106,7 +121,7 @@ NooBox.Image.updateContextMenu=function(){
         NooBox.Image.handles.extractImages=chrome.contextMenus.create({
           "id" : "extractImages",
           "title": GL("extract_images"),
-          "contexts": ["page","selection","frame","link","editable","video","audio"],
+          "contexts": ["browser_action","page","selection","frame","link","editable","video","audio"],
           "onclick": NooBox.Image.extractImages
         });
       }
@@ -124,7 +139,7 @@ NooBox.Image.updateContextMenu=function(){
         NooBox.Image.handles.screenshotSearch=chrome.contextMenus.create({
           "id" : "screenshotSearch",
           "title": GL("screenshot_search"),
-          "contexts": ["browser_action"],
+          "contexts": ["browser_action","page","selection","frame","link","editable","video","audio"],
           "onclick": NooBox.Image.screenshotSearch
         });
       }
@@ -150,6 +165,7 @@ NooBox.Image.imageSearch=function(info){
     setDB('imageCursor',cursor);
     NooBox.History.recordImageSearch(cursor,info);
     getImageSearchEngines(NooBox.Image.engines,function(engines){
+      var action='dataURI';
       var result={
         engines: engines
       };
@@ -167,6 +183,7 @@ NooBox.Image.imageSearch=function(info){
         NooBox.Image.POST.general(cursor,result,engines,result.dataURI);
       }
       else{
+        action='url';
         result.imageUrl=source;
         for(var i=0;i<engines.length;i++){
           (function(cursor,engine){
@@ -185,6 +202,7 @@ NooBox.Image.imageSearch=function(info){
       var url='/image.search.html?cursor='+cursor+'&image='+result.imageUrl;
       chrome.tabs.create({url:url});
       NooBox.Image.update(cursor,result);
+      analytics({category:'imageSearch',action:action,label:result.imageUrl});
     });
   });
 }
@@ -634,10 +652,16 @@ NooBox.Image.update=function(i,result){
 
 
 NooBox.Image.extractImages=function(info,tab){
-  console.log(info);
-  chrome.tabs.executeScript(tab.id,{
-    file: 'js/extractImage.js'
-  },voidFunc);
+  chrome.tabs.sendMessage(tab.id,{job:"extractImages"},{frameId:info.frameId},function(response){
+    if(!response){
+      chrome.notifications.create('extractImages',{
+        type:'basic',
+        iconUrl: '/images/icon_128.png',
+        title: chrome.i18n.getMessage("extractImages"),
+        message: chrome.i18n.getMessage("ls_4")
+      },function(){});
+    }
+  });
 }
 
 NooBox.Image.screenshotSearch=function(info,tab){
@@ -676,6 +700,10 @@ NooBox.History.recordImageSearch=function(cursor,info){
     records=records||[];
     records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:info});
     setDB('history_records',records);
+    get('totalImageSearch',function(data){
+      data=data||0;
+      set('totalImageSearch',parseInt(data)+1);
+    });
   });
 }
 
@@ -689,6 +717,10 @@ NooBox.init=function(){
         }
         else if(request.job=='imageSearch'||request.job=='extractImages'||request.job=='screenshotSearch'){
           NooBox.Image.updateContextMenu();
+        }
+        else if(request.job=='analytics'){
+          console.log(request);
+          analytics(request);
         }
       }
     }

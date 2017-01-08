@@ -60,19 +60,30 @@ nav ul li.active a {
   color: #3a56ff;
   border-bottom-color: #3a56ff;
 }
+.infoLine {
+  color: #3a56ff;
+  font-weight: bold;
+  font-size: 13px;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
 .section {
   overflow: hidden;
   background: #fafafa;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-bottom: 5px;
   padding: 8px;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
 }
 .section .header {
   font-size: 14px;
   font-weight: bold;
   border-bottom: 1px solid #a8a8a8;
-  margin: -8px;
+  margin: -4px;
   margin-bottom: 5px;
   color: #3a56ff;
 }
@@ -120,52 +131,44 @@ nav ul li.active a {
 * {
   transition-duration: 0.618s;
 }
-tbody tr {
+table {
+  border-collapse: collapse;
+}
+table tbody tr {
   border-top: 1px solid lightgrey;
 }
-tbody tr td {
+table tbody tr td {
   font-size: 15px;
 }
-tbody tr td img {
+table tbody tr td img {
   max-height: 100px;
-  max-width: 100px;
+  max-width: 60px;
   vertical-align: middle;
 }
-tbody tr td:nth-child(1) {
+table tbody tr td:nth-child(1) {
   width: 100px;
   font-size: 13px;
 }
-tbody tr td:nth-child(2) {
+table tbody tr td:nth-child(2) {
   text-transform: capitalize;
   width: 100px;
 }
-tbody tr td:nth-child(3) {
-  width: 110px;
+table tbody tr td:nth-child(3) {
+  text-align: center;
+  width: 171px;
 }
-tbody tr td:nth-child(4) {
+table tbody tr td:nth-child(4) {
   display: block;
   overflow: hidden;
   white-space: nowrap;
   width: 20px;
 }
-tbody tr td:nth-child(5),
-tbody tr td:nth-child(6) {
+table tbody tr td:nth-child(5),
+table tbody tr td:nth-child(6) {
   font-weight: bold;
   color: #3a56ff;
   cursor: pointer;
   width: 50px;
-}
-tbody tr .disabled {
-  color: grey;
-}
-tbody tr .enabled {
-  color: green;
-}
-tbody tr .installed {
-  color: limegreen;
-}
-tbody tr .removed {
-  color: red;
 }
 .button {
   font-size: 14px;
@@ -452,7 +455,32 @@ select {
   display: block;
   width: 100px;
   height: 65px;
-  margin-top: 10px;
   padding-top: 35px;
   text-align: center;
+  float: left;
+}
+#overview #imageSearch #uploadedImage {
+  position: absolute;
+  margin-top: -104px;
+  max-width: 104px;
+  max-height: 104px;
+}
+#overview #imageSearch #info {
+  padding-left: 12px;
+  margin-top: 19px;
+  float: left;
+}
+#overview #imageSearch #info #icons {
+  margin-top: 16px;
+  width: 240px;
+}
+#overview #imageSearch #info #icons img {
+  width: 25px;
+  height: 25px;
+  margin-right: 9px;
+  margin-bottom: 10px;
+  float: left;
+}
+.tab-1 {
+  margin-left: 24px;
 }

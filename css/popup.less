@@ -78,18 +78,29 @@ nav{
     }
   }
 }
+.infoLine{
+  color: @nb-color-1;
+  font-weight: bold;
+  font-size: 13px;
+}
+.left{
+  float:left;
+}
+.right{
+  float: right;
+}
 .section{
   overflow: hidden;
   background: @md-color-1;
   box-shadow: @md-box-shadow;
   margin-bottom: 5px;
   padding: 8px;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
   .header{
     font-size: 14px;
     font-weight: bold;
     border-bottom: 1px solid #a8a8a8;
-    margin: -8px;
+    margin: -4px;
     margin-bottom: 5px;
     color: @nb-color-1;
   }
@@ -148,6 +159,8 @@ nav{
   transition-duration: 0.618s;
 }
 
+table{
+  border-collapse: collapse;
   tbody {
     tr {
       border-top: 1px solid lightgrey;
@@ -155,7 +168,7 @@ nav{
         font-size: 15px;
         img {
           max-height: 100px;
-          max-width: 100px;
+          max-width: 60px;
           vertical-align: middle;
         }
         &:nth-child(1) {
@@ -167,7 +180,8 @@ nav{
           width: 100px;
         }
         &:nth-child(3) {
-          width: 110px;
+          text-align: center;
+          width: 171px;
         }
         &:nth-child(4) {
           display: block;
@@ -182,20 +196,10 @@ nav{
           width: 50px;
         }
       }
-      .disabled {
-        color: grey;
-      }
-      .enabled {
-        color: green;
-      }
-      .installed{
-        color: limegreen;
-      }
-      .removed {
-        color: red;
-      }
     }
   }
+}
+
 
 .button{
   font-size: 14px;
@@ -498,9 +502,35 @@ select {
       display: block;
       width: 100px;
       height: 65px;
-      margin-top: 10px;
       padding-top: 35px;
       text-align: center;
+      float: left;
+    }
+    #uploadedImage{
+      position: absolute;
+      margin-top: -104px;
+      max-width: 104px;
+      max-height: 104px;
+    }
+    #info{
+      padding-left: 12px;
+      margin-top: 19px;
+      float: left;
+      #icons{
+        margin-top: 16px;
+        width: 240px;
+        img{
+          width: 25px;
+          height: 25px;
+          margin-right: 9px;
+          margin-bottom: 10px;
+          float: left;
+        }
+      }
     }
   }
+}
+
+.tab-1{
+  margin-left: 24px;
 }

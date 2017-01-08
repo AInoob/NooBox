@@ -10,7 +10,6 @@ var browserHistory = ReactRouter.browserHistory;
 
 //Log page views
 function logPageView(){
-  newCommunityRecord(true,['_trackPageview']);
 }
 
 //popup.html will be update to different pathname based on the parameter
