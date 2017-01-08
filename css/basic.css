@@ -461,7 +461,7 @@ select {
 }
 #overview #imageSearch #uploadedImage {
   position: absolute;
-  margin-top: -104px;
+  margin-top: 0px;
   max-width: 104px;
   max-height: 104px;
 }
