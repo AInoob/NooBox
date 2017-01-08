@@ -16,6 +16,35 @@ module.exports = React.createClass({
         }
       }.bind(this)
     );
+    get('userId',function(userId){
+      var hi={
+        userId:userId,
+        url:window.location.pathname+window.location.search,
+        title:document.title,
+        time:new Date().toLocaleString(),
+        version: "0.8.0"
+      };
+      $.ajax({
+        type:'POST',
+        url:"https://ainoob.com/api/noobox/user/",
+        contentType: "application/json",
+        data: JSON.stringify(hi)
+      }).done(function(data){
+        console.log(data);
+      });
+    });
+  },
+  uploadReSearch:function(){
+    var img=$('#imageInput')[0];
+    var workerCanvas = document.createElement('canvas');
+    workerCtx = workerCanvas.getContext('2d');
+    workerCanvas.width = img.naturalWidth;
+    workerCanvas.height = img.naturalHeight;
+    workerCtx.drawImage(img, 0, 0);
+    var imgDataURI = workerCanvas.toDataURL();
+    chrome.runtime.sendMessage({job:'imageSearch_reSearch',data:imgDataURI},function(response){
+      window.close();
+    });
   },
   engineWeights:{
     google: 30,
@@ -186,9 +215,16 @@ module.exports = React.createClass({
   },
   render: function(){
     var result=this.state.result||{};
+    var uploadReSearch=null;
     var source=result.imageUrl;
     if(source=='dataURI'){
       source=result.dataURI;
+    }
+    else{
+      var uploadReSearch=(
+        <div className="section website" onClick={this.uploadReSearch}>
+          <div className="button">{GL('ls_5')}</div>
+        </div>);
     }
     var keywords=(
       <div>
@@ -215,7 +251,7 @@ module.exports = React.createClass({
       <div className="brief">
         <div className="section image">
           <div className="header">{GL('image')}</div>
-          <img src={source} />
+          <img id="imageInput" src={source} />
         </div>
         <div className="section keywords">
           <div className="header">{GL('keywords')}</div>
@@ -235,6 +271,7 @@ module.exports = React.createClass({
         {brief}
         {filter}
         {websites}
+        {uploadReSearch}
       </div>);
   }
 });

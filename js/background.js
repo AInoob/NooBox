@@ -713,7 +713,10 @@ NooBox.init=function(){
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if('job' in request){
-        if (request.job=="imageSearch_upload"){
+        if (request.job=='imageSearch_upload'||request.job=='imageSearch_reSearch'){
+          if(request.job=='imageSearch_reSerach'){
+            analytics({category:'uploadReSearch',action:'run'});
+          }
           NooBox.Image.imageSearch(request.data);
         }
         else if(request.job=='imageSearch'||request.job=='extractImages'||request.job=='screenshotSearch'){

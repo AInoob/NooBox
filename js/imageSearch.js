@@ -21490,6 +21490,35 @@
 	        this.getInitialData();
 	      }
 	    }.bind(this));
+	    get('userId', function (userId) {
+	      var hi = {
+	        userId: userId,
+	        url: window.location.pathname + window.location.search,
+	        title: document.title,
+	        time: new Date().toLocaleString(),
+	        version: "0.8.0"
+	      };
+	      $.ajax({
+	        type: 'POST',
+	        url: "https://ainoob.com/api/noobox/user/",
+	        contentType: "application/json",
+	        data: JSON.stringify(hi)
+	      }).done(function (data) {
+	        console.log(data);
+	      });
+	    });
+	  },
+	  uploadReSearch: function () {
+	    var img = $('#imageInput')[0];
+	    var workerCanvas = document.createElement('canvas');
+	    workerCtx = workerCanvas.getContext('2d');
+	    workerCanvas.width = img.naturalWidth;
+	    workerCanvas.height = img.naturalHeight;
+	    workerCtx.drawImage(img, 0, 0);
+	    var imgDataURI = workerCanvas.toDataURL();
+	    chrome.runtime.sendMessage({ job: 'imageSearch_reSearch', data: imgDataURI }, function (response) {
+	      window.close();
+	    });
 	  },
 	  engineWeights: {
 	    google: 30,
@@ -21655,9 +21684,20 @@
 	  },
 	  render: function () {
 	    var result = this.state.result || {};
+	    var uploadReSearch = null;
 	    var source = result.imageUrl;
 	    if (source == 'dataURI') {
 	      source = result.dataURI;
+	    } else {
+	      var uploadReSearch = React.createElement(
+	        'div',
+	        { className: 'section website', onClick: this.uploadReSearch },
+	        React.createElement(
+	          'div',
+	          { className: 'button' },
+	          GL('ls_5')
+	        )
+	      );
 	    }
 	    var keywords = React.createElement(
 	      'div',
@@ -21697,7 +21737,7 @@
 	          { className: 'header' },
 	          GL('image')
 	        ),
-	        React.createElement('img', { src: source })
+	        React.createElement('img', { id: 'imageInput', src: source })
 	      ),
 	      React.createElement(
 	        'div',
@@ -21730,7 +21770,8 @@
 	      { id: 'imageSearchResult' },
 	      brief,
 	      filter,
-	      websites
+	      websites,
+	      uploadReSearch
 	    );
 	  }
 	});
