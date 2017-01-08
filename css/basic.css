@@ -446,6 +446,10 @@ select {
 #imageSearchResult .filter .button.focus {
   font-size: 22px;
 }
+#imageSearchResult #uploadReSearch {
+  font-size: large;
+  color: #3a56ff;
+}
 #overview #imageSearch #imageUpload {
   display: none;
 }
