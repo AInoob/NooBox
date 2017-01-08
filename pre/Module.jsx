@@ -1,7 +1,7 @@
 var React = require('react');
-var ImageSearch = require('./module/ImageSearch.jsx');
-var Reader = require('./module/Reader.jsx');
-var Notifier = require('./module/Notifier.jsx');
+var ImageSearch = require('./modules/ImageSearch.jsx');
+var Reader = require('./modules/Reader.jsx');
+var Notifier = require('./modules/Notifier.jsx');
 module.exports = React.createClass({
   displayName: 'Module',
   render: function(){

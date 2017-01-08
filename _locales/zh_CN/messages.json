@@ -3,150 +3,153 @@
     "message":"二箱"
   },
   "appDesc":{
-    "message":"一个实用的工具箱！多引擎 以图搜图+提取图片+截图搜索+站长工具+加密解密器"
+    "message":"一个实用的工具箱！多引擎 以图搜图+提取图片+截图搜索"
   },
-  "crypt_it":{
-	"message":"加密解密"
+  "overview":{
+    "message":"大局"
   },
-  "generating":{
-    "message":"生成中..."
-  },
-  "search_this_image":{
-	"message":"以图搜图"
-  },
-  "Reverse_Image_Search":{
-	"message":"以图搜图"
-  },
-  "drop_the_image_here":{
-    "message":"拖拽图片到这里来搜索"
-  },
-  "engines":{
-	"message":"引擎"
-  },
-  "google":{
-	"message":"谷歌"
-  },
-  "baidu":{
-	"message":"百度"
-  },
-  "tineye":{
-    "message":"tineye"
-  },
-  "bing":{
-	"message":"必应"
-  },
-  "yandex":{
-	"message":"yandex"
-  },
-  "IQDB":{
-	"message":"IQDB"
-  },
-  "SauceNao":{
-	"message":"SauceNao"
-  },
-  "Unit_Converter":{
-	"message":"单位转换器"
-  },
-  "crypter":{
-	"message":"加密解密器"
-  },
-  "webmaster":{
-	"message":"站长"
-  },
-  "Sitemap_Generator":{
-	"message":"网站地图生成器"
-  },
-  "sitemap":{
-	"message":"网站地图"
-  },
-  "host":{
-	"message":"域名"
-  },
-  "path":{
-	"message":"路径"
-  },
-  "max_depth":{
-	"message":"最大深度"
-  },
-  "crawl":{
-	"message":"爬起！"
-  },
-  "status":{
-	"message":"状态"
-  },
-  "broken_links":{
-	"message":"死链"
-  },
-  "Related_Keywords":{
-	"message":"关键词"
-  },
-  "More_Result":{
-	"message":"更多结果"
-  },
-  "Related_Websites":{
-	"message":"相关网站"
-  },
-  "websites":{
-	"message":"网站"
-  },
-  "current":{
-    "message":"当前"
-  },
-  "change":{
-    "message":"更改"
-  },
-  "Image_Search_Background":{
-    "message":"图片搜索界面背景"
-  },
-  "clear":{
-    "message":"清空"
-  },
-  "Customize_Backgrounds":{
-    "message":"自定义背景"
-  },
-  "Popup_Background":{
-    "message":"弹框背景"
+  "history":{
+    "message":"历史"
   },
   "options":{
     "message":"选项"
   },
-  "popup":{
-    "message":"弹框"
-  },
-  "Uploading_image_to_get_more_results":{
-    "message":"正在上传图片以获取更多结果..."
-  },
-  "update_browser":{
-    "message":"浏览器内核版本太低，二箱受不鸟，少年快自己去更新吧~"
-  },
-  "general":{
-    "message":"通用"
+  "about":{
+    "message":"关于"
   },
   "extract_images":{
     "message":"提取图片"
   },
-  "Too_few_result_Click_here_to_upload_and_search":{
-    "message":"结果太少？点击上传图片搜索~"
+  "search_this_image":{
+    "message":"以图搜图"
   },
   "screenshot_search":{
-    "message":"截图&搜索"
+    "message":"截图搜索"
   },
-  "please_reload_the_page_to_initialize_noobox_component":{
-    "message":"请刷新页面以加载二箱组件..."
+  "image":{
+    "message":"图片"
   },
-  "Extract_Images2":{
+  "keywords":{
+    "message":"关键字"
+  },
+  "more":{
+    "message":"更多"
+  },
+  "relavance":{
+    "message":"相关"
+  },
+  "area":{
+    "message":"面积"
+  },
+  "width":{
+    "message":"宽度"
+  },
+  "height":{
+    "message":"高度"
+  },
+  "sortBy":{
+    "message":"排序 "
+  },
+  "reverse_image_search":{
+    "message":"以图搜图"
+  },
+  "imageSearch":{
+    "message":"以图搜图"
+  },
+  "extractImages":{
     "message":"提取图片"
   },
-  "NooBox_does_not_support_iframe_image_extraction":{
-    "message":"二箱不支持IFrame图片提取~~~"
+  "screenshotSearch":{
+    "message":"截图搜索"
   },
-  "image_uploading":{
-    "message":"图片上传"
+  "search":{
+    "message":"搜索"
   },
-  "NooBox_cannot_reach_image_uploading_server":{
-    "message":"二箱连接不到图片上传服务器"
+  "close":{
+    "message":"关闭"
   },
-  "share":{
-    "message":"分享"
+  "notifier":{
+    "message":"二通知"
+  },
+  "reader":{
+    "message":"二阅读"
+  },
+  "clearAll":{
+    "message":"全部清空"
+  },
+  "totalSearches":{
+    "message":"搜索次数"
+  },
+  "when":{
+    "message":"啥时候"
+  },
+  "event":{
+    "message":"事件"
+  },
+  "detail":{
+    "message":"详情"
+  },
+  "google":{
+    "message":"谷歌"
+  },
+  "baidu":{
+    "message":"百度"
+  },
+  "tineye":{
+    "message":"Tineye"
+  },
+  "yandex":{
+    "message":"Yandex"
+  },
+  "saucenao":{
+    "message":"SauceNao"
+  },
+  "iqdb":{
+    "message":"IQDB"
+  },
+  "bing":{
+    "message":"必应"
+  },
+  "imageSearchUrl_google":{
+    "message":"谷歌"
+  },
+  "imageSearchUrl_baidu":{
+    "message":"百度"
+  },
+  "imageSearchUrl_tineye":{
+    "message":"Tineye"
+  },
+  "imageSearchUrl_yandex":{
+    "message":"Yandex"
+  },
+  "imageSearchUrl_saucenao":{
+    "message":"SauceNao"
+  },
+  "imageSearchUrl_iqdb":{
+    "message":"IQDB"
+  },
+  "imageSearchUrl_bing":{
+    "message":"百度"
+  },
+  "images":{
+    "message":"图片"
+  },
+  "j":{
+    "message":"j"
+  },
+  "ls_0":{
+    "message":"不支持的文件类型"
+  },
+  "ls_1":{
+    "message":"截图搜索失败，"
+  },
+  "ls_2":{
+    "message":"无法在当前页面使用截图搜索"
+  },
+  "ls_3":{
+    "message":"拖拽图片到这里"
+  },
+  "ls_4":{
+    "message":"刷新这个页面以加载二箱组件，如果还是不行就说明当前页面不支持提取图片"
   }
 }
