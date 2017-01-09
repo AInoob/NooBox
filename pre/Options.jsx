@@ -4,7 +4,7 @@ var Link = require('react-router').Link;
 module.exports = React.createClass({
   displayName: 'Options',
   getInitialState: function(){
-    return {settings:{extractImages:false,imageSearch:false,screenshotSearch:false}};
+    return {settings:{extractImages:false,imageSearch:false,screenshotSearch:false,imageSearchUrl_google:false,imageSearchUrl_baidu:false,imageSearchUrl_yandex:false,imageSearchUrl_bing:false,imageSearchUrl_tineye:false,imageSearchUrl_saucenao:false,imageSearchUrl_iqdb:false}};
   },
   componentDidMount: function(){
     var switchList=['extractImages','imageSearch','screenshotSearch','imageSearchUrl_google','imageSearchUrl_baidu','imageSearchUrl_yandex','imageSearchUrl_bing','imageSearchUrl_tineye','imageSearchUrl_saucenao','imageSearchUrl_iqdb'];
@@ -38,25 +38,40 @@ module.exports = React.createClass({
   },
   getSwitch: function(id,handler){
     return <div className="switch">
-      <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
-      <label htmlFor={id} className="checkbox"></label>{GL(id)}
+      <label htmlFor={id} >
+        <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
+        <span className="lever"></span>
+      </label>
+      {GL(id)}
     </div>;
+  },
+  getCheckbox: function(id,handler){
+    return <p>
+      <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
+      <label htmlFor={id} >{GL(id)}</label>
+    </p>;
   },
   render: function(){
     var imageSearchEngines=null;
     if(this.state.settings['imageSearch']){
       imageSearchEngines=["imageSearchUrl_google","imageSearchUrl_baidu","imageSearchUrl_tineye","imageSearchUrl_bing","imageSearchUrl_yandex","imageSearchUrl_saucenao","imageSearchUrl_iqdb"].map(function(elem,index){
-        return <div className="tab-1" key={index}>{this.getSwitch(elem)}</div>;
+        return <div className="tab-1" key={index}>{this.getCheckbox(elem)}</div>;
       }.bind(this));
     }
     return (
-      <div id="options">
-        <div className="section">
-          <div className="header">{GL('images')}</div>
-          {this.getSwitch('imageSearch')}
-          {imageSearchEngines}
-          {this.getSwitch('extractImages')}
-          {this.getSwitch('screenshotSearch')}
+      <div className="container">
+        <div id="options">
+          <h4>{GL('images')}</h4>
+            <div className="tab-1">
+            <p></p>
+            {this.getCheckbox('imageSearch')}
+            {imageSearchEngines}
+            <p></p>
+            {this.getCheckbox('extractImages')}
+            <p></p>
+            {this.getCheckbox('screenshotSearch')}
+            <p></p>
+          </div>
         </div>
       </div>);
   }

@@ -23,6 +23,7 @@ function isOn(key,callbackTrue,callbackFalse,param){
 var imgSet;
 var notImgSet=new Set();
 var isImgSet=new Set();
+var focus=null;
 
 function getImages(){
   var notification=false;
@@ -97,7 +98,7 @@ var init=function(){
   isOn("extractImages",function(){
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
-        if('job' in request){
+        if(request.job){
           if(request.job=="extractImages"){
             if(!focus||focus.tagName=='HTML'){
               focus=document.body;

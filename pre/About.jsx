@@ -4,6 +4,6 @@ var Link = require('react-router').Link;
 module.exports = React.createClass({
   displayName: 'About',
   render: function(){
-    return <div>About<p>Coming soon~</p></div>;
+    return <div className="container">About<p>Coming soon~</p></div>;
   }
 });

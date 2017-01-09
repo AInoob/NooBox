@@ -5,7 +5,6 @@ var ImageSearch=require('./imageSearch/Result.jsx');
 
 //Log page views
 function logPageView(){
-  newCommunityRecord(true,['_trackPageview']);
 }
 
 //image.search.html will be update to different pathname based on the parameter

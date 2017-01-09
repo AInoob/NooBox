@@ -50,9 +50,7 @@
 	var ImageSearch = __webpack_require__(178);
 
 	//Log page views
-	function logPageView() {
-	  newCommunityRecord(true, ['_trackPageview']);
-	}
+	function logPageView() {}
 
 	//image.search.html will be update to different pathname based on the parameter
 	ReactDOM.render(React.createElement(ImageSearch, null), document.getElementById('imageSearch'));

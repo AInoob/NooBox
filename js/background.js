@@ -112,6 +112,7 @@ NooBox.Image.updateContextMenu=function(){
     function(){
       if(NooBox.Image.handles.imageSearch){
         chrome.contextMenus.remove(NooBox.Image.handles.imageSearch);
+        NooBox.Image.handles.imageSearch=null;
       }
     }
   );
@@ -121,7 +122,7 @@ NooBox.Image.updateContextMenu=function(){
         NooBox.Image.handles.extractImages=chrome.contextMenus.create({
           "id" : "extractImages",
           "title": GL("extract_images"),
-          "contexts": ["browser_action","page","selection","frame","link","editable","video","audio"],
+          "contexts": ["all"],
           "onclick": NooBox.Image.extractImages
         });
       }
@@ -139,7 +140,7 @@ NooBox.Image.updateContextMenu=function(){
         NooBox.Image.handles.screenshotSearch=chrome.contextMenus.create({
           "id" : "screenshotSearch",
           "title": GL("screenshot_search"),
-          "contexts": ["browser_action","page","selection","frame","link","editable","video","audio"],
+          "contexts": ["all"],
           "onclick": NooBox.Image.screenshotSearch
         });
       }
