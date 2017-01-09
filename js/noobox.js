@@ -27624,32 +27624,32 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'section', id: 'imageSearch' },
+	      { className: 'container', id: 'imageSearch' },
 	      React.createElement(
-	        'div',
+	        'h5',
 	        { className: 'header' },
 	        GL('imageSearch')
 	      ),
-	      React.createElement('input', { onChange: this.upload, type: 'file', id: 'imageUpload' }),
-	      React.createElement(
-	        'label',
-	        { onDrop: this.onDrop, onDragOver: this.onDragOver, id: 'imageUploadLabel', htmlFor: 'imageUpload' },
-	        GL('ls_3')
-	      ),
-	      React.createElement('img', { onError: this.notImage, onLoad: this.search, id: 'uploadedImage' }),
 	      React.createElement(
 	        'div',
-	        { id: 'info' },
+	        { id: 'info', className: 'container' },
 	        React.createElement(
-	          'div',
-	          { className: 'infoLine' },
+	          'p',
+	          { className: 'important line' },
 	          GL('totalSearches') + ' : ' + this.state.totalImageSearch
 	        ),
 	        React.createElement(
 	          'div',
-	          { id: 'icons' },
-	          icons
-	        )
+	          { className: 'btn line' },
+	          React.createElement('input', { onChange: this.upload, type: 'file', id: 'imageUpload' }),
+	          React.createElement(
+	            'label',
+	            { id: 'imageUploadLabel', htmlFor: 'imageUpload' },
+	            GL('upload_image')
+	          )
+	        ),
+	        React.createElement('img', { onError: this.notImage, onLoad: this.search, id: 'uploadedImage' }),
+	        React.createElement('div', { id: 'icons', className: 'line' })
 	      )
 	    );
 	  }
@@ -27697,7 +27697,7 @@
 	module.exports = React.createClass({
 	  displayName: 'Options',
 	  getInitialState: function () {
-	    return { settings: { extractImages: false, imageSearch: false, screenshotSearch: false } };
+	    return { settings: { extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
 	  },
 	  componentDidMount: function () {
 	    var switchList = ['extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
@@ -27729,9 +27729,25 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'switch' },
-	      React.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
-	      React.createElement('label', { htmlFor: id, className: 'checkbox' }),
+	      React.createElement(
+	        'label',
+	        { htmlFor: id },
+	        React.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
+	        React.createElement('span', { className: 'lever' })
+	      ),
 	      GL(id)
+	    );
+	  },
+	  getCheckbox: function (id, handler) {
+	    return React.createElement(
+	      'p',
+	      null,
+	      React.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
+	      React.createElement(
+	        'label',
+	        { htmlFor: id },
+	        GL(id)
+	      )
 	    );
 	  },
 	  render: function () {
@@ -27741,25 +27757,33 @@
 	        return React.createElement(
 	          'div',
 	          { className: 'tab-1', key: index },
-	          this.getSwitch(elem)
+	          this.getCheckbox(elem)
 	        );
 	      }.bind(this));
 	    }
 	    return React.createElement(
 	      'div',
-	      { id: 'options' },
+	      { className: 'container' },
 	      React.createElement(
 	        'div',
-	        { className: 'section' },
+	        { id: 'options' },
 	        React.createElement(
-	          'div',
-	          { className: 'header' },
+	          'h4',
+	          null,
 	          GL('images')
 	        ),
-	        this.getSwitch('imageSearch'),
-	        imageSearchEngines,
-	        this.getSwitch('extractImages'),
-	        this.getSwitch('screenshotSearch')
+	        React.createElement(
+	          'div',
+	          { className: 'tab-1' },
+	          React.createElement('p', null),
+	          this.getCheckbox('imageSearch'),
+	          imageSearchEngines,
+	          React.createElement('p', null),
+	          this.getCheckbox('extractImages'),
+	          React.createElement('p', null),
+	          this.getCheckbox('screenshotSearch'),
+	          React.createElement('p', null)
+	        )
 	      )
 	    );
 	  }
@@ -27816,19 +27840,19 @@
 	    }).reverse();
 	    return React.createElement(
 	      'div',
-	      { className: 'section' },
+	      { id: 'history' },
 	      React.createElement(
 	        'div',
-	        { className: 'actionBar' },
+	        { className: 'section container' },
 	        React.createElement(
 	          'div',
-	          { className: 'button', onClick: this.clearHistory },
+	          { className: 'btn', onClick: this.clearHistory },
 	          GL('clearAll')
 	        )
 	      ),
 	      React.createElement(
 	        'table',
-	        { className: 'history-table' },
+	        { className: 'highlight container' },
 	        React.createElement(
 	          'thead',
 	          null,
@@ -27874,7 +27898,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'container' },
 	      'About',
 	      React.createElement(
 	        'p',

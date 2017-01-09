@@ -27,11 +27,11 @@ module.exports = React.createClass({
         </tr>);
     }).reverse();
     return (
-      <div className="section">
-        <div className="actionBar">
-          <div className="button" onClick={this.clearHistory}>{GL('clearAll')}</div>
+      <div id="history">
+        <div className="section container">
+          <div className="btn" onClick={this.clearHistory}>{GL('clearAll')}</div>
         </div>
-        <table className="history-table">
+        <table className="highlight container">
           <thead>
             <tr>
             <th>{capFirst(GL('when'))}</th>

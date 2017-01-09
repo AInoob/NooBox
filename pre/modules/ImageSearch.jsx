@@ -54,15 +54,16 @@ module.exports = React.createClass({
         );
     });
     return (
-      <div className="section" id="imageSearch">
-        <div className="header">{GL('imageSearch')}</div>
-        <input onChange={this.upload} type='file' id='imageUpload' />
-        <label onDrop={this.onDrop} onDragOver={this.onDragOver} id='imageUploadLabel' htmlFor='imageUpload'>{GL('ls_3')}</label>
-        <img onError={this.notImage} onLoad={this.search} id='uploadedImage' />
-        <div id="info">
-          <div className="infoLine">{GL('totalSearches')+' : '+this.state.totalImageSearch}</div>
-          <div id="icons">
-            {icons}
+      <div className="container" id="imageSearch">
+        <h5 className="header">{GL('imageSearch')}</h5>
+        <div id="info" className="container">
+          <p className="important line">{GL('totalSearches')+' : '+this.state.totalImageSearch}</p>
+          <div className="btn line">
+            <input onChange={this.upload} type='file' id='imageUpload' />
+            <label id="imageUploadLabel" htmlFor="imageUpload">{GL('upload_image')}</label>
+          </div>
+          <img onError={this.notImage} onLoad={this.search} id='uploadedImage' />
+          <div id="icons" className="line">
           </div>
         </div>
       </div>);

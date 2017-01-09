@@ -134,6 +134,9 @@
   "images":{
     "message":"Images"
   },
+  "upload_image":{
+    "message":"Upload Image"
+  },
   "j":{
     "message":"j"
   },

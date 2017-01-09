@@ -36,7 +36,6 @@ module.exports = React.createClass({
     }.bind(this));
   },
   render: function(){
-    console.log(this.state);
     var modules=this.state.modules.map(function(elem,index){
       return <Module key={index} name={elem} />
     });
