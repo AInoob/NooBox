@@ -115,7 +115,7 @@ var init=function(){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<span id="NooBox-extractImages-selector-left" style="margin:0px;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="margin:0px;border:0px;padding:0px;display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="margin:0px;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
+            div.append('<span id="NooBox-extractImages-selector-left" style="line-height:16px;margin:0px;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="margin:0px;border:0px;padding:0px;display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="line-height:16px;margin:0px;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
             div.append('<div id="NooBox-extractImages-switch" style="margin:0px;border:0px;padding:0px;color:black;font-size:99px;position:absolute;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
             div.append('<div style="margin:0px;border:0px;padding:0px;clear:both"></div>');
             if(focus.tagName!='BODY'&&focus.tagName!='HTML')
