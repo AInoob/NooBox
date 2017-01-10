@@ -95,6 +95,22 @@ h4{
         max-height: 291px;
       }
     }
+    .icon.failed{
+      opacity: 0.218;
+    }
+    .icon.loading::before{
+      background-image:url(/thirdParty/loading.svg);
+    }
+    .icon::before{
+      width: 46px;
+      height: 46px;
+      content: ' ';
+      position: absolute;
+      z-index: 10;
+      margin-left: 0px;
+      margin-top: 0px;
+      background-size: 46px 46px;
+    }
   }
   .card{
     .card-content{
