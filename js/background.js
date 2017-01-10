@@ -454,7 +454,10 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,result,data){
       var temp=$(websiteList[i]);
       website.link="";
       website.title="";
-      var y=temp.find('.resulttablecontent')[0];
+      var y=temp.find('.resulttable')[0];
+      if(!y){
+        break;
+      }
       website.description=y.innerHTML.replace(/(nb-src="\/image|nb-src="image)/g,'src="http://saucenao.com/image');
       var z=temp.find('.resultimage').find('img')[0];
       website.imageUrl=z.getAttribute('nb-src');
