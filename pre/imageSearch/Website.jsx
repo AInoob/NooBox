@@ -25,7 +25,7 @@ module.exports = React.createClass({
     var website=this.props.data;
     var focus='';
     if(this.state.focus){
-      focus='focus';
+      focus=' focus';
     }
     var size='';
     var imageSize=this.props.getImageSize();
@@ -40,13 +40,19 @@ module.exports = React.createClass({
       hidden=' hidden';
     }
     return (
-      <div className={"website section "+website.searchEngine+related+hidden}>
-        <div className="header">
-          <img className="icon" src={'/thirdParty/'+website.searchEngine+'.png'} />
-          <a target="_blank" href={website.link}>{website.title}</a>
+      <div className={"website card horizontal"+focus+related+hidden}>
+        <div className="card-image">
+          <img onLoad={this.getSize} onClick={this.focus} className={"image "+focus} src={website.imageUrl} />
         </div>
-        <img onLoad={this.getSize} onClick={this.focus} className={"image "+focus} src={website.imageUrl} />
-        <div className="description" dangerouslySetInnerHTML={{__html: size+website.description}}></div>
+        <div className="card-stack container">
+          <div className="caard-content">
+            <div className="header">
+              <img className="icon" src={'/thirdParty/'+website.searchEngine+'.png'} />
+              <a target="_blank" title={website.link} href={website.link}>{website.title}</a>
+            </div>
+            <div className="description" dangerouslySetInnerHTML={{__html: size+website.description}}></div>
+          </div>
+        </div>
       </div>);
   }
 });
