@@ -39,8 +39,12 @@ module.exports = React.createClass({
     if(website.searchEngine=='iqdb'&&website.description.indexOf('No relevant matches')!=-1){
       hidden=' hidden';
     }
+    var horizontal=' horizontal';
+    if(focus){
+      horizontal='';
+    }
     return (
-      <div className={"website card horizontal"+focus+related+hidden}>
+      <div className={"website card"+horizontal+focus+related+hidden}>
         <div className="card-image">
           <img onLoad={this.getSize} onClick={this.focus} className={"image "+focus} src={website.imageUrl} />
         </div>

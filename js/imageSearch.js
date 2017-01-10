@@ -21495,7 +21495,7 @@
 	        url: window.location.pathname + window.location.search,
 	        title: document.title,
 	        time: new Date().toLocaleString(),
-	        version: "0.8.1"
+	        version: "0.8.4"
 	      };
 	      $.ajax({
 	        type: 'POST',
@@ -27747,9 +27747,13 @@
 	    if (website.searchEngine == 'iqdb' && website.description.indexOf('No relevant matches') != -1) {
 	      hidden = ' hidden';
 	    }
+	    var horizontal = ' horizontal';
+	    if (focus) {
+	      horizontal = '';
+	    }
 	    return React.createElement(
 	      'div',
-	      { className: "website card horizontal" + focus + related + hidden },
+	      { className: "website card" + horizontal + focus + related + hidden },
 	      React.createElement(
 	        'div',
 	        { className: 'card-image' },

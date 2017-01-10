@@ -104,6 +104,7 @@ h4 {
 #imageSearchResult .website.focus .card-image img {
   max-width: 100%;
   max-height: none;
+  width: initial;
 }
 .btn {
   padding: 0 1rem;
