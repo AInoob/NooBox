@@ -27522,7 +27522,6 @@
 	    }.bind(this));
 	  },
 	  render: function () {
-	    console.log(this.state);
 	    var modules = this.state.modules.map(function (elem, index) {
 	      return React.createElement(Module, { key: index, name: elem });
 	    });

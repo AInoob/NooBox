@@ -8,6 +8,7 @@ module.exports = React.createClass({
     return {order:'relavance',imageSizes:{},loadBaidu:false};
   },
   componentDidMount: function(){
+    shared.updateOrder=this.updateOrder;
     this.getInitialData();
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
@@ -31,6 +32,12 @@ module.exports = React.createClass({
         data: JSON.stringify(hi)
       }).done(function(data){
         console.log(data);
+      });
+    });
+    $(document).ready(function() {
+      $('select').material_select();
+      $('.dropdown-content li').on('click',function(e){
+        shared.updateOrder($(this).text());
       });
     });
   },
@@ -95,9 +102,7 @@ module.exports = React.createClass({
     for(var i=0;i<(result.engines||[]).length;i++){
       var engine=result.engines[i];
       if(result.baidu&&result.baidu.websites&&result.baidu.websites.length>0&&!this.state.loadBaidu){
-        console.log(result.baidu.url);
         this.setState({loadBaidu:true});
-        console.log('loading Iframe');
         loadIframe(result.baidu.url,voidFunc);
         setTimeout(this.reloadBaiduImage.bind(this,100),100);
       }
@@ -136,7 +141,8 @@ module.exports = React.createClass({
   },
   getKeyword: function(engine){
     return (
-      <a target="_blank" href={((this.state.result||{})[engine]||{}).url} className={"keyword "+engine}>
+      <a target="_blank" href={((this.state.result||{})[engine]||{}).url} className="keyword">
+        <img src={'/thirdParty/'+engine+'.png'} />
         {(((this.state.result||{})[engine]||{}).keyword||'(none)')}
       </a>);
   },
@@ -202,16 +208,7 @@ module.exports = React.createClass({
     }.bind(this));
   },
   updateOrder: function(order){
-    this.setState({order:order});
-  },
-  getButton: function(name){
-    var focus='';
-    if(name==this.state.order){
-      focus='focus';
-    }
-    return (
-      <div onClick={this.updateOrder.bind(this,name)} className={'button '+focus}>{GL(name)}</div>
-    );
+    this.setState({order:order.toLowerCase()});
   },
   render: function(){
     var result=this.state.result||{};
@@ -239,27 +236,28 @@ module.exports = React.createClass({
         </a>);
     });
     var filter=(
-      <div className="filter section">
-        <div className="header">{GL('sortBy')}</div>
-        {this.getButton('relavance')}
-        {this.getButton('area')}
-        {this.getButton('width')}
-        {this.getButton('height')}
+      <div className="input-field col s12">
+        <select defaultValue="relavance" onChange={this.updateOrder}>
+          <option value="relavance">{GL('relavance')}</option>
+          <option value="area">{GL('area')}</option>
+          <option value="width">{GL('width')}</option>
+          <option value="height">{GL('height')}</option>
+        </select>
+        <label>{GL('sortBy')}</label>
       </div>
     );
     var brief=(
-      <div className="brief">
-        <div className="section image">
-          <div className="header">{GL('image')}</div>
+      <div id="brief" className="card horizontal">
+        <div className="card-image">
           <img id="imageInput" src={source} />
         </div>
-        <div className="section keywords">
-          <div className="header">{GL('keywords')}</div>
-          {keywords}
-        </div>
-        <div className="section more">
-          <div className="header">{GL('more')}</div>
-          {icons}
+        <div className="card-stacked">
+          <div className="card-content">
+            {keywords}
+          </div>
+          <div className="card-action">
+            {icons}
+          </div>
         </div>
       </div>);
     var websites=(
@@ -267,7 +265,7 @@ module.exports = React.createClass({
         {this.getWebsite()}
       </div>);
     return (
-      <div id="imageSearchResult">
+      <div id="imageSearchResult" className="container">
         {brief}
         {filter}
         {websites}

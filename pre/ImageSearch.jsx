@@ -11,5 +11,5 @@ function logPageView(){
 ReactDOM.render(
   <ImageSearch />
   ,
-  document.getElementById('imageSearch')
+  document.getElementById('imageSearchPage')
 );

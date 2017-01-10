@@ -53,7 +53,7 @@
 	function logPageView() {}
 
 	//image.search.html will be update to different pathname based on the parameter
-	ReactDOM.render(React.createElement(ImageSearch, null), document.getElementById('imageSearch'));
+	ReactDOM.render(React.createElement(ImageSearch, null), document.getElementById('imageSearchPage'));
 
 /***/ },
 /* 1 */
@@ -21482,6 +21482,7 @@
 	    return { order: 'relavance', imageSizes: {}, loadBaidu: false };
 	  },
 	  componentDidMount: function () {
+	    shared.updateOrder = this.updateOrder;
 	    this.getInitialData();
 	    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	      if (request.job == 'image_result_update' && request.cursor == getParameterByName('cursor')) {
@@ -21503,6 +21504,12 @@
 	        data: JSON.stringify(hi)
 	      }).done(function (data) {
 	        console.log(data);
+	      });
+	    });
+	    $(document).ready(function () {
+	      $('select').material_select();
+	      $('.dropdown-content li').on('click', function (e) {
+	        shared.updateOrder($(this).text());
 	      });
 	    });
 	  },
@@ -21567,9 +21574,7 @@
 	    for (var i = 0; i < (result.engines || []).length; i++) {
 	      var engine = result.engines[i];
 	      if (result.baidu && result.baidu.websites && result.baidu.websites.length > 0 && !this.state.loadBaidu) {
-	        console.log(result.baidu.url);
 	        this.setState({ loadBaidu: true });
-	        console.log('loading Iframe');
 	        loadIframe(result.baidu.url, voidFunc);
 	        setTimeout(this.reloadBaiduImage.bind(this, 100), 100);
 	      }
@@ -21609,7 +21614,8 @@
 	  getKeyword: function (engine) {
 	    return React.createElement(
 	      'a',
-	      { target: '_blank', href: ((this.state.result || {})[engine] || {}).url, className: "keyword " + engine },
+	      { target: '_blank', href: ((this.state.result || {})[engine] || {}).url, className: 'keyword' },
+	      React.createElement('img', { src: '/thirdParty/' + engine + '.png' }),
 	      ((this.state.result || {})[engine] || {}).keyword || '(none)'
 	    );
 	  },
@@ -21667,18 +21673,7 @@
 	    }.bind(this));
 	  },
 	  updateOrder: function (order) {
-	    this.setState({ order: order });
-	  },
-	  getButton: function (name) {
-	    var focus = '';
-	    if (name == this.state.order) {
-	      focus = 'focus';
-	    }
-	    return React.createElement(
-	      'div',
-	      { onClick: this.updateOrder.bind(this, name), className: 'button ' + focus },
-	      GL(name)
-	    );
+	    this.setState({ order: order.toLowerCase() });
 	  },
 	  render: function () {
 	    var result = this.state.result || {};
@@ -21713,49 +21708,58 @@
 	    });
 	    var filter = React.createElement(
 	      'div',
-	      { className: 'filter section' },
+	      { className: 'input-field col s12' },
 	      React.createElement(
-	        'div',
-	        { className: 'header' },
-	        GL('sortBy')
+	        'select',
+	        { defaultValue: 'relavance', onChange: this.updateOrder },
+	        React.createElement(
+	          'option',
+	          { value: 'relavance' },
+	          GL('relavance')
+	        ),
+	        React.createElement(
+	          'option',
+	          { value: 'area' },
+	          GL('area')
+	        ),
+	        React.createElement(
+	          'option',
+	          { value: 'width' },
+	          GL('width')
+	        ),
+	        React.createElement(
+	          'option',
+	          { value: 'height' },
+	          GL('height')
+	        )
 	      ),
-	      this.getButton('relavance'),
-	      this.getButton('area'),
-	      this.getButton('width'),
-	      this.getButton('height')
+	      React.createElement(
+	        'label',
+	        null,
+	        GL('sortBy')
+	      )
 	    );
 	    var brief = React.createElement(
 	      'div',
-	      { className: 'brief' },
+	      { id: 'brief', className: 'card horizontal' },
 	      React.createElement(
 	        'div',
-	        { className: 'section image' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          GL('image')
-	        ),
+	        { className: 'card-image' },
 	        React.createElement('img', { id: 'imageInput', src: source })
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'section keywords' },
+	        { className: 'card-stacked' },
 	        React.createElement(
 	          'div',
-	          { className: 'header' },
-	          GL('keywords')
+	          { className: 'card-content' },
+	          keywords
 	        ),
-	        keywords
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'section more' },
 	        React.createElement(
 	          'div',
-	          { className: 'header' },
-	          GL('more')
-	        ),
-	        icons
+	          { className: 'card-action' },
+	          icons
+	        )
 	      )
 	    );
 	    var websites = React.createElement(
@@ -21765,7 +21769,7 @@
 	    );
 	    return React.createElement(
 	      'div',
-	      { id: 'imageSearchResult' },
+	      { id: 'imageSearchResult', className: 'container' },
 	      brief,
 	      filter,
 	      websites,
@@ -27729,7 +27733,7 @@
 	    var website = this.props.data;
 	    var focus = '';
 	    if (this.state.focus) {
-	      focus = 'focus';
+	      focus = ' focus';
 	    }
 	    var size = '';
 	    var imageSize = this.props.getImageSize();
@@ -27745,19 +27749,31 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: "website section " + website.searchEngine + related + hidden },
+	      { className: "website card horizontal" + focus + related + hidden },
 	      React.createElement(
 	        'div',
-	        { className: 'header' },
-	        React.createElement('img', { className: 'icon', src: '/thirdParty/' + website.searchEngine + '.png' }),
-	        React.createElement(
-	          'a',
-	          { target: '_blank', href: website.link },
-	          website.title
-	        )
+	        { className: 'card-image' },
+	        React.createElement('img', { onLoad: this.getSize, onClick: this.focus, className: "image " + focus, src: website.imageUrl })
 	      ),
-	      React.createElement('img', { onLoad: this.getSize, onClick: this.focus, className: "image " + focus, src: website.imageUrl }),
-	      React.createElement('div', { className: 'description', dangerouslySetInnerHTML: { __html: size + website.description } })
+	      React.createElement(
+	        'div',
+	        { className: 'card-stack container' },
+	        React.createElement(
+	          'div',
+	          { className: 'caard-content' },
+	          React.createElement(
+	            'div',
+	            { className: 'header' },
+	            React.createElement('img', { className: 'icon', src: '/thirdParty/' + website.searchEngine + '.png' }),
+	            React.createElement(
+	              'a',
+	              { target: '_blank', title: website.link, href: website.link },
+	              website.title
+	            )
+	          ),
+	          React.createElement('div', { className: 'description', dangerouslySetInnerHTML: { __html: size + website.description } })
+	        )
+	      )
 	    );
 	  }
 	});

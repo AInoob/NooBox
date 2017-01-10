@@ -12,6 +12,9 @@ nav {
 nav ul a {
   padding: 0 26.5px;
 }
+.hidden {
+  display: none;
+}
 .line {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
@@ -21,6 +24,19 @@ nav ul a {
 }
 h4 {
   margin-top: 0px;
+}
+.select-wrapper input.select-dropdown {
+  background-color: rgba(255, 255, 255, 0.3);
+  padding-left: 17px;
+}
+.select-dropdown {
+  color: #26a69a;
+}
+.input-field.col label {
+  left: 0rem;
+}
+.input-field {
+  width: 200px;
 }
 #history img {
   max-height: 80px;
@@ -42,6 +58,52 @@ h4 {
 }
 #options p {
   margin: 0px;
+}
+#imageSearchResult #brief .card-image {
+  width: 291px;
+}
+#imageSearchResult #brief .card-image img {
+  max-height: 291px;
+}
+#imageSearchResult .card .card-content .keyword {
+  display: block;
+  margin-bottom: 13px;
+  font-size: 18px;
+}
+#imageSearchResult .card .card-content .keyword img {
+  width: 20px;
+  margin-right: 10px;
+}
+#imageSearchResult .card .card-action .icon img {
+  width: 46px;
+}
+#imageSearchResult .website .header a {
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+}
+#imageSearchResult .website .icon {
+  width: 34px;
+  left: -50px;
+  position: absolute;
+}
+#imageSearchResult .website .header {
+  font-size: 20px;
+}
+#imageSearchResult .website .card-image {
+  width: 200px;
+}
+#imageSearchResult .website .card-image img {
+  max-width: 200px;
+  max-height: 200px;
+  cursor: pointer;
+}
+#imageSearchResult .website.focus .card-image {
+  width: 100%;
+}
+#imageSearchResult .website.focus .card-image img {
+  max-width: 100%;
+  max-height: none;
 }
 .btn {
   padding: 0 1rem;

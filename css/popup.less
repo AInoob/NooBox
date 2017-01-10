@@ -26,6 +26,8 @@ nav{
   }
 }
 
+.hidden{display: none}
+
 .line{
   margin-top: 0.3em;
   margin-bottom: 0.3em;
@@ -38,7 +40,21 @@ nav{
 h4{
   margin-top: 0px;
 }
+.select-wrapper input.select-dropdown{
+  background-color: rgba(255,255,255,0.3);
+  padding-left: 17px;
+}
 
+.select-dropdown{
+  color:#26a69a;
+}
+.input-field.col label {
+  left: 0rem;
+}
+
+.input-field{
+  width: 200px;
+}
 
 #history{
   img{
@@ -68,6 +84,71 @@ h4{
 #options{
   p{
     margin:0px;
+  }
+}
+
+#imageSearchResult{
+  #brief{
+    .card-image{
+      width: 291px;
+      img{
+        max-height: 291px;
+      }
+    }
+  }
+  .card{
+    .card-content{
+      .keyword{
+        display: block;
+        margin-bottom: 13px;
+        font-size: 18px;
+        img{
+          width: 20px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .card-action{
+      .icon{
+        img{
+          width: 46px;
+        }
+      }
+    }
+  }
+  .website{
+    .header{
+      a{
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+      }
+    }
+    .icon{
+      width: 34px;
+      left: -50px;
+      position: absolute;
+    }
+    .header{
+      font-size: 20px;
+    }
+    .card-image{
+      width: 200px;
+      img{
+        max-width: 200px;
+        max-height: 200px;
+        cursor: pointer;
+      }
+    }
+  }
+  .website.focus{
+    .card-image{
+      width: 100%;
+      img{
+        max-width: 100%;
+        max-height: none;
+      }
+    }
   }
 }
 
