@@ -21495,7 +21495,7 @@
 	        url: window.location.pathname + window.location.search,
 	        title: document.title,
 	        time: new Date().toLocaleString(),
-	        version: "0.8.5"
+	        version: "0.8.6"
 	      };
 	      $.ajax({
 	        type: 'POST',
@@ -21673,6 +21673,20 @@
 	    }.bind(this));
 	  },
 	  updateOrder: function (order) {
+	    switch (order) {
+	      case '相关':
+	        order = 'relavance';
+	        break;
+	      case '面积':
+	        order = 'area';
+	        break;
+	      case '宽度':
+	        order = 'width';
+	        break;
+	      case '高度':
+	        order = 'height';
+	        break;
+	    }
 	    this.setState({ order: order.toLowerCase() });
 	  },
 	  render: function () {
