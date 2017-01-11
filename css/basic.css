@@ -53,8 +53,14 @@ h4 {
 #overview #uploadedImage {
   display: none;
 }
-#overview #imageUploadLabel {
+#overview #info .btn {
+  padding: 0px;
+}
+#overview #info #imageUploadLabel {
   color: white;
+  height: 26px;
+  width: 120px;
+  display: block;
 }
 #options p {
   margin: 0px;
