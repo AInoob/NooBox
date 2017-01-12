@@ -27767,8 +27767,8 @@
 	        'div',
 	        { id: 'options' },
 	        React.createElement(
-	          'h4',
-	          null,
+	          'h5',
+	          { className: 'header' },
 	          GL('images')
 	        ),
 	        React.createElement(
@@ -27895,16 +27895,277 @@
 	module.exports = React.createClass({
 	  displayName: 'About',
 	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'container' },
-	      'About',
-	      React.createElement(
-	        'p',
-	        null,
-	        'Coming soon~'
-	      )
-	    );
+	    if (chrome.i18n.getUILanguage().indexOf('zh-CN') != -1) {
+	      return React.createElement(
+	        'div',
+	        { id: 'about', className: 'container' },
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            '\u4E8C\u7BB1\u662F\u5565\uFF1F'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            '\u4E8C\u7BB1\u662F\u4E00\u4E2A\u4E3A\u4F60\u63D0\u4F9B\u4F7F\u7528\u529F\u80FD\u7684Chrome\u62D3\u5C55'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            '\u4E8C\u7BB1\u514D\u8D39\u5E76\u4E14\u5F00\u6E90\uFF0C\u4F60\u53EF\u4EE5\u5728',
+	            React.createElement(
+	              'a',
+	              { target: '_blank', href: 'https://github.com/AInoob/NooBox' },
+	              '\u8FD9\u91CC'
+	            ),
+	            '\u627E\u5230\u6E90\u4EE3\u7801.'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            '\u9690\u79C1'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            '\u4E8C\u7BB1\u4F1A\u4E0A\u4F20\u4F60\u4F7F\u7528\u4E8C\u7BB1\u7684\u6570\u636E\uFF0C\u8FD9\u4E48\u505A\u662F\u4E3A\u4E86\u8BA9AInoob\u77E5\u9053\u6709\u4EBA\u5728\u7528\u4E8C\u7BB1\u3002\u4E0D\u8FC7AInoob\u5E76\u4E0D\u80FD\u77E5\u9053\u4F60\u662F\u8C01\uFF0C\u548C\u4F60\u641C\u7D22\u4E86\u4EC0\u4E48\u3002\u4E8C\u7BB1\u4E0D\u4F1A\u5077\u53D6\u4F60\u7684\u4EFB\u4F55\u9690\u79C1\u548C\u5386\u53F2\u8BB0\u5F55\u3002'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            '\u5206\u4EAB\u54A9?'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            '\u4F60\u559C\u6B22\u4E8C\u7BA1\u5BB6\u5417\uFF1F\u5982\u679C\u89C9\u5F97\u8FD8\u4E0D\u9519\uFF0C\u90A3\u5C31\u8003\u8651\u4E00\u4E0B\u5206\u4EAB\u4E8C\u7BA1\u5BB6\u5427~'
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://www.facebook.com/sharer/sharer.php?u=https%3A//ainoob.com/project/noobox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/facebookShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://plus.google.com/share?url=https%3A//ainoob.com/project/noobox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/googleShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://www.linkedin.com/shareArticle?mini=true&url=https%3A//ainoob.com/project/noobox&title=NooBox%20---%20A%20ultimate%20extension%20for%20Chrome%20extensions%%20managing&summary=&source=' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/linkedinShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://twitter.com/home?status=https%3A//ainoob.com/project/noobox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/twitterShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'http://www.jiathis.com/send/?webid=tsina&url=https://ainoob.com/project/noobox&title=NooBox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/sinaShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'http://www.jiathis.com/send/?webid=weixin&url=https://ainoob.com/project/noobox&title=NooBox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/wechatShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'http://www.jiathis.com/send/?webid=renren&url=https://ainoob.com/project/noobox&title=NooBox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/renrenShare.png' })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            'Acknowledgements'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86Facebook\u7684',
+	            React.createElement(
+	              'a',
+	              { href: 'https://github.com/facebook/react', target: '_blank' },
+	              'React(BSD\u534F\u8BAE)'
+	            ),
+	            '\u4F5C\u4E3A\u5E95\u5C42\u5EFA\u7B51'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86JS Foundation\u7684',
+	            React.createElement(
+	              'a',
+	              { href: 'https://jquery.com/', target: '_blank' },
+	              'jQuery(MIT\u534F\u8BAE)'
+	            ),
+	            '\u6765\u5904\u7406\u4E00\u4E9BDOM\u548CAjax\u8BF7\u6C42'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86Hust.cc\u7684',
+	            React.createElement(
+	              'a',
+	              { href: 'https://github.com/hustcc/timeago.js', target: '_blank' },
+	              'Timeago(MIT\u534F\u8BAE)'
+	            ),
+	            '\u6765\u663E\u793A\u65F6\u95F4'
+	          )
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { id: 'about', className: 'container' },
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            'What is NooBox?'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'NooBox is a Chrome extension that brings you useful functionalities.'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'NooBox is a free and open source software, you can find the source code ',
+	            React.createElement(
+	              'a',
+	              { target: '_blank', href: 'https://github.com/AInoob/NooBox' },
+	              'here'
+	            ),
+	            '.'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            'Privacy'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'NooBox does upload your usage of NooBox to the server, it is doing so so that AInoob can know if someone is using it or not. NooBox does not track who you are or read your history.'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            'Share please?'
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Do you like NooBox? If so, please consider sharing it!'
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://www.facebook.com/sharer/sharer.php?u=https%3A//ainoob.com/project/noobox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/facebookShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://plus.google.com/share?url=https%3A//ainoob.com/project/noobox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/googleShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://www.linkedin.com/shareArticle?mini=true&url=https%3A//ainoob.com/project/noobox&title=NooBox%20---%20A%20ultimate%20extension%20for%20Chrome%20extensions%%20managing&summary=&source=' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/linkedinShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'https://twitter.com/home?status=https%3A//ainoob.com/project/noobox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/twitterShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'http://www.jiathis.com/send/?webid=tsina&url=https://ainoob.com/project/noobox&title=NooBox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/sinaShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'http://www.jiathis.com/send/?webid=weixin&url=https://ainoob.com/project/noobox&title=NooBox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/wechatShare.png' })
+	          ),
+	          React.createElement(
+	            'a',
+	            { className: 'shareItem', target: '_blank', href: 'http://www.jiathis.com/send/?webid=renren&url=https://ainoob.com/project/noobox&title=NooBox' },
+	            React.createElement('img', { className: 'shareIcon', src: 'thirdParty/renrenShare.png' })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'section container' },
+	          React.createElement(
+	            'h5',
+	            { className: 'header' },
+	            '\u9E23\u8C22'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            'NooBox uses ',
+	            React.createElement(
+	              'a',
+	              { href: 'https://github.com/facebook/react', target: '_blank' },
+	              'React(BSD Liscense)'
+	            ),
+	            ' from Facebook to build the bases'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            'NooBox uses ',
+	            React.createElement(
+	              'a',
+	              { href: 'https://jquery.com/', target: '_blank' },
+	              'jQuery(MIT Liscense)'
+	            ),
+	            ' from JS Foundation to handle DOM and Ajax requests'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            'NooBox uses ',
+	            React.createElement(
+	              'a',
+	              { href: 'https://github.com/hustcc/timeago.js', target: '_blank' },
+	              'Timeago(MIT Liscense)'
+	            ),
+	            ' from Hust.cc to display timeago'
+	          )
+	        )
+	      );
+	    }
 	  }
 	});
 

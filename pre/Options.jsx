@@ -61,7 +61,7 @@ module.exports = React.createClass({
     return (
       <div className="container">
         <div id="options">
-          <h4>{GL('images')}</h4>
+          <h5 className="header">{GL('images')}</h5>
             <div className="tab-1">
             <p></p>
             {this.getCheckbox('imageSearch')}
