@@ -23,7 +23,7 @@ module.exports = React.createClass({
         url:window.location.pathname+window.location.search,
         title:document.title,
         time:new Date().toLocaleString(),
-        version: "0.8.7"
+        version: "0.8.8"
       };
       $.ajax({
         type:'POST',
