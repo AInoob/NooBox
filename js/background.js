@@ -200,10 +200,14 @@ NooBox.Image.imageSearch=function(info){
           })(cursor,engines[i]);
         }
       }  
-      var url='/image.search.html?cursor='+cursor+'&image='+result.imageUrl;
+      var type=result.imageUrl;
+      if(type!='dataURI'){
+        type='url';
+      }
+      var url='/image.search.html?cursor='+cursor+'&image='+type;
       chrome.tabs.create({url:url});
       NooBox.Image.update(cursor,result);
-      analytics({category:'imageSearch',action:action,label:result.imageUrl});
+      analytics({category:'imageSearch',action:action,label:typel});
     });
   });
 }

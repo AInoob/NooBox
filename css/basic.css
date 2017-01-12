@@ -38,6 +38,19 @@ h4 {
 .input-field {
   width: 200px;
 }
+#about .shareItem {
+  float: left;
+  width: 42px;
+  margin-left: 3px;
+}
+#about .shareItem img {
+  width: 100%;
+}
+#about .container {
+  margin-top: -11px;
+  margin-bottom: -11px;
+  overflow: hidden;
+}
 #history img {
   max-height: 80px;
   max-width: 120px;
