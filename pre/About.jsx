@@ -28,7 +28,7 @@ module.exports = React.createClass({
             <a className="shareItem" target="_blank" href="http://www.jiathis.com/send/?webid=renren&url=https://ainoob.com/project/noobox&title=NooBox"><img className="shareIcon" src="thirdParty/renrenShare.png" /></a>
           </div>
           <div className="section container">
-            <h5 className="header">Acknowledgements</h5>
+            <h5 className="header">鸣谢</h5>
             <li>二箱使用了Facebook的<a href="https://github.com/facebook/react" target="_blank">React(BSD协议)</a>作为底层建筑</li>
 			<li>二箱使用了JS Foundation的<a href="https://jquery.com/" target="_blank">jQuery(MIT协议)</a>来处理一些DOM和Ajax请求</li>
 			<li>二箱使用了Hust.cc的<a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT协议)</a>来显示时间</li>
@@ -58,8 +58,8 @@ module.exports = React.createClass({
             <a className="shareItem" target="_blank" href="http://www.jiathis.com/send/?webid=weixin&url=https://ainoob.com/project/noobox&title=NooBox"><img className="shareIcon" src="thirdParty/wechatShare.png" /></a>
             <a className="shareItem" target="_blank" href="http://www.jiathis.com/send/?webid=renren&url=https://ainoob.com/project/noobox&title=NooBox"><img className="shareIcon" src="thirdParty/renrenShare.png" /></a>
           </div>
-		  <div className="section container">
-            <h5 className="header">鸣谢</h5>
+          <div className="section container">
+            <h5 className="header">Acknowledgements</h5>
             <li>NooBox uses <a href="https://github.com/facebook/react" target="_blank">React(BSD Liscense)</a> from Facebook to build the bases</li>
             <li>NooBox uses <a href="https://jquery.com/" target="_blank">jQuery(MIT Liscense)</a> from JS Foundation to handle DOM and Ajax requests</li>
             <li>NooBox uses <a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT Liscense)</a> from Hust.cc to display timeago</li>
