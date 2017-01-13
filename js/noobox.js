@@ -27993,7 +27993,7 @@
 	          React.createElement(
 	            'h5',
 	            { className: 'header' },
-	            'Acknowledgements'
+	            '\u9E23\u8C22'
 	          ),
 	          React.createElement(
 	            'li',
@@ -28128,7 +28128,7 @@
 	          React.createElement(
 	            'h5',
 	            { className: 'header' },
-	            '\u9E23\u8C22'
+	            'Acknowledgements'
 	          ),
 	          React.createElement(
 	            'li',

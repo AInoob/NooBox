@@ -4,7 +4,7 @@
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "short_name": "NB",
-  "version": "0.8.8",
+  "version": "0.8.9.1",
   "browser_action": {
     "default_icon": "images/icon_128.png",
     "default_title": "NoooBox~~~",
