@@ -5,7 +5,7 @@ var Website = require('./Website.jsx');
 module.exports = React.createClass({
   displayName: 'Result',
   getInitialState: function(){
-    return {order:'relavance',imageSizes:{},loadBaidu:false};
+    return {order:'relevance',imageSizes:{},loadBaidu:false};
   },
   componentDidMount: function(){
     shared.updateOrder=this.updateOrder;
@@ -210,7 +210,7 @@ module.exports = React.createClass({
   updateOrder: function(order){
     switch(order){
       case '相关':
-        order='relavance';
+        order='relevance';
         break;
       case '面积':
         order='area';
@@ -251,8 +251,8 @@ module.exports = React.createClass({
     });
     var filter=(
       <div className="input-field col s12">
-        <select defaultValue="relavance" onChange={this.updateOrder}>
-          <option value="relavance">{GL('relavance')}</option>
+        <select defaultValue="relevance" onChange={this.updateOrder}>
+          <option value="relevance">{GL('relevance')}</option>
           <option value="area">{GL('area')}</option>
           <option value="width">{GL('width')}</option>
           <option value="height">{GL('height')}</option>
