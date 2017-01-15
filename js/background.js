@@ -207,7 +207,7 @@ NooBox.Image.imageSearch=function(info){
       var url='/image.search.html?cursor='+cursor+'&image='+type;
       chrome.tabs.create({url:url});
       NooBox.Image.update(cursor,result);
-      analytics({category:'imageSearch',action:action,label:typel});
+      analytics({category:'imageSearch',action:action,label:type});
     });
   });
 }
