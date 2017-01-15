@@ -69,7 +69,7 @@ function getImages(){
   }
   getAllImgs(tempFocus2);
   imgSet.forEach(function(elem){
-    $(gallery).append('<img src="'+elem+'" style="margin:0px;border:0px;padding:0px;max-width:100%;max-height:300px" />');
+    $(gallery).append('<img src="'+elem+'" style="margin:0px;border:0px;padding:0px;max-width:100%;" />');
   });
   //location.href = "#NooBox-extractImages-selector-range"; 
 }
@@ -85,7 +85,7 @@ function getValidImage(url) {
         var gallery=$('#NooBox-extractImages-gallery')[0];
         imgSet.add(url);
         isImgSet.add(url);
-        $(gallery).append('<img src="'+url+'" style="margin:0px;border:0px;padding:0px;max-width:100%;max-height:300px" />');
+        $(gallery).append('<img src="'+url+'" style="margin:0px;border:0px;padding:0px;max-width:100%;" />');
       }
     });
   }
@@ -100,6 +100,7 @@ var init=function(){
       function(request, sender, sendResponse) {
         if(request.job){
           if(request.job=="extractImages"){
+            $(document.head).append('<style>input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}</style>');
             if(!focus||focus.tagName=='HTML'){
               focus=document.body;
             }
@@ -115,12 +116,12 @@ var init=function(){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<span id="NooBox-extractImages-selector-left" style="line-height:16px;margin:0px;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:60px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="margin:0px;border:0px;padding:0px;display:block;float:left;height:20px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="line-height:16px;margin:0px;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span>');
-            div.append('<div id="NooBox-extractImages-switch" style="margin:0px;border:0px;padding:0px;color:black;font-size:99px;position:absolute;left:80%;top:50%;width:100px;height:100px;background-color:rgba(255,255,255,0.8);text-align:center;line-height:100px;verticle-align:middle">X</>');
+            div.append('<div><span id="NooBox-extractImages-selector-left" style="line-height:16px;margin:0px;cursor:pointer;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:33px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="-webkit-appearance: none;background-color:rgb(86, 103, 187);margin:0px;margin-left:13px;border:0px;padding:0px;display:block;float:left;pointer-events: none;height:8px;margin-top:4px;width:200px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="line-height:16px;margin:0px;margin-left:13px;cursor:pointer;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span></div>');
+            div.append('<div id="NooBox-extractImages-switch" style="margin: 0px;border: 0px;padding: 0px;color: white;font-size: 62px;position: absolute;right: 0;top: 0;width: 64px;height: 64px;background-color: rgb(86, 103, 187);text-align: center;line-height: 64px;cursor: pointer;">X</>');
             div.append('<div style="margin:0px;border:0px;padding:0px;clear:both"></div>');
             if(focus.tagName!='BODY'&&focus.tagName!='HTML')
               focus=$(focus).parent()[0];
-            var div2 = $('<div id="NooBox-extractImages-gallery" style="margin:0px;border:0px;padding:0px;width:80%;height:90%;overflow:scroll;margin-top:32px"></div>');
+            var div2 = $('<div id="NooBox-extractImages-gallery" style="margin:0px;border:0px;padding:0px;width:80%;margin-top:32px"></div>');
             div.append(div2);
             $(document.body).append(div);
             getImages();
@@ -139,7 +140,6 @@ var init=function(){
             $('#NooBox-extractImages-selector-range').on('change',function(e){
               getImages();
             });
-
             $('#NooBox-extractImages-switch').on('click',function(e){
               $(e.target).parent().remove();
             });
