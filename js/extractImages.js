@@ -26,6 +26,7 @@ var isImgSet=new Set();
 var focus=null;
 
 function getImages(){
+  var linkImage=$('#linkImage').prop('checked');
   var notification=false;
   var val=$('#NooBox-extractImages-selector-range').val();
   var gallery=$('#NooBox-extractImages-gallery')[0];
@@ -49,7 +50,7 @@ function getImages(){
           }
         }
       }
-      if(this.tagName=='A'){
+      if(linkImage&&this.tagName=='A'){
         if(isImgSet.has(this.href)){
           imgSet.add(this.href);
         }
@@ -100,7 +101,7 @@ var init=function(){
       function(request, sender, sendResponse) {
         if(request.job){
           if(request.job=="extractImages"){
-            $(document.head).append('<style>input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}</style>');
+            $(document.head).append('<style>input[type="checkbox"] ~ .inputLabel{cursor:pointer;position:absolute;margin-top: -24px;margin-left: 19px;width: 147px;height: 28px;border: 4px solid transparent;border-bottom: 4px solid #5667bb;transform: rotate(4deg);}input[type="checkbox"]:checked ~ .inputLabel{margin-top:-13px;margin-left:134px;width: 14px;height: 28px;border: 4px solid transparent;border-right: 4px solid #5667bb;border-bottom: 4px solid #5667bb;transform: rotate(40deg);}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}</style>');
             if(!focus||focus.tagName=='HTML'){
               focus=document.body;
             }
@@ -116,7 +117,7 @@ var init=function(){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<div><span id="NooBox-extractImages-selector-left" style="line-height:16px;margin:0px;cursor:pointer;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:33px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="-webkit-appearance: none;background-color:rgb(86, 103, 187);margin:0px;margin-left:13px;border:0px;padding:0px;display:block;float:left;pointer-events: none;height:8px;margin-top:4px;width:200px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="line-height:16px;margin:0px;margin-left:13px;cursor:pointer;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span></div>');
+            div.append('<div><span id="NooBox-extractImages-selector-left" style="user-select: none;line-height:16px;margin:0px;cursor:pointer;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:33px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="-webkit-appearance: none;background-color:rgb(86, 103, 187);margin:0px;margin-left:13px;border:0px;padding:0px;display:block;float:left;pointer-events: none;height:8px;margin-top:4px;width:200px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="user-select: none;line-height:16px;margin:0px;margin-left:13px;cursor:pointer;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span><input type="checkbox" style="display:none" id="linkImage"><label class="inputLabel" id="linkImageLabel" for="linkImage" ></label><a style="color: white;margin-left: 30px">example.com/a.jpg</a></div>');
             div.append('<div id="NooBox-extractImages-switch" style="margin: 0px;border: 0px;padding: 0px;color: white;font-size: 62px;position: absolute;right: 0;top: 0;width: 64px;height: 64px;background-color: rgb(86, 103, 187);text-align: center;line-height: 64px;cursor: pointer;">X</>');
             div.append('<div style="margin:0px;border:0px;padding:0px;clear:both"></div>');
             if(focus.tagName!='BODY'&&focus.tagName!='HTML')
@@ -126,7 +127,7 @@ var init=function(){
             $(document.body).append(div);
             getImages();
             $('#NooBox-extractImages-selector-left').on('click',function(e){
-              var val=parseInt($('.NooBox-extractImages-selector-range').val());
+              var val=parseInt($('#NooBox-extractImages-selector-range').val());
               val--;
               $('#NooBox-extractImages-selector-range').val(val);
               getImages();
@@ -142,6 +143,10 @@ var init=function(){
             });
             $('#NooBox-extractImages-switch').on('click',function(e){
               $(e.target).parent().remove();
+            });
+            $('#linkImageLabel').on('click',function(e){
+              console.log('yay');
+              getImages();
             });
           }
         }
