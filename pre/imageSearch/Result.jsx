@@ -23,7 +23,7 @@ module.exports = React.createClass({
         url:window.location.pathname+window.location.search,
         title:document.title,
         time:new Date().toLocaleString(),
-        version: "0.8.9.9"
+        version: "0.9.0.0"
       };
       $.ajax({
         type:'POST',
@@ -233,8 +233,8 @@ module.exports = React.createClass({
     }
     else{
       var uploadReSearch=(
-        <div className="section website" onClick={this.uploadReSearch}>
-          <div className="button">{GL('ls_5')}</div>
+        <div className="btn" onClick={this.uploadReSearch}>
+          {GL('ls_5')}
         </div>);
     }
     var keywords=(

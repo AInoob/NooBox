@@ -13,8 +13,16 @@ module.exports = React.createClass({
     }.bind(this));
   },
   clearHistory: function(){
-    setDB('history_records',[],function(){
-      this.setState({recordList:[]});
+    getDB('history_records',function(recordList){
+      setDB('history_records',[],function(){
+        this.setState({recordList:[]});
+      }.bind(this));
+      console.log(recordList);
+      for(var i=0;i<recordList.length;i++){
+        var id=recordList[i].cursor;
+        console.log(id);
+        setDB('NooBox.Image.result_'+id,'');
+      }
     }.bind(this));
   },
   render: function(){

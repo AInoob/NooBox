@@ -21495,7 +21495,7 @@
 	        url: window.location.pathname + window.location.search,
 	        title: document.title,
 	        time: new Date().toLocaleString(),
-	        version: "0.8.9.9"
+	        version: "0.9.0.0"
 	      };
 	      $.ajax({
 	        type: 'POST',
@@ -21698,12 +21698,8 @@
 	    } else {
 	      var uploadReSearch = React.createElement(
 	        'div',
-	        { className: 'section website', onClick: this.uploadReSearch },
-	        React.createElement(
-	          'div',
-	          { className: 'button' },
-	          GL('ls_5')
-	        )
+	        { className: 'btn', onClick: this.uploadReSearch },
+	        GL('ls_5')
 	      );
 	    }
 	    var keywords = React.createElement(
