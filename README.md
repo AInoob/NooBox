@@ -1,4 +1,38 @@
 # NooBox
+
+## What is NooBox?
+NooBox is a Chrome extension that provides tools for general use, currently it can
+- Reverse image search with multiple engines
+-- Google
+-- Yandex
+-- Tineye
+-- Baidu
+-- SauceNao
+-- IQDB
+- Extract images from website
+- Screenshot & Search
+
+As you can see, NooBox is an open source software, it is free and does not have any ADs.
+
+## Showcase
+Simple search
+![simple search](https://ainoob.com/crx/noobox/search.gif)
+Upload search
+![simple search](https://ainoob.com/crx/noobox/upload.gif)
+Extract Images
+![simple search](https://ainoob.com/crx/noobox/extract.gif)
+Screenshot & Search
+![simple search](https://ainoob.com/crx/noobox/screenshot.gif)
+
+## To-do
+- Mouse gesture
+- HTML5 Video controls
+- Spam link detector
+- More search engines
+-- to be added
+
+## Copyright
+
 A Chrome Extension that contains useful tools
 
 Copyright (C) 2016  AInoob, ainoob.com
