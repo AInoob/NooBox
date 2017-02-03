@@ -1,4 +1,5 @@
 # NooBox
+![Website](https://ainoob.com/project/noobox)
 
 ## What is NooBox?
 NooBox is a Chrome extension that provides tools for general use, currently it can
@@ -15,13 +16,17 @@ NooBox is a Chrome extension that provides tools for general use, currently it c
 As you can see, NooBox is an open source software, it is free and does not have any ADs.
 
 ## Showcase
-Simple search
+
+### Simple search
 ![simple search](https://ainoob.com/crx/noobox/search.gif)
-Upload search
+
+### Upload search
 ![simple search](https://ainoob.com/crx/noobox/upload.gif)
-Extract Images
+
+### Extract Images
 ![simple search](https://ainoob.com/crx/noobox/extract.gif)
-Screenshot & Search
+
+### Screenshot & Search
 ![simple search](https://ainoob.com/crx/noobox/screenshot.gif)
 
 ## To-do
