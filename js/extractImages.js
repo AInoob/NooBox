@@ -1,4 +1,3 @@
-var NooBox={};
 function get(key,callback){
   chrome.storage.sync.get(key,function(result){
     if(callback)
