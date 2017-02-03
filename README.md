@@ -1,5 +1,5 @@
 # NooBox
-![Website](https://ainoob.com/project/noobox)
+[Website](https://ainoob.com/project/noobox)
 
 ## What is NooBox?
 NooBox is a Chrome extension that provides tools for general use, currently it can
