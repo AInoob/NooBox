@@ -21495,7 +21495,7 @@
 	        url: window.location.pathname + window.location.search,
 	        title: document.title,
 	        time: new Date().toLocaleString(),
-	        version: "0.9.0.0"
+	        version: "0.9.0.1"
 	      };
 	      $.ajax({
 	        type: 'POST',
