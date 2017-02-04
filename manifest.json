@@ -23,7 +23,7 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js":["thirdParty/jquery.min.js","js/extractImages.js","js/videoControl.js"],
+      "js":["thirdParty/jquery.min.js","js/extractImages.js"],
       "run_at":"document_start",
       "all_frames":true
     }
