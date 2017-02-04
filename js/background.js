@@ -129,7 +129,7 @@ NooBox.Image.updateContextMenu=function(){
     },
     function(){
       if(NooBox.Image.handles.extractImages){
-        chrome.contextMenus.remove(NooBox.Image.handles,extractImages);
+        chrome.contextMenus.remove(NooBox.Image.handles.extractImages);
         NooBox.Image.handles.extractImages=null;
       }
     }
@@ -676,22 +676,22 @@ NooBox.Image.screenshotSearch=function(info,tab){
     }
     else{
       chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
-          chrome.tabs.executeScript(tab.id,{file:'thirdParty/jquery.min.js'},function(){
-            if(chrome.runtime.lastError){
-              chrome.notifications.create('screenshotFailed',{
-                type:'basic',
-                iconUrl: '/images/icon_128.png',
-                title: GL("ls_1"),
-                message: GL("ls_2")
-              },voidFunc);
-              return;
-            }
-            chrome.tabs.executeScript(tab.id,{
-              file: 'js/screenshotSearch.js'
-            },function(){
-              chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
-            });
+        chrome.tabs.executeScript(tab.id,{file:'thirdParty/jquery.min.js'},function(){
+          if(chrome.runtime.lastError){
+            chrome.notifications.create('screenshotFailed',{
+              type:'basic',
+              iconUrl: '/images/icon_128.png',
+              title: GL("ls_1"),
+              message: GL("ls_2")
+            },voidFunc);
+            return;
+          }
+          chrome.tabs.executeScript(tab.id,{
+            file: 'js/screenshotSearch.js'
+          },function(){
+            chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
           });
+        });
       });
     }
   });
