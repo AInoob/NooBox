@@ -27696,10 +27696,10 @@
 	module.exports = React.createClass({
 	  displayName: 'Options',
 	  getInitialState: function () {
-	    return { settings: { extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
+	    return { settings: { videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
 	  },
 	  componentDidMount: function () {
-	    var switchList = ['extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
+	    var switchList = ['videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
 	    for (var i = 0; i < switchList.length; i++) {
 	      isOn(switchList[i], function (ii) {
 	        this.setState(function (prevState) {
@@ -27781,6 +27781,8 @@
 	          this.getCheckbox('extractImages'),
 	          React.createElement('p', null),
 	          this.getCheckbox('screenshotSearch'),
+	          React.createElement('p', null),
+	          this.getCheckbox('videoControl'),
 	          React.createElement('p', null)
 	        )
 	      )

@@ -137,6 +137,9 @@
   "upload_image":{
     "message":"上传图片"
   },
+  "videoControl":{
+    "message":"HTML5视频控制"
+  },
   "j":{
     "message":"j"
   },

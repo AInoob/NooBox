@@ -85,7 +85,8 @@ NooBox.Options.defaultValues=[
   ['imageSearchUrl_iqdb',true],
   ['extractImages',true],
   ['screenshotSearch',true],
-  ['modules',['imageSearch']]
+  ['modules',['imageSearch']],
+  ['videoControl',false]
 ];
 
 NooBox.Options.init=function(i){

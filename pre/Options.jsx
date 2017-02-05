@@ -4,10 +4,10 @@ var Link = require('react-router').Link;
 module.exports = React.createClass({
   displayName: 'Options',
   getInitialState: function(){
-    return {settings:{extractImages:false,imageSearch:false,screenshotSearch:false,imageSearchUrl_google:false,imageSearchUrl_baidu:false,imageSearchUrl_yandex:false,imageSearchUrl_bing:false,imageSearchUrl_tineye:false,imageSearchUrl_saucenao:false,imageSearchUrl_iqdb:false}};
+    return {settings:{videoControl:false,extractImages:false,imageSearch:false,screenshotSearch:false,imageSearchUrl_google:false,imageSearchUrl_baidu:false,imageSearchUrl_yandex:false,imageSearchUrl_bing:false,imageSearchUrl_tineye:false,imageSearchUrl_saucenao:false,imageSearchUrl_iqdb:false}};
   },
   componentDidMount: function(){
-    var switchList=['extractImages','imageSearch','screenshotSearch','imageSearchUrl_google','imageSearchUrl_baidu','imageSearchUrl_yandex','imageSearchUrl_bing','imageSearchUrl_tineye','imageSearchUrl_saucenao','imageSearchUrl_iqdb'];
+    var switchList=['videoControl','extractImages','imageSearch','screenshotSearch','imageSearchUrl_google','imageSearchUrl_baidu','imageSearchUrl_yandex','imageSearchUrl_bing','imageSearchUrl_tineye','imageSearchUrl_saucenao','imageSearchUrl_iqdb'];
     for(var i=0;i<switchList.length;i++){
       isOn(
         switchList[i],
@@ -70,6 +70,8 @@ module.exports = React.createClass({
             {this.getCheckbox('extractImages')}
             <p></p>
             {this.getCheckbox('screenshotSearch')}
+            <p></p>
+            {this.getCheckbox('videoControl')}
             <p></p>
           </div>
         </div>
