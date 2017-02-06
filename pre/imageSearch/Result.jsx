@@ -5,7 +5,7 @@ var Website = require('./Website.jsx');
 module.exports = React.createClass({
   displayName: 'Result',
   getInitialState: function(){
-    return {order:'relevance',imageSizes:{},loadBaidu:false};
+    return {order:'relevance',imageSizes:{},loadBaidu:false,phDebut:false};
   },
   componentDidMount: function(){
     shared.updateOrder=this.updateOrder;
@@ -17,6 +17,9 @@ module.exports = React.createClass({
         }
       }.bind(this)
     );
+    get('phDebut',function(phDebut){
+      this.setState({phDebut:phDebut});
+    }.bind(this));
     get('userId',function(userId){
       var hi={
         userId:userId,
@@ -224,6 +227,11 @@ module.exports = React.createClass({
     }
     this.setState({order:order.toLowerCase()});
   },
+  removeNews: function(){
+    set('phDebut',false,function(){
+      location.reload();
+    });
+  },
   render: function(){
     var result=this.state.result||{};
     var uploadReSearch=null;
@@ -278,12 +286,25 @@ module.exports = React.createClass({
       <div className="websites">
         {this.getWebsite()}
       </div>);
+    var news=null;
+    if(this.state.phDebut){
+      news=(
+        <div id="newsList">
+          <div className="news">
+            <div className="close" onClick={this.removeNews}>x</div>
+            <a href="https://www.producthunt.com/posts/noobox" target="_blank">{GL('ls_6')}
+            <img src="/thirdParty/ph.png" /></a>
+          </div>
+        </div>
+      );
+    }
     return (
       <div id="imageSearchResult" className="container">
         {brief}
         {filter}
         {websites}
         {uploadReSearch}
+        {news}
       </div>);
   }
 });
