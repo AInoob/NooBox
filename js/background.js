@@ -86,7 +86,8 @@ NooBox.Options.defaultValues=[
   ['extractImages',true],
   ['screenshotSearch',true],
   ['modules',['imageSearch']],
-  ['videoControl',false]
+  ['videoControl',false],
+  ['phDebut',true]
 ];
 
 NooBox.Options.init=function(i){

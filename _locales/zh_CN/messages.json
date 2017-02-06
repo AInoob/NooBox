@@ -138,7 +138,7 @@
     "message":"上传图片"
   },
   "videoControl":{
-    "message":"HTML5视频控制"
+    "message":"HTML5视频控制（不稳定，慎用）"
   },
   "j":{
     "message":"j"
@@ -160,5 +160,8 @@
   },
   "ls_5":{
     "message":"没结果？点这里上传图片搜索"
+  },
+  "ls_6":{
+    "message":"给二箱在Product Hunt上投票吧！"
   }
 }

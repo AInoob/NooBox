@@ -153,3 +153,38 @@ h4 {
   color: #7a88e8;
   font-size: 1rem;
 }
+
+#newsList{
+  width: 14%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 7.5px;
+  font-size: large;
+  color: #0383e5;
+}
+#newsList .news{
+  margin-bottom: 8px;
+  text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+  background: white;
+  position: relative;
+  display: block;
+}
+
+#newsList .news .close{
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  background: red;
+  color: white;
+  display: block;
+  width: 12px;
+  height: 12px;
+  line-height: 8px;
+  cursor: pointer;
+}
+
+#newsList .news img{
+  width: 100%
+}
