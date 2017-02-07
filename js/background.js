@@ -230,58 +230,52 @@ NooBox.Image.fetchFunctions.google=function(cursor,result,data){
     var page=$(data);
     var keyword=page.find('._gUb').text();
     var relatedWebsites=[];
-    var relatedWebsiteList=$(page.find('#rso').find('._NId')[0]).find('.rc');
+    var relatedWebsiteList=$(page.find('#rso').find('._NId')[0]).find('.rc')||[];
     if(relatedWebsiteList.length==0){
-      relatedWebsiteList=$(page.find('#rso').find('.rgsep')[0]).prev().find('.rc');
+      relatedWebsiteList=$(page.find('#rso').find('.rgsep')[0]).prev().find('.rc')||[];
     }
     for(var i=0;i<relatedWebsiteList.length;i++){
-      var website={};
+      var website={link:'',title:'',description:'',searchEngine:'google',related:true};
       var temp=$(relatedWebsiteList[i]);
-      var x=temp.find('a')[0];
+      var x=temp.find('a')[0]||{};
       website.link=x.href;
       website.title=x.innerText;
-      var y=temp.find('.s').find('.st')[0];
+      var y=temp.find('.s').find('.st')[0]||{};
       website.description=y.innerHTML;
-      website.searchEngine='google';
-      website.related=true;
       relatedWebsites.push(website);
     }
     var websites=[];
-    var websiteList=$(page.find('#rso').find('._NId')).last().find('.rc');
+    var websiteList=$(page.find('#rso').find('._NId')).last().find('.rc')||[];
     if(websiteList.length==0){
-      websiteList=$(page.find('#rso').find('.rgsep')).last().prev().find('.rc');
+      websiteList=$(page.find('#rso').find('.rgsep')).last().prev().find('.rc')||[];
     }
     for(var i=0;i<websiteList.length;i++){
-      var website={};
+      var website={link:'',title:'',description:'',searchEngine:'google',related:false};
       var temp=$(websiteList[i]);
-      var x=temp.find('a')[0];
+      var x=temp.find('a')[0]||{};
       website.link=x.href;
       website.title=x.innerText;
-      var y=temp.find('.s').find('.st')[0];
+      var y=temp.find('.s').find('.st')[0]||{};
       website.description=y.innerHTML;
-      var z=temp.find('._lyb').find('a')[0];
-
-      if(z!=null){
-        var start=z.href.indexOf("imgurl=")+7;
-        var end=z.href.indexOf("&",start);
-        if(end==-1)
-          website.imageUrl=z.href.slice(start);
-        else
-          website.imageUrl=z.href.slice(start,end);
-        var cut=website.imageUrl.indexOf('jpg%');
-        if(cut!=-1){
-          website.imageUrl=website.imageUrl.slice(0,cut+3);
-        }
-        cut=website.imageUrl.indexOf('png%');
-        if(cut!=-1){
-          website.imageUrl=website.imageUrl.slice(0,cut+3);
-        }
-        cut=website.imageUrl.indexOf('gif%');
-        if(cut!=-1){
-          website.imageUrl=website.imageUrl.slice(0,cut+3);
-        }
+      var z=temp.find('._lyb').find('a')[0]||{};
+      var start=z.href.indexOf("imgurl=")+7;
+      var end=z.href.indexOf("&",start);
+      if(end==-1)
+        website.imageUrl=z.href.slice(start);
+      else
+        website.imageUrl=z.href.slice(start,end);
+      var cut=website.imageUrl.indexOf('jpg%');
+      if(cut!=-1){
+        website.imageUrl=website.imageUrl.slice(0,cut+3);
       }
-      website.searchEngine='google';
+      cut=website.imageUrl.indexOf('png%');
+      if(cut!=-1){
+        website.imageUrl=website.imageUrl.slice(0,cut+3);
+      }
+      cut=website.imageUrl.indexOf('gif%');
+      if(cut!=-1){
+        website.imageUrl=website.imageUrl.slice(0,cut+3);
+      }
       websites.push(website);
     }
     result.google.keyword=keyword;
@@ -304,7 +298,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,result,data){
     var keyword=page.find('.guess-info-word-link').text()||page.find('.guess-info-text-link').text();
     var relatedWebsites=[];
     var relatedWebsiteLinks=page.find('.guess-baike').find('.guess-baike-title').find('a');
-    var relatedWebsiteDescriptions=page.find('.guess-baike').find('.guess-baike-text');
+    var relatedWebsiteDescriptions=page.find('.guess-baike').find('.guess-baike-text')||[];
     for(var i=0;i<relatedWebsiteLinks.length;i++){
       var website={};
       website.link=relatedWebsiteLinks[i].href;
@@ -315,7 +309,7 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,result,data){
       relatedWebsites.push(website);
     }
     var relatedWebsiteLinks=page.find('.guess-newbaike').find('.guess-newbaike-text-title').find('a');
-    var relatedWebsiteDescriptions=page.find('.guess-newbaike').find('.guess-newbaike-text-box');
+    var relatedWebsiteDescriptions=page.find('.guess-newbaike').find('.guess-newbaike-text-box')||[];
     for(var i=0;i<relatedWebsiteLinks.length;i++){
       var website={};
       website.link=relatedWebsiteLinks[i].href;
@@ -326,11 +320,11 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,result,data){
       relatedWebsites.push(website);
     }
     var websites=[];
-    var websiteList=page.find('.source-card-topic');
+    var websiteList=page.find('.source-card-topic')||[];
     for(var i=0;i<websiteList.length;i++){
-      var website={};
+      var website={searchEngine:'baidu'};
       var temp=$(websiteList[i]);
-      var x=temp.find('a')[0];
+      var x=temp.find('a')[0]||{};
       website.link=x.href;
       website.title=x.innerText;
       var y=temp.find('.source-card-topic-content')[0]||{};
@@ -342,7 +336,6 @@ NooBox.Image.fetchFunctions.baidu=function(cursor,result,data){
         website.imageUrl=z.style.backgroundImage.slice(start,end);
         website.imageUrl=website.imageUrl.replace(/&amp;/g,'');
       }
-      website.searchEngine='baidu';
       websites.push(website);
     }
     result.baidu.keyword=keyword;
@@ -365,25 +358,22 @@ NooBox.Image.fetchFunctions.tineye=function(cursor,result,data){
     var page=$(data);
     var websites=[];
     var relatedWebsites=[];
-    var websiteList=$(page.find('.match'));
+    var websiteList=$(page.find('.match'))||[];
     for(var i=0;i<websiteList.length;i++){
-      var website={};
+      var website={searchEngine:'tineye',related:true,description:''};
       var temp=$(websiteList[i]);
       if(temp.find('.top-padding').length>0){
         website.title=$(temp).find('h4')[0].title;
-        var x=temp.find('.top-padding').find('a')[0];
+        var x=temp.find('.top-padding').find('a')[0]||{};
         website.link=x.href;
-        website.searchEngine='tineye';
-        website.description="";
-        website.related=true;
         relatedWebsites.push(website);
       }
       else{
         website.title=$(temp).find('h4')[0].title;
-        var x=$(temp).find('p').find('a')[2];
+        var x=$(temp).find('p').find('a')[2]||{};
         website.link=x.href;
         website.description=x.href;
-        var y=$(temp).find('p').find('a')[1];
+        var y=$(temp).find('p').find('a')[1]||{};
         website.imageUrl=y.href;
         website.searchEngine='tineye';
         websites.push(website);
@@ -421,17 +411,16 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,result,data){
     data=data.replace(/<img[^>]*>/g,"");
     var page=$(data);
     var websites=[];
-    var websiteList=$(page.find('.other-sites__item'));
+    var websiteList=$(page.find('.other-sites__item'))||[];
     for(var i=0;i<websiteList.length;i++){
       var website={};
       var temp=$(websiteList[i]);
-      var x=temp.find('.other-sites__snippet').find('a')[0];
+      var x=temp.find('.other-sites__snippet').find('a')[0]||{};
       website.link=x.href;
       website.title=x.innerText;
-      var y=temp.find('.other-sites__desc')[0];
+      var y=temp.find('.other-sites__desc')[0]||{};
       website.description=y.innerHTML;
-      var z=temp.find('.other-sites__preview-link')[0];
-
+      var z=temp.find('.other-sites__preview-link')[0]||{};
       website.imageUrl=z.href;
       website.searchEngine='yandex';
       websites.push(website);
@@ -454,9 +443,9 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,result,data){
     var page=$(data);
     var websites=[];
     var relatedWebsites=[];
-    var websiteList=$(page.find('.result'));
+    var websiteList=$(page.find('.result'))||[];
     for(var i=0;i<websiteList.length;i++){
-      var website={};
+      var website={imageUrl:'',searchEngine:'saucenao',related:true};
       var temp=$(websiteList[i]);
       website.link="";
       website.title="";
@@ -466,9 +455,9 @@ NooBox.Image.fetchFunctions.saucenao=function(cursor,result,data){
       }
       website.description=y.innerHTML.replace(/(nb-src="\/image|nb-src="image)/g,'src="http://saucenao.com/image');
       var z=temp.find('.resultimage').find('img')[0];
-      website.imageUrl=z.getAttribute('nb-src');
-      website.searchEngine='saucenao';
-      website.related=true;
+      if(z){
+        website.imageUrl=z.getAttribute('nb-src');
+      }
       var rate=temp.find('.resultsimilarityinfo').text();
       if(rate.replace('%','')>90){
         relatedWebsites.push(website);
@@ -496,7 +485,7 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,result,data){
     data=data.replace(/ href=\"\/\//g,' nb-href="');
     var page=$(data);
     var websites=[];
-    var websiteList=$(page.find('table'));
+    var websiteList=$(page.find('table'))||[];
     for(var i=1;i<websiteList.length-2;i++){
       var description='<table>'+websiteList[i].innerHTML.replace(/nb-src="/g,'src="http://iqdb.org/')+'</table>';
       description=description.replace(/nb1-src="/g,'src="http://');

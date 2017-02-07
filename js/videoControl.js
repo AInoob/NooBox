@@ -19,7 +19,7 @@ function handleVisibilityChange() {
 function init(){
   $(document.head).append('<style>@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.hide{animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
   $('body').append('<div id="NooBox-Video-Indicator"></div>');
-  detectVideoHandle=setInterval(detectVideo,333);
+  detectVideoHandle=setInterval(detectVideo,111);
   $('body').on('click',function(e){
     var v=e.target;
     if($(v).is('video')){
@@ -37,31 +37,31 @@ function init(){
       $(vid).on('pause',function(){conflictCounter.play++});
       $(document).off('webkitfullscreenchange fullscreenchange');
       $(document).on('webkitfullscreenchange fullscreenchange',function(){if((document.fullscreenElement||document.webkitFullscreenElement)==vid){conflictCounter.fullscreen++}});
-      if($(vid).hasClass('NooBox-Video-Conflict-Play')){
+      if($(vid).hasClass('NooBox-Video-Conflict-ClickPlay')){
       }
-      else if($(vid).hasClass('NooBox-Video-NoConflict-Play')){
+      else if($(vid).hasClass('NooBox-Video-NoConflict-ClickPlay')){
         playPause(vid);
         setTimeout(function(){
           if(conflictCounter.play>0){
-            $(vid).removeClass('NooBox-Video-NoConflict-Play');
-            $(vid).addClass('NooBox-Video-Conflict-Play');
+            $(vid).removeClass('NooBox-Video-NoConflict-ClickPlay');
+            $(vid).addClass('NooBox-Video-Conflict-ClickPlay');
             playPause(vid);
           }
-        },500);
+        },111);
       }
       else{
         setTimeout(function(){
           var tempV=getStateChangedVideo();
           if(tempV==vid){
-            $(vid).removeClass('NooBox-Video-NoConflict-Play');
-            $(vid).addClass('NooBox-Video-Conflict-Play');
+            $(vid).removeClass('NooBox-Video-NoConflict-ClickPlay');
+            $(vid).addClass('NooBox-Video-Conflict-ClickPlay');
           }
           else{
-            $(vid).removeClass('NooBox-Video-Conflict-Play');
-            $(vid).addClass('NooBox-Video-NoConflict-Play');
+            $(vid).removeClass('NooBox-Video-Conflict-ClickPlay');
+            $(vid).addClass('NooBox-Video-NoConflict-ClickPlay');
             playPause(vid);
           }
-        },333);
+        },111);
       }
     }
     buildVideoStates();
@@ -117,12 +117,42 @@ function init(){
       e.preventDefault();
       switch(String.fromCharCode(e.which)){
         case 'k':
-          if(!$(vid).hasClass('NooBox-Video-Conflict-Play')){
-            playPause(vid);
+          $(vid).off('play');
+          $(vid).off('pause');
+          if($(vid).hasClass('NooBox-Video-Conflict-PressPlay')){
           }
+          else if($(vid).hasClass('NooBox-Video-NoConflict-PressPlay')){
+            playPause(vid);
+            setTimeout(function(){
+              console.log(conflictCounter.play);
+              if(conflictCounter.play>0){
+                $(vid).removeClass('NooBox-Video-NoConflict-PressPlay');
+                $(vid).addClass('NooBox-Video-Conflict-PressPlay');
+                playPause(vid);
+              }
+            },111);
+          }
+          else{
+            setTimeout(function(){
+              var tempV=getStateChangedVideo();
+              console.log('check k confliction');
+              if(tempV==vid){
+                console.log('conflict');
+                $(vid).removeClass('NooBox-Video-NoConflict-PressPlay');
+                $(vid).addClass('NooBox-Video-Conflict-PressPlay');
+              }
+              else{
+                console.log('not conflict');
+                $(vid).removeClass('NooBox-Video-Conflict-PressPlay');
+                $(vid).addClass('NooBox-Video-NoConflict-PressPlay');
+                playPause(vid);
+              }
+            },111);
+          }
+          buildVideoStates();
           break;
         case ' ':
-          if(!$(vid).hasClass('NooBox-Video-Conflict-Play')){
+          if(!$(vid).hasClass('NooBox-Video-Conflict-PressPlay')){
             playPause(vid);
           }
           break;
@@ -346,7 +376,9 @@ function placeIndicator(){
 }
 
 document.addEventListener("DOMContentLoaded", function(){
-  isOn('videoControl',init);
+  isOn('videoControl',function(){
+    init();
+  });
 });
 
 function get(key,callback){
