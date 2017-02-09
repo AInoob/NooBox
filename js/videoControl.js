@@ -5,6 +5,9 @@ var playbackRateStep=0.1;
 var detectVideoHandle=null;
 var indicatorSize={width:100,height:100};
 var conflictCount=[];
+var canvas;
+var ctx;
+var beyondId=-1;
 
 function handleVisibilityChange() {
   if (document[hidden]) {
@@ -15,7 +18,9 @@ function handleVisibilityChange() {
 }
 
 function init(){
-  console.log('hello');
+  $('body').append('<canvas id="NooBox-VideoBeyond-preCanvas" style="display: none"></canvas>');
+  canvas=$('#NooBox-VideoBeyond-preCanvas')[0];
+  ctx=canvas.getContext('2d');
   buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'}]);
   $(document.head).append('<style>@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.hide{animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
   $('body').append('<div id="NooBox-Video-Indicator"></div>');
@@ -23,7 +28,84 @@ function init(){
   $('body').on('click',function(e){
     vid=getVideo(e);
     if(vid){
-      detectConflictAndAct(playPause,'playPause','clickPlayPause',111);
+      detectConflictAndAct(playPause,vid,'playPause','clickPlayPause',111);
+    }
+  });
+  $('body').on('dblclick',function(e){
+    vid=getVideo(e);
+    if(vid){
+    }
+  });
+  document.onkeydown = function(e){
+    e=e||window.event;
+    if(vid){
+      if (e.keyCode == '38'){
+        volumeUp(vid,volumeStep);
+      }
+      else if(e.keyCode == '40'){
+        volumeDown(vid,volumeStep);
+      }
+      else if(e.keyCode == '37'){
+        rewind(vid,timeStep);
+      }
+      else if(e.keyCode == '39'){
+        forward(vid,timeStep);
+      }
+      else if(e.keyCode == '36'){
+        goTo(vid,0);
+      }
+      else if(e.keyCode == '35'){
+        goTo(vid,10);
+      }
+    }
+  };
+  console.log('oh');
+  $(document).on('keypress',function(e) {
+    console.log(vid);
+    if(vid){
+      placeIndicator();
+      e.preventDefault();
+      switch(String.fromCharCode(e.which)){
+        case 'k':
+          console.log('k');
+          detectConflictAndAct(playPause,vid,'playPause','kPlayPause',111);
+          break;
+        case ' ':
+          console.log('space');
+          detectConflictAndAct(playPause,vid,'playPause','spacePlayPause',111);
+          break;
+        case 'j':
+          rewind(vid,timeStep*2);
+          break;
+        case 'l':
+          forward(vid,timeStep*2);
+          break;
+        case '<':
+          slowDown(vid,playbackRateStep);
+          break;
+        case '>':
+          speedUp(vid,playbackRateStep);
+          break;
+        case 'r':
+          rotate(vid,90);
+          break;
+        case 'm':
+          mute(vid);
+          break;
+        case 'f':
+          toggleFullscreen(vid);
+          break;
+        case 'd':
+          download(vid);
+          break;
+        case 'b':
+          //beyond(vid);
+          break;
+        default:
+          if(e.which>=48&&e.which<=57){
+            goTo(vid,e.which-48);
+          }
+      }
     }
   });
 }
@@ -33,15 +115,13 @@ function displayIndicator(text,icon){
     icon='';
   }
   $('#NooBox-Video-Indicator').removeClass('hide');
-  console.log('display');
   setTimeout(function(){
     $('#NooBox-Video-Indicator').addClass('hide');
-    console.log('hide');
   },100);
   $('#NooBox-Video-Indicator').html('<div id="NooBox-Video-Indicator-Icon">'+icon+'</div>'+text);
 }
 
-function detectConflictAndAct(actFunction,actionId,conflictId,detectTimeout){
+function detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout){
   placeIndicator();
   var index=getIndex(vid);
   if(!index){
@@ -49,12 +129,12 @@ function detectConflictAndAct(actFunction,actionId,conflictId,detectTimeout){
   }
   var conflictClass='NooBox-Video-Conflict-'+conflictId;
   if(!$(vid).hasClass(conflictClass)){
-    actFunction();
+    actFunction(v);
     conflictCount[index][actionId]--;
     setTimeout(function(){
       if(conflictCount[index][actionId]>0){
         $(vid).addClass(conflictClass);
-        actFunction();
+        actFunction(v);
         console.log(conflictCount[index]);
         setTimeout(function(){
           conflictCount[index][actionId]=0;
@@ -66,69 +146,92 @@ function detectConflictAndAct(actFunction,actionId,conflictId,detectTimeout){
     setTimeout(function(){
       if(conflictCount[index][actionId]==0){
         $(vid).removeClass(conflictClass);
-        actFunction();
+        actFunction(v);
         conflictCount[index][actionId]--;
       }
     },111);
   }
 }
 
-function playPause(){
-  if(vid.paused){
-    vid.play();
+function playPause(v){
+  if(v.paused){
+    v.play();
     displayIndicator('Play');
   }
   else{
-    vid.pause();
+    v.pause();
     displayIndicator('Pause');
   }
 }
 
-function rewind(step){
-  vid.currentTime-=step;
+function beyond(v){
+  if(beyondId==-1){
+    beyondId=setInterval(function(){
+      var prev=new Date().getTime();
+      var temp=new Date().getTime();
+      console.log('0 start: '+(temp-prev));
+      ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
+      temp=new Date().getTime();
+      console.log('1 canvas: '+(temp-prev));
+      var dataURI=canvas.toDataURL("image/png");
+      temp=new Date().getTime();
+      console.log('2 dataURI: '+(temp-prev));
+      chrome.runtime.sendMessage({job:'passToFront',message:{job:'videoBeyond',dataURI:dataURI,prev:prev}});
+      temp=new Date().getTime();
+      console.log('3 sendMessage: '+(temp-prev));
+    },200);
+  }
+  else{
+    clearInterval(beyondId);
+    beyondId=-1;
+  }
+}
+
+function rewind(v,step){
+  v.currentTime-=step;
   displayIndicator(step+'s','&larr;');
 }
 
-function forward(step){
-  vid.currentTime+=step;
+function forward(v,step){
+  v.currentTime+=step;
   displayIndicator(step+'s','&rarr;');
 }
 
-function goTo(i){
-  vid.currentTime=vid.duration*i/10;
+function goTo(v,i){
+  v.currentTime=v.duration*i/10;
   displayIndicator((i*10)+'%','&commat;');
 }
 
-function volumeUp(step){
-  if(vid.volume.toFixed(2)<=1-step){
-    vid.volume=(vid.volume+step).toFixed(2);
-    displayIndicator(vid.volume+'%','&uarr;');
+function volumeUp(v,step){
+  if(v.volume.toFixed(2)<=1-step){
+    v.volume=(v.volume+step).toFixed(2);
+    displayIndicator(v.volume+'%','&uarr;');
   }
 }
 
-function volumeDown(step){
-  if(vid.volume.toFixed(2)>=step){
-    vid.volume=(vid.volume-step).toFixed(2);
-    displayIndicator(vid.volume+'%','&darr;');
+function volumeDown(v,step){
+  if(v.volume.toFixed(2)>=step){
+    v.volume=(v.volume-step).toFixed(2);
+    displayIndicator(v.volume+'%','&darr;');
   }
 }
 
-function speedUp(step){
-  if(vid.playbackRate.toFixed(2)<=16-step){
-    vid.playbackRate=(vid.playbackRate+step).toFixed(2);
-    displayIndicator(vid.playbackRate,'&raquo;');
+function speedUp(v,step){
+  if(v.playbackRate.toFixed(2)<=16-step){
+    v.playbackRate=(v.playbackRate+step).toFixed(2);
+    displayIndicator(v.playbackRate,'&raquo;');
   }
 }
 
-function slowDown(step){
-  if(vid.playbackRate.toFixed(2)>=step+0.0625){
-    vid.playbackRate=(vid.playbackRate-step).toFixed(2);
-    displayIndicator(vid.playbackRate,'&laquo;');
+function slowDown(v,step){
+  if(v.playbackRate.toFixed(2)>=step+0.0625){
+    v.playbackRate=(v.playbackRate-step).toFixed(2);
+    displayIndicator(v.playbackRate,'&laquo;');
   }
 }
 
-function rotate(step){
-  var vv=$(vid);
+function rotate(v,step){
+  var vv=$(v);
   var matrix=vv.css('transform')||vv.css('-webkit-transform');
   var deg;
   if(matrix !== 'none') {
@@ -145,9 +248,9 @@ function rotate(step){
   vv.css('-webkit-transform','rotate('+deg+'deg)');
 }
 
-function mute(){
-  vid.muted=!vid.muted;
-  if(vid.muted){
+function mute(v){
+  v.muted=!v.muted;
+  if(v.muted){
     displayIndicator('<span style="font-size:48px;text-decoration:line-through;">&sung;</span>');
   }
   else{
@@ -155,19 +258,19 @@ function mute(){
   }
 }
 
-function toggleFullscreen(){
+function toggleFullscreen(v){
   conflictCount.fullscreen--;
-  if(document.webkitFullscreenElement===vid){
+  if(document.webkitFullscreenElement===v){
     document.webkitExitFullscreen();
   }
   else{
-    vid.webkitRequestFullScreen();
+    v.webkitRequestFullScreen();
   }
 }
 
-function download(){
+function download(v){
   var link = document.createElement("a");
-  link.href = vid.currentSrc;
+  link.href = v.currentSrc;
   link.download = 'video';
   document.body.appendChild(link);
   link.click();
