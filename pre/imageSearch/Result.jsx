@@ -26,7 +26,7 @@ module.exports = React.createClass({
         url:window.location.pathname+window.location.search,
         title:document.title,
         time:new Date().toLocaleString(),
-        version: "0.9.0.2"
+        version: "0.9.1.0"
       };
       $.ajax({
         type:'POST',
