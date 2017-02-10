@@ -3,20 +3,23 @@ module.exports = React.createClass({
   displayName: 'ImageSearch',
   reader : new window.FileReader(),
   getInitialState: function(){
-    return {};
+    return {enabled:false};
   },
   componentDidMount: function(){
-    this.reader.onloadend = function() {
-      base64data = this.reader.result;                
-      chrome.extension.sendMessage({job:'analytics',category:'uploadSearch',action:'run'}, function(response) {});
-      chrome.extension.sendMessage({job: 'imageSearch_upload',data:base64data });
-    }.bind(this)
-    get('totalImageSearch',function(count){
-      count=count||0;
-      this.setState({totalImageSearch:count});
-    }.bind(this));
-    getImageSearchEngines(["google","baidu","tineye","bing","yandex","saucenao","iqdb"],function(engines){
-      this.setState({engines: engines});
+    isOn('imageSearch',function(){
+      this.setState({enabled:true});
+      this.reader.onloadend = function() {
+        base64data = this.reader.result;                
+        chrome.extension.sendMessage({job:'analytics',category:'uploadSearch',action:'run'}, function(response) {});
+        chrome.extension.sendMessage({job: 'imageSearch_upload',data:base64data });
+      }.bind(this)
+      get('totalImageSearch',function(count){
+        count=count||0;
+        this.setState({totalImageSearch:count});
+      }.bind(this));
+      getImageSearchEngines(["google","baidu","tineye","bing","yandex","saucenao","iqdb"],function(engines){
+        this.setState({engines: engines});
+      }.bind(this));
     }.bind(this));
   },
   onDragOver: function(e){
@@ -48,6 +51,9 @@ module.exports = React.createClass({
     });
   },
   render: function(){
+    if(!this.state.enabled){
+      return null;
+    }
     var icons=(this.state.engines||[]).map(function(elem,index){
       return (
           <img key={index} src={'/thirdParty/'+elem+'.png'} />
