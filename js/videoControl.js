@@ -21,8 +21,7 @@ function handleVisibilityChange() {
 }
 
 function getDB(key){
-  chrome.runtime.sendMessage({job:'getDB',key:key,function(data){
-  }});
+  chrome.runtime.sendMessage({job:'getDB',key:key});
 }
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -54,7 +53,7 @@ function init(){
   canvas=$('#NooBox-VideoBeyond-preCanvas')[0];
   ctx=canvas.getContext('2d');
   buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'}]);
-  $(document.head).append('<style>@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
+  $(document.head).append('<style>@-webkit-keyframes hideAnimation2{0% { opacity:0.618;} 100% {opacity:0;}}@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{-webkit-animation:hideAnimation2 ease-in 0.333s forwards;animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
   $('body').append('<div id="NooBox-Video-Indicator"></div>');
   detectVideoHandle=setInterval(detectVideo,111);
   $('body').on('click',function(e){
