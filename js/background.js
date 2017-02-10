@@ -15,6 +15,7 @@ function analytics(request){
   }
   _gaq.push(['_trackEvent', request.category, request.action,request.label]);
 }
+NooBox.temp={lastVideoControl:0};
 NooBox.Image={};
 NooBox.Webmaster={};
 NooBox.History={};
@@ -741,6 +742,13 @@ NooBox.init=function(){
               }
             }
           });
+        }
+        else if(request.job=='videoControl_use'){
+          var time=new Date().getTime();
+          if(NooBox.temp.lastVideoControl+1*60*60*1000<time){
+            NooBox.temp.lastVideoControl=time;
+            analytics({category:'videoControl',action:'run',label:''});
+          }
         }
       }
     }

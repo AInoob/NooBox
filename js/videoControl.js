@@ -73,6 +73,10 @@ function init(){
   document.onkeydown = function(e){
     e=e||window.event;
     if(enabled&&vid){
+      var k=e.keyCode;
+      if(k=='38'||k=='40'||k=='37'||k=='39'||k=='36'||k=='35'){
+        chrome.runtime.sendMessage({job:'videoControl_use'});
+      }
       placeIndicator();
       if (e.keyCode == '38'){
         volumeUp(vid,volumeStep);
@@ -98,7 +102,11 @@ function init(){
     if(enabled&&vid){
       placeIndicator();
       e.preventDefault();
-      switch(String.fromCharCode(e.which)){
+      var k=String.fromCharCode(e.which);
+      if(k=='k'||k==' '||k=='j'||k=='l'||k==','||k=='.'||k=='<'||k=='>'||k=='r'||k=='m'||k=='f'||k=='d'||k=='b'){
+        chrome.runtime.sendMessage({job:'videoControl_use'});
+      }
+      switch(k){
         case 'k':
           detectConflictAndAct(playPause,vid,'playPause','kPlayPause',111);
           break;
