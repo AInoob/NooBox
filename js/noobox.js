@@ -27701,7 +27701,6 @@
 	  },
 	  render: function () {
 	    if (!this.state.enabled) {
-	      console.log(this.state.enabled);
 	      return null;
 	    }
 	    var symbol = '☁';
@@ -27986,7 +27985,7 @@
 	module.exports = React.createClass({
 	  displayName: 'About',
 	  render: function () {
-	    if (chrome.i18n.getUILanguage().indexOf('zh-CN') != -1) {
+	    if (isZh) {
 	      return React.createElement(
 	        'div',
 	        { id: 'about', className: 'container' },

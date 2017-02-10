@@ -2,11 +2,19 @@ var shared={};
 
 var timeagoInstance=null;
 
+var isZh=false;
+
+chrome.i18n.getAcceptLanguages(function(data){
+  if(data.indexOf('zh')!=-1){
+    isZh=true;
+  }
+})
+
 function initTimeago(){
-  if(chrome.i18n.getUILanguage()=='zh-CN'){
+  if(isZh){
     timeago.register('locale', function(number, index) {
       return [
-          ['刚刚', '片刻后'],
+      ['刚刚', '片刻后'],
       ['%s秒前', '%s秒后'],
       ['1分钟前', '1分钟后'],
       ['%s分钟前', '%s分钟后'],

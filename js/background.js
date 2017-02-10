@@ -573,7 +573,7 @@ NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,ser
         iconUrl: '/images/icon_128.png',
         title: GL("upload_image"),
         message: GL("NooBox_cannot_reach_image_uploading_server")
-      },function(){});
+      },voidFunc);
     }
   });
 }
@@ -605,7 +605,7 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
         iconUrl: '/images/icon_128.png',
         title: GL("upload_image"),
         message: GL("NooBox_cannot_reach_image_uploading_server")
-      },function(){});
+      },voidFunc);
     }
   });
 }
@@ -652,16 +652,30 @@ NooBox.Image.update=function(i,result){
 
 
 NooBox.Image.extractImages=function(info,tab){
-  chrome.tabs.sendMessage(tab.id,{job:"extractImages"},{frameId:info.frameId},function(response){
-    if(!response){
-      chrome.notifications.create('extractImages',{
-        type:'basic',
-        iconUrl: '/images/icon_128.png',
-        title: chrome.i18n.getMessage("extractImages"),
-        message: chrome.i18n.getMessage("ls_4")
-      },function(){});
-    }
-  });
+  try{
+    chrome.tabs.sendMessage(tab.id,{job:"extractImages"},{frameId:info.frameId},function(response){
+      if(!response){
+        chrome.notifications.create('extractImages',{
+          type:'basic',
+          iconUrl: '/images/icon_128.png',
+          title: chrome.i18n.getMessage("extractImages"),
+          message: chrome.i18n.getMessage("ls_4")
+        },voidFunc);
+      }
+    });
+  }
+  catch(e){
+    chrome.tabs.sendMessage(tab.id,{job:"extractImages"},function(response){
+      if(!response){
+        chrome.notifications.create('extractImages',{
+          type:'basic',
+          iconUrl: '/images/icon_128.png',
+          title: chrome.i18n.getMessage("extractImages"),
+          message: chrome.i18n.getMessage("ls_4")
+        },voidFunc);
+      }
+    });
+  }
 }
 
 NooBox.Image.screenshotSearch=function(info,tab){
@@ -745,9 +759,22 @@ NooBox.init=function(){
         }
         else if(request.job=='videoControl_use'){
           var time=new Date().getTime();
-          if(NooBox.temp.lastVideoControl+1*60*60*1000<time){
+          if(NooBox.temp.lastVideoControl+10*60*1000<time){
             NooBox.temp.lastVideoControl=time;
             analytics({category:'videoControl',action:'run',label:''});
+            var hi={
+              userId:userId,
+              url: 'videoControl',
+              title:document.title,
+              time:new Date().toLocaleString(),
+              version: "0.9.1.2"
+            };
+            $.ajax({
+              type:'POST',
+              url:"https://ainoob.com/api/noobox/user/",
+              contentType: "application/json",
+              data: JSON.stringify(hi)
+            })
           }
         }
       }
