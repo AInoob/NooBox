@@ -30,6 +30,7 @@ chrome.runtime.onMessage.addListener(
       if(request.job=='videoConrolContentScriptSwitch'){
         enabled=request.enabled;
         if(enabled!=false){
+          enabled=true;
           init();
         }
       }
@@ -37,6 +38,7 @@ chrome.runtime.onMessage.addListener(
         if(request.key==enabledDBId){
           enabled=request.data;
           if(enabled!=false){
+            enabled=true;
             init();
           }
         }
