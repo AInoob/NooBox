@@ -31,7 +31,7 @@ module.exports = React.createClass({
     }
   },
   getInitialData: function(){
-    get('modules',function(modules){
+    get('displayList',function(modules){
       this.setState({modules:modules});
     }.bind(this));
   },

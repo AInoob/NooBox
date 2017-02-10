@@ -1,13 +1,16 @@
 var vid=null;
 var timeStep=5;
 var volumeStep=0.05;
-var playbackRateStep=0.1;
+var playbackRateStep=0.05;
 var detectVideoHandle=null;
 var indicatorSize={width:100,height:100};
 var conflictCount=[];
 var canvas;
 var ctx;
 var beyondId=-1;
+var enabled=false;
+var enabledDBId='';
+var inited=false;
 
 function handleVisibilityChange() {
   if (document[hidden]) {
@@ -17,28 +20,58 @@ function handleVisibilityChange() {
   }
 }
 
+function getDB(key){
+  chrome.runtime.sendMessage({job:'getDB',key:key,function(data){
+  }});
+}
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if('job' in request){
+      if(request.job=='videoConrolContentScriptSwitch'){
+        enabled=request.enabled;
+        if(enabled!=false){
+          init();
+        }
+      }
+      else if(request.job=='returnDB'){
+        if(request.key==enabledDBId){
+          enabled=request.data;
+          if(enabled!=false){
+            init();
+          }
+        }
+      }
+    }
+  });
 function init(){
+  if(inited){
+    return;
+  }
+  inited=true;
   $('body').append('<canvas id="NooBox-VideoBeyond-preCanvas" style="display: none"></canvas>');
   canvas=$('#NooBox-VideoBeyond-preCanvas')[0];
   ctx=canvas.getContext('2d');
   buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'}]);
-  $(document.head).append('<style>@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.hide{animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
+  $(document.head).append('<style>@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
   $('body').append('<div id="NooBox-Video-Indicator"></div>');
   detectVideoHandle=setInterval(detectVideo,111);
   $('body').on('click',function(e){
     vid=getVideo(e);
-    if(vid){
+    if(enabled&&vid){
+      placeIndicator();
       detectConflictAndAct(playPause,vid,'playPause','clickPlayPause',111);
     }
   });
   $('body').on('dblclick',function(e){
+    placeIndicator();
     vid=getVideo(e);
-    if(vid){
+    if(enabled&&vid){
     }
   });
   document.onkeydown = function(e){
     e=e||window.event;
-    if(vid){
+    if(enabled&&vid){
+      placeIndicator();
       if (e.keyCode == '38'){
         volumeUp(vid,volumeStep);
       }
@@ -59,19 +92,15 @@ function init(){
       }
     }
   };
-  console.log('oh');
   $(document).on('keypress',function(e) {
-    console.log(vid);
-    if(vid){
+    if(enabled&&vid){
       placeIndicator();
       e.preventDefault();
       switch(String.fromCharCode(e.which)){
         case 'k':
-          console.log('k');
           detectConflictAndAct(playPause,vid,'playPause','kPlayPause',111);
           break;
         case ' ':
-          console.log('space');
           detectConflictAndAct(playPause,vid,'playPause','spacePlayPause',111);
           break;
         case 'j':
@@ -79,6 +108,12 @@ function init(){
           break;
         case 'l':
           forward(vid,timeStep*2);
+          break;
+        case ',':
+          rewind(vid,1/30);
+          break;
+        case '.':
+          forward(vid,1/30);
           break;
         case '<':
           slowDown(vid,playbackRateStep);
@@ -114,9 +149,9 @@ function displayIndicator(text,icon){
   if(!icon){
     icon='';
   }
-  $('#NooBox-Video-Indicator').removeClass('hide');
+  $('#NooBox-Video-Indicator').removeClass('noobox-hide');
   setTimeout(function(){
-    $('#NooBox-Video-Indicator').addClass('hide');
+    $('#NooBox-Video-Indicator').addClass('noobox-hide');
   },100);
   $('#NooBox-Video-Indicator').html('<div id="NooBox-Video-Indicator-Icon">'+icon+'</div>'+text);
 }
@@ -125,6 +160,8 @@ function detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout){
   placeIndicator();
   var index=getIndex(vid);
   if(!index){
+    buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'}]);
+    detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout);
     return;
   }
   var conflictClass='NooBox-Video-Conflict-'+conflictId;
@@ -135,7 +172,6 @@ function detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout){
       if(conflictCount[index][actionId]>0){
         $(vid).addClass(conflictClass);
         actFunction(v);
-        console.log(conflictCount[index]);
         setTimeout(function(){
           conflictCount[index][actionId]=0;
         },50);
@@ -169,16 +205,12 @@ function beyond(v){
     beyondId=setInterval(function(){
       var prev=new Date().getTime();
       var temp=new Date().getTime();
-      console.log('0 start: '+(temp-prev));
       ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
       temp=new Date().getTime();
-      console.log('1 canvas: '+(temp-prev));
       var dataURI=canvas.toDataURL("image/png");
       temp=new Date().getTime();
-      console.log('2 dataURI: '+(temp-prev));
       chrome.runtime.sendMessage({job:'passToFront',message:{job:'videoBeyond',dataURI:dataURI,prev:prev}});
       temp=new Date().getTime();
-      console.log('3 sendMessage: '+(temp-prev));
     },200);
   }
   else{
@@ -324,7 +356,6 @@ function buildVideoStates(listenerList){
       $(v).addClass('NooBox-Video-'+(newIndex));
       for(var j=0;j<listenerList.length;j++){
         var listener=listenerList[j];
-        console.log(listener);
         $(v).on(listener.event,incCounter.bind(null,newIndex,listener.target));
       }
     }
@@ -333,7 +364,6 @@ function buildVideoStates(listenerList){
 
 function incCounter(index,target){
   conflictCount[index][target]++;
-  console.log(conflictCount);
 }
 
 function placeIndicator(){
@@ -343,13 +373,15 @@ function placeIndicator(){
     newPos.top+=($(vid).height()-indicatorSize.height)/2;
     $('#NooBox-Video-Indicator').offset(newPos);
     $('#NooBox-Video-Indicator').show();
-    $('#NooBox-Video-Indicator').addClass('hide');
+    $('#NooBox-Video-Indicator').addClass('noobox-hide');
   }
 }
 
 document.addEventListener("DOMContentLoaded", function(){
   isOn('videoControl',function(){
-    init();
+    var host=window.location.hostname;
+    enabledDBId='videoControl_website_'+host;
+    getDB(enabledDBId);
   });
 });
 

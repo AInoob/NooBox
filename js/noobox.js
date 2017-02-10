@@ -66,9 +66,9 @@
 	    { component: __webpack_require__(244) },
 	    React.createElement(Route, { path: 'popup.html', component: __webpack_require__(245) }),
 	    React.createElement(Route, { path: 'overview', component: __webpack_require__(245) }),
-	    React.createElement(Route, { path: 'options', component: __webpack_require__(250) }),
-	    React.createElement(Route, { path: 'history', component: __webpack_require__(251) }),
-	    React.createElement(Route, { path: 'about', component: __webpack_require__(252) })
+	    React.createElement(Route, { path: 'options', component: __webpack_require__(251) }),
+	    React.createElement(Route, { path: 'history', component: __webpack_require__(252) }),
+	    React.createElement(Route, { path: 'about', component: __webpack_require__(253) })
 	  )
 	), document.getElementById('noobox'));
 
@@ -27517,7 +27517,7 @@
 	    }
 	  },
 	  getInitialData: function () {
-	    get('modules', function (modules) {
+	    get('displayList', function (modules) {
 	      this.setState({ modules: modules });
 	    }.bind(this));
 	  },
@@ -27539,8 +27539,9 @@
 
 	var React = __webpack_require__(1);
 	var ImageSearch = __webpack_require__(247);
-	var Reader = __webpack_require__(248);
-	var Notifier = __webpack_require__(249);
+	var VideoControl = __webpack_require__(248);
+	var Reader = __webpack_require__(249);
+	var Notifier = __webpack_require__(250);
 	module.exports = React.createClass({
 	  displayName: 'Module',
 	  render: function () {
@@ -27548,6 +27549,9 @@
 	    switch (this.props.name) {
 	      case 'imageSearch':
 	        core = React.createElement(ImageSearch, null);
+	        break;
+	      case 'videoControl':
+	        core = React.createElement(VideoControl, null);
 	        break;
 	      case 'notifier':
 	        core = React.createElement(Notifier, null);
@@ -27573,20 +27577,23 @@
 	  displayName: 'ImageSearch',
 	  reader: new window.FileReader(),
 	  getInitialState: function () {
-	    return {};
+	    return { enabled: false };
 	  },
 	  componentDidMount: function () {
-	    this.reader.onloadend = function () {
-	      base64data = this.reader.result;
-	      chrome.extension.sendMessage({ job: 'analytics', category: 'uploadSearch', action: 'run' }, function (response) {});
-	      chrome.extension.sendMessage({ job: 'imageSearch_upload', data: base64data });
-	    }.bind(this);
-	    get('totalImageSearch', function (count) {
-	      count = count || 0;
-	      this.setState({ totalImageSearch: count });
-	    }.bind(this));
-	    getImageSearchEngines(["google", "baidu", "tineye", "bing", "yandex", "saucenao", "iqdb"], function (engines) {
-	      this.setState({ engines: engines });
+	    isOn('imageSearch', function () {
+	      this.setState({ enabled: true });
+	      this.reader.onloadend = function () {
+	        base64data = this.reader.result;
+	        chrome.extension.sendMessage({ job: 'analytics', category: 'uploadSearch', action: 'run' }, function (response) {});
+	        chrome.extension.sendMessage({ job: 'imageSearch_upload', data: base64data });
+	      }.bind(this);
+	      get('totalImageSearch', function (count) {
+	        count = count || 0;
+	        this.setState({ totalImageSearch: count });
+	      }.bind(this));
+	      getImageSearchEngines(["google", "baidu", "tineye", "bing", "yandex", "saucenao", "iqdb"], function (engines) {
+	        this.setState({ engines: engines });
+	      }.bind(this));
 	    }.bind(this));
 	  },
 	  onDragOver: function (e) {
@@ -27618,6 +27625,9 @@
 	    });
 	  },
 	  render: function () {
+	    if (!this.state.enabled) {
+	      return null;
+	    }
 	    var icons = (this.state.engines || []).map(function (elem, index) {
 	      return React.createElement('img', { key: index, src: '/thirdParty/' + elem + '.png' });
 	    });
@@ -27660,6 +27670,77 @@
 
 	var React = __webpack_require__(1);
 	module.exports = React.createClass({
+	  displayName: 'VideoControl',
+	  getInitialState: function () {
+	    return { enabled: false, websiteEnabled: true };
+	  },
+	  componentDidMount: function () {
+	    isOn('videoControl', function () {
+	      this.setState({ enabled: true });
+	      chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function (tabs) {
+	        var url = "";
+	        if (tabs[0]) url = tabs[0].url;
+	        var a = document.createElement('a');
+	        a.href = url;
+	        var host = a.hostname;
+	        this.setState({ host: host });
+	        getDB('videoControl_website_' + host, function (enabled) {
+	          if (enabled == false) {
+	            this.setState({ websiteEnabled: false });
+	          }
+	        }.bind(this));
+	      }.bind(this));
+	    }.bind(this));
+	  },
+	  toggle: function () {
+	    var websiteEnabled = !this.state.websiteEnabled;
+	    setDB('videoControl_website_' + this.state.host, websiteEnabled, function () {
+	      this.setState({ websiteEnabled: websiteEnabled });
+	      chrome.runtime.sendMessage({ job: 'videoControl_website_switch', host: this.state.host, enabled: websiteEnabled });
+	    }.bind(this));
+	  },
+	  render: function () {
+	    if (!this.state.enabled) {
+	      console.log(this.state.enabled);
+	      return null;
+	    }
+	    var symbol = '☁';
+	    if (this.state.websiteEnabled) {
+	      symbol = '☀';
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'container', id: 'videoControl' },
+	      React.createElement(
+	        'h5',
+	        { className: 'header' },
+	        GL('videoControl')
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'info', className: 'container' },
+	        React.createElement(
+	          'p',
+	          { className: 'important line' },
+	          this.state.host
+	        ),
+	        React.createElement('input', { type: 'checkbox', id: 'enabled', readOnly: true, checked: this.state.websiteEnabled }),
+	        React.createElement(
+	          'span',
+	          { onClick: this.toggle },
+	          symbol
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	module.exports = React.createClass({
 	  displayName: 'Reader',
 	  render: function () {
 	    return React.createElement(
@@ -27671,7 +27752,7 @@
 	});
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27687,7 +27768,7 @@
 	});
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27791,7 +27872,7 @@
 	});
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27896,7 +27977,7 @@
 	});
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);

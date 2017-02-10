@@ -85,12 +85,20 @@ NooBox.Options.defaultValues=[
   ['imageSearchUrl_iqdb',true],
   ['extractImages',true],
   ['screenshotSearch',true],
-  ['modules',['imageSearch']],
   ['videoControl',false],
-  ['phDebut',true]
+  ['phDebut',true],
+  ['displayOrder',[]]
+];
+
+NooBox.Options.constantValues=[
+  ['displayList',['imageSearch','videoControl']]
 ];
 
 NooBox.Options.init=function(i){
+  var constantValues=NooBox.Options.constantValues;
+  if(i<constantValues.length){
+    set(constantValues[i][0],constantValues[i][1]);
+  }
   var defaultValues=NooBox.Options.defaultValues;
   if(i<defaultValues.length){
     setIfNull(defaultValues[i][0],defaultValues[i][1],NooBox.Options.init.bind(null,i+1));
@@ -439,7 +447,6 @@ NooBox.Image.fetchFunctions.yandex=function(cursor,result,data){
 NooBox.Image.fetchFunctions.saucenao=function(cursor,result,data){
   try{
     data=data.replace(/ src=/g," nb-src=");
-    console.log($(data));
     var page=$(data);
     var websites=[];
     var relatedWebsites=[];
@@ -548,7 +555,6 @@ NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,ser
     processData: false,
     data: formData
   }).done(function(data){
-    console.log(data);
     data=data.replace(/ src=/g," nb-src=");
     var url=$(data).find('input').attr("value");
     result.uploadedURL=url||"";
@@ -659,7 +665,6 @@ NooBox.Image.extractImages=function(info,tab){
 
 NooBox.Image.screenshotSearch=function(info,tab){
   chrome.tabs.sendMessage(tab.id,'loaded',function(response){
-    console.log(response);
     if(response=='yes'){
       chrome.tabs.captureVisibleTab(tab.windowId,function(dataURL){
         chrome.tabs.sendMessage(tab.id,{job:"screenshotSearch",data:dataURL});
@@ -716,12 +721,25 @@ NooBox.init=function(){
           NooBox.Image.updateContextMenu();
         }
         else if(request.job=='analytics'){
-          console.log(request);
           analytics(request);
         }
         else if(request.job=='passToFront'){
           chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-            chrome.tabs.sendMessage(tabs[0].id, request.message, function(response) {});  
+            chrome.tabs.sendMessage(tabs[0].id, request.message, function(){});  
+          });
+        }
+        else if(request.job=='getDB'){
+          getDB(request.key,function(data){
+            chrome.tabs.sendMessage(sender.tab.id, {job:'returnDB',key:request.key,data:data});
+          });
+        }
+        else if(request.job=='videoControl_website_switch'){
+          chrome.tabs.query({},function(tabs){
+            for(var i=0;i<tabs.length;i++){
+              if(tabs[i].url.indexOf(request.host)){
+                chrome.tabs.sendMessage(tabs[i].id,{job:'videoConrolContentScriptSwitch',enabled:request.enabled},function(){});
+              }
+            }
           });
         }
       }

@@ -6,6 +6,7 @@
 @nb-color-wtf: #3a56ff;
 @nb-color-soso: #56109d;
 @nb-color-bad: #1d0336;
+@nb-color-on: #26a69a;
 
 .header{
   color: @nb-color-1;
@@ -83,6 +84,23 @@ h4{
 }
 
 #overview{
+  #videoControl{
+    #info{
+      font-size: 100px;
+      color: grey;
+      span{
+        line-height: 70px;
+        height: 80px;
+        float: left;
+        display: block;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+    #enabled:checked + span{
+      color: @nb-color-on;
+    }
+  }
   #icons{
     img{
       width: 40px;
