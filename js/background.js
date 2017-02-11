@@ -87,7 +87,6 @@ NooBox.Options.defaultValues=[
   ['extractImages',true],
   ['screenshotSearch',true],
   ['videoControl',false],
-  ['phDebut',true],
   ['displayOrder',[]],
   ['checkUpdate',true],
   ['lastUpdateCheck',0],
@@ -96,7 +95,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.1.3']
+  ['version','0.9.1.4']
 ];
 
 NooBox.Options.init=function(i){
