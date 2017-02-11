@@ -61,11 +61,6 @@ h4 {
 #overview .module {
   clear: both;
 }
-#overview #checkUpdate .listItem {
-  display: list-item;
-  list-style-type: square;
-  margin-left: 50px;
-}
 #overview #videoControl #info {
   font-size: 100px;
   color: grey;
@@ -89,8 +84,13 @@ h4 {
 #overview #uploadedImage {
   display: none;
 }
+#overview #info .btn {
+  padding: 0px;
+}
 #overview #info #imageUploadLabel {
   color: white;
+  height: 26px;
+  width: 120px;
   display: block;
 }
 #options p {

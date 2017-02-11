@@ -140,6 +140,12 @@
   "videoControl":{
     "message":"HTML5视频控制（不稳定，慎用）"
   },
+  "checkUpdate":{
+	"message":"检查更新"
+  },
+  "experience":{
+    "message":"体验"
+  },
   "j":{
     "message":"j"
   },
@@ -163,5 +169,11 @@
   },
   "ls_6":{
     "message":"给二箱在Product Hunt上投票吧！"
+  },
+  "ls_7":{
+	"message":"二箱已是最新版本"
+  },
+  "ls_8":{
+	"message":"二箱有了新的版本： "
   }
 }

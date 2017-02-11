@@ -1,6 +1,6 @@
 {
   "appName":{
-    "message":"NooBox - Reverse Image Search + HTML5 Video Control"
+    "message":"NooBox"
   },
   "appDesc":{
     "message":"A useful Toolbox! Multi-engines Reverse Image Search + Extract images + Screenshot & Search + HTML5 Video Control"
@@ -140,6 +140,12 @@
   "videoControl":{
     "message":"HTML5 Video Control (Alpha)"
   },
+  "checkUpdate":{
+	"message":"Check Update"
+  },
+  "experience":{
+    "message":"Experience"
+  },
   "j":{
     "message":"j"
   },
@@ -163,5 +169,11 @@
   },
   "ls_6":{
     "message":"Vote for NooBox on Product Hunt!"
+  },
+  "ls_7":{
+	"message":"NooBox is updated!"
+  },
+  "ls_8":{
+	"message":"NooBox has a new version: "
   }
 }

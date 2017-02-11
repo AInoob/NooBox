@@ -88,11 +88,15 @@ NooBox.Options.defaultValues=[
   ['screenshotSearch',true],
   ['videoControl',false],
   ['phDebut',true],
-  ['displayOrder',[]]
+  ['displayOrder',[]],
+  ['checkUpdate',true],
+  ['lastUpdateCheck',0],
+  ['updateHistory',[]]
 ];
 
 NooBox.Options.constantValues=[
-  ['displayList',['imageSearch','videoControl']]
+  ['displayList',['imageSearch','videoControl','checkUpdate']],
+  ['version','0.9.1.3']
 ];
 
 NooBox.Options.init=function(i){
@@ -762,19 +766,21 @@ NooBox.init=function(){
           if(NooBox.temp.lastVideoControl+10*60*1000<time){
             NooBox.temp.lastVideoControl=time;
             analytics({category:'videoControl',action:'run',label:''});
-            var hi={
-              userId:userId,
-              url: 'videoControl',
-              title:document.title,
-              time:new Date().toLocaleString(),
-              version: "0.9.1.2"
-            };
-            $.ajax({
-              type:'POST',
-              url:"https://ainoob.com/api/noobox/user/",
-              contentType: "application/json",
-              data: JSON.stringify(hi)
-            })
+            get('version',function(version){
+              var hi={
+                userId:userId,
+                url: 'videoControl',
+                title:document.title,
+                time:new Date().toLocaleString(),
+                version: version
+              };
+              $.ajax({
+                type:'POST',
+                url:"https://ainoob.com/api/noobox/user/",
+                contentType: "application/json",
+                data: JSON.stringify(hi)
+              })
+            });
           }
         }
       }
