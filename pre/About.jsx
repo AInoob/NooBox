@@ -32,6 +32,8 @@ module.exports = React.createClass({
             <li>二箱使用了Facebook的<a href="https://github.com/facebook/react" target="_blank">React(BSD协议)</a>作为底层建筑</li>
 			<li>二箱使用了JS Foundation的<a href="https://jquery.com/" target="_blank">jQuery(MIT协议)</a>来处理一些DOM和Ajax请求</li>
 			<li>二箱使用了Hust.cc的<a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT协议)</a>来显示时间</li>
+			<li>二箱使用了chuantu.biz的<a href="http://chuantu.biz/" target="_blank">图床服务</a>来存储图片</li>
+			<li>二箱使用了postimage的<a href="http://old.postimage.org/" target="_blank">图床服务</a>来存储图片</li>
           </div>
         </div>);
     }
@@ -63,7 +65,9 @@ module.exports = React.createClass({
             <li>NooBox uses <a href="https://github.com/facebook/react" target="_blank">React(BSD Liscense)</a> from Facebook to build the bases</li>
             <li>NooBox uses <a href="https://jquery.com/" target="_blank">jQuery(MIT Liscense)</a> from JS Foundation to handle DOM and Ajax requests</li>
             <li>NooBox uses <a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT Liscense)</a> from Hust.cc to display timeago</li>
-          </div>
+            <li>NooBox uses <a href="http://old.postimage.org/" target="_blank">Image Hosting</a> from postimage to store images</li>
+            <li>NooBox uses <a href="http://chuantu.biz/" target="_blank">Image Hosting</a> from chuantu.biz to store images</li>
+		  </div>
         </div>);
     }
   }

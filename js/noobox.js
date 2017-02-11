@@ -28262,6 +28262,28 @@
 	              'Timeago(MIT\u534F\u8BAE)'
 	            ),
 	            '\u6765\u663E\u793A\u65F6\u95F4'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86chuantu.biz\u7684',
+	            React.createElement(
+	              'a',
+	              { href: 'http://chuantu.biz/', target: '_blank' },
+	              '\u56FE\u5E8A\u670D\u52A1'
+	            ),
+	            '\u6765\u5B58\u50A8\u56FE\u7247'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86postimage\u7684',
+	            React.createElement(
+	              'a',
+	              { href: 'http://old.postimage.org/', target: '_blank' },
+	              '\u56FE\u5E8A\u670D\u52A1'
+	            ),
+	            '\u6765\u5B58\u50A8\u56FE\u7247'
 	          )
 	        )
 	      );
@@ -28397,6 +28419,28 @@
 	              'Timeago(MIT Liscense)'
 	            ),
 	            ' from Hust.cc to display timeago'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            'NooBox uses ',
+	            React.createElement(
+	              'a',
+	              { href: 'http://old.postimage.org/', target: '_blank' },
+	              'Image Hosting'
+	            ),
+	            ' from postimage to store images'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            'NooBox uses ',
+	            React.createElement(
+	              'a',
+	              { href: 'http://chuantu.biz/', target: '_blank' },
+	              'Image Hosting'
+	            ),
+	            ' from chuantu.biz to store images'
 	          )
 	        )
 	      );
