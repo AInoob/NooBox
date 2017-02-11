@@ -21479,7 +21479,7 @@
 	module.exports = React.createClass({
 	  displayName: 'Result',
 	  getInitialState: function () {
-	    return { order: 'relevance', imageSizes: {}, loadBaidu: false, phDebut: false };
+	    return { order: 'relevance', imageSizes: {}, loadBaidu: false };
 	  },
 	  componentDidMount: function () {
 	    shared.updateOrder = this.updateOrder;
@@ -21489,11 +21489,8 @@
 	        this.getInitialData();
 	      }
 	    }.bind(this));
-	    get('phDebut', function (phDebut) {
-	      this.setState({ phDebut: phDebut });
-	    }.bind(this));
 	    get('userId', function (userId) {
-	      get('version', function () {
+	      get('version', function (version) {
 	        var hi = {
 	          userId: userId,
 	          url: window.location.pathname + window.location.search,
@@ -21694,11 +21691,6 @@
 	    }
 	    this.setState({ order: order.toLowerCase() });
 	  },
-	  removeNews: function () {
-	    set('phDebut', false, function () {
-	      location.reload();
-	    });
-	  },
 	  render: function () {
 	    var result = this.state.result || {};
 	    var uploadReSearch = null;
@@ -21787,36 +21779,13 @@
 	      { className: 'websites' },
 	      this.getWebsite()
 	    );
-	    var news = null;
-	    if (this.state.phDebut) {
-	      news = React.createElement(
-	        'div',
-	        { id: 'newsList' },
-	        React.createElement(
-	          'div',
-	          { className: 'news' },
-	          React.createElement(
-	            'div',
-	            { className: 'close', onClick: this.removeNews },
-	            'x'
-	          ),
-	          React.createElement(
-	            'a',
-	            { href: 'https://www.producthunt.com/posts/noobox', target: '_blank' },
-	            GL('ls_6'),
-	            React.createElement('img', { src: '/thirdParty/ph.png' })
-	          )
-	        )
-	      );
-	    }
 	    return React.createElement(
 	      'div',
 	      { id: 'imageSearchResult', className: 'container' },
 	      brief,
 	      filter,
 	      websites,
-	      uploadReSearch,
-	      news
+	      uploadReSearch
 	    );
 	  }
 	});

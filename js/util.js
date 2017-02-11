@@ -7,6 +7,12 @@ var isZh=false;
 chrome.i18n.getAcceptLanguages(function(data){
   if(data.indexOf('zh')!=-1){
     isZh=true;
+    try{
+      if(chrome.i18n.getUILanguage().indexOf('zh')==-1){
+        isZh=false;
+      }
+    }catch(e){
+    }
   }
 })
 
