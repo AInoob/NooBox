@@ -27824,7 +27824,7 @@
 	        null,
 	        React.createElement(
 	          'a',
-	          { href: 'https://ainoob.com/project/noobox' },
+	          { target: '_blank', href: 'https://ainoob.com/project/noobox' },
 	          GL('ls_8') + this.state.newVersion
 	        )
 	      );
