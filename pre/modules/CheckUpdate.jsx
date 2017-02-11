@@ -73,7 +73,7 @@ module.exports = React.createClass({
     var newChanges=null;
     var header=<p>{GL('ls_7')}</p>
     if(this.state.updateAvailable){
-      header=<p><a href="https://ainoob.com/project/noobox">{GL('ls_8')+this.state.newVersion}</a></p>;
+      header=<p><a target="_blank" href="https://ainoob.com/project/noobox">{GL('ls_8')+this.state.newVersion}</a></p>;
       newChanges=this.state.newChanges.map(function(elem,index){
         return <div className="listItem" key={index}>{elem}</div>;
       });
