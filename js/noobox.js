@@ -66,9 +66,9 @@
 	    { component: __webpack_require__(244) },
 	    React.createElement(Route, { path: 'popup.html', component: __webpack_require__(245) }),
 	    React.createElement(Route, { path: 'overview', component: __webpack_require__(245) }),
-	    React.createElement(Route, { path: 'options', component: __webpack_require__(251) }),
-	    React.createElement(Route, { path: 'history', component: __webpack_require__(252) }),
-	    React.createElement(Route, { path: 'about', component: __webpack_require__(253) })
+	    React.createElement(Route, { path: 'options', component: __webpack_require__(252) }),
+	    React.createElement(Route, { path: 'history', component: __webpack_require__(253) }),
+	    React.createElement(Route, { path: 'about', component: __webpack_require__(254) })
 	  )
 	), document.getElementById('noobox'));
 
@@ -27540,8 +27540,9 @@
 	var React = __webpack_require__(1);
 	var ImageSearch = __webpack_require__(247);
 	var VideoControl = __webpack_require__(248);
-	var Reader = __webpack_require__(249);
-	var Notifier = __webpack_require__(250);
+	var CheckUpdate = __webpack_require__(249);
+	var Reader = __webpack_require__(250);
+	var Notifier = __webpack_require__(251);
 	module.exports = React.createClass({
 	  displayName: 'Module',
 	  render: function () {
@@ -27552,6 +27553,9 @@
 	        break;
 	      case 'videoControl':
 	        core = React.createElement(VideoControl, null);
+	        break;
+	      case 'checkUpdate':
+	        core = React.createElement(CheckUpdate, null);
 	        break;
 	      case 'notifier':
 	        core = React.createElement(Notifier, null);
@@ -27740,6 +27744,127 @@
 
 	var React = __webpack_require__(1);
 	module.exports = React.createClass({
+	  displayName: 'CheckUpdate',
+	  getInitialState: function () {
+	    return { enabled: false, newChanges: [], updateAvailable: false, newVersion: '0', version: '0', updateHistory: [] };
+	  },
+	  componentDidMount: function () {
+	    get('version', function (version) {
+	      this.setState({ version: version }, function () {
+	        get('updateHistory', function (data) {
+	          this.setState({ updateHistory: data }, this.generateReport);
+	        }.bind(this));
+	      });
+	    }.bind(this));
+	    isOn('checkUpdate', function () {
+	      this.setState({ enabled: true });
+	      get('lastUpdateCheck', function (lastCheck) {
+	        var time = new Date().getTime();
+	        if (time > lastCheck + 1000 * 60 * 60) {
+	          this.checkUpdate();
+	        }
+	      }.bind(this));
+	    }.bind(this));
+	  },
+	  generateReport: function () {
+	    console.log('generateReport');
+	    console.log(this.state.updateHistory);
+	    var data = this.state.updateHistory;
+	    if (data.length == 0) {
+	      return;
+	    }
+	    var last = data.length - 1;
+	    newVersion = data[last].version;
+	    if (this.state.version != newVersion) {
+	      var changes = [];
+	      var reachCurrent = false;
+	      for (var i = 0; i < data.length; i++) {
+	        if (reachCurrent == false) {
+	          if (data[i].version == this.state.version) {
+	            reachCurrent = true;
+	          }
+	        } else {
+	          var newChanges = data[i].changes;
+	          for (var j = 0; j < newChanges.length; j++) {
+	            changes.push(newChanges[j]);
+	          }
+	        }
+	      }
+	      this.setState({ updateAvailable: true, newVersion: newVersion, newChanges: changes });
+	    } else {
+	      this.setState({ updateAvailable: false });
+	    }
+	  },
+	  checkUpdate: function () {
+	    set('lastUpdateCheck', new Date().getTime());
+	    $.ajax({
+	      type: 'GET',
+	      url: 'https://ainoob.com/api/noobox/updateList'
+	    }).done(function (data) {
+	      this.setState({ 'updateHistory': data }, function () {
+	        set('updateHistory', data, function () {
+	          this.generateReport();
+	        }.bind(this));
+	      }.bind(this));
+	    }.bind(this));
+	  },
+	  render: function () {
+	    if (!this.state.enabled) {
+	      return null;
+	    }
+	    var newChanges = null;
+	    var header = React.createElement(
+	      'p',
+	      null,
+	      GL('ls_7')
+	    );
+	    if (this.state.updateAvailable) {
+	      header = React.createElement(
+	        'p',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: 'https://ainoob.com/project/noobox' },
+	          GL('ls_8') + this.state.newVersion
+	        )
+	      );
+	      newChanges = this.state.newChanges.map(function (elem, index) {
+	        return React.createElement(
+	          'div',
+	          { className: 'listItem', key: index },
+	          elem
+	        );
+	      });
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'container', id: 'checkUpdate' },
+	      React.createElement(
+	        'h5',
+	        { className: 'header' },
+	        GL('checkUpdate')
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'info', className: 'container important' },
+	        header,
+	        newChanges,
+	        React.createElement(
+	          'div',
+	          { className: 'btn', onClick: this.checkUpdate },
+	          GL('checkUpdate')
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	module.exports = React.createClass({
 	  displayName: 'Reader',
 	  render: function () {
 	    return React.createElement(
@@ -27751,7 +27876,7 @@
 	});
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27767,7 +27892,7 @@
 	});
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27776,10 +27901,10 @@
 	module.exports = React.createClass({
 	  displayName: 'Options',
 	  getInitialState: function () {
-	    return { settings: { videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
+	    return { settings: { checkUpdate: false, videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
 	  },
 	  componentDidMount: function () {
-	    var switchList = ['videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
+	    var switchList = ['checkUpdate', 'videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
 	    for (var i = 0; i < switchList.length; i++) {
 	      isOn(switchList[i], function (ii) {
 	        this.setState(function (prevState) {
@@ -27861,8 +27986,28 @@
 	          this.getCheckbox('extractImages'),
 	          React.createElement('p', null),
 	          this.getCheckbox('screenshotSearch'),
-	          React.createElement('p', null),
+	          React.createElement('p', null)
+	        ),
+	        React.createElement(
+	          'h5',
+	          { className: 'header' },
+	          GL('videoControl')
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tab-1' },
 	          this.getCheckbox('videoControl'),
+	          React.createElement('p', null)
+	        ),
+	        React.createElement(
+	          'h5',
+	          { className: 'header' },
+	          GL('Experience')
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tab-1' },
+	          this.getCheckbox('checkUpdate'),
 	          React.createElement('p', null)
 	        )
 	      )
@@ -27871,7 +28016,7 @@
 	});
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27976,7 +28121,7 @@
 	});
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);

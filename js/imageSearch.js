@@ -21493,20 +21493,22 @@
 	      this.setState({ phDebut: phDebut });
 	    }.bind(this));
 	    get('userId', function (userId) {
-	      var hi = {
-	        userId: userId,
-	        url: window.location.pathname + window.location.search,
-	        title: document.title,
-	        time: new Date().toLocaleString(),
-	        version: "0.9.1.2"
-	      };
-	      $.ajax({
-	        type: 'POST',
-	        url: "https://ainoob.com/api/noobox/user/",
-	        contentType: "application/json",
-	        data: JSON.stringify(hi)
-	      }).done(function (data) {
-	        console.log(data);
+	      get('version', function () {
+	        var hi = {
+	          userId: userId,
+	          url: window.location.pathname + window.location.search,
+	          title: document.title,
+	          time: new Date().toLocaleString(),
+	          version: version
+	        };
+	        $.ajax({
+	          type: 'POST',
+	          url: "https://ainoob.com/api/noobox/user/",
+	          contentType: "application/json",
+	          data: JSON.stringify(hi)
+	        }).done(function (data) {
+	          console.log(data);
+	        });
 	      });
 	    });
 	    $(document).ready(function () {

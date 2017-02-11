@@ -1,6 +1,7 @@
 var React = require('react');
 var ImageSearch = require('./modules/ImageSearch.jsx');
 var VideoControl = require('./modules/VideoControl.jsx');
+var CheckUpdate = require('./modules/CheckUpdate.jsx');
 var Reader = require('./modules/Reader.jsx');
 var Notifier = require('./modules/Notifier.jsx');
 module.exports = React.createClass({
@@ -13,6 +14,9 @@ module.exports = React.createClass({
         break;
       case 'videoControl':
         core=<VideoControl />;
+        break;
+      case 'checkUpdate':
+        core=<CheckUpdate />;
         break;
       case 'notifier':
         core=<Notifier />;
