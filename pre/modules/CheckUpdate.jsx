@@ -42,6 +42,9 @@ module.exports = React.createClass({
         }
         else{
           var newChanges=data[i].changes;
+          if(isZh){
+            newChanges=data[i].zhChanges;
+          }
           for(var j=0;j<newChanges.length;j++){
             changes.push(newChanges[j]);
           }
