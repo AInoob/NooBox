@@ -27826,7 +27826,11 @@
 	          'a',
 	          { target: '_blank', href: 'https://ainoob.com/project/noobox' },
 	          GL('ls_8') + this.state.newVersion
-	        )
+	        ),
+	        React.createElement('br', null),
+	        GL('ls_9'),
+	        React.createElement('br', null),
+	        GL('ls_10')
 	      );
 	      newChanges = this.state.newChanges.map(function (elem, index) {
 	        return React.createElement(
