@@ -175,5 +175,11 @@
   },
   "ls_8":{
 	"message":"NooBox has a new version: "
+  },
+  "ls_9":{
+	"message":"If you installed NooBox from Chrome Web Store, Chrome will automatically update NooBox, so just wait for a bit~"
+  },
+  "ls_10":{
+	"message":"If you install NooBox through CRX file, click the link above and download the newest version"
   }
 }
