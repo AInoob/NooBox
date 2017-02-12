@@ -95,7 +95,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.1.4']
+  ['version','0.9.1.5']
 ];
 
 NooBox.Options.init=function(i){
@@ -765,20 +765,22 @@ NooBox.init=function(){
           if(NooBox.temp.lastVideoControl+10*60*1000<time){
             NooBox.temp.lastVideoControl=time;
             analytics({category:'videoControl',action:'run',label:''});
-            get('version',function(version){
-              var hi={
-                userId:userId,
+            get('userId',function(userId){
+              get('version',function(version){
+                var hi={
+                  userId:userId,
                 url: 'videoControl',
                 title:document.title,
                 time:new Date().toLocaleString(),
                 version: version
-              };
-              $.ajax({
-                type:'POST',
-                url:"https://ainoob.com/api/noobox/user/",
-                contentType: "application/json",
-                data: JSON.stringify(hi)
-              })
+                };
+                $.ajax({
+                  type:'POST',
+                  url:"https://ainoob.com/api/noobox/user/",
+                  contentType: "application/json",
+                  data: JSON.stringify(hi)
+                })
+              });
             });
           }
         }
