@@ -271,16 +271,36 @@ function loadIframe(url,callback){
 var BASE64_MARKER = ';base64,';
 
 function convertDataURIToBinary(dataURI) {
-  var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-  var base64 = dataURI.substring(base64Index);
-  var raw = window.atob(base64);
-  var rawLength = raw.length;
-  var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-  for(i = 0; i < rawLength; i++) {
-    array[i] = raw.charCodeAt(i);
+  try{
+    var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+    var base64 = dataURI.substring(base64Index);
+    var raw = window.atob(base64);
+    var rawLength = raw.length;
+    var array = new Uint8Array(new ArrayBuffer(rawLength));
+    for(i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
+    }
+    return array;
   }
-  return array;
+  catch(e){
+    try{
+      dataURI=dataURI.replace(/%2/g,'/');
+      var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+      var base64 = dataURI.substring(base64Index);
+      var raw = window.atob(base64);
+      var rawLength = raw.length;
+      var array2 = new Uint8Array(new ArrayBuffer(rawLength));
+      for(i = 0; i < rawLength; i++) {
+        array2[i] = raw.charCodeAt(i);
+      }
+      return array2; 
+    }
+    catch(e){
+      return array2;
+    }
+    console.log(e);
+    return array;
+  }
 }
 
 function voidFunc(){
@@ -301,3 +321,15 @@ function fetchBlob(uri, callback) {
   };
   xhr.send();
 };
+
+function dataURIToBlob(dataURI) {
+  var byteString = atob(dataURI.split(',')[1]);
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  var blob = new Blob([ab], {type: mimeString});
+  return blob;
+}
