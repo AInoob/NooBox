@@ -277,23 +277,27 @@ NooBox.Image.fetchFunctions.google=function(cursor,result,data){
       var y=temp.find('.s').find('.st')[0]||{};
       website.description=y.innerHTML;
       var z=temp.find('._lyb').find('a')[0]||{};
-      var start=z.href.indexOf("imgurl=")+7;
-      var end=z.href.indexOf("&",start);
-      if(end==-1)
-        website.imageUrl=z.href.slice(start);
-      else
-        website.imageUrl=z.href.slice(start,end);
-      var cut=website.imageUrl.indexOf('jpg%');
-      if(cut!=-1){
-        website.imageUrl=website.imageUrl.slice(0,cut+3);
+      if(z.href){
+        var start=z.href.indexOf("imgurl=")+7;
+        var end=z.href.indexOf("&",start);
+        if(end==-1)
+          website.imageUrl=z.href.slice(start);
+        else
+          website.imageUrl=z.href.slice(start,end);
       }
-      cut=website.imageUrl.indexOf('png%');
-      if(cut!=-1){
-        website.imageUrl=website.imageUrl.slice(0,cut+3);
-      }
-      cut=website.imageUrl.indexOf('gif%');
-      if(cut!=-1){
-        website.imageUrl=website.imageUrl.slice(0,cut+3);
+      if(website.imageUrl){
+        var cut=website.imageUrl.indexOf('jpg%');
+        if(cut!=-1){
+          website.imageUrl=website.imageUrl.slice(0,cut+3);
+        }
+        cut=website.imageUrl.indexOf('png%');
+        if(cut!=-1){
+          website.imageUrl=website.imageUrl.slice(0,cut+3);
+        }
+        cut=website.imageUrl.indexOf('gif%');
+        if(cut!=-1){
+          website.imageUrl=website.imageUrl.slice(0,cut+3);
+        }
       }
       websites.push(website);
     }
