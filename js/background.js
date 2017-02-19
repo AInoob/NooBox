@@ -1,6 +1,7 @@
 //Using object as a class to wrap different sections and functions
 var NooBox={};
 var analyticsOnce=false;
+var analyticsLastList={};
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-77112662-5']);
 (function() {
@@ -12,6 +13,10 @@ function analytics(request){
   if(!analyticsOnce){
     _gaq.push(['_trackPageview','background']);
     analyticsOnce=true;
+  }
+  var time=new Date().getTime();
+  if(!analyticsLastList[request.category]||analyticsLastList[request.category]+500<time){
+    analyticsLastList[request.category]=time;
   }
   _gaq.push(['_trackEvent', request.category, request.action,request.label]);
 }
@@ -50,7 +55,7 @@ NooBox.Image.DataWrapper={};
 //add or remove image context menus
 NooBox.Image.updateContextMenu=null;
 //list of search engines
-NooBox.Image.engines=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
+NooBox.Image.engines=["google","baidu","tineye","bing","yandex","saucenao","iqdb","sogou"];
 //URLs for each search engine
 NooBox.Image.apiUrls=null;
 //search an image given URL or dataURI
@@ -84,6 +89,7 @@ NooBox.Options.defaultValues=[
   ['imageSearchUrl_yandex',true],
   ['imageSearchUrl_saucenao',true],
   ['imageSearchUrl_iqdb',true],
+  ['imageSearchUrl_sogou',true],
   ['extractImages',true],
   ['screenshotSearch',true],
   ['videoControl',false],
@@ -95,7 +101,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.1.7']
+  ['version','0.9.1.8']
 ];
 
 NooBox.Options.init=function(i){
@@ -233,7 +239,8 @@ NooBox.Image.apiUrls={
   bing:     "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:",
   yandex:   "https://www.yandex.com/images/search?rpt=imageview&img_url=",
   saucenao: "http://saucenao.com/search.php?db=999&url=",
-  iqdb:     "http://iqdb.org/?url="
+  iqdb:     "http://iqdb.org/?url=",
+  sogou:    "http://pic.sogou.com/ris?query=",
 };
 
 NooBox.Image.fetchFunctions.google=function(cursor,result,data){
@@ -520,6 +527,39 @@ NooBox.Image.fetchFunctions.iqdb=function(cursor,result,data){
   }
 };
 
+var x;
+
+NooBox.Image.fetchFunctions.sogou=function(cursor,result,data){
+  try{
+    data=data.replace(/<img[^>]*>/g,"");
+    x=$(data);
+    var websites=[];
+    /*var page=$(data);
+    var websiteList=$(page.find('.other-sites__item'))||[];
+    for(var i=0;i<websiteList.length;i++){
+      var website={};
+      var temp=$(websiteList[i]);
+      var x=temp.find('.other-sites__snippet').find('a')[0]||{};
+      website.link=x.href;
+      website.title=x.innerText;
+      var y=temp.find('.other-sites__desc')[0]||{};
+      website.description=y.innerHTML;
+      var z=temp.find('.other-sites__preview-link')[0]||{};
+      website.imageUrl=z.href;
+      website.searchEngine='sogou';
+      websites.push(website);
+    }*/
+    result.sogou.websites=websites;
+    result.sogou.result='done';
+    NooBox.Image.update(cursor,result);
+  }
+  catch(e){
+    result.sogou.result='failed';
+    NooBox.Image.update(cursor,result);
+    console.log(e);
+  }
+};
+
 NooBox.Image.POST.general=function(cursor,result,engines,data,uploadedURL){
   if(uploadedURL){
     for(var i=0;i<engines.length;i++){
@@ -749,6 +789,36 @@ NooBox.init=function(){
         else if(request.job=='getDB'){
           getDB(request.key,function(data){
             chrome.tabs.sendMessage(sender.tab.id, {job:'returnDB',key:request.key,data:data});
+          });
+        }
+        else if(request.job=='urlDownloadZip'){
+          var zip=new JSZip();
+          var files=request.files;
+          console.log(files);
+          var remains=files.length;
+          var i=0;
+          var file=files[i];
+          var reader=new window.FileReader();
+          reader.onloadend=function() {
+            console.log(remains);
+            var ext=(reader.result.slice(0,20).match(/image\/(\w*)/)||['',''])[1];
+            var binary=convertDataURIToBinary(reader.result);
+            zip.file(file.name+'.'+ext,binary,{base64:false});
+            remains--;
+            if(remains==0){
+              zip.generateAsync({type:'blob'}).then(function(content){
+                saveAs(content,'NooBox.zip');
+              });
+            }
+            else{
+              file=files[++i];
+              fetchBlob(file.url, function(blob) {
+                reader.readAsDataURL(blob);
+              });
+            }
+          }
+          fetchBlob(file.url, function(blob) {
+            reader.readAsDataURL(blob);
           });
         }
         else if(request.job=='videoControl_website_switch'){

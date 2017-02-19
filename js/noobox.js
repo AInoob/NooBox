@@ -27746,9 +27746,12 @@
 	module.exports = React.createClass({
 	  displayName: 'CheckUpdate',
 	  getInitialState: function () {
-	    return { enabled: false, newChanges: [], updateAvailable: false, newVersion: '0', version: '0', updateHistory: [] };
+	    return { installType: 'normal', enabled: false, newChanges: [], updateAvailable: false, newVersion: '0', version: '0', updateHistory: [] };
 	  },
 	  componentDidMount: function () {
+	    chrome.management.getSelf(function (data) {
+	      this.setState({ installType: data.installType });
+	    }.bind(this));
 	    get('version', function (version) {
 	      this.setState({ version: version }, function () {
 	        get('updateHistory', function (data) {
@@ -27812,7 +27815,7 @@
 	    }.bind(this));
 	  },
 	  render: function () {
-	    if (!this.state.enabled) {
+	    if (this.state.installType == 'normal' || !this.state.enabled) {
 	      return null;
 	    }
 	    var newChanges = null;
@@ -27908,10 +27911,13 @@
 	module.exports = React.createClass({
 	  displayName: 'Options',
 	  getInitialState: function () {
-	    return { settings: { checkUpdate: false, videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
+	    return { installType: 'normal', settings: { checkUpdate: false, videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
 	  },
 	  componentDidMount: function () {
 	    var switchList = ['checkUpdate', 'videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
+	    chrome.management.getSelf(function (data) {
+	      this.setState({ installType: data.installType });
+	    }.bind(this));
 	    for (var i = 0; i < switchList.length; i++) {
 	      isOn(switchList[i], function (ii) {
 	        this.setState(function (prevState) {
@@ -27972,6 +27978,24 @@
 	        );
 	      }.bind(this));
 	    }
+	    var checkUpdate = null;
+	    if (this.state.installType != 'normal') {
+	      checkUpdate = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h5',
+	          { className: 'header' },
+	          GL('Experience')
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tab-1' },
+	          this.getCheckbox('checkUpdate'),
+	          React.createElement('p', null)
+	        )
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: 'container' },
@@ -28006,17 +28030,7 @@
 	          this.getCheckbox('videoControl'),
 	          React.createElement('p', null)
 	        ),
-	        React.createElement(
-	          'h5',
-	          { className: 'header' },
-	          GL('Experience')
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'tab-1' },
-	          this.getCheckbox('checkUpdate'),
-	          React.createElement('p', null)
-	        )
+	        checkUpdate
 	      )
 	    );
 	  }

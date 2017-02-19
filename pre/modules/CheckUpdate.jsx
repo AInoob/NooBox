@@ -2,9 +2,12 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: 'CheckUpdate',
   getInitialState: function(){
-    return {enabled:false,newChanges:[],updateAvailable:false,newVersion:'0',version:'0',updateHistory:[]};
+    return {installType:'normal',enabled:false,newChanges:[],updateAvailable:false,newVersion:'0',version:'0',updateHistory:[]};
   },
   componentDidMount: function(){
+    chrome.management.getSelf(function(data){
+      this.setState({installType:data.installType});
+    }.bind(this));
     get('version',function(version){
       this.setState({version:version},function(){
         get('updateHistory',function(data){
@@ -70,7 +73,7 @@ module.exports = React.createClass({
       }.bind(this));
   },
   render: function(){
-    if(!this.state.enabled){
+    if(this.state.installType=='normal'||!this.state.enabled){
       return null;
     }
     var newChanges=null;

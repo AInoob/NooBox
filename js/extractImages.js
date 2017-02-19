@@ -19,7 +19,7 @@ function isOn(key,callbackTrue,callbackFalse,param){
   });
 }
 
-var imgSet;
+var imgSet={};
 var notImgSet={};
 var isImgSet={};
 var focus=null;
@@ -30,7 +30,7 @@ function getImages(){
   var val=$('#NooBox-extractImages-selector-range').val();
   var gallery=$('#NooBox-extractImages-gallery')[0];
   $(gallery).empty();
-  var imgSet={};
+  imgSet={};
   var tempFocus2=focus;
   for(var i=1;i<val;i++){
     tempFocus2=$(tempFocus2).parent()[0];
@@ -100,13 +100,12 @@ var init=function(){
       function(request, sender, sendResponse) {
         if(request.job){
           if(request.job=="extractImages"){
-            $(document.head).append('<style>input[type="checkbox"] ~ .inputLabel{cursor:pointer;position:absolute;margin-top: -18px;margin-left: 19px;width: 174px;height: 28px;border: 4px solid transparent;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(4deg);transform: rotate(4deg);}input[type="checkbox"]:checked ~ .inputLabel{margin-top:-12px;margin-left:163px;width: 18px;height: 38px;border: 4px solid transparent;border-right: 4px solid #5667bb;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(40deg);transform: rotate(40deg);}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}</style>');
+            $(document.head).append('<style>input[type="checkbox"] ~ .inputLabel{cursor:pointer;position:absolute;margin-top: -18px;margin-left: 19px;width: 174px;height: 28px;border: 4px solid transparent;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(4deg);transform: rotate(4deg);}input[type="checkbox"]:checked ~ .inputLabel{margin-top:-12px;margin-left:163px;width: 18px;height: 38px;border: 4px solid transparent;border-right: 4px solid #5667bb;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(40deg);transform: rotate(40deg);}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}#NooBox-extractImages-download{width:20px;height:20px;float: left;cursor:pointer;background-size: 20px 20px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTIuNTE5IDUyLjUxOSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTIuNTE5IDUyLjUxOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIHN0eWxlPSJmaWxsOiMyNkI5OUE7IiBkPSJNMTYuMDQ5LDMxLjEzN0g0LjAwMWwyMC4wOCwxOS45NzFsMjAuMDgtMTkuOTcxSDMyLjExM2MwLDAtNC4yOTItMTcuNzM1LDE2LjA2NC0yOS44NDljMCwwLTE1LjUzNi0zLjAyLTI2Ljc5NCwxMC41MUMyMS4zODIsMTEuNzk3LDE1LjY1MSwxNy45MjcsMTYuMDQ5LDMxLjEzN3oiLz48cGF0aCBzdHlsZT0iZmlsbDojMjZCOTlBOyIgZD0iTTI0LjA4MSw1Mi41MTlMMS41NzcsMzAuMTM3SDE1LjAzYy0wLjA5Mi0xMi43NTksNS4zODMtMTguNzY3LDUuNjIyLTE5LjAyMkMyOC42OTEsMS40NSwzOC45MzMsMCw0NC4zMTgsMGMyLjQ0NiwwLDMuOTg1LDAuMjk0LDQuMDQ5LDAuMzA3bDIuNTc0LDAuNWwtMi4yNTMsMS4zNDFDMzEuMzcxLDEyLjQ1MywzMi4zOTQsMjYuNjYzLDMyLjk0LDMwLjEzN2gxMy42NDVMMjQuMDgxLDUyLjUxOXogTTYuNDI1LDMyLjEzN2wxNy42NTYsMTcuNTYybDE3LjY1Ni0xNy41NjJIMzEuMzI2bC0wLjE4NS0wLjc2NWMtMC4wNDMtMC4xNzctMy44ODEtMTcuMDgyLDE0LjA0MS0yOS4zNThjLTQuNzg0LTAuMTUtMTUuMDIsMC43OTUtMjMuMDMxLDEwLjQyM2MtMC4wOTEsMC4xLTUuNDgxLDYuMDg5LTUuMTAzLDE4LjY3bDAuMDMsMS4wM0g2LjQyNXoiLz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PC9zdmc+);}</style>');
             if(!focus||focus.tagName=='HTML'){
               focus=document.body;
             }
             sendResponse({success:true});
             chrome.runtime.sendMessage({job:'analytics',category:'extractImage',action:'run'}, function(response) {});
-            console.log('aaaa');
             var images=[];
             var height=window.innerHeight-66;
             var div = $('<div id="NooBox-extractImages">').css({"z-index":"999999999999999999999","height":height*0.9+"px","overflow":"auto","background-color":"rgba(0,0,0,0.7)","padding":"33px","position": "fixed","margin-left":"20%","width":"60%","top":height*0.05+"px"});
@@ -116,7 +115,7 @@ var init=function(){
               tempFocus=$(tempFocus).parent()[0];
               max++;
             }
-            div.append('<div><span id="NooBox-extractImages-selector-left" style="user-select: none;line-height:16px;margin:0px;cursor:pointer;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:33px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="-webkit-appearance: none;background-color:rgb(86, 103, 187);margin:0px;margin-left:13px;border:0px;padding:0px;display:block;float:left;pointer-events: none;height:8px;margin-top:4px;width:200px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="user-select: none;line-height:16px;margin:0px;margin-left:13px;cursor:pointer;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span><div style="position:relative;overflow:visible;height:18px;width:200px;float:left"><input type="checkbox" style="display:none" id="linkImage"><label class="inputLabel" id="linkImageLabel" for="linkImage" ></label><a style="color: white;margin-left: 30px;text-decoration: underline;font-size:15px">example.com/a.jpg</a></div></div>');
+            div.append('<div><span id="NooBox-extractImages-selector-left" style="user-select: none;line-height:16px;margin:0px;cursor:pointer;border:0px;padding:0px;z-index:999999999999999999999;margin-top:0px;display:block;float:left;color:white;font-size:33px"><</span><input type="range" id="NooBox-extractImages-selector-range" style="-webkit-appearance: none;background-color:rgb(86, 103, 187);margin:0px;margin-left:13px;border:0px;padding:0px;display:block;float:left;pointer-events: none;height:8px;margin-top:4px;width:200px" value="1" min="1" max="'+max+'" step="1"><span id="NooBox-extractImages-selector-right" style="user-select: none;line-height:16px;margin:0px;margin-left:13px;cursor:pointer;border:0px;padding:0px;margin-top:0px;display:block;float:left;color:white;font-size:60px">></span><div style="position:relative;overflow:visible;height:18px;width:200px;float:left"><input type="checkbox" style="display:none" id="linkImage"><label class="inputLabel" id="linkImageLabel" for="linkImage" ></label><a style="color: white;margin-left: 30px;text-decoration: underline;font-size:15px">example.com/a.jpg</a></div><div id="NooBox-extractImages-download"></div></div>');
             div.append('<div id="NooBox-extractImages-switch" style="margin: 0px;border: 0px;padding: 0px;color: white;font-size: 62px;position: absolute;right: 0;top: 0;width: 64px;height: 64px;background-color: rgb(86, 103, 187);text-align: center;line-height: 64px;cursor: pointer;">X</>');
             div.append('<div style="margin:0px;border:0px;padding:0px;clear:both"></div>');
             if(focus.tagName!='BODY'&&focus.tagName!='HTML')
@@ -143,8 +142,15 @@ var init=function(){
             $('#NooBox-extractImages-switch').on('click',function(e){
               $(e.target).parent().remove();
             });
+            $('#NooBox-extractImages-download').on('click',function(e){
+              var files=[];
+              Object.keys(imgSet).forEach(function(elem,index){
+                var i=index;
+                files.push({name:i,url:elem});
+              });
+              chrome.runtime.sendMessage({job:'urlDownloadZip',files:files}, function(response) {});
+            });
             $('#linkImageLabel').on('click',function(e){
-              console.log('yay');
               getImages();
             });
           }

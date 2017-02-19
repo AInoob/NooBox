@@ -107,6 +107,9 @@
   "iqdb":{
     "message":"IQDB"
   },
+  "sogou":{
+    "message":"搜狗"
+  },
   "bing":{
     "message":"必应"
   },
@@ -127,6 +130,9 @@
   },
   "imageSearchUrl_iqdb":{
     "message":"IQDB"
+  },
+  "imageSearchUrl_sogou":{
+    "message":"搜狗"
   },
   "imageSearchUrl_bing":{
     "message":"必应"
