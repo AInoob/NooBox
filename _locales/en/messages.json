@@ -107,6 +107,9 @@
   "iqdb":{
     "message":"IQDB"
   },
+  "sogou":{
+    "message":"Sogou"
+  },
   "bing":{
     "message":"Bing"
   },
@@ -127,6 +130,9 @@
   },
   "imageSearchUrl_iqdb":{
     "message":"IQDB"
+  },
+  "imageSearchUrl_sogou":{
+    "message":"Sogou"
   },
   "imageSearchUrl_bing":{
     "message":"Bing"

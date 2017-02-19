@@ -4,10 +4,13 @@ var Link = require('react-router').Link;
 module.exports = React.createClass({
   displayName: 'Options',
   getInitialState: function(){
-    return {settings:{checkUpdate:false,videoControl:false,extractImages:false,imageSearch:false,screenshotSearch:false,imageSearchUrl_google:false,imageSearchUrl_baidu:false,imageSearchUrl_yandex:false,imageSearchUrl_bing:false,imageSearchUrl_tineye:false,imageSearchUrl_saucenao:false,imageSearchUrl_iqdb:false}};
+    return {installType:'normal',settings:{checkUpdate:false,videoControl:false,extractImages:false,imageSearch:false,screenshotSearch:false,imageSearchUrl_google:false,imageSearchUrl_baidu:false,imageSearchUrl_yandex:false,imageSearchUrl_bing:false,imageSearchUrl_tineye:false,imageSearchUrl_saucenao:false,imageSearchUrl_iqdb:false}};
   },
   componentDidMount: function(){
     var switchList=['checkUpdate','videoControl','extractImages','imageSearch','screenshotSearch','imageSearchUrl_google','imageSearchUrl_baidu','imageSearchUrl_yandex','imageSearchUrl_bing','imageSearchUrl_tineye','imageSearchUrl_saucenao','imageSearchUrl_iqdb'];
+    chrome.management.getSelf(function(data){
+      this.setState({installType:data.installType});
+    }.bind(this));
     for(var i=0;i<switchList.length;i++){
       isOn(
         switchList[i],
@@ -58,6 +61,18 @@ module.exports = React.createClass({
         return <div className="tab-1" key={index}>{this.getCheckbox(elem)}</div>;
       }.bind(this));
     }
+    var checkUpdate=null;
+    if(this.state.installType!='normal'){
+      checkUpdate=(
+        <div>
+          <h5 className="header">{GL('Experience')}</h5>
+          <div className="tab-1">
+            {this.getCheckbox('checkUpdate')}
+            <p></p>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="container">
         <div id="options">
@@ -73,15 +88,11 @@ module.exports = React.createClass({
             <p></p>
           </div>
           <h5 className="header">{GL('videoControl')}</h5>
-            <div className="tab-1">
+          <div className="tab-1">
             {this.getCheckbox('videoControl')}
             <p></p>
           </div>
-          <h5 className="header">{GL('Experience')}</h5>
-            <div className="tab-1">
-            {this.getCheckbox('checkUpdate')}
-            <p></p>
-          </div>
+          {checkUpdate}
         </div>
       </div>);
   }
