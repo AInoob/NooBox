@@ -101,7 +101,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.1.9']
+  ['version','0.9.2.0']
 ];
 
 NooBox.Options.init=function(i){
@@ -800,15 +800,20 @@ NooBox.init=function(){
           var files=request.files;
           console.log(files);
           var remains=files.length;
+          var total=files.length;
           var i=0;
           var file=files[i];
           var reader=new window.FileReader();
           reader.onloadend=function() {
             console.log(remains);
-            var ext=(reader.result.slice(0,20).match(/image\/(\w*)/)||['',''])[1];
-            var binary=convertDataURIToBinary(reader.result);
+            addImage(reader.result);
+          }
+          function addImage(dataURI){
+            var ext=(dataURI.slice(0,20).match(/image\/(\w*)/)||['',''])[1];
+            var binary=convertDataURIToBinary(dataURI);
             zip.file(file.name+'.'+ext,binary,{base64:false});
             remains--;
+            chrome.tabs.sendMessage(sender.tab.id, {job:'downloadRemaining',remains:remains,total:total}, function(){});  
             if(remains==0){
               zip.generateAsync({type:'blob'}).then(function(content){
                 saveAs(content,'NooBox.zip');
@@ -816,14 +821,24 @@ NooBox.init=function(){
             }
             else{
               file=files[++i];
-              fetchBlob(file.url, function(blob) {
-                reader.readAsDataURL(blob);
-              });
+              if(file.url.slice(0,4)=='data'){
+                addImage(file.url);
+              }
+              else{
+                fetchBlob(file.url, function(blob) {
+                  reader.readAsDataURL(blob);
+                });
+              }
             }
           }
-          fetchBlob(file.url, function(blob) {
-            reader.readAsDataURL(blob);
-          });
+          if(file.url.slice(0,4)=='data'){
+            addImage(file.url);
+          }
+          else{
+            fetchBlob(file.url, function(blob) {
+              reader.readAsDataURL(blob);
+            });
+          }
         }
         else if(request.job=='videoControl_website_switch'){
           chrome.tabs.query({},function(tabs){
