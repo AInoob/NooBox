@@ -132,6 +132,18 @@ h4{
 #options{
   p{
     margin:0px;
+    clear:both;
+  }
+  .imageSearchSwitch{
+    float: left;
+    img{
+      width: 30px;
+    }
+    input:not(:checked){
+      &+img{
+        opacity: 0.3;
+      }
+    }
   }
 }
 

@@ -27955,6 +27955,18 @@
 	      GL(id)
 	    );
 	  },
+	  getImageSearchSwitch: function (id, handler) {
+	    return React.createElement(
+	      'div',
+	      { className: 'switch' },
+	      React.createElement(
+	        'label',
+	        { htmlFor: id },
+	        React.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
+	        React.createElement('img', { title: GL(id), src: '/thirdParty/' + id.slice(15) + '.png' })
+	      )
+	    );
+	  },
 	  getCheckbox: function (id, handler) {
 	    return React.createElement(
 	      'p',
@@ -27973,8 +27985,8 @@
 	      imageSearchEngines = ["imageSearchUrl_google", "imageSearchUrl_baidu", "imageSearchUrl_tineye", "imageSearchUrl_bing", "imageSearchUrl_yandex", "imageSearchUrl_saucenao", "imageSearchUrl_iqdb"].map(function (elem, index) {
 	        return React.createElement(
 	          'div',
-	          { className: 'tab-1', key: index },
-	          this.getCheckbox(elem)
+	          { className: 'tab-1 imageSearchSwitch', key: index },
+	          this.getImageSearchSwitch(elem)
 	        );
 	      }.bind(this));
 	    }

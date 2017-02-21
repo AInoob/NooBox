@@ -48,6 +48,14 @@ module.exports = React.createClass({
       {GL(id)}
     </div>;
   },
+  getImageSearchSwitch: function(id,handler){
+    return <div className="switch">
+      <label htmlFor={id} >
+        <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
+        <img title={GL(id)} src={'/thirdParty/'+id.slice(15)+'.png'} />
+      </label>
+    </div>;
+  },
   getCheckbox: function(id,handler){
     return <p>
       <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
@@ -58,7 +66,7 @@ module.exports = React.createClass({
     var imageSearchEngines=null;
     if(this.state.settings['imageSearch']){
       imageSearchEngines=["imageSearchUrl_google","imageSearchUrl_baidu","imageSearchUrl_tineye","imageSearchUrl_bing","imageSearchUrl_yandex","imageSearchUrl_saucenao","imageSearchUrl_iqdb"].map(function(elem,index){
-        return <div className="tab-1" key={index}>{this.getCheckbox(elem)}</div>;
+        return <div className="tab-1 imageSearchSwitch" key={index}>{this.getImageSearchSwitch(elem)}</div>;
       }.bind(this));
     }
     var checkUpdate=null;
