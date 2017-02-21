@@ -55,7 +55,7 @@ NooBox.Image.DataWrapper={};
 //add or remove image context menus
 NooBox.Image.updateContextMenu=null;
 //list of search engines
-NooBox.Image.engines=["google","baidu","tineye","bing","yandex","saucenao","iqdb","sogou"];
+NooBox.Image.engines=["google","baidu","tineye","bing","yandex","saucenao","iqdb"];
 //URLs for each search engine
 NooBox.Image.apiUrls=null;
 //search an image given URL or dataURI
@@ -101,7 +101,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.2.0']
+  ['version','0.9.2.1']
 ];
 
 NooBox.Options.init=function(i){
