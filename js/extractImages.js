@@ -44,7 +44,7 @@ function getImages(){
         var bg=$(this).css('background-image');
         if(bg){
           var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-          if(url!="none"&&(!url.match(/^gradient/))&&(!url.match(/^linear-gradient/))){
+          if(url.indexOf('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg')==-1&&url!="none"&&(!url.match(/^gradient/))&&(!url.match(/^linear-gradient/))){
             imgSet[url]=true;
           }
         }
@@ -153,6 +153,7 @@ var init=function(){
               Object.keys(imgSet).forEach(function(elem,index){
                 var i=index;
                 files.push({name:i,url:elem});
+                
               });
               chrome.runtime.sendMessage({job:'urlDownloadZip',files:files}, function(response) {});
             });
