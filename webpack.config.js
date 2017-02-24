@@ -5,7 +5,7 @@ module.exports={
     imageSearch:'./pre/ImageSearch.jsx'
   },
   output: {
-    path: 'js',
+    path: 'dist/js',
     filename: '[name].js'
   },
   module: {
