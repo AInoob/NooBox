@@ -2,7 +2,9 @@ var vid=null;
 var timeStep=5;
 var volumeStep=0.05;
 var playbackRateStep=0.05;
+var fps=30;
 var detectVideoHandle=null;
+var detectVideoTime=new Date().getTime();
 var indicatorSize={width:100,height:100};
 var conflictCount=[];
 var canvas;
@@ -78,16 +80,16 @@ function init(){
       }
       placeIndicator();
       if (e.keyCode == '38'){
-        volumeUp(vid,volumeStep);
+        detectConflictAndAct(volumeUp,vid,'volumeChange','arrowUpVolumeChange',111);
       }
       else if(e.keyCode == '40'){
-        volumeDown(vid,volumeStep);
+        detectConflictAndAct(volumeDown,vid,'volumeChange','arrowDownVolumeChange',111);
       }
       else if(e.keyCode == '37'){
-        rewind(vid,timeStep);
+        detectConflictAndAct(rewindSmall,vid,'timeChange','rewindSmall',111);
       }
       else if(e.keyCode == '39'){
-        forward(vid,timeStep);
+        detectConflictAndAct(forwardSmall,vid,'timeChange','forwardSmall',111);
       }
       else if(e.keyCode == '36'){
         goTo(vid,0);
@@ -113,28 +115,28 @@ function init(){
           detectConflictAndAct(playPause,vid,'playPause','spacePlayPause',111);
           break;
         case 'j':
-          rewind(vid,timeStep*2);
+          detectConflictAndAct(rewindBig,vid,'timeChange','rewindBig',111);
           break;
         case 'l':
-          forward(vid,timeStep*2);
+          detectConflictAndAct(forwardBig,vid,'timeChange','forwardBig',111);
           break;
         case ',':
-          rewind(vid,1/30);
+          detectConflictAndAct(rewindTiny,vid,'timeChange','rewindTiny',111);
           break;
         case '.':
-          forward(vid,1/30);
+          detectConflictAndAct(forwardTiny,vid,'timeChange','forwardTiny',111);
           break;
         case '<':
-          slowDown(vid,playbackRateStep);
+          detectConflictAndAct(slowDown,vid,'rateChange','slowRateChange',111);
           break;
         case '>':
-          speedUp(vid,playbackRateStep);
+          detectConflictAndAct(speedUp,vid,'rateChange','speedRateChange',111);
           break;
         case 'r':
           rotate(vid,90);
           break;
         case 'm':
-          mute(vid);
+          detectConflictAndAct(mute,vid,'volumeChange','muteVolumeChange',111);
           break;
         case 'f':
           toggleFullscreen(vid);
@@ -169,7 +171,7 @@ function detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout){
   placeIndicator();
   var index=getIndex(vid);
   if(!index){
-    buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'}]);
+    buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'},{event:'timeupdate',target:'timeUpdate'},{event:'ratechange',target:'rateChange'}]);
     detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout);
     return;
   }
@@ -181,20 +183,21 @@ function detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout){
       if(conflictCount[index][actionId]>0){
         $(vid).addClass(conflictClass);
         actFunction(v);
+        conflictCount[index][actionId]--;
         setTimeout(function(){
           conflictCount[index][actionId]=0;
-        },50);
+        },111);
       }
-    },50);
+    },222);
   }
   else{
+    conflictCount[index][actionId]--;
     setTimeout(function(){
-      if(conflictCount[index][actionId]==0){
+      if(conflictCount[index][actionId]<0){
         $(vid).removeClass(conflictClass);
         actFunction(v);
-        conflictCount[index][actionId]--;
       }
-    },111);
+    },222);
   }
 }
 
@@ -228,14 +231,39 @@ function beyond(v){
   }
 }
 
+
 function rewind(v,step){
   v.currentTime-=step;
   displayIndicator(step+'s','&larr;');
 }
 
+function rewindSmall(v){
+  rewind(v,timeStep);
+}
+
+function rewindBig(v){
+  rewind(v,timeStep*2);
+}
+
+function rewindTiny(v){
+  rewind(v,1/fps);
+}
+
 function forward(v,step){
   v.currentTime+=step;
   displayIndicator(step+'s','&rarr;');
+}
+
+function forwardSmall(v){
+  forward(v,timeStep);
+}
+
+function forwardBig(v){
+  forward(v,timeStep*2);
+}
+
+function forwardTiny(v){
+  forward(v,1/fps);
 }
 
 function goTo(v,i){
@@ -343,8 +371,14 @@ function getVideo(e){
 
 //get the first video if no video is found
 function detectVideo(){
-  if(vid==null){
+  if(!vid){
     vid=$('video')[0];
+    if(detectVideoTime+1000<new Date().getTime()){
+      clearInterval(detectVideoHandle);
+    }
+  }
+  else{
+    clearInterval(detectVideoHandle);
   }
 }
 
