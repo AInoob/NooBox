@@ -96,12 +96,13 @@ NooBox.Options.defaultValues=[
   ['displayOrder',[]],
   ['checkUpdate',true],
   ['lastUpdateCheck',0],
-  ['updateHistory',[]]
+  ['updateHistory',[]],
+  ['history',true]
 ];
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.2.2']
+  ['version','0.9.2.3']
 ];
 
 NooBox.Options.init=function(i){
@@ -756,14 +757,16 @@ NooBox.Image.screenshotSearch=function(info,tab){
 }
 
 NooBox.History.recordImageSearch=function(cursor,info){
-  getDB('history_records',function(records){
-    records=records||[];
-    var source=info.srcUrl||info;
-    records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:source});
-    setDB('history_records',records);
-    get('totalImageSearch',function(data){
-      data=data||0;
-      set('totalImageSearch',parseInt(data)+1);
+  isOn('history',function(){
+    getDB('history_records',function(records){
+      records=records||[];
+      var source=info.srcUrl||info;
+      records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:source});
+      setDB('history_records',records);
+      get('totalImageSearch',function(data){
+        data=data||0;
+        set('totalImageSearch',parseInt(data)+1);
+      });
     });
   });
 }
