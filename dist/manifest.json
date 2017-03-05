@@ -4,7 +4,7 @@
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "short_name": "NB",
-  "version": "0.9.2.2",
+  "version": "0.9.2.3",
   "browser_action": {
     "default_icon": "images/icon_128.png",
     "default_title": "NoooBox~~~",
@@ -37,18 +37,7 @@
     "storage",
     "activeTab",
     "notifications",
-    "http://stu.baidu.com/",
-    "http://image.baidu.com/",
-    "http://old.postimage.org/",
-    "http://old.postimg.org/",
-    "http://www.chuantu.biz/",
-    "http://iqdb.org/",
-    "https://www.yandex.com/",
-    "http://www.bing.com/",
-    "https://www.google.com/",
-    "http://www.tineye.com/",
-    "http://saucenao.com/",
-    "https://ainoob.com/"
+    "<all_urls>"
   ],
   "minimum_chrome_version": "30",
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"

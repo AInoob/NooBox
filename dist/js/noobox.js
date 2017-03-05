@@ -27911,10 +27911,10 @@
 	module.exports = React.createClass({
 	  displayName: 'Options',
 	  getInitialState: function () {
-	    return { installType: 'normal', settings: { checkUpdate: false, videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
+	    return { history: true, installType: 'normal', settings: { checkUpdate: false, videoControl: false, extractImages: false, imageSearch: false, screenshotSearch: false, imageSearchUrl_google: false, imageSearchUrl_baidu: false, imageSearchUrl_yandex: false, imageSearchUrl_bing: false, imageSearchUrl_tineye: false, imageSearchUrl_saucenao: false, imageSearchUrl_iqdb: false } };
 	  },
 	  componentDidMount: function () {
-	    var switchList = ['checkUpdate', 'videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
+	    var switchList = ['history', 'checkUpdate', 'videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
 	    chrome.management.getSelf(function (data) {
 	      this.setState({ installType: data.installType });
 	    }.bind(this));
@@ -27992,21 +27992,7 @@
 	    }
 	    var checkUpdate = null;
 	    if (this.state.installType != 'normal') {
-	      checkUpdate = React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'h5',
-	          { className: 'header' },
-	          GL('Experience')
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'tab-1' },
-	          this.getCheckbox('checkUpdate'),
-	          React.createElement('p', null)
-	        )
-	      );
+	      checkUpdate = this.getCheckbox('checkUpdate');
 	    }
 	    return React.createElement(
 	      'div',
@@ -28042,7 +28028,19 @@
 	          this.getCheckbox('videoControl'),
 	          React.createElement('p', null)
 	        ),
-	        checkUpdate
+	        React.createElement(
+	          'h5',
+	          { className: 'header' },
+	          GL('experience')
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'tab-1' },
+	          this.getCheckbox('record_history'),
+	          React.createElement('p', null),
+	          checkUpdate,
+	          React.createElement('p', null)
+	        )
 	      )
 	    );
 	  }
