@@ -28036,7 +28036,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'tab-1' },
-	          this.getCheckbox('record_history'),
+	          this.getCheckbox('history'),
 	          React.createElement('p', null),
 	          checkUpdate,
 	          React.createElement('p', null)
