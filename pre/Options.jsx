@@ -94,7 +94,7 @@ module.exports = React.createClass({
           </div>
           <h5 className="header">{GL('experience')}</h5>
           <div className="tab-1">
-            {this.getCheckbox('record_history')}
+            {this.getCheckbox('history')}
             <p></p>
             {checkUpdate}
             <p></p>
