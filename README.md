@@ -21,26 +21,29 @@ As you can see, NooBox is an open source software, it is free and does not have 
 ![simple search](https://ainoob.com/crx/noobox/search.gif)
 
 ### Upload search
-![simple search](https://ainoob.com/crx/noobox/upload.gif)
+![upload search](https://ainoob.com/crx/noobox/upload.gif)
 
 ### Extract Images
-![simple search](https://ainoob.com/crx/noobox/extract.gif)
+![extract images](https://ainoob.com/crx/noobox/extract.gif)
 
 ### Screenshot & Search
-![simple search](https://ainoob.com/crx/noobox/screenshot.gif)
+![screenshot & search](https://ainoob.com/crx/noobox/screenshot.gif)
 
 ## To-do
-- Mouse gesture
 - HTML5 Video controls
-- Spam link detector
+- Sound detector
 - More search engines
--- to be added
+-- Sogou
+-- 360
+- Unlikely
+-- Mouse gesture
+-- Spam link detector
 
 ## Copyright
 
 A Chrome Extension that contains useful tools
 
-Copyright (C) 2016  AInoob, ainoob.com
+Copyright (C) 2017  AInoob, ainoob.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
