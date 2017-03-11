@@ -757,16 +757,16 @@ NooBox.Image.screenshotSearch=function(info,tab){
 }
 
 NooBox.History.recordImageSearch=function(cursor,info){
+  get('totalImageSearch',function(data){
+    data=data||0;
+    set('totalImageSearch',parseInt(data)+1);
+  });
   isOn('history',function(){
     getDB('history_records',function(records){
       records=records||[];
       var source=info.srcUrl||info;
       records.push({date:new Date().getTime(),event:'search',cursor:cursor,info:source});
       setDB('history_records',records);
-      get('totalImageSearch',function(data){
-        data=data||0;
-        set('totalImageSearch',parseInt(data)+1);
-      });
     });
   });
 }
