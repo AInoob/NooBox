@@ -102,7 +102,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.2.4']
+  ['version','0.9.2.6']
 ];
 
 NooBox.Options.init=function(i){
@@ -627,6 +627,9 @@ NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,ser
 }
 
 NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,serverOrder,i){
+  if(!data) {
+    return;
+  }
   var formData=new FormData();
   formData.append('upload',dataURItoBlob(data),'NooBox');
   $.ajax({
@@ -637,7 +640,7 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
     data: formData
   }).done(function(data){
     data=data.replace(/ src=/g," nb-src=");
-    var url=$(data).find('.gallery').find('img').attr("nb-src");
+    var url=$(data).find('#code_direct')[0].value;
     result.uploadedURL=url||"";
     NooBox.Image.POST.serverOrder=serverOrder.concat(serverOrder.splice(0,i));
     callback(result.uploadedURL);

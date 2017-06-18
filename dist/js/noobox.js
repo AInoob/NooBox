@@ -27815,7 +27815,7 @@
 	    }.bind(this));
 	  },
 	  render: function () {
-	    if (this.state.installType == 'normal' || !this.state.enabled) {
+	    if (!this.state.enabled) {
 	      return null;
 	    }
 	    var newChanges = null;
