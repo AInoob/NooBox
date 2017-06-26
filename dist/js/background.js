@@ -665,33 +665,17 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
 NooBox.Image.POST.baidu=function(cursor,result,data){
   $.ajax({
     type:'POST',
-    url:'https://image.baidu.com/pictureup/uploadshitu',
-    contentType:'multipart/form-data; boundary=----WebKitFormBoundary',
-    data:NooBox.Image.DataWrapper.baidu({data:data,name:'dragimage'},'----WebKitFormBoundary')
+    url:'https://ainoob.com/api/uploadImage/',
+    contentType:'application/json',
+    data: JSON.stringify({ data: data })
   }).done(function(data){
-    result.baidu.url=data;
-    $.ajax({url:data}).done(NooBox.Image.fetchFunctions.baidu.bind(null,cursor,result));
+    result.baidu.url='https://image.baidu.com/n/pc_search?queryImageUrl=https://ainoob.com/api/getImage/'+data;
+    $.ajax({ url: result.baidu.url }).done(NooBox.Image.fetchFunctions.baidu.bind(null,cursor,result));
   }).fail(function(){
     result.baidu.result='failed'
     NooBox.Image.update(cursor,result);
   });
 }
-
-NooBox.Image.DataWrapper.baidu=function(binaryData, boundary, otherParameters) {
-  var commonHeader = 'Content-Disposition: form-data; ';
-  var data = [];
-  data.push('--' + boundary + '\r\n');
-  data.push(commonHeader);
-  data.push('name="image";filename=""\r\n');
-  data.push('Content-Type: application/octet-stream\r\n\r\n\r\n');
-  data.push('--' + boundary + '\r\n');
-  data.push(commonHeader);
-  data.push('name="' + (binaryData.name || 'binaryfilename') + '"; \r\n\r\n');
-  data.push(binaryData.data + '\r\n');
-  data.push('--' + boundary + '--\r\n');
-  return data.join('');
-}
-
 
 NooBox.Image.update=function(i,result){
   setDB('NooBox.Image.result_'+i,
