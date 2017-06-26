@@ -235,7 +235,7 @@ NooBox.Image.imageSearch=function(info){
 
 NooBox.Image.apiUrls={
   google:   "https://www.google.com/searchbyimage?&image_url=",
-  baidu:    "http://image.baidu.com/n/pc_search?rn=10&queryImageUrl=",
+  baidu:    "https://image.baidu.com/n/pc_search?queryImageUrl=",
   tineye:   "http://www.tineye.com/search/?url=",
   bing:     "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:",
   yandex:   "https://www.yandex.com/images/search?rpt=imageview&img_url=",
@@ -661,10 +661,11 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
   });
 }
 
+// no longer supported, going to change the strategy
 NooBox.Image.POST.baidu=function(cursor,result,data){
   $.ajax({
     type:'POST',
-    url:'http://stu.baidu.com/i?appid=4&appname=extend.chrome.capture&rt=0&rn=10&ct=0&stt=0&tn=shituresult',
+    url:'https://image.baidu.com/pictureup/uploadshitu',
     contentType:'multipart/form-data; boundary=----WebKitFormBoundary',
     data:NooBox.Image.DataWrapper.baidu({data:data,name:'dragimage'},'----WebKitFormBoundary')
   }).done(function(data){
