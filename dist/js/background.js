@@ -39,9 +39,10 @@ NooBox.Image.handles={};
 //Functions to upload image to the internet
 NooBox.Image.POST={};
 //servers for uploading
-NooBox.Image.POST.servers=['postimage.org','chuantu.biz'];
+//NooBox.Image.POST.servers=['postimage.org','chuantu.biz'];
+NooBox.Image.POST.servers=['ainoob.com'];
 //the order of uploading if one failed
-NooBox.Image.POST.serverOrder=[0,1];
+NooBox.Image.POST.serverOrder=[0];
 //functions for uploading
 NooBox.Image.POST.server={};
 //upload the image then call itself, which will call fetch functions
@@ -49,9 +50,9 @@ NooBox.Image.POST.general=null;
 //call POST.server[x] to upload image
 NooBox.Image.POST.upload=null;
 //upload the image to Baidu and call baidu fetch function
-NooBox.Image.POST.baidu=null;
+//NooBox.Image.POST.baidu=null;
 //Wrap the image for uploading
-NooBox.Image.DataWrapper={};
+//NooBox.Image.DataWrapper={};
 //add or remove image context menus
 NooBox.Image.updateContextMenu=null;
 //list of search engines
@@ -102,7 +103,7 @@ NooBox.Options.defaultValues=[
 
 NooBox.Options.constantValues=[
   ['displayList',['imageSearch','videoControl','checkUpdate']],
-  ['version','0.9.2.6']
+  ['version','0.9.2.8']
 ];
 
 NooBox.Options.init=function(i){
@@ -199,9 +200,6 @@ NooBox.Image.imageSearch=function(info){
       if(dataURI.match(/^data/)){
         result.imageUrl='dataURI';
         result.dataURI=dataURI;
-        if(engines.indexOf('baidu')!=-1){
-          NooBox.Image.POST.baidu(cursor,result,result.dataURI);
-        }
         NooBox.Image.POST.general(cursor,result,engines,result.dataURI);
       }
       else{
@@ -570,17 +568,17 @@ NooBox.Image.POST.general=function(cursor,result,engines,data,uploadedURL){
     for(var i=0;i<engines.length;i++){
       (function(engine){
         var engine=engines[i];
-        if(engine!='baidu'){
-          var url=NooBox.Image.apiUrls[engine]+result.uploadedURL;
-          result[engine].url=url;
-          $.ajax({url:url}).done(
-            NooBox.Image.fetchFunctions[engine].bind(null,cursor,result)
-            ).fail(function(e){
-              result[engine].result='failed';
-              NooBox.Image.update(cursor,result);
-              console.log(e);
-            });
-        }
+        var url=NooBox.Image.apiUrls[engine]+result.uploadedURL;
+        result[engine].url=url;
+        $.ajax({
+          url:url
+        }).done(
+          NooBox.Image.fetchFunctions[engine].bind(null,cursor,result)
+        ).fail(function(e){
+          result[engine].result='failed';
+          NooBox.Image.update(cursor,result);
+          console.log(e);
+        });
       })(engines[i])
     }
   }
@@ -590,11 +588,20 @@ NooBox.Image.POST.general=function(cursor,result,engines,data,uploadedURL){
 }
 
 NooBox.Image.POST.upload=function(cursor,result,data,callback){
-  var serverOrder=NooBox.Image.POST.serverOrder;
-  NooBox.Image.POST.server[NooBox.Image.POST.servers[serverOrder[0]]](cursor,result,data,callback,serverOrder,0);
+  $.ajax({
+    type:'POST',
+    url:'https://ainoob.com/api/uploadImage/',
+    contentType:'application/json',
+    data: JSON.stringify({ data: data })
+  }).done(function(data){
+    result.uploadedURL = 'https://ainoob.com/api/getImage/'+data;
+    callback(result.uploadedURL);
+  });
+  //var serverOrder=NooBox.Image.POST.serverOrder;
+  //NooBox.Image.POST.server[NooBox.Image.POST.servers[serverOrder[0]]](cursor,result,data,callback,serverOrder,0);
 }
 
-NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,serverOrder,i){
+/*NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,serverOrder,i){
   var formData=new FormData();
   formData.append('uploadimg',dataURItoBlob(data),'NooBox.jpg');
   $.ajax({
@@ -624,9 +631,9 @@ NooBox.Image.POST.server['chuantu.biz']=function(cursor,result,data,callback,ser
       },voidFunc);
     }
   });
-}
+}*/
 
-NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,serverOrder,i){
+/*NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,serverOrder,i){
   if(!data) {
     return;
   }
@@ -659,7 +666,7 @@ NooBox.Image.POST.server['postimage.org']=function(cursor,result,data,callback,s
       },voidFunc);
     }
   });
-}
+}*/
 
 // no longer supported, going to change the strategy
 NooBox.Image.POST.baidu=function(cursor,result,data){
