@@ -2,8 +2,8 @@ const webpack = require('webpack');
 var path=require('path');
 module.exports={
   entry: {
-    noobox:'./pre/NooBox.jsx',
-    imageSearch:'./pre/ImageSearch.jsx'
+    noobox:'./src/NooBox.jsx',
+    imageSearch:'./src/ImageSearch.jsx'
   },
   output: {
     path: 'dist/js',
@@ -15,7 +15,7 @@ module.exports={
         test: /\.jsx$/,
         loader: 'babel-loader',
         query: {
-          presets: ['react']
+          presets: ['react', 'es2015']
         }
       }
     ]
