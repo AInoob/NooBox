@@ -109,7 +109,7 @@ NooBox.Options.defaultValues = [
 
 NooBox.Options.constantValues = [
   ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.2.8']
+  ['version', '0.9.2.9']
 ];
 
 NooBox.Options.init = (i) => {
