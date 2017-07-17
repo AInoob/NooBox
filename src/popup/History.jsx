@@ -25,12 +25,12 @@ module.exports = React.createClass({
     });
   },
   render: function() {
-    const recordList = (this.state.recordList || [{name:'Nothing is here yet',id:'mgehojanhfgnndgffijeglgahakgmgkj'}]).map((record, index) => {
+    const recordList = (this.state.recordList || [{name:'Nothing is here yet',id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]).map((record, index) => {
       return (
         <tr key={index}>
-        <td>{timeagoInstance.format(record.date,'locale')}</td>
-        <td className={record.event}>{GL(record.event)}</td>
-        <td><a target="_blank" href={'/image.search.html?cursor='+record.cursor+'&image=history'} ><img src={record.info} /></a></td>
+					<td>{timeagoInstance.format(record.date,'locale')}</td>
+					<td className={record.event}>{GL(record.event)}</td>
+					<td><a target="_blank" href={'/image.search.html?cursor='+record.cursor+'&image=history'} ><img src={record.info} /></a></td>
         </tr>
 			);
     }).reverse();
@@ -42,15 +42,16 @@ module.exports = React.createClass({
         <table className="highlight container">
           <thead>
             <tr>
-            <th>{capFirst(GL('when'))}</th>
-            <th>{capFirst(GL('event'))}</th>
-            <th>{capFirst(GL('detail'))}</th>
-          </tr>
+							<th>{capFirst(GL('when'))}</th>
+							<th>{capFirst(GL('event'))}</th>
+							<th>{capFirst(GL('detail'))}</th>
+						</tr>
           </thead>
           <tbody>
             {recordList}
           </tbody>
         </table>
-      </div>);
+      </div>
+		);
   }
 });

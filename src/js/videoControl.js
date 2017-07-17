@@ -1,18 +1,21 @@
-var vid=null;
-var timeStep=5;
-var volumeStep=0.05;
-var playbackRateStep=0.05;
-var fps=30;
-var detectVideoHandle=null;
-var detectVideoTime=new Date().getTime();
-var indicatorSize={width:100,height:100};
-var conflictCount=[];
+var vid = null;
+var timeStep = 5;
+var volumeStep = 0.05;
+var playbackRateStep = 0.05;
+var fps = 30;
+var detectVideoHandle = null;
+var detectVideoTime = new Date().getTime();
+var indicatorSize = {
+  width: 100,
+  height: 100
+};
+var conflictCount = [];
 var canvas;
 var ctx;
-var beyondId=-1;
-var enabled=false;
-var enabledDBId='';
-var inited=false;
+var beyondId = -1;
+var enabled = false;
+var enabledDBId = '';
+var inited = false;
 
 function handleVisibilityChange() {
   if (document[hidden]) {
@@ -22,121 +25,132 @@ function handleVisibilityChange() {
   }
 }
 
-function getDB(key){
-  chrome.runtime.sendMessage({job:'getDB',key:key});
+function getDB(key) {
+  chrome.runtime.sendMessage({
+    job: 'getDB',
+    key: key
+  });
 }
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if('job' in request){
-      if(request.job=='videoConrolContentScriptSwitch'){
-        enabled=request.enabled;
-        if(enabled!=false){
-          enabled=true;
+    if ('job' in request) {
+      if (request.job == 'videoConrolContentScriptSwitch') {
+        enabled = request.enabled;
+        if (enabled != false) {
+          enabled = true;
           init();
         }
-      }
-      else if(request.job=='returnDB'){
-        if(request.key==enabledDBId){
-          enabled=request.data;
-          if(enabled!=false){
-            enabled=true;
+      } else if (request.job == 'returnDB') {
+        if (request.key == enabledDBId) {
+          enabled = request.data;
+          if (enabled != false) {
+            enabled = true;
             init();
           }
         }
       }
     }
   });
-function init(){
-  if(inited){
+
+function init() {
+  if (inited) {
     return;
   }
-  inited=true;
+  inited = true;
   $('body').append('<canvas id="NooBox-VideoBeyond-preCanvas" style="display: none"></canvas>');
-  canvas=$('#NooBox-VideoBeyond-preCanvas')[0];
-  ctx=canvas.getContext('2d');
-  buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'}]);
-  $(document.head).append('<style>@-webkit-keyframes hideAnimation2{0% { opacity:0.618;} 100% {opacity:0;}}@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{-webkit-animation:hideAnimation2 ease-in 0.333s forwards;animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:'+indicatorSize.height+'px;width:'+indicatorSize.width+'px;position:absolute;text-align:center;font-size:23px;line-height:'+indicatorSize.height+'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
+  canvas = $('#NooBox-VideoBeyond-preCanvas')[0];
+  ctx = canvas.getContext('2d');
+  buildVideoStates([{
+    event: 'play',
+    target: 'playPause'
+  }, {
+    event: 'pause',
+    target: 'playPause'
+  }, {
+    event: 'volumechange',
+    target: 'volumeChange'
+  }]);
+  $(document.head).append('<style>@-webkit-keyframes hideAnimation2{0% { opacity:0.618;} 100% {opacity:0;}}@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{-webkit-animation:hideAnimation2 ease-in 0.333s forwards;animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:' + indicatorSize.height + 'px;width:' + indicatorSize.width + 'px;position:absolute;text-align:center;font-size:23px;line-height:' + indicatorSize.height + 'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
   $('body').append('<div id="NooBox-Video-Indicator"></div>');
-  detectVideoHandle=setInterval(detectVideo,111);
-  $('body').on('click',function(e){
-    vid=getVideo(e);
-    if(enabled&&vid){
+  detectVideoHandle = setInterval(detectVideo, 111);
+  $('body').on('click', function(e) {
+    vid = getVideo(e);
+    if (enabled && vid) {
       placeIndicator();
-      detectConflictAndAct(playPause,vid,'playPause','clickPlayPause',111);
+      detectConflictAndAct(playPause, vid, 'playPause', 'clickPlayPause', 111);
     }
   });
-  $('body').on('dblclick',function(e){
+  $('body').on('dblclick', function(e) {
     placeIndicator();
-    vid=getVideo(e);
-    if(enabled&&vid){
-    }
+    vid = getVideo(e);
+    if (enabled && vid) {}
   });
-  document.onkeydown = function(e){
-    e=e||window.event;
-    if(enabled&&vid){
-      var k=e.keyCode;
-      if(k=='38'||k=='40'||k=='37'||k=='39'||k=='36'||k=='35'){
-        chrome.runtime.sendMessage({job:'videoControl_use'});
+  document.onkeydown = function(e) {
+    e = e || window.event;
+    if (enabled && vid) {
+      var k = e.keyCode;
+      if (k == '38' || k == '40' || k == '37' || k == '39' || k == '36' || k == '35') {
+        chrome.runtime.sendMessage({
+          job: 'videoControl_use'
+        });
       }
       placeIndicator();
-      if (e.keyCode == '38'){
-        detectConflictAndAct(volumeUp,vid,'volumeChange','arrowUpVolumeChange',111);
-      }
-      else if(e.keyCode == '40'){
-        detectConflictAndAct(volumeDown,vid,'volumeChange','arrowDownVolumeChange',111);
-      }
-      else if(e.keyCode == '37'){
-        detectConflictAndAct(rewindSmall,vid,'timeChange','rewindSmall',111);
-      }
-      else if(e.keyCode == '39'){
-        detectConflictAndAct(forwardSmall,vid,'timeChange','forwardSmall',111);
-      }
-      else if(e.keyCode == '36'){
-        goTo(vid,0);
-      }
-      else if(e.keyCode == '35'){
-        goTo(vid,10);
+      if (e.keyCode == '38') {
+        detectConflictAndAct(volumeUp, vid, 'volumeChange', 'arrowUpVolumeChange', 111);
+      } else if (e.keyCode == '40') {
+        detectConflictAndAct(volumeDown, vid, 'volumeChange', 'arrowDownVolumeChange', 111);
+      } else if (e.keyCode == '37') {
+        detectConflictAndAct(rewindSmall, vid, 'timeChange', 'rewindSmall', 111);
+      } else if (e.keyCode == '39') {
+        detectConflictAndAct(forwardSmall, vid, 'timeChange', 'forwardSmall', 111);
+      } else if (e.keyCode == '36') {
+        goTo(vid, 0);
+      } else if (e.keyCode == '35') {
+        goTo(vid, 10);
       }
     }
   };
-  $(document).on('keypress',function(e) {
-    if(enabled&&vid){
+  $(document).on('keypress', function(e) {
+    if (enabled && vid) {
       placeIndicator();
       e.preventDefault();
-      var k=String.fromCharCode(e.which);
-      if(k=='k'||k==' '||k=='j'||k=='l'||k==','||k=='.'||k=='<'||k=='>'||k=='r'||k=='m'||k=='f'||k=='d'||k=='b'){
-        chrome.runtime.sendMessage({job:'videoControl_use'});
+      var k = String.fromCharCode(e.which);
+      if (k == 'k' || k == ' ' || k == 'j' || k == 'l' || k == ',' || k == '.' || k == '<' || k == '>' || k == 'r' || k == 'm' || k == 'f' || k == 'd' || k == 'b') {
+        chrome.runtime.sendMessage({
+          job: 'videoControl_use'
+        });
       }
-      switch(k){
+			console.log(k);
+      switch (k) {
         case 'k':
-          detectConflictAndAct(playPause,vid,'playPause','kPlayPause',111);
+          detectConflictAndAct(playPause, vid, 'playPause', 'kPlayPause', 111);
           break;
         case ' ':
-          detectConflictAndAct(playPause,vid,'playPause','spacePlayPause',111);
+          detectConflictAndAct(playPause, vid, 'playPause', 'spacePlayPause', 111);
           break;
         case 'j':
-          detectConflictAndAct(rewindBig,vid,'timeChange','rewindBig',111);
+          detectConflictAndAct(rewindBig, vid, 'timeChange', 'rewindBig', 111);
           break;
         case 'l':
-          detectConflictAndAct(forwardBig,vid,'timeChange','forwardBig',111);
+          detectConflictAndAct(forwardBig, vid, 'timeChange', 'forwardBig', 111);
           break;
         case ',':
-          detectConflictAndAct(rewindTiny,vid,'timeChange','rewindTiny',111);
+          detectConflictAndAct(rewindTiny, vid, 'timeChange', 'rewindTiny', 111);
           break;
         case '.':
-          detectConflictAndAct(forwardTiny,vid,'timeChange','forwardTiny',111);
+          detectConflictAndAct(forwardTiny, vid, 'timeChange', 'forwardTiny', 111);
           break;
         case '<':
-          detectConflictAndAct(slowDown,vid,'rateChange','slowRateChange',111);
+          detectConflictAndAct(slowDown, vid, 'rateChange', 'slowRateChange', 111);
           break;
         case '>':
-          detectConflictAndAct(speedUp,vid,'rateChange','speedRateChange',111);
+          detectConflictAndAct(speedUp, vid, 'rateChange', 'speedRateChange', 111);
           break;
         case 'r':
-          rotate(vid,90);
+          rotate(vid, 90);
           break;
         case 'm':
-          detectConflictAndAct(mute,vid,'volumeChange','muteVolumeChange',111);
+          detectConflictAndAct(mute, vid, 'volumeChange', 'muteVolumeChange', 111);
           break;
         case 'f':
           toggleFullscreen(vid);
@@ -148,196 +162,218 @@ function init(){
           //beyond(vid);
           break;
         default:
-          if(e.which>=48&&e.which<=57){
-            goTo(vid,e.which-48);
+          if (e.which >= 48 && e.which <= 57) {
+            goTo(vid, e.which - 48);
           }
       }
     }
   });
 }
 
-function displayIndicator(text,icon){
-  if(!icon){
-    icon='';
+function displayIndicator(text, icon) {
+  if (!icon) {
+    icon = '';
   }
   $('#NooBox-Video-Indicator').removeClass('noobox-hide');
-  setTimeout(function(){
+  setTimeout(function() {
     $('#NooBox-Video-Indicator').addClass('noobox-hide');
-  },100);
-  $('#NooBox-Video-Indicator').html('<div id="NooBox-Video-Indicator-Icon">'+icon+'</div>'+text);
+  }, 100);
+  $('#NooBox-Video-Indicator').html('<div id="NooBox-Video-Indicator-Icon">' + icon + '</div>' + text);
 }
 
-function detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout){
+function detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout) {
   placeIndicator();
-  var index=getIndex(vid);
-  if(!index){
-    buildVideoStates([{event:'play',target:'playPause'},{event:'pause',target:'playPause'},{event:'volumechange',target:'volumeChange'},{event:'timeupdate',target:'timeUpdate'},{event:'ratechange',target:'rateChange'}]);
-    detectConflictAndAct(actFunction,v,actionId,conflictId,detectTimeout);
+  var index = getIndex(vid);
+  if (!index) {
+    buildVideoStates([{
+      event: 'play',
+      target: 'playPause'
+    }, {
+      event: 'pause',
+      target: 'playPause'
+    }, {
+      event: 'volumechange',
+      target: 'volumeChange'
+    }, {
+      event: 'timeupdate',
+      target: 'timeUpdate'
+    }, {
+      event: 'ratechange',
+      target: 'rateChange'
+    }, {
+		}]);
+    detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout);
     return;
   }
-  var conflictClass='NooBox-Video-Conflict-'+conflictId;
-  if(!$(vid).hasClass(conflictClass)){
+  var conflictClass = 'NooBox-Video-Conflict-' + conflictId;
+  if (!$(vid).hasClass(conflictClass)) {
     actFunction(v);
     conflictCount[index][actionId]--;
-    setTimeout(function(){
-      if(conflictCount[index][actionId]>0){
+    setTimeout(function() {
+      if (conflictCount[index][actionId] > 0) {
         $(vid).addClass(conflictClass);
         actFunction(v);
         conflictCount[index][actionId]--;
-        setTimeout(function(){
-          conflictCount[index][actionId]=0;
-        },111);
+        setTimeout(function() {
+          conflictCount[index][actionId] = 0;
+        }, 111);
       }
-    },222);
-  }
-  else{
+    }, 222);
+  } else {
     conflictCount[index][actionId]--;
-    setTimeout(function(){
-      if(conflictCount[index][actionId]<0){
+    setTimeout(function() {
+      if (conflictCount[index][actionId] < 0) {
         $(vid).removeClass(conflictClass);
         actFunction(v);
       }
-    },222);
+    }, 222);
   }
 }
 
-function playPause(v){
-  if(v.paused){
+function playPause(v) {
+  if (v.paused) {
     v.play();
     displayIndicator('Play');
-  }
-  else{
+  } else {
     v.pause();
     displayIndicator('Pause');
   }
 }
 
-function beyond(v){
-  if(beyondId==-1){
-    beyondId=setInterval(function(){
-      var prev=new Date().getTime();
-      var temp=new Date().getTime();
+function beyond(v) {
+  if (beyondId == -1) {
+    beyondId = setInterval(function() {
+      var prev = new Date().getTime();
+      var temp = new Date().getTime();
       ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
-      temp=new Date().getTime();
-      var dataURI=canvas.toDataURL("image/png");
-      temp=new Date().getTime();
-      chrome.runtime.sendMessage({job:'passToFront',message:{job:'videoBeyond',dataURI:dataURI,prev:prev}});
-      temp=new Date().getTime();
-    },200);
-  }
-  else{
+      temp = new Date().getTime();
+      var dataURI = canvas.toDataURL("image/png");
+      temp = new Date().getTime();
+      chrome.runtime.sendMessage({
+        job: 'passToFront',
+        message: {
+          job: 'videoBeyond',
+          dataURI: dataURI,
+          prev: prev
+        }
+      });
+      temp = new Date().getTime();
+    }, 200);
+  } else {
     clearInterval(beyondId);
-    beyondId=-1;
+    beyondId = -1;
   }
 }
 
 
-function rewind(v,step){
-  v.currentTime-=step;
-  displayIndicator(step+'s','&larr;');
+function rewind(v, step) {
+  v.currentTime -= step;
+  displayIndicator(step + 's', '&larr;');
 }
 
-function rewindSmall(v){
-  rewind(v,timeStep);
+function rewindSmall(v) {
+  rewind(v, timeStep);
 }
 
-function rewindBig(v){
-  rewind(v,timeStep*2);
+function rewindBig(v) {
+  rewind(v, timeStep * 2);
 }
 
-function rewindTiny(v){
-  rewind(v,1/fps);
+function rewindTiny(v) {
+  rewind(v, 1 / fps);
 }
 
-function forward(v,step){
-  v.currentTime+=step;
-  displayIndicator(step+'s','&rarr;');
+function forward(v, step) {
+  v.currentTime += step;
+  displayIndicator(step + 's', '&rarr;');
 }
 
-function forwardSmall(v){
-  forward(v,timeStep);
+function forwardSmall(v) {
+  forward(v, timeStep);
 }
 
-function forwardBig(v){
-  forward(v,timeStep*2);
+function forwardBig(v) {
+  forward(v, timeStep * 2);
 }
 
-function forwardTiny(v){
-  forward(v,1/fps);
+function forwardTiny(v) {
+  forward(v, 1 / fps);
 }
 
-function goTo(v,i){
-  v.currentTime=v.duration*i/10;
-  displayIndicator((i*10)+'%','&commat;');
+function goTo(v, i) {
+  v.currentTime = v.duration * i / 10;
+  displayIndicator((i * 10) + '%', '&commat;');
 }
 
-function volumeUp(v,step){
-  if(v.volume.toFixed(2)<=1-step){
-    v.volume=(v.volume+step).toFixed(2);
-    displayIndicator(v.volume+'%','&uarr;');
+function volumeUp(v) {
+  if (v.volume.toFixed(2) <= 1 - volumeStep) {
+    v.volume = (v.volume + volumeStep).toFixed(2);
+    displayIndicator(v.volume + '%', '&uarr;');
   }
 }
 
-function volumeDown(v,step){
-  if(v.volume.toFixed(2)>=step){
-    v.volume=(v.volume-step).toFixed(2);
-    displayIndicator(v.volume+'%','&darr;');
+function volumeDown(v) {
+  if (v.volume.toFixed(2) >= volumeStep) {
+    v.volume = (v.volume - volumeStep).toFixed(2);
+    displayIndicator(v.volume + '%', '&darr;');
   }
 }
 
-function speedUp(v,step){
-  if(v.playbackRate.toFixed(2)<=16-step){
-    v.playbackRate=(v.playbackRate+step).toFixed(2);
-    displayIndicator(v.playbackRate,'&raquo;');
+function speedUp(v) {
+	const step = playbackRateStep;
+  if (v.playbackRate.toFixed(2) <= 16 - step) {
+		console.log('changing');
+		console.log(v.playbackRate);
+    v.playbackRate = (v.playbackRate + step).toFixed(2);
+    displayIndicator(v.playbackRate, '&raquo;');
+		console.log(v.playbackRate);
   }
 }
 
-function slowDown(v,step){
-  if(v.playbackRate.toFixed(2)>=step+0.0625){
-    v.playbackRate=(v.playbackRate-step).toFixed(2);
-    displayIndicator(v.playbackRate,'&laquo;');
+function slowDown(v) {
+	console.log(v.playbackRate.toFixed(2) <= 16 - step);
+  if (v.playbackRate.toFixed(2) >= step + 0.0625) {
+    v.playbackRate = (v.playbackRate - step).toFixed(2);
+    displayIndicator(v.playbackRate, '&laquo;');
   }
 }
 
-function rotate(v,step){
-  var vv=$(v);
-  var matrix=vv.css('transform')||vv.css('-webkit-transform');
+function rotate(v, step) {
+  var vv = $(v);
+  var matrix = vv.css('transform') || vv.css('-webkit-transform');
   var deg;
-  if(matrix !== 'none') {
-    var values=matrix.split('(')[1].split(')')[0].split(',');
-    var a=values[0];
-    var b=values[1];
-    deg=Math.round(Math.atan2(b, a) * (180/Math.PI));
+  if (matrix !== 'none') {
+    var values = matrix.split('(')[1].split(')')[0].split(',');
+    var a = values[0];
+    var b = values[1];
+    deg = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+  } else {
+    deg = 0;
   }
-  else{
-    deg=0;
-  }
-  deg = (deg+step)%360;
-  vv.css('transform','rotate('+deg+'deg)');
-  vv.css('-webkit-transform','rotate('+deg+'deg)');
+  deg = (deg + step) % 360;
+  vv.css('transform', 'rotate(' + deg + 'deg)');
+  vv.css('-webkit-transform', 'rotate(' + deg + 'deg)');
 }
 
-function mute(v){
-  v.muted=!v.muted;
-  if(v.muted){
+function mute(v) {
+  v.muted = !v.muted;
+  if (v.muted) {
     displayIndicator('<span style="font-size:48px;text-decoration:line-through;">&sung;</span>');
-  }
-  else{
+  } else {
     displayIndicator('<span style="font-size:48px;">&sung;</span>');
   }
 }
 
-function toggleFullscreen(v){
+function toggleFullscreen(v) {
   conflictCount.fullscreen--;
-  if(document.webkitFullscreenElement===v){
+  if (document.webkitFullscreenElement === v) {
     document.webkitExitFullscreen();
-  }
-  else{
+  } else {
     v.webkitRequestFullScreen();
   }
 }
 
-function download(v){
+function download(v) {
   var link = document.createElement("a");
   link.href = v.currentSrc;
   link.download = 'video';
@@ -349,20 +385,20 @@ function download(v){
 
 //check if any video is in the cursor range
 //if not, check which video change it's playing state
-function getVideo(e){
-  var v=e.target;
-  if($(v).is('video')){
+function getVideo(e) {
+  var v = e.target;
+  if ($(v).is('video')) {
     return v;
   }
-  v=null;
-  var videoList=$('video');
+  v = null;
+  var videoList = $('video');
   var pos;
-  var x=e.pageX;
-  var y=e.pageY;
-  for(var i=0;i<videoList.length;i++){
-    pos=$(videoList[i]).offset();
-    if(!(x<pos.left||y<pos.top||x>pos.left+$(videoList[i]).width()||y>pos.top+$(videoList[i]).height())){
-      v=videoList[i];
+  var x = e.pageX;
+  var y = e.pageY;
+  for (var i = 0; i < videoList.length; i++) {
+    pos = $(videoList[i]).offset();
+    if (!(x < pos.left || y < pos.top || x > pos.left + $(videoList[i]).width() || y > pos.top + $(videoList[i]).height())) {
+      v = videoList[i];
       break;
     }
   }
@@ -370,80 +406,81 @@ function getVideo(e){
 }
 
 //get the first video if no video is found
-function detectVideo(){
-  if(!vid){
-    vid=$('video')[0];
-    if(detectVideoTime+1000<new Date().getTime()){
+function detectVideo() {
+  if (!vid) {
+    vid = $('video')[0];
+    if (detectVideoTime + 1000 < new Date().getTime()) {
       clearInterval(detectVideoHandle);
     }
-  }
-  else{
+  } else {
     clearInterval(detectVideoHandle);
   }
 }
 
-function getIndex(v){
-  var className=$(v).attr('class')||'';
-  var index=(className.match(/NooBox-Video-(\d+)/)||[null,null])[1];
+function getIndex(v) {
+  var className = $(v).attr('class') || '';
+  var index = (className.match(/NooBox-Video-(\d+)/) || [null, null])[1];
   return index;
 }
 
-function buildVideoStates(listenerList){
-  var videoList=$('video');
-  for(var i=0;i<videoList.length;i++){
-    var v=videoList[i];
-    var index=getIndex(v);
-    if(index==null){
-      conflictCount.push({playPause:0,volumeChange:0});
-      var newIndex=conflictCount.length-1;
-      $(v).addClass('NooBox-Video-'+(newIndex));
-      for(var j=0;j<listenerList.length;j++){
-        var listener=listenerList[j];
-        $(v).on(listener.event,incCounter.bind(null,newIndex,listener.target));
+function buildVideoStates(listenerList) {
+  var videoList = $('video');
+  for (var i = 0; i < videoList.length; i++) {
+    var v = videoList[i];
+    var index = getIndex(v);
+    if (index == null) {
+      conflictCount.push({
+        playPause: 0,
+        volumeChange: 0
+      });
+      var newIndex = conflictCount.length - 1;
+      $(v).addClass('NooBox-Video-' + (newIndex));
+      for (var j = 0; j < listenerList.length; j++) {
+        var listener = listenerList[j];
+        $(v).on(listener.event, incCounter.bind(null, newIndex, listener.target));
       }
     }
   }
 }
 
-function incCounter(index,target){
+function incCounter(index, target) {
   conflictCount[index][target]++;
 }
 
-function placeIndicator(){
-  if(vid){
-    var newPos=$(vid).offset();
-    newPos.left+=($(vid).width()-indicatorSize.width)/2;
-    newPos.top+=($(vid).height()-indicatorSize.height)/2;
+function placeIndicator() {
+  if (vid) {
+    var newPos = $(vid).offset();
+    newPos.left += ($(vid).width() - indicatorSize.width) / 2;
+    newPos.top += ($(vid).height() - indicatorSize.height) / 2;
     $('#NooBox-Video-Indicator').offset(newPos);
     $('#NooBox-Video-Indicator').show();
     $('#NooBox-Video-Indicator').addClass('noobox-hide');
   }
 }
 
-document.addEventListener("DOMContentLoaded", function(){
-  isOn('videoControl',function(){
-    var host=window.location.hostname;
-    enabledDBId='videoControl_website_'+host;
+document.addEventListener("DOMContentLoaded", function() {
+  isOn('videoControl', function() {
+    var host = window.location.hostname;
+    enabledDBId = 'videoControl_website_' + host;
     getDB(enabledDBId);
   });
 });
 
-function get(key,callback){
-  chrome.storage.sync.get(key,function(result){
-    if(callback)
+function get(key, callback) {
+  chrome.storage.sync.get(key, function(result) {
+    if (callback)
       callback(result[key]);
   });
 }
 
-function isOn(key,callbackTrue,callbackFalse,param){
-  get(key,function(value){
-    if(value=='1'||value==true){
-      if(callbackTrue){
+function isOn(key, callbackTrue, callbackFalse, param) {
+  get(key, function(value) {
+    if (value == '1' || value == true) {
+      if (callbackTrue) {
         callbackTrue(param);
       }
-    }
-    else{
-      if(callbackFalse){
+    } else {
+      if (callbackFalse) {
         callbackFalse(param);
       }
     }

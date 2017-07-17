@@ -1,7 +1,7 @@
 //The router of Image search, all component is under Core2.jsx
-var React= require('react');
-var ReactDOM = require('react-dom');
-var ImageSearch=require('./Result.jsx');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ImageSearch from './Result.jsx';
 
 //Log page views
 function logPageView(){

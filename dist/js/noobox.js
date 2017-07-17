@@ -31299,10 +31299,12 @@
 	    e.stopPropagation();
 	    e.preventDefault();
 	    var url = URL.createObjectURL(e.dataTransfer.files[0]);
+	    console.log(url);
 	    $('#uploadedImage').attr('src', url);
 	  },
 	  upload: function upload(e) {
 	    var url = URL.createObjectURL(e.target.files[0]);
+	    console.log(url);
 	    $('#uploadedImage').attr('src', url);
 	  },
 	  search: function search(e) {
@@ -31346,10 +31348,10 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'btn line' },
-	          _react2.default.createElement('input', { onChange: this.upload, type: 'file', id: 'imageUpload' }),
+	          _react2.default.createElement('input', { onChange: this.upload, type: 'file', accept: 'image/*', id: 'imageUpload' }),
 	          _react2.default.createElement(
 	            'label',
-	            { id: 'imageUploadLabel', htmlFor: 'imageUpload' },
+	            { id: 'imageUploadLabel', onDragOver: this.onDragOver, onDrop: this.onDrop, htmlFor: 'imageUpload' },
 	            GL('upload_image')
 	          )
 	        ),
@@ -31815,7 +31817,7 @@
 	    });
 	  },
 	  render: function render() {
-	    var recordList = (this.state.recordList || [{ name: 'Nothing is here yet', id: 'mgehojanhfgnndgffijeglgahakgmgkj' }]).map(function (record, index) {
+	    var recordList = (this.state.recordList || [{ name: 'Nothing is here yet', id: 'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~' }]).map(function (record, index) {
 	      return _react2.default.createElement(
 	        'tr',
 	        { key: index },

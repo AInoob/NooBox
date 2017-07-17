@@ -37,10 +37,12 @@ module.exports = React.createClass({
     e.stopPropagation();
     e.preventDefault();
     const url = URL.createObjectURL(e.dataTransfer.files[0]);
+		console.log(url);
     $('#uploadedImage').attr('src', url);
   },
   upload: function(e) {
     const url = URL.createObjectURL(e.target.files[0]);
+		console.log(url);
     $('#uploadedImage').attr('src', url);
   },
   search: function(e) {
@@ -71,8 +73,8 @@ module.exports = React.createClass({
         <div id="info" className="container">
           <p className="important line">{GL('totalSearches')+' : '+this.state.totalImageSearch}</p>
           <div className="btn line">
-            <input onChange={this.upload} type='file' id='imageUpload' />
-            <label id="imageUploadLabel" htmlFor="imageUpload">{GL('upload_image')}</label>
+            <input onChange={this.upload} type='file' accept="image/*" id='imageUpload' />
+            <label id="imageUploadLabel" onDragOver={this.onDragOver} onDrop={this.onDrop} htmlFor="imageUpload">{GL('upload_image')}</label>
           </div>
           <img onError={this.notImage} onLoad={this.search} id='uploadedImage' />
           <div id="icons" className="line">
