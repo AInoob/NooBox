@@ -13,7 +13,7 @@ module.exports={
 		videoControl: './src/js/videoControl.js',
   },
   output: {
-    path: 'dist/js',
+    path: 'build/js',
     filename: '[name].js'
   },
   module: {
