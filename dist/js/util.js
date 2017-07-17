@@ -51,35 +51,34 @@
 	window.isZh = false;
 
 	chrome.i18n.getAcceptLanguages((data) => {
-	  if(data.indexOf('zh') != -1) {
+	  if (data.indexOf('zh') != -1) {
 	    isZh = true;
 	    try {
-	      if(chrome.i18n.getUILanguage().indexOf('zh') == -1) {
+	      if (chrome.i18n.getUILanguage().indexOf('zh') == -1) {
 	        isZh = false;
 	      }
-	    } catch(e) {
-	    }
+	    } catch (e) {}
 	  }
 	})
 
 	window.initTimeago = () => {
-	  if(isZh){
+	  if (isZh) {
 	    timeago.register('locale', (number, index) => {
 	      return [
-					['刚刚', '片刻后'],
-					['%s秒前', '%s秒后'],
-					['1分钟前', '1分钟后'],
-					['%s分钟前', '%s分钟后'],
-					['1小时前', '1小时后'],
-					['%s小时前', '%s小时后'],
-					['1天前', '1天后'],
-					['%s天前', '%s天后'],
-					['1周前', '1周后'],
-					['%s周前', '%s周后'],
-					['1月前', '1月后'],
-					['%s月前', '%s月后'],
-					['1年前', '1年后'],
-					['%s年前', '%s年后']
+	        ['刚刚', '片刻后'],
+	        ['%s秒前', '%s秒后'],
+	        ['1分钟前', '1分钟后'],
+	        ['%s分钟前', '%s分钟后'],
+	        ['1小时前', '1小时后'],
+	        ['%s小时前', '%s小时后'],
+	        ['1天前', '1天后'],
+	        ['%s天前', '%s天后'],
+	        ['1周前', '1周后'],
+	        ['%s周前', '%s周后'],
+	        ['1月前', '1月后'],
+	        ['%s月前', '%s月后'],
+	        ['1年前', '1年后'],
+	        ['%s年前', '%s年后']
 	      ][index];
 	    });
 	  }
@@ -87,25 +86,24 @@
 	}
 
 	//Sorting strings without case sensitivity
-	window.compare = (a,b) => {
+	window.compare = (a, b) => {
 	  let cursor = 0;
-	  const lenA=a.length;
-	  const lenB=b.length;
-	  const aa=a.toLowerCase();
-	  const bb=b.toLowerCase();
-	  let tempA,tempB;
-	  while(lenA > cursor && lenB > cursor) {
+	  const lenA = a.length;
+	  const lenB = b.length;
+	  const aa = a.toLowerCase();
+	  const bb = b.toLowerCase();
+	  let tempA, tempB;
+	  while (lenA > cursor && lenB > cursor) {
 	    tempA = aa.charCodeAt(cursor);
 	    tempB = bb.charCodeAt(cursor);
-	    if(tempA == tempB) {
+	    if (tempA == tempB) {
 	      cursor++;
 	      continue;
-	    }
-	    else {
-	      return tempA-tempB;
+	    } else {
+	      return tempA - tempB;
 	    }
 	  }
-	  return lenA-lenB;
+	  return lenA - lenB;
 	}
 
 	window.getLocale = (string) => {
@@ -121,19 +119,18 @@
 
 	//get xxx.com
 	window.extractDomain = (url) => {
-	  if(!url){
+	  if (!url) {
 	    return 'error';
 	  }
 	  var domain;
 	  if (url.indexOf("://") > -1) {
 	    domain = url.split('/')[2];
-	  }
-	  else {
+	  } else {
 	    domain = url.split('/')[0];
 	  }
 	  domain = domain.split(':')[0];
-	  var list=domain.split('.');
-	  return list[list.length-2]+'.'+list[list.length-1];
+	  var list = domain.split('.');
+	  return list[list.length - 2] + '.' + list[list.length - 1];
 	}
 
 	window.capFirst = (elem) => {
@@ -142,10 +139,9 @@
 	}
 
 	window.getString = (elem) => {
-	  if(elem === undefined || elem === null){
+	  if (elem === undefined || elem === null) {
 	    return '';
-	  }
-	  else {
+	  } else {
 	    return elem.toString();
 	  }
 	}
@@ -156,35 +152,34 @@
 	  }
 	  name = name.replace(/[\[\]]/g, "\\$&");
 	  const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-	      results = regex.exec(url);
+	    results = regex.exec(url);
 	  if (!results) return null;
 	  if (!results[2]) return '';
 	  return decodeURIComponent(results[2].replace(/\+/g, " "));
 	}
 
 	window.dataUrlFromUrl = (link, callback) => {
-	  const img=new Image();
+	  const img = new Image();
 	  img.addEventListener('load', () => {
 	    const canvas = document.createElement("canvas");
 	    canvas.width = img.width;
 	    canvas.height = img.height;
 	    const ctx = canvas.getContext('2d');
-	    ctx.drawImage(img,0,0,img.width,img.height);
+	    ctx.drawImage(img, 0, 0, img.width, img.height);
 	    const dataUrl = canvas.toDataURL();
 	    callback(dataUrl);
 	  });
-	  img.src=link;
+	  img.src = link;
 	}
 
-	window.isOn = (key,callbackTrue,callbackFalse,param) => {
+	window.isOn = (key, callbackTrue, callbackFalse, param) => {
 	  get(key, (value) => {
-	    if(value == '1' || value == true) {
-	      if(callbackTrue) {
+	    if (value == '1' || value == true) {
+	      if (callbackTrue) {
 	        callbackTrue(param);
 	      }
-	    }
-	    else {
-	      if(callbackFalse) {
+	    } else {
+	      if (callbackFalse) {
 	        callbackFalse(param);
 	      }
 	    }
@@ -193,11 +188,10 @@
 
 	window.setIfNull = (key, setValue, callback) => {
 	  get(key, (value) => {
-	    if(value == undefined || value == null) {
+	    if (value == undefined || value == null) {
 	      set(key, setValue, callback);
-	    }
-	    else {
-	      if(callback) {
+	    } else {
+	      if (callback) {
 	        callback();
 	      }
 	    }
@@ -209,15 +203,20 @@
 	  const open = indexedDB.open("NooBox", 1);
 	  open.onupgradeneeded = () => {
 	    const db = open.result;
-	    const store = db.createObjectStore("Store", { keyPath: "key" });
+	    const store = db.createObjectStore("Store", {
+	      keyPath: "key"
+	    });
 	  };
 	  open.onsuccess = () => {
 	    const db = open.result;
 	    const tx = db.transaction("Store", "readwrite");
 	    const store = tx.objectStore("Store");
-	    const action1=store.put({ key, value });
+	    const action1 = store.put({
+	      key,
+	      value
+	    });
 	    action1.onsuccess = () => {
-	      if(callback) {
+	      if (callback) {
 	        callback();
 	      }
 	    }
@@ -228,12 +227,14 @@
 	}
 
 	window.getDB = (key, callback) => {
-	  if(callback) {
+	  if (callback) {
 	    const indexedDB = window.indexedDB;
 	    const open = indexedDB.open("NooBox", 1);
 	    open.onupgradeneeded = () => {
 	      const db = open.result;
-	      const store = db.createObjectStore("Store", { keyPath: "key" });
+	      const store = db.createObjectStore("Store", {
+	        keyPath: "key"
+	      });
 	    };
 	    open.onsuccess = () => {
 	      const db = open.result;
@@ -241,10 +242,9 @@
 	      const store = tx.objectStore("Store");
 	      const action1 = store.get(key);
 	      action1.onsuccess = (e) => {
-	        if(e.target.result) {
+	        if (e.target.result) {
 	          callback(e.target.result.value);
-	        }
-	        else {
+	        } else {
 	          callback(null);
 	        }
 	      }
@@ -263,38 +263,37 @@
 
 	window.get = (key, callback) => {
 	  chrome.storage.sync.get(key, (result) => {
-	    if(callback) {
-				callback(result[key]);
-			}
+	    if (callback) {
+	      callback(result[key]);
+	    }
 	  });
 	}
 
 	window.getImageSearchEngines = (list, callback, i, result, shared) => {
-	  if(i == null) {
+	  if (i == null) {
 	    i = -1;
 	    shared = [];
-	  }
-	  else {
-	    if(result) {
+	  } else {
+	    if (result) {
 	      shared.push(list[i]);
 	    }
-	    if(i == list.length - 1) {
+	    if (i == list.length - 1) {
 	      callback(shared);
 	    }
 	  }
-	  if(i < list.length - 1) {
+	  if (i < list.length - 1) {
 	    isOn(
-				"imageSearchUrl_"+list[i+1],
-				getImageSearchEngines.bind(null, list, callback, i+1, true, shared),
-				getImageSearchEngines.bind(null, list, callback, i+1, false, shared)
-			);
+	      "imageSearchUrl_" + list[i + 1],
+	      getImageSearchEngines.bind(null, list, callback, i + 1, true, shared),
+	      getImageSearchEngines.bind(null, list, callback, i + 1, false, shared)
+	    );
 	  }
 	}
 
 	window.dataURItoBlob = (dataURI) => {
 	  try {
 	    const byteString = atob(dataURI.split(',')[1]);
-	  } catch(e) {
+	  } catch (e) {
 	    console.log(e);
 	  }
 	  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
@@ -303,47 +302,49 @@
 	  for (let i = 0; i < byteString.length; i++) {
 	    ia[i] = byteString.charCodeAt(i);
 	  }
-	  const blob = new Blob([ab], { type: mimeString });
+	  const blob = new Blob([ab], {
+	    type: mimeString
+	  });
 	  return blob;
 	}
 
 	window.loadIframe = (url, callback) => {
 	  $(() => {
-	    var ifr=$('<iframe/>', {
+	    var ifr = $('<iframe/>', {
 	      id: 'baiduIframe',
 	      src: url,
 	      style: 'display:none',
 	    });
 	    $('#baiduIframe').on('load', callback);
-	    $('body').append(ifr);    
+	    $('body').append(ifr);
 	  });
 	}
 	const BASE64_MARKER = ';base64,';
 
 	window.convertDataURIToBinary = (dataURI) => {
-	  try{
+	  try {
 	    const base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
 	    const base64 = dataURI.substring(base64Index);
 	    const raw = window.atob(base64);
 	    const rawLength = raw.length;
 	    const array = new Uint8Array(new ArrayBuffer(rawLength));
-	    for(let i = 0; i < rawLength; i++) {
+	    for (let i = 0; i < rawLength; i++) {
 	      array[i] = raw.charCodeAt(i);
 	    }
 	    return array;
-	  } catch(e) {
-	    try{
-	      dataURI=dataURI.replace(/%2/g,'/');
+	  } catch (e) {
+	    try {
+	      dataURI = dataURI.replace(/%2/g, '/');
 	      const base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
 	      const base64 = dataURI.substring(base64Index);
 	      const raw = window.atob(base64);
 	      const rawLength = raw.length;
 	      const array2 = new Uint8Array(new ArrayBuffer(rawLength));
-	      for(let j = 0; j < rawLength; j++) {
+	      for (let j = 0; j < rawLength; j++) {
 	        array2[j] = raw.charCodeAt(j);
 	      }
-	      return array2; 
-	    } catch(e) {
+	      return array2;
+	    } catch (e) {
 	      return array2;
 	    }
 	    console.log(e);
@@ -358,9 +359,11 @@
 	  xhr.open('GET', uri, true);
 	  xhr.responseType = 'blob';
 
-	  xhr.onload = (e) => {
+	  xhr.onload = function(e) {
 	    if (this.status == 200) {
-	      const blob = new Blob([this.response], {type: 'image/png'});;
+	      const blob = new Blob([this.response], {
+	        type: 'image/png'
+	      });;
 	      if (callback) {
 	        callback(blob);
 	      }

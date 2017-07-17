@@ -46,16 +46,26 @@
 
 	'use strict';
 
-	//The router of Image search, all component is under Core2.jsx
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(31);
-	var ImageSearch = __webpack_require__(170);
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(31);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _Result = __webpack_require__(170);
+
+	var _Result2 = _interopRequireDefault(_Result);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	//Log page views
 	function logPageView() {}
 
 	//image.search.html will be update to different pathname based on the parameter
-	ReactDOM.render(React.createElement(ImageSearch, null), document.getElementById('imageSearchPage'));
+	//The router of Image search, all component is under Core2.jsx
+	_reactDom2.default.render(_react2.default.createElement(_Result2.default, null), document.getElementById('imageSearchPage'));
 
 /***/ }),
 /* 1 */
@@ -20830,23 +20840,41 @@
 
 	'use strict';
 
-	var React = __webpack_require__(1);
-	var Helmet = __webpack_require__(171);
-	var Link = __webpack_require__(180).Link;
-	var Website = __webpack_require__(238);
-	module.exports = React.createClass({
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactHelmet = __webpack_require__(171);
+
+	var _reactHelmet2 = _interopRequireDefault(_reactHelmet);
+
+	var _reactRouter = __webpack_require__(180);
+
+	var _Website = __webpack_require__(238);
+
+	var _Website2 = _interopRequireDefault(_Website);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = _react2.default.createClass({
 	  displayName: 'Result',
 	  getInitialState: function getInitialState() {
-	    return { order: 'relevance', imageSizes: {}, loadBaidu: false };
+	    return {
+	      order: 'relevance',
+	      imageSizes: {},
+	      loadBaidu: false
+	    };
 	  },
 	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+
 	    shared.updateOrder = this.updateOrder;
 	    this.getInitialData();
 	    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	      if (request.job == 'image_result_update' && request.cursor == getParameterByName('cursor')) {
-	        this.getInitialData();
+	        _this.getInitialData();
 	      }
-	    }.bind(this));
+	    });
 	    get('userId', function (userId) {
 	      get('version', function (version) {
 	        var hi = {
@@ -20869,19 +20897,22 @@
 	    $(document).ready(function () {
 	      $('select').material_select();
 	      $('.dropdown-content li').on('click', function (e) {
-	        shared.updateOrder($(this).text());
+	        shared.updateOrder($(_this).text());
 	      });
 	    });
 	  },
 	  uploadReSearch: function uploadReSearch() {
 	    var img = $('#imageInput')[0];
 	    var workerCanvas = document.createElement('canvas');
-	    workerCtx = workerCanvas.getContext('2d');
+	    var workerCtx = workerCanvas.getContext('2d');
 	    workerCanvas.width = img.naturalWidth;
 	    workerCanvas.height = img.naturalHeight;
 	    workerCtx.drawImage(img, 0, 0);
 	    var imgDataURI = workerCanvas.toDataURL();
-	    chrome.runtime.sendMessage({ job: 'imageSearch_reSearch', data: imgDataURI }, function (response) {
+	    chrome.runtime.sendMessage({
+	      job: 'imageSearch_reSearch',
+	      data: imgDataURI
+	    }, function (response) {
 	      window.close();
 	    });
 	  },
@@ -20903,27 +20934,31 @@
 	    return weight;
 	  },
 	  reloadBaiduImage: function reloadBaiduImage(x) {
+	    var _this2 = this;
+
 	    var allLoaded = true;
 	    $('.website.baidu').find('img.image').each(function (e) {
-	      if (!this.naturalWidth || this.naturalWidth == 0) {
-	        var a = this.src;
+	      if (!_this2.naturalWidth || _this2.naturalWidth == 0) {
+	        var a = _this2.src;
 	        var image = new Image();
 	        image.onload = function () {
+	          var _this3 = this;
+
 	          if (image.naturalWidth && image.naturalWidth > 0) {
 	            this.src = '';
 	            setTimeout(function () {
-	              this.src = a;
-	            }.bind(this), 100);
+	              _this3.src = a;
+	            }, 100);
 	          }
-	        }.bind(this);
+	        };
 	        image.src = a;
 	      }
-	      if (!this.naturalWidth || this.naturalWidth == 0) {
+	      if (!_this2.naturalWidth || _this2.naturalWidth == 0) {
 	        allLoaded = false;
 	      }
 	    });
 	    if (!allLoaded) {
-	      var newWaiting = 2 * x;
+	      newWaiting = 2 * x;
 	      newWaiting = newWaiting > 2000 ? 2000 : newWaiting;
 	      setTimeout(this.reloadBaiduImage.bind(this, newWaiting), newWaiting);
 	    }
@@ -20949,33 +20984,35 @@
 	        }
 	        websites.push(website);
 	      }
-	      for (var j = 0; j < (result[engine].websites || []).length; j++) {
-	        var website = result[engine].websites[j];
-	        website.weight = this.getWeight(false, engine, j);
-	        var imageSize = this.state.imageSizes[website.imageUrl];
-	        if (imageSize) {
-	          website.width = imageSize.width;
-	          website.height = imageSize.width;
-	          website.area = imageSize.area;
+	      for (var _j = 0; _j < (result[engine].websites || []).length; _j++) {
+	        var _website = result[engine].websites[_j];
+	        _website.weight = this.getWeight(false, engine, _j);
+	        var _imageSize = this.state.imageSizes[_website.imageUrl];
+	        if (_imageSize) {
+	          _website.width = _imageSize.width;
+	          _website.height = _imageSize.width;
+	          _website.area = _imageSize.area;
 	        }
-	        websites.push(website);
+	        websites.push(_website);
 	      }
 	    }
 	    this.setState({ websites: websites });
 	  },
 	  getInitialData: function getInitialData() {
+	    var _this4 = this;
+
 	    var cursor = getParameterByName('cursor');
 	    getDB('NooBox.Image.result_' + cursor, function (data) {
-	      this.setState({ result: data });
-	      this.updateWebsites();
+	      _this4.setState({ result: data });
+	      _this4.updateWebsites();
 	      console.log(data);
-	    }.bind(this));
+	    });
 	  },
 	  getKeyword: function getKeyword(engine) {
-	    return React.createElement(
+	    return _react2.default.createElement(
 	      'a',
 	      { target: '_blank', href: ((this.state.result || {})[engine] || {}).url, className: 'keyword' },
-	      React.createElement('img', { src: '/thirdParty/' + engine + '.png' }),
+	      _react2.default.createElement('img', { src: '/thirdParty/' + engine + '.png' }),
 	      ((this.state.result || {})[engine] || {}).keyword || '(none)'
 	    );
 	  },
@@ -20983,7 +21020,11 @@
 	    if (this.state.imageSizes[url]) {
 	      return this.state.imageSizes[url];
 	    } else {
-	      return { width: '', height: '', area: '' };
+	      return {
+	        width: '',
+	        height: '',
+	        area: ''
+	      };
 	    }
 	  },
 	  updateImageSize: function updateImageSize(index, url, width, height) {
@@ -21010,7 +21051,9 @@
 	    } else if (this.state.order == 'height') {
 	      r = bb.height - aa.height;
 	    }
-	    if (r == 0) r = b.weight - a.weight;
+	    if (r == 0) {
+	      r = b.weight - a.weight;
+	    }
 	    if (r == 0) {
 	      r = compare(b.link + b.searchEngine, a.link + a.searchEngine);
 	    }
@@ -21027,10 +21070,12 @@
 	    return r;
 	  },
 	  getWebsite: function getWebsite() {
+	    var _this5 = this;
+
 	    var websites = this.state.websites || [];
 	    return websites.sort(this.sort).map(function (website, index) {
-	      return React.createElement(Website, { key: index, getImageSize: this.getImageSize.bind(this, website.imageUrl), updateImageSize: this.updateImageSize.bind(this, index), data: website });
-	    }.bind(this));
+	      return _react2.default.createElement(_Website2.default, { key: index, getImageSize: _this5.getImageSize.bind(_this5, website.imageUrl), updateImageSize: _this5.updateImageSize.bind(_this5, index), data: website });
+	    });
 	  },
 	  updateOrder: function updateOrder(order) {
 	    switch (order) {
@@ -21056,13 +21101,13 @@
 	    if (source == 'dataURI') {
 	      source = result.dataURI;
 	    } else {
-	      var uploadReSearch = React.createElement(
+	      uploadReSearch = _react2.default.createElement(
 	        'div',
 	        { className: 'btn', onClick: this.uploadReSearch },
 	        GL('ls_5')
 	      );
 	    }
-	    var keywords = React.createElement(
+	    var keywords = _react2.default.createElement(
 	      'div',
 	      null,
 	      this.getKeyword('google'),
@@ -21070,74 +21115,74 @@
 	      this.getKeyword('bing')
 	    );
 	    var icons = (result.engines || []).map(function (elem, index) {
-	      return React.createElement(
+	      return _react2.default.createElement(
 	        'a',
 	        { key: index, className: "icon " + result[elem].result, target: '_blank', href: (result[elem] || {}).url },
-	        React.createElement('img', { src: '/thirdParty/' + elem + '.png' })
+	        _react2.default.createElement('img', { src: '/thirdParty/' + elem + '.png' })
 	      );
 	    });
-	    var filter = React.createElement(
+	    var filter = _react2.default.createElement(
 	      'div',
 	      { className: 'input-field col s12' },
-	      React.createElement(
+	      _react2.default.createElement(
 	        'select',
 	        { defaultValue: 'relevance', onChange: this.updateOrder },
-	        React.createElement(
+	        _react2.default.createElement(
 	          'option',
 	          { value: 'relevance' },
 	          GL('relevance')
 	        ),
-	        React.createElement(
+	        _react2.default.createElement(
 	          'option',
 	          { value: 'area' },
 	          GL('area')
 	        ),
-	        React.createElement(
+	        _react2.default.createElement(
 	          'option',
 	          { value: 'width' },
 	          GL('width')
 	        ),
-	        React.createElement(
+	        _react2.default.createElement(
 	          'option',
 	          { value: 'height' },
 	          GL('height')
 	        )
 	      ),
-	      React.createElement(
+	      _react2.default.createElement(
 	        'label',
 	        null,
 	        GL('sortBy')
 	      )
 	    );
-	    var brief = React.createElement(
+	    var brief = _react2.default.createElement(
 	      'div',
 	      { id: 'brief', className: 'card horizontal' },
-	      React.createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { className: 'card-image' },
-	        React.createElement('img', { id: 'imageInput', src: source })
+	        _react2.default.createElement('img', { id: 'imageInput', src: source })
 	      ),
-	      React.createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { className: 'card-stacked' },
-	        React.createElement(
+	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-content' },
 	          keywords
 	        ),
-	        React.createElement(
+	        _react2.default.createElement(
 	          'div',
 	          { className: 'card-action' },
 	          icons
 	        )
 	      )
 	    );
-	    var websites = React.createElement(
+	    var websites = _react2.default.createElement(
 	      'div',
 	      { className: 'websites' },
 	      this.getWebsite()
 	    );
-	    return React.createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { id: 'imageSearchResult', className: 'container' },
 	      brief,
