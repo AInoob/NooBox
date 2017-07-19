@@ -120,7 +120,6 @@ function init() {
           job: 'videoControl_use'
         });
       }
-			console.log(k);
       switch (k) {
         case 'k':
           detectConflictAndAct(playPause, vid, 'playPause', 'kPlayPause', 111);
@@ -322,16 +321,13 @@ function volumeDown(v) {
 function speedUp(v) {
 	const step = playbackRateStep;
   if (v.playbackRate.toFixed(2) <= 16 - step) {
-		console.log('changing');
-		console.log(v.playbackRate);
     v.playbackRate = (v.playbackRate + step).toFixed(2);
     displayIndicator(v.playbackRate, '&raquo;');
-		console.log(v.playbackRate);
   }
 }
 
 function slowDown(v) {
-	console.log(v.playbackRate.toFixed(2) <= 16 - step);
+	const step = playbackRateStep;
   if (v.playbackRate.toFixed(2) >= step + 0.0625) {
     v.playbackRate = (v.playbackRate - step).toFixed(2);
     displayIndicator(v.playbackRate, '&laquo;');
