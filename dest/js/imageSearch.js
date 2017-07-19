@@ -27318,81 +27318,89 @@
 
 	'use strict';
 
-	//basically Website will display the website block and update image size if the image is loaded
-	var React = __webpack_require__(1);
-	module.exports = React.createClass({
-	  displayName: 'Website',
-	  getInitialState: function getInitialState() {
-	    return { focus: false };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var website = this.props.data;
-	    if (website.searchEngine == 'iqdb') {
-	      var match = website.description.match(/(\d+)×(\d+)/);
-	      if (match) {
-	        this.props.updateImageSize(website.imageUrl, parseInt(match[1]), parseInt(match[2]));
-	      }
-	    }
-	  },
-	  focus: function focus() {
-	    this.setState({ focus: !this.state.focus });
-	  },
-	  getSize: function getSize(e) {
-	    this.props.updateImageSize(e.target.src, e.target.naturalWidth, e.target.naturalHeight);
-	  },
-	  render: function render() {
-	    var hidden = '';
-	    var website = this.props.data;
-	    var focus = '';
-	    if (this.state.focus) {
-	      focus = ' focus';
-	    }
-	    var size = '';
-	    var imageSize = this.props.getImageSize();
-	    if (website.searchEngine && website.searchEngine != 'google' && website.searchEngine != 'iqdb') {
-	      size = imageSize.width + ' x ' + imageSize.height + ' - ';
-	    }
-	    var related = '';
-	    if (website.related) {
-	      related = ' related';
-	    }
-	    if (website.searchEngine == 'iqdb' && website.description.indexOf('No relevant matches') != -1) {
-	      hidden = ' hidden';
-	    }
-	    var horizontal = ' horizontal';
-	    if (focus) {
-	      horizontal = '';
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: "website card" + horizontal + focus + related + hidden },
-	      React.createElement(
-	        'div',
-	        { className: 'card-image' },
-	        React.createElement('img', { onLoad: this.getSize, onClick: this.focus, className: "image " + focus, src: website.imageUrl })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'card-stack container' },
-	        React.createElement(
-	          'div',
-	          { className: 'caard-content' },
-	          React.createElement(
-	            'div',
-	            { className: 'header' },
-	            React.createElement('img', { className: 'icon', src: '/thirdParty/' + website.searchEngine + '.png' }),
-	            React.createElement(
-	              'a',
-	              { target: '_blank', title: website.link, href: website.link },
-	              website.title
-	            )
-	          ),
-	          React.createElement('div', { className: 'description', dangerouslySetInnerHTML: { __html: size + website.description } })
-	        )
-	      )
-	    );
-	  }
-	});
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = _react2.default.createClass({
+		displayName: 'Website',
+		getInitialState: function getInitialState() {
+			return {
+				focus: false
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			var website = this.props.data;
+			if (website.searchEngine == 'iqdb') {
+				var match = website.description.match(/(\d+)×(\d+)/);
+				if (match) {
+					this.props.updateImageSize(website.imageUrl, parseInt(match[1]), parseInt(match[2]));
+				}
+			}
+		},
+		focus: function focus() {
+			this.setState({
+				focus: !this.state.focus
+			});
+		},
+		getSize: function getSize(e) {
+			this.props.updateImageSize(e.target.src, e.target.naturalWidth, e.target.naturalHeight);
+		},
+		render: function render() {
+			var hidden = '';
+			var website = this.props.data;
+			var focus = '';
+			if (this.state.focus) {
+				focus = ' focus';
+			}
+			var size = '';
+			var imageSize = this.props.getImageSize();
+			if (website.searchEngine && website.searchEngine != 'google' && website.searchEngine != 'iqdb') {
+				size = imageSize.width + ' x ' + imageSize.height + ' - ';
+			}
+			var related = '';
+			if (website.related) {
+				related = ' related';
+			}
+			if (website.searchEngine == 'iqdb' && website.description.indexOf('No relevant matches') != -1) {
+				hidden = ' hidden';
+			}
+			var horizontal = ' horizontal';
+			if (focus) {
+				horizontal = '';
+			}
+			return _react2.default.createElement(
+				'div',
+				{ className: "website card" + horizontal + focus + related + hidden },
+				_react2.default.createElement(
+					'div',
+					{ className: 'card-image' },
+					_react2.default.createElement('img', { onLoad: this.getSize, onClick: this.focus, className: "image " + focus, src: website.imageUrl })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'card-stack container' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'caard-content' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'header' },
+							_react2.default.createElement('img', { className: 'icon', src: '/thirdParty/' + website.searchEngine + '.png' }),
+							_react2.default.createElement(
+								'a',
+								{ target: '_blank', title: website.link, href: website.link },
+								website.title
+							)
+						),
+						_react2.default.createElement('div', { className: 'description', dangerouslySetInnerHTML: { __html: size + website.description } })
+					)
+				)
+			);
+		}
+	}); //basically Website will display the website block and update image size if the image is loaded
 
 /***/ })
 /******/ ]);

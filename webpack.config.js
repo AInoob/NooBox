@@ -1,9 +1,10 @@
 const webpack = require('webpack');
-var path=require('path');
-module.exports={
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
+module.exports = {
   entry: {
-    noobox:'./src/popup/NooBox.jsx',
-    imageSearch:'./src/imageSearch/ImageSearch.jsx',
+    noobox: './src/popup/NooBox.jsx',
+    imageSearch: './src/imageSearch/ImageSearch.jsx',
 		background: './src/background/background.js',
 		util: './src/js/util.js',
 		extractImages: './src/js/extractImages.js',
@@ -13,8 +14,8 @@ module.exports={
 		videoControl: './src/js/videoControl.js',
   },
   output: {
-    path: 'build/js',
-    filename: '[name].js'
+    path: 'dest',
+    filename: 'js/[name].js'
   },
   module: {
     loaders: [
@@ -30,6 +31,11 @@ module.exports={
   plugins:[
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
-    })
+    }),
+		new CopyWebpackPlugin([
+			{ from: './src/options.html' },
+			{ from: './src/popup/popup.html' },
+			{ from: './src/imageSearch/image.search.html' },
+		])
   ]
 }
