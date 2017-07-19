@@ -1,4 +1,4 @@
 /node_modules/
 /private/
-./yarn.lock
-./package-lock.json
+yarn.lock
+package-lock.json
