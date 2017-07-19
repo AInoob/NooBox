@@ -65,20 +65,20 @@
 	  });
 	}
 
-	var imgSet = {};
-	var notImgSet = {};
-	var isImgSet = {};
-	var focus = null;
+	let imgSet = {};
+	const notImgSet = {};
+	const isImgSet = {};
+	let focus = null;
 
 	function getImages() {
-	  var linkImage = $('#linkImage').prop('checked');
-	  var notification = false;
-	  var val = $('#NooBox-extractImages-selector-range').val();
-	  var gallery = $('#NooBox-extractImages-gallery')[0];
+	  const linkImage = $('#linkImage').prop('checked');
+	  let notification = false;
+	  const val = $('#NooBox-extractImages-selector-range').val();
+	  const gallery = $('#NooBox-extractImages-gallery')[0];
 	  $(gallery).empty();
 	  imgSet = {};
-	  var tempFocus2 = focus;
-	  for (var i = 1; i < val; i++) {
+	  let tempFocus2 = focus;
+	  for (let i = 1; i < val; i++) {
 	    tempFocus2 = $(tempFocus2).parent()[0];
 	  }
 	  getAllImgs = function(elem) {
@@ -86,9 +86,9 @@
 	      if (this.tagName == "IMG") {
 	        imgSet[this.src] = true;
 	      } else {
-	        var bg = $(this).css('background-image');
+	        const bg = $(this).css('background-image');
 	        if (bg) {
-	          var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+	          const url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 	          if (url != 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTIuNTE5IDUyLjUxOSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTIuNTE5IDUyLjUxOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIHN0eWxlPSJmaWxsOiMyNkI5OUE7IiBkPSJNMTYuMDQ5LDMxLjEzN0g0LjAwMWwyMC4wOCwxOS45NzFsMjAuMDgtMTkuOTcxSDMyLjExM2MwLDAtNC4yOTItMTcuNzM1LDE2LjA2NC0yOS44NDljMCwwLTE1LjUzNi0zLjAyLTI2Ljc5NCwxMC41MUMyMS4zODIsMTEuNzk3LDE1LjY1MSwxNy45MjcsMTYuMDQ5LDMxLjEzN3oiLz48cGF0aCBzdHlsZT0iZmlsbDojMjZCOTlBOyIgZD0iTTI0LjA4MSw1Mi41MTlMMS41NzcsMzAuMTM3SDE1LjAzYy0wLjA5Mi0xMi43NTksNS4zODMtMTguNzY3LDUuNjIyLTE5LjAyMkMyOC42OTEsMS40NSwzOC45MzMsMCw0NC4zMTgsMGMyLjQ0NiwwLDMuOTg1LDAuMjk0LDQuMDQ5LDAuMzA3bDIuNTc0LDAuNWwtMi4yNTMsMS4zNDFDMzEuMzcxLDEyLjQ1MywzMi4zOTQsMjYuNjYzLDMyLjk0LDMwLjEzN2gxMy42NDVMMjQuMDgxLDUyLjUxOXogTTYuNDI1LDMyLjEzN2wxNy42NTYsMTcuNTYybDE3LjY1Ni0xNy41NjJIMzEuMzI2bC0wLjE4NS0wLjc2NWMtMC4wNDMtMC4xNzctMy44ODEtMTcuMDgyLDE0LjA0MS0yOS4zNThjLTQuNzg0LTAuMTUtMTUuMDIsMC43OTUtMjMuMDMxLDEwLjQyM2MtMC4wOTEsMC4xLTUuNDgxLDYuMDg5LTUuMTAzLDE4LjY3bDAuMDMsMS4wM0g2LjQyNXoiLz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PC9zdmc+' && url != "none" && (!url.match(/^gradient/)) && (!url.match(/^linear-gradient/))) {
 	            imgSet[url] = true;
 	          }
@@ -120,13 +120,13 @@
 
 	function getValidImage(url) {
 	  if (url && url.length > 0 && (!notImgSet[url] == true)) {
-	    var img = $('<img src="' + url + '">');
+	    const img = $('<img src="' + url + '">');
 	    $(img).on('error', function() {
 	      notImgSet[url] = true;
 	    });
 	    $(img).on('load', function() {
 	      if (!imgSet[url] == true) {
-	        var gallery = $('#NooBox-extractImages-gallery')[0];
+	        const gallery = $('#NooBox-extractImages-gallery')[0];
 	        imgSet[url] = true;
 	        isImgSet[url] = true;
 	        $(gallery).append('<img src="' + url + '" style="margin:0px;border:0px;padding:0px;max-width:100%;" />');
@@ -138,7 +138,7 @@
 	window.oncontextmenu = function(e) {
 	  focus = e.target;
 	}
-	var init = function() {
+	const init = function() {
 	  isOn("extractImages", function() {
 	    chrome.runtime.onMessage.addListener(
 	      function(request, sender, sendResponse) {
@@ -156,10 +156,10 @@
 	              category: 'extractImage',
 	              action: 'run'
 	            }, function(response) {});
-	            var images = [];
-	            var height = window.innerHeight - 66;
-	            var width = window.innerWidth;
-	            var div = $('<div id="NooBox-extractImages">').css({
+	            const images = [];
+	            const height = window.innerHeight - 66;
+	            const width = window.innerWidth;
+	            const div = $('<div id="NooBox-extractImages">').css({
 	              "z-index": "999999999999999999999",
 	              "height": height * 0.9 + "px",
 	              "overflow": "auto",
@@ -170,8 +170,8 @@
 	              "width": "60%",
 	              "top": height * 0.05 + "px"
 	            });
-	            var max = 1;
-	            var tempFocus = focus;
+	            let max = 1;
+	            let tempFocus = focus;
 	            while (tempFocus.tagName != 'BODY') {
 	              tempFocus = $(tempFocus).parent()[0];
 	              max++;
@@ -181,7 +181,7 @@
 	            div.append('<div style="margin:0px;border:0px;padding:0px;clear:both"></div>');
 	            if (focus.tagName != 'BODY' && focus.tagName != 'HTML')
 	              focus = $(focus).parent()[0];
-	            var div2 = $('<div id="NooBox-extractImages-gallery" style="margin:0px;border:0px;padding:0px;width:80%;margin-top:32px"></div>');
+	            const div2 = $('<div id="NooBox-extractImages-gallery" style="margin:0px;border:0px;padding:0px;width:80%;margin-top:32px"></div>');
 	            div.append(div2);
 	            $(document.body).append(div);
 	            getImages();
@@ -192,13 +192,13 @@
 	              }
 	            });
 	            $('#NooBox-extractImages-selector-left').on('click', function(e) {
-	              var val = parseInt($('#NooBox-extractImages-selector-range').val());
+	              let val = parseInt($('#NooBox-extractImages-selector-range').val());
 	              val--;
 	              $('#NooBox-extractImages-selector-range').val(val);
 	              getImages();
 	            });
 	            $('#NooBox-extractImages-selector-right').on('click', function(e) {
-	              var val = parseInt($('#NooBox-extractImages-selector-range').val());
+	              let val = parseInt($('#NooBox-extractImages-selector-range').val());
 	              val++;
 	              $('#NooBox-extractImages-selector-range').val(val);
 	              getImages();
@@ -210,9 +210,9 @@
 	              $(e.target).parent().remove();
 	            });
 	            $('#NooBox-extractImages-download').on('click', function(e) {
-	              var files = [];
+	              const files = [];
 	              Object.keys(imgSet).forEach(function(elem, index) {
-	                var i = index;
+	                let i = index;
 	                files.push({
 	                  name: i,
 	                  url: elem

@@ -113,7 +113,7 @@
 	window.GL = getLocale;
 
 	window.getChromeVersion = () => {
-	  var match = window.navigator.userAgent.match(/Chrom(?:e|ium)\/([0-9\.]+)/);
+	  const match = window.navigator.userAgent.match(/Chrom(?:e|ium)\/([0-9\.]+)/);
 	  return match ? match[1] : null;
 	}
 
@@ -122,14 +122,14 @@
 	  if (!url) {
 	    return 'error';
 	  }
-	  var domain;
+	  let domain;
 	  if (url.indexOf("://") > -1) {
 	    domain = url.split('/')[2];
 	  } else {
 	    domain = url.split('/')[0];
 	  }
 	  domain = domain.split(':')[0];
-	  var list = domain.split('.');
+	  const list = domain.split('.');
 	  return list[list.length - 2] + '.' + list[list.length - 1];
 	}
 
@@ -310,7 +310,7 @@
 
 	window.loadIframe = (url, callback) => {
 	  $(() => {
-	    var ifr = $('<iframe/>', {
+	    const ifr = $('<iframe/>', {
 	      id: 'baiduIframe',
 	      src: url,
 	      style: 'display:none',

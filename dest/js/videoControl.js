@@ -44,24 +44,24 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-	var vid = null;
-	var timeStep = 5;
-	var volumeStep = 0.05;
-	var playbackRateStep = 0.05;
-	var fps = 30;
-	var detectVideoHandle = null;
-	var detectVideoTime = new Date().getTime();
-	var indicatorSize = {
+	let vid = null;
+	const timeStep = 5;
+	const volumeStep = 0.05;
+	const playbackRateStep = 0.05;
+	let fps = 30;
+	let detectVideoHandle = null;
+	let detectVideoTime = new Date().getTime();
+	const indicatorSize = {
 	  width: 100,
 	  height: 100
 	};
-	var conflictCount = [];
-	var canvas;
-	var ctx;
-	var beyondId = -1;
-	var enabled = false;
-	var enabledDBId = '';
-	var inited = false;
+	const conflictCount = [];
+	let canvas;
+	let ctx;
+	let beyondId = -1;
+	let enabled = false;
+	let enabledDBId = '';
+	let inited = false;
 
 	function handleVisibilityChange() {
 	  if (document[hidden]) {
@@ -134,7 +134,7 @@
 	  document.onkeydown = function(e) {
 	    e = e || window.event;
 	    if (enabled && vid) {
-	      var k = e.keyCode;
+	      const k = e.keyCode;
 	      if (k == '38' || k == '40' || k == '37' || k == '39' || k == '36' || k == '35') {
 	        chrome.runtime.sendMessage({
 	          job: 'videoControl_use'
@@ -160,13 +160,12 @@
 	    if (enabled && vid) {
 	      placeIndicator();
 	      e.preventDefault();
-	      var k = String.fromCharCode(e.which);
+	      const k = String.fromCharCode(e.which);
 	      if (k == 'k' || k == ' ' || k == 'j' || k == 'l' || k == ',' || k == '.' || k == '<' || k == '>' || k == 'r' || k == 'm' || k == 'f' || k == 'd' || k == 'b') {
 	        chrome.runtime.sendMessage({
 	          job: 'videoControl_use'
 	        });
 	      }
-				console.log(k);
 	      switch (k) {
 	        case 'k':
 	          detectConflictAndAct(playPause, vid, 'playPause', 'kPlayPause', 111);
@@ -229,7 +228,7 @@
 
 	function detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout) {
 	  placeIndicator();
-	  var index = getIndex(vid);
+	  const index = getIndex(vid);
 	  if (!index) {
 	    buildVideoStates([{
 	      event: 'play',
@@ -251,7 +250,7 @@
 	    detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout);
 	    return;
 	  }
-	  var conflictClass = 'NooBox-Video-Conflict-' + conflictId;
+	  const conflictClass = 'NooBox-Video-Conflict-' + conflictId;
 	  if (!$(vid).hasClass(conflictClass)) {
 	    actFunction(v);
 	    conflictCount[index][actionId]--;
@@ -289,11 +288,11 @@
 	function beyond(v) {
 	  if (beyondId == -1) {
 	    beyondId = setInterval(function() {
-	      var prev = new Date().getTime();
-	      var temp = new Date().getTime();
+	      const prev = new Date().getTime();
+	      const temp = new Date().getTime();
 	      ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
 	      temp = new Date().getTime();
-	      var dataURI = canvas.toDataURL("image/png");
+	      const dataURI = canvas.toDataURL("image/png");
 	      temp = new Date().getTime();
 	      chrome.runtime.sendMessage({
 	        job: 'passToFront',
@@ -368,16 +367,13 @@
 	function speedUp(v) {
 		const step = playbackRateStep;
 	  if (v.playbackRate.toFixed(2) <= 16 - step) {
-			console.log('changing');
-			console.log(v.playbackRate);
 	    v.playbackRate = (v.playbackRate + step).toFixed(2);
 	    displayIndicator(v.playbackRate, '&raquo;');
-			console.log(v.playbackRate);
 	  }
 	}
 
 	function slowDown(v) {
-		console.log(v.playbackRate.toFixed(2) <= 16 - step);
+		const step = playbackRateStep;
 	  if (v.playbackRate.toFixed(2) >= step + 0.0625) {
 	    v.playbackRate = (v.playbackRate - step).toFixed(2);
 	    displayIndicator(v.playbackRate, '&laquo;');
@@ -385,13 +381,13 @@
 	}
 
 	function rotate(v, step) {
-	  var vv = $(v);
-	  var matrix = vv.css('transform') || vv.css('-webkit-transform');
-	  var deg;
+	  const vv = $(v);
+	  const matrix = vv.css('transform') || vv.css('-webkit-transform');
+	  let deg;
 	  if (matrix !== 'none') {
-	    var values = matrix.split('(')[1].split(')')[0].split(',');
-	    var a = values[0];
-	    var b = values[1];
+	    const values = matrix.split('(')[1].split(')')[0].split(',');
+	    const a = values[0];
+	    const b = values[1];
 	    deg = Math.round(Math.atan2(b, a) * (180 / Math.PI));
 	  } else {
 	    deg = 0;
@@ -420,7 +416,7 @@
 	}
 
 	function download(v) {
-	  var link = document.createElement("a");
+	  const link = document.createElement("a");
 	  link.href = v.currentSrc;
 	  link.download = 'video';
 	  document.body.appendChild(link);
@@ -432,16 +428,16 @@
 	//check if any video is in the cursor range
 	//if not, check which video change it's playing state
 	function getVideo(e) {
-	  var v = e.target;
+	  let v = e.target;
 	  if ($(v).is('video')) {
 	    return v;
 	  }
 	  v = null;
-	  var videoList = $('video');
-	  var pos;
-	  var x = e.pageX;
-	  var y = e.pageY;
-	  for (var i = 0; i < videoList.length; i++) {
+	  const videoList = $('video');
+	  let pos;
+	  const x = e.pageX;
+	  const y = e.pageY;
+	  for (let i = 0; i < videoList.length; i++) {
 	    pos = $(videoList[i]).offset();
 	    if (!(x < pos.left || y < pos.top || x > pos.left + $(videoList[i]).width() || y > pos.top + $(videoList[i]).height())) {
 	      v = videoList[i];
@@ -464,25 +460,25 @@
 	}
 
 	function getIndex(v) {
-	  var className = $(v).attr('class') || '';
-	  var index = (className.match(/NooBox-Video-(\d+)/) || [null, null])[1];
+	  const className = $(v).attr('class') || '';
+	  const index = (className.match(/NooBox-Video-(\d+)/) || [null, null])[1];
 	  return index;
 	}
 
 	function buildVideoStates(listenerList) {
-	  var videoList = $('video');
-	  for (var i = 0; i < videoList.length; i++) {
-	    var v = videoList[i];
-	    var index = getIndex(v);
+	  const videoList = $('video');
+	  for (let i = 0; i < videoList.length; i++) {
+	    const v = videoList[i];
+	    const index = getIndex(v);
 	    if (index == null) {
 	      conflictCount.push({
 	        playPause: 0,
 	        volumeChange: 0
 	      });
-	      var newIndex = conflictCount.length - 1;
+	      const newIndex = conflictCount.length - 1;
 	      $(v).addClass('NooBox-Video-' + (newIndex));
-	      for (var j = 0; j < listenerList.length; j++) {
-	        var listener = listenerList[j];
+	      for (let j = 0; j < listenerList.length; j++) {
+	        const listener = listenerList[j];
 	        $(v).on(listener.event, incCounter.bind(null, newIndex, listener.target));
 	      }
 	    }
@@ -495,7 +491,7 @@
 
 	function placeIndicator() {
 	  if (vid) {
-	    var newPos = $(vid).offset();
+	    const newPos = $(vid).offset();
 	    newPos.left += ($(vid).width() - indicatorSize.width) / 2;
 	    newPos.top += ($(vid).height() - indicatorSize.height) / 2;
 	    $('#NooBox-Video-Indicator').offset(newPos);
@@ -506,7 +502,7 @@
 
 	document.addEventListener("DOMContentLoaded", function() {
 	  isOn('videoControl', function() {
-	    var host = window.location.hostname;
+	    const host = window.location.hostname;
 	    enabledDBId = 'videoControl_website_' + host;
 	    getDB(enabledDBId);
 	  });
