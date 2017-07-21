@@ -39,10 +39,10 @@ module.exports = React.createClass({
         });
       });
     });
-    $(document).ready(() => {
+    $(document).ready(function() {
       $('select').material_select();
       $('.dropdown-content li').on('click', (e) => {
-        shared.updateOrder($(this).text());
+        shared.updateOrder($(e.target).text());
       });
     });
   },
@@ -268,7 +268,7 @@ module.exports = React.createClass({
     });
     const filter = (
       <div className="input-field col s12">
-        <select defaultValue="relevance" onChange={this.updateOrder}>
+        <select defaultValue="relevance">
           <option value="relevance">{GL('relevance')}</option>
           <option value="area">{GL('area')}</option>
           <option value="width">{GL('width')}</option>
