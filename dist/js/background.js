@@ -48,7 +48,8 @@
 	const NooBox = {};
 	let analyticsOnce = false;
 	const analyticsLastList = {};
-	const _gaq = ['_setAccount', 'UA-77112662-5'];
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-77112662-5']);
 
 	(() => {
 	  const ga = document.createElement('script');
@@ -60,6 +61,8 @@
 	})();
 
 	function analytics(request) {
+		console.log(_gaq);
+		console.log(request);
 	  if (!analyticsOnce) {
 	    _gaq.push(['_trackPageview', 'background']);
 	    analyticsOnce = true;
@@ -155,7 +158,7 @@
 
 	NooBox.Options.constantValues = [
 	  ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-	  ['version', '0.9.3.1']
+	  ['version', '0.9.3.2']
 	];
 
 	NooBox.Options.init = (i) => {
