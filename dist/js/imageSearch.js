@@ -20897,7 +20897,7 @@
 	    $(document).ready(function () {
 	      $('select').material_select();
 	      $('.dropdown-content li').on('click', function (e) {
-	        shared.updateOrder($(_this).text());
+	        shared.updateOrder($(e.target).text());
 	      });
 	    });
 	  },
@@ -21126,7 +21126,7 @@
 	      { className: 'input-field col s12' },
 	      _react2.default.createElement(
 	        'select',
-	        { defaultValue: 'relevance', onChange: this.updateOrder },
+	        { defaultValue: 'relevance' },
 	        _react2.default.createElement(
 	          'option',
 	          { value: 'relevance' },
