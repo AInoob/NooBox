@@ -382,6 +382,52 @@
 	  xhr.send();
 	};
 
+	window.bello = {
+		pageview: function(version) {
+			if(typeof window != 'object')
+				return;
+			var data = {
+				type: 'pageview',
+				path: version,
+				title: 'background',
+				referrer: '',
+				ua: navigator.userAgent,
+				sr: screen.width + 'x' + screen.height,
+				ul: navigator.language || navigator.userLanguage,
+				ainoob: Math.random(),
+			}
+			this.ajax('https://ainoob.com/bello/noobox'+this.serialize(data));
+		},
+		event: function(obj) {
+			if(typeof window != 'object')
+				return;
+			var data = {
+				type: 'event',
+				category: obj.category,
+				action: obj.action,
+				label: obj.label,
+				value: obj.value || 0,
+				ainoob: Math.random(),
+				ul: navigator.language || navigator.userLanguage,
+				referrer: document.referrer,
+			}
+			this.ajax('https://ainoob.com/bello/noobox'+this.serialize(data));
+		},
+		serialize: function(obj) {
+			return '?'+Object.keys(obj).reduce(function(a,k){a.push(k+'='+encodeURIComponent(obj[k]));return a},[]).join('&')
+		},
+		ajax: function(url) {
+			var request = new XMLHttpRequest();
+			request.open('GET', url, true);
+			request.onload = function() {
+				if (request.status >= 200 && request.status < 400) {
+					console.log(request.responseText);
+				}
+			}
+			request.send();
+		},
+	}
+
 
 /***/ })
 /******/ ]);
