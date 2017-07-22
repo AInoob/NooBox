@@ -7,7 +7,7 @@
   "version": "0.9.3.2",
   "browser_action": {
     "default_icon": "images/icon_128.png",
-    "default_title": "NoooBox~~~",
+    "default_title": "NooBox~",
     "default_popup": "popup.html"
   },
   "icons": {

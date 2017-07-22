@@ -2,6 +2,97 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import Website from './Website.jsx';
+import styled from 'styled-components';
+
+const ImageSearchDiv = styled.div`
+	margin-left: 66px;
+	margin-right: 66px;
+	.input-field.col label {
+		left: 0rem;
+	}
+	.input-field{
+		width: 200px;
+	}
+	#brief{
+		.card-image{
+			width: 291px;
+			img{
+				max-height: 291px;
+			}
+		}
+		.icon.failed{
+			opacity: 0.218;
+		}
+		.icon.loading::before{
+			background-image:url(/thirdParty/loading.svg);
+		}
+		.icon::before{
+			width: 46px;
+			height: 46px;
+			content: ' ';
+			position: absolute;
+			z-index: 10;
+			margin-left: 0px;
+			margin-top: 0px;
+			background-size: 46px 46px;
+		}
+	}
+	.card{
+		.card-content{
+			.keyword{
+				display: block;
+				margin-bottom: 13px;
+				font-size: 18px;
+				img{
+					width: 20px;
+					margin-right: 10px;
+				}
+			}
+		}
+		.card-action{
+			.icon{
+				img{
+					width: 46px;
+				}
+			}
+		}
+	}
+	.website{
+		.header{
+			a{
+				white-space: nowrap;
+				overflow: hidden;
+				display: block;
+			}
+		}
+		.icon{
+			width: 34px;
+			left: -50px;
+			position: absolute;
+		}
+		.header{
+			font-size: 20px;
+		}
+		.card-image{
+			width: 200px;
+			img{
+				max-width: 200px;
+				max-height: 200px;
+				cursor: pointer;
+			}
+		}
+	}
+	.website.focus{
+		.card-image{
+			width: 100%;
+			img{
+				max-width: 100%;
+				max-height: none;
+				width: initial;
+			}
+		}
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'Result',
@@ -298,12 +389,12 @@ module.exports = React.createClass({
       </div>
 		);
     return (
-      <div id="imageSearchResult" className="container">
+      <ImageSearchDiv>
         {brief}
         {filter}
         {websites}
         {uploadReSearch}
-      </div>
+      </ImageSearchDiv>
 		);
   }
 });

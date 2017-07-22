@@ -2,6 +2,28 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import Module from './Module.jsx';
+import styled from 'styled-components';
+
+const OverviewDiv = styled.div`
+	.module{
+		clear:both;
+	}
+	#icons{
+		img{
+			width: 40px;
+			margin-right:4px;
+		}
+	}
+	#imageUpload,#uploadedImage{
+		display:none;
+	}
+	#info{
+		#imageUploadLabel{
+			color: white;
+			display: block;
+		}
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'Overview',
@@ -40,6 +62,10 @@ module.exports = React.createClass({
     const modules = this.state.modules.map((elem, index) => {
       return <Module key={index} name={elem} />
     });
-    return <div id="overview">{modules}</div>;
+    return (
+			<OverviewDiv colorOn={shared.styled.colorOn}>
+				{modules}
+			</OverviewDiv>
+		);
   }
 });

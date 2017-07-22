@@ -56,29 +56,25 @@
 
 	var _reactRouter = __webpack_require__(180);
 
-	var _styledComponents = __webpack_require__(239);
-
-	var _styledComponents2 = _interopRequireDefault(_styledComponents);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	//Log page views
-	//The router of NooBox, all component is under Core.jsx
 	function logPageView() {}
 
 	//popup.html will be update to different pathname based on the parameter
+	//The router of NooBox, all component is under Core.jsx
 	_reactDom2.default.render(_react2.default.createElement(
-	  _reactRouter.Router,
-	  { history: _reactRouter.browserHistory, onUpdate: logPageView },
-	  _react2.default.createElement(
-	    _reactRouter.Route,
-	    { component: __webpack_require__(273) },
-	    _react2.default.createElement(_reactRouter.Route, { path: 'popup.html', component: __webpack_require__(274) }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'overview', component: __webpack_require__(274) }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'options', component: __webpack_require__(279) }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'history', component: __webpack_require__(280) }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'about', component: __webpack_require__(281) })
-	  )
+		_reactRouter.Router,
+		{ history: _reactRouter.browserHistory, onUpdate: logPageView },
+		_react2.default.createElement(
+			_reactRouter.Route,
+			{ component: __webpack_require__(273) },
+			_react2.default.createElement(_reactRouter.Route, { path: 'popup.html', component: __webpack_require__(274) }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'overview', component: __webpack_require__(274) }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'options', component: __webpack_require__(279) }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'history', component: __webpack_require__(280) }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'about', component: __webpack_require__(281) })
+		)
 	), document.getElementById('noobox'));
 
 /***/ }),
@@ -31068,6 +31064,8 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\twidth: 413px;\n\t.header{\n\t\tcolor: ', ';\n\t}\n\tnav{\n\t\tbackground-color: ', ';\n\t\tline-height: 36px;\n\t\theight: 36px;\n\t\tul{\n\t\t\ta{\n\t\t\t\tpadding: 0 26.5px;\n\t\t\t}\n\t\t}\n\t}\n\t.hidden{\n\t\tdisplay: none;\n\t}\n\t.line{\n\t\t  margin-top: 0.3em;\n\t\t  margin-bottom: 0.3em;\n\t}\n\t.btn{\n\t\tfont-size: 0.8rem;\n\t\tpadding: 0 1rem;\n\t\theight: 26px;\n\t\tline-height: 26px;\n\t\t*{\n\t\t\tcursor: pointer;\n\t\t}\n\t}\n\t.important{\n\t\tcolor: ', ';\n\t\tfont-size: 1rem;\n\t}\n\t.tab-1{\n\t\tmargin-left: 38px;\n\t}\n\th4{\n\t\tmargin-top: 0px;\n\t}\n\th5{\n\t\tmargin-bottom: 3px;\n\t}\n\t#helpButton{\n\t\tfont-size: 1rem;\n\t}\n\t.select-wrapper input.select-dropdown{\n\t\tbackground-color: rgba(255,255,255,0.3);\n\t\tpadding-left: 17px;\n\t}\n\t.select-dropdown{\n\t\tcolor:#26a69a;\n\t}\n'], ['\n\twidth: 413px;\n\t.header{\n\t\tcolor: ', ';\n\t}\n\tnav{\n\t\tbackground-color: ', ';\n\t\tline-height: 36px;\n\t\theight: 36px;\n\t\tul{\n\t\t\ta{\n\t\t\t\tpadding: 0 26.5px;\n\t\t\t}\n\t\t}\n\t}\n\t.hidden{\n\t\tdisplay: none;\n\t}\n\t.line{\n\t\t  margin-top: 0.3em;\n\t\t  margin-bottom: 0.3em;\n\t}\n\t.btn{\n\t\tfont-size: 0.8rem;\n\t\tpadding: 0 1rem;\n\t\theight: 26px;\n\t\tline-height: 26px;\n\t\t*{\n\t\t\tcursor: pointer;\n\t\t}\n\t}\n\t.important{\n\t\tcolor: ', ';\n\t\tfont-size: 1rem;\n\t}\n\t.tab-1{\n\t\tmargin-left: 38px;\n\t}\n\th4{\n\t\tmargin-top: 0px;\n\t}\n\th5{\n\t\tmargin-bottom: 3px;\n\t}\n\t#helpButton{\n\t\tfont-size: 1rem;\n\t}\n\t.select-wrapper input.select-dropdown{\n\t\tbackground-color: rgba(255,255,255,0.3);\n\t\tpadding-left: 17px;\n\t}\n\t.select-dropdown{\n\t\tcolor:#26a69a;\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -31078,75 +31076,98 @@
 
 	var _reactRouter = __webpack_require__(180);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	module.exports = _react2.default.createClass({
-	  displayName: 'exports',
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); } //A basic frame of NooBox, including Navigator and holder for children
 
-	  render: function render() {
-	    var activeList = {};
-	    activeList[(this.props.location.pathname.match(/(\w+)/) || [null, null])[1]] = 'active';
-	    return _react2.default.createElement(
-	      'div',
-	      { id: 'core' },
-	      _react2.default.createElement(
-	        'nav',
-	        null,
-	        _react2.default.createElement(
-	          'ul',
-	          null,
-	          _react2.default.createElement(
-	            'li',
-	            { className: activeList.overview },
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: '/overview' },
-	              capFirst(GL('overview'))
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            { className: activeList.history },
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: '/history' },
-	              capFirst(GL('history'))
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            { className: activeList.options },
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: '/options' },
-	              capFirst(GL('options'))
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            { className: activeList.about },
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: '/about' },
-	              capFirst(GL('about'))
-	            )
-	          )
-	        )
-	      ),
-	      _react2.default.createElement('div', { className: 'headerPad' }),
-	      _react2.default.createElement(_reactHelmet2.default, {
-	        title: 'Core'
-	      }),
-	      this.props.children
-	    );
-	  }
-	}); //A basic frame of NooBox, including Navigator and holder for children
+
+	var PopupDiv = _styledComponents2.default.div(_templateObject, function (props) {
+		return props.color1;
+	}, function (props) {
+		return props.color1;
+	}, function (props) {
+		return props.color1;
+	});
+
+	module.exports = _react2.default.createClass({
+		displayName: 'exports',
+
+		componentWillMount: function componentWillMount() {
+			shared.styled = {
+				color1: '#7a88e8',
+				colorOn: '#26a69a'
+			};
+		},
+		render: function render() {
+			var activeList = {};
+			activeList[(this.props.location.pathname.match(/(\w+)/) || [null, null])[1]] = 'active';
+			return _react2.default.createElement(
+				PopupDiv,
+				{ color1: shared.styled.color1 },
+				_react2.default.createElement(
+					'nav',
+					null,
+					_react2.default.createElement(
+						'ul',
+						null,
+						_react2.default.createElement(
+							'li',
+							{ className: activeList.overview },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: '/overview' },
+								capFirst(GL('overview'))
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							{ className: activeList.history },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: '/history' },
+								capFirst(GL('history'))
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							{ className: activeList.options },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: '/options' },
+								capFirst(GL('options'))
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							{ className: activeList.about },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: '/about' },
+								capFirst(GL('about'))
+							)
+						)
+					)
+				),
+				_react2.default.createElement('div', { className: 'headerPad' }),
+				_react2.default.createElement(_reactHelmet2.default, {
+					title: 'Core'
+				}),
+				this.props.children
+			);
+		}
+	});
 
 /***/ }),
 /* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _templateObject = _taggedTemplateLiteral(['\n\t.module{\n\t\tclear:both;\n\t}\n\t#icons{\n\t\timg{\n\t\t\twidth: 40px;\n\t\t\tmargin-right:4px;\n\t\t}\n\t}\n\t#imageUpload,#uploadedImage{\n\t\tdisplay:none;\n\t}\n\t#info{\n\t\t#imageUploadLabel{\n\t\t\tcolor: white;\n\t\t\tdisplay: block;\n\t\t}\n\t}\n'], ['\n\t.module{\n\t\tclear:both;\n\t}\n\t#icons{\n\t\timg{\n\t\t\twidth: 40px;\n\t\t\tmargin-right:4px;\n\t\t}\n\t}\n\t#imageUpload,#uploadedImage{\n\t\tdisplay:none;\n\t}\n\t#info{\n\t\t#imageUploadLabel{\n\t\t\tcolor: white;\n\t\t\tdisplay: block;\n\t\t}\n\t}\n']);
 
 	var _react = __webpack_require__(1);
 
@@ -31162,7 +31183,15 @@
 
 	var _Module2 = _interopRequireDefault(_Module);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var OverviewDiv = _styledComponents2.default.div(_templateObject);
 
 	module.exports = _react2.default.createClass({
 	  displayName: 'Overview',
@@ -31204,8 +31233,8 @@
 	      return _react2.default.createElement(_Module2.default, { key: index, name: elem });
 	    });
 	    return _react2.default.createElement(
-	      'div',
-	      { id: 'overview' },
+	      OverviewDiv,
+	      { colorOn: shared.styled.colorOn },
 	      modules
 	    );
 	  }
@@ -31255,17 +31284,29 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n'], ['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var ImageSearchDiv = _styledComponents2.default.div(_templateObject, function (props) {
+	  return props.displayHelp ? 'initial' : '0px';
+	});
 
 	module.exports = _react2.default.createClass({
 	  displayName: 'ImageSearch',
 	  reader: new window.FileReader(),
 	  getInitialState: function getInitialState() {
-	    return { enabled: false };
+	    return { enabled: false, displayHelp: false };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
@@ -31277,8 +31318,8 @@
 	        chrome.extension.sendMessage({
 	          job: 'analytics',
 	          category: 'uploadSearch',
-	          ction: 'run'
-	        }, function (response) {});
+	          action: 'run'
+	        }, function () {});
 	        chrome.extension.sendMessage({ job: 'imageSearch_upload', data: base64data });
 	      };
 	      get('totalImageSearch', function (count) {
@@ -31299,12 +31340,10 @@
 	    e.stopPropagation();
 	    e.preventDefault();
 	    var url = URL.createObjectURL(e.dataTransfer.files[0]);
-	    console.log(url);
 	    $('#uploadedImage').attr('src', url);
 	  },
 	  upload: function upload(e) {
 	    var url = URL.createObjectURL(e.target.files[0]);
-	    console.log(url);
 	    $('#uploadedImage').attr('src', url);
 	  },
 	  search: function search(e) {
@@ -31323,20 +31362,41 @@
 	    });
 	  },
 	  render: function render() {
+	    var _this3 = this;
+
 	    if (!this.state.enabled) {
 	      return null;
 	    }
 	    var icons = (this.state.engines || []).map(function (elem, index) {
 	      return _react2.default.createElement('img', { key: index, src: '/thirdParty/' + elem + '.png' });
 	    });
+	    var help = _react2.default.createElement(
+	      'p',
+	      { className: 'important', id: 'help' },
+	      GL('ls_11'),
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('br', null),
+	      GL('ls_12'),
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('br', null),
+	      GL('ls_13')
+	    );
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'container', id: 'imageSearch' },
+	      ImageSearchDiv,
+	      { displayHelp: this.state.displayHelp, className: 'container' },
 	      _react2.default.createElement(
 	        'h5',
 	        { className: 'header' },
-	        GL('imageSearch')
+	        GL('imageSearch'),
+	        _react2.default.createElement(
+	          'span',
+	          { id: 'helpButton', onClick: function onClick() {
+	              _this3.setState({ displayHelp: !_this3.state.displayHelp });
+	            } },
+	          '\xA0(\u2754)'
+	        )
 	      ),
+	      help,
 	      _react2.default.createElement(
 	        'div',
 	        { id: 'info', className: 'container' },
@@ -31368,16 +31428,34 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n\t#info{\n\t\tfont-size: 100px;\n\t\tcolor: grey;\n\t\tspan{\n\t\t\tline-height: 70px;\n\t\t\theight: 80px;\n\t\t\tfloat: left;\n\t\t\tdisplay: block;\n\t\t\tcursor: pointer;\n\t\t\tuser-select: none;\n\t\t}\n\t}\n\t#enabled:checked + span{\n\t\tcolor: ', ';\n\t}\n\t#shortcuts{\n\t\ttd{\n\t\t\tpadding-top: 8px;\n\t\t\tpadding-bottom: 0px;\n\t\t}\n\t}\n'], ['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n\t#info{\n\t\tfont-size: 100px;\n\t\tcolor: grey;\n\t\tspan{\n\t\t\tline-height: 70px;\n\t\t\theight: 80px;\n\t\t\tfloat: left;\n\t\t\tdisplay: block;\n\t\t\tcursor: pointer;\n\t\t\tuser-select: none;\n\t\t}\n\t}\n\t#enabled:checked + span{\n\t\tcolor: ', ';\n\t}\n\t#shortcuts{\n\t\ttd{\n\t\t\tpadding-top: 8px;\n\t\t\tpadding-bottom: 0px;\n\t\t}\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var VideoControlDiv = _styledComponents2.default.div(_templateObject, function (props) {
+	  return props.displayHelp ? 'initial' : '0px';
+	}, function (props) {
+	  return props.colorOn;
+	});
 
 	module.exports = _react2.default.createClass({
 	  displayName: 'VideoControl',
 	  getInitialState: function getInitialState() {
-	    return { enabled: false, websiteEnabled: true };
+	    var shortcuts = JSON.parse(GL('ls_16').replace(/\'/g, '"'));
+	    shortcuts = Object.keys(shortcuts).map(function (key) {
+	      return [key, shortcuts[key]];
+	    });
+	    return { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts: shortcuts };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
@@ -31415,6 +31493,8 @@
 	    });
 	  },
 	  render: function render() {
+	    var _this3 = this;
+
 	    if (!this.state.enabled) {
 	      return null;
 	    }
@@ -31422,14 +31502,56 @@
 	    if (this.state.websiteEnabled) {
 	      symbol = '☀';
 	    }
+	    var help = void 0,
+	        shortcuts = void 0;
+	    if (this.state.displayHelp) {
+	      shortcuts = this.state.shortcuts.map(function (elem, index) {
+	        return _react2.default.createElement(
+	          'tr',
+	          null,
+	          _react2.default.createElement(
+	            'td',
+	            null,
+	            elem[0]
+	          ),
+	          _react2.default.createElement(
+	            'td',
+	            null,
+	            elem[1]
+	          )
+	        );
+	      });
+	      help = _react2.default.createElement(
+	        'p',
+	        { className: 'important', id: 'help' },
+	        GL('ls_14'),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('br', null),
+	        GL('ls_15'),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'table',
+	          { id: 'shortcuts' },
+	          shortcuts
+	        )
+	      );
+	    }
 	    return _react2.default.createElement(
-	      'div',
-	      { className: 'container', id: 'videoControl' },
+	      VideoControlDiv,
+	      { displayHelp: this.state.displayHelp, className: 'container' },
 	      _react2.default.createElement(
 	        'h5',
 	        { className: 'header' },
-	        GL('videoControl')
+	        GL('videoControl'),
+	        _react2.default.createElement(
+	          'span',
+	          { id: 'helpButton', onClick: function onClick() {
+	              _this3.setState({ displayHelp: !_this3.state.displayHelp });
+	            } },
+	          '\xA0(\u2754)'
+	        )
 	      ),
+	      help,
 	      _react2.default.createElement(
 	        'div',
 	        { id: 'info', className: 'container' },
@@ -31455,140 +31577,189 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\tmargin: 0 auto;\n\twidth: 90%;\n\t.listItem{\n\t\tdisplay: list-item;\n\t\tlist-style-type: square;\n\t\tmargin-left: 16px;\n\t}\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n'], ['\n\tmargin: 0 auto;\n\twidth: 90%;\n\t.listItem{\n\t\tdisplay: list-item;\n\t\tlist-style-type: square;\n\t\tmargin-left: 16px;\n\t}\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var CheckUpdateDiv = _styledComponents2.default.div(_templateObject, function (props) {
+		return props.displayHelp ? 'initial' : '0px';
+	});
+
 	module.exports = _react2.default.createClass({
-	  displayName: 'CheckUpdate',
-	  getInitialState: function getInitialState() {
-	    return { installType: 'normal', enabled: false, newChanges: [], updateAvailable: false, newVersion: '0', version: '0', updateHistory: [] };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
+		displayName: 'CheckUpdate',
+		getInitialState: function getInitialState() {
+			return {
+				enabled: false,
+				newChanges: [],
+				updateAvailable: false,
+				newVersion: '0',
+				version: '0',
+				updateHistory: [],
+				displayHelp: false
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
 
-	    chrome.management.getSelf(function (data) {
-	      _this.setState({ installType: data.installType });
-	    });
-	    get('version', function (version) {
-	      _this.setState({ version: version }, function () {
-	        var _this2 = this;
+			get('version', function (version) {
+				_this.setState({ version: version }, function () {
+					get('updateHistory', function (updateHistory) {
+						_this.setState({ updateHistory: updateHistory }, _this.generateReport);
+					});
+				});
+			});
+			isOn('checkUpdate', function () {
+				_this.setState({ enabled: true });
+				get('lastUpdateCheck', function (lastCheck) {
+					var time = new Date().getTime();
+					if (time > lastCheck + 1000 * 60 * 60) {
+						_this.checkUpdate();
+					}
+				});
+			});
+		},
+		compareVersion: function compareVersion(a, b) {
+			var x = a.split('.').map(function (elem) {
+				return parseInt(elem);
+			});;
+			var y = b.split('.').map(function (elem) {
+				return parseInt(elem);
+			});;
+			for (var i = 0; i < 4; i++) {
+				if (x[i] > y[i]) {
+					return 1;
+				} else if (x[i] < y[i]) {
+					return -1;
+				}
+			}
+			return 0;
+		},
+		generateReport: function generateReport() {
+			var data = this.state.updateHistory;
+			if (data.length == 0) {
+				return;
+			}
+			var last = data.length - 1;
+			var newVersion = data[last].version;
+			if (this.compareVersion(newVersion, this.state.version) > 0) {
+				var newChanges = [];
+				var i = void 0;
+				for (i = 0; i < data.length; i++) {
+					if (this.compareVersion(data[i].version, this.state.version) > 0) {
+						break;
+					}
+				}
+				for (i--; i < data.length; i++) {
+					if (i < 0) {
+						i = 0;
+					}
+					var changes = data[i].changes;
+					if (isZh) {
+						changes = data[i].zhChanges;
+					}
+					for (var j = 0; j < changes.length; j++) {
+						newChanges.push(changes[j]);
+					}
+				}
+				this.setState({ updateAvailable: true, newVersion: newVersion, newChanges: newChanges });
+			} else {
+				this.setState({ updateAvailable: false });
+			}
+		},
+		checkUpdate: function checkUpdate() {
+			var _this2 = this;
 
-	        get('updateHistory', function (data) {
-	          _this2.setState({ updateHistory: data }, _this2.generateReport);
-	        });
-	      });
-	    });
-	    isOn('checkUpdate', function () {
-	      _this.setState({ enabled: true });
-	      get('lastUpdateCheck', function (lastCheck) {
-	        var time = new Date().getTime();
-	        if (time > lastCheck + 1000 * 60 * 60) {
-	          _this.checkUpdate();
-	        }
-	      });
-	    });
-	  },
-	  generateReport: function generateReport() {
-	    var data = this.state.updateHistory;
-	    if (data.length == 0) {
-	      return;
-	    }
-	    var last = data.length - 1;
-	    var newVersion = data[last].version;
-	    if (this.state.version != newVersion) {
-	      var changes = [];
-	      var reachCurrent = false;
-	      for (var i = 0; i < data.length; i++) {
-	        if (reachCurrent == false) {
-	          if (data[i].version == this.state.version) {
-	            reachCurrent = true;
-	          }
-	        } else {
-	          var newChanges = data[i].changes;
-	          if (isZh) {
-	            newChanges = data[i].zhChanges;
-	          }
-	          for (var j = 0; j < newChanges.length; j++) {
-	            changes.push(newChanges[j]);
-	          }
-	        }
-	      }
-	      this.setState({ updateAvailable: true, newVersion: newVersion, newChanges: changes });
-	    } else {
-	      this.setState({ updateAvailable: false });
-	    }
-	  },
-	  checkUpdate: function checkUpdate() {
-	    var _this3 = this;
+			set('lastUpdateCheck', new Date().getTime());
+			$.ajax({
+				type: 'GET',
+				url: 'https://ainoob.com/api/noobox/updateList'
+			}).done(function (updateHistory) {
+				_this2.setState({ updateHistory: updateHistory }, function () {
+					set('updateHistory', updateHistory, function () {
+						_this2.generateReport();
+					});
+				});
+			});
+		},
+		render: function render() {
+			var _this3 = this;
 
-	    set('lastUpdateCheck', new Date().getTime());
-	    $.ajax({
-	      type: 'GET',
-	      url: 'https://ainoob.com/api/noobox/updateList'
-	    }).done(function (data) {
-	      _this3.setState({ 'updateHistory': data }, function () {
-	        set('updateHistory', data, function () {
-	          _this3.generateReport();
-	        });
-	      });
-	    });
-	  },
-	  render: function render() {
-	    if (!this.state.enabled) {
-	      return null;
-	    }
-	    var newChanges = null;
-	    var header = _react2.default.createElement(
-	      'p',
-	      null,
-	      GL('ls_7')
-	    );
-	    if (this.state.updateAvailable) {
-	      header = _react2.default.createElement(
-	        'p',
-	        null,
-	        _react2.default.createElement(
-	          'a',
-	          { target: '_blank', href: 'https://ainoob.com/project/noobox' },
-	          GL('ls_8') + this.state.newVersion
-	        ),
-	        _react2.default.createElement('br', null),
-	        GL('ls_9'),
-	        _react2.default.createElement('br', null),
-	        GL('ls_10')
-	      );
-	      newChanges = this.state.newChanges.map(function (elem, index) {
-	        return _react2.default.createElement(
-	          'div',
-	          { className: 'listItem', key: index },
-	          elem
-	        );
-	      });
-	    }
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'container', id: 'checkUpdate' },
-	      _react2.default.createElement(
-	        'h5',
-	        { className: 'header' },
-	        GL('checkUpdate')
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { id: 'info', className: 'container important' },
-	        header,
-	        newChanges,
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'btn', onClick: this.checkUpdate },
-	          GL('checkUpdate')
-	        )
-	      )
-	    );
-	  }
+			if (!this.state.enabled) {
+				return null;
+			}
+			var newChanges = null;
+			var report = _react2.default.createElement(
+				'p',
+				{ className: 'line' },
+				GL('ls_7')
+			);
+			var help = _react2.default.createElement(
+				'p',
+				{ className: 'important', id: 'help' },
+				GL('ls_9'),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', null),
+				GL('ls_10')
+			);
+			if (this.state.updateAvailable) {
+				report = _react2.default.createElement(
+					'p',
+					{ className: 'line' },
+					_react2.default.createElement(
+						'a',
+						{ target: '_blank', href: 'https://ainoob.com/project/noobox' },
+						GL('ls_8') + this.state.newVersion
+					)
+				);
+				newChanges = this.state.newChanges.map(function (elem, index) {
+					return _react2.default.createElement(
+						'div',
+						{ className: 'listItem', key: index },
+						elem
+					);
+				});
+			}
+			return _react2.default.createElement(
+				CheckUpdateDiv,
+				{ displayHelp: this.state.displayHelp },
+				_react2.default.createElement(
+					'h5',
+					{ className: 'header' },
+					GL('checkUpdate'),
+					_react2.default.createElement(
+						'span',
+						{ id: 'helpButton', onClick: function onClick() {
+								_this3.setState({ displayHelp: !_this3.state.displayHelp });
+							} },
+						'\xA0(\u2754)'
+					)
+				),
+				help,
+				_react2.default.createElement(
+					'div',
+					{ id: 'info', className: 'container important' },
+					report,
+					_react2.default.createElement(
+						'div',
+						{ className: 'btn', onClick: this.checkUpdate },
+						GL('checkUpdate')
+					),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('br', null),
+					newChanges
+				)
+			);
+		}
 	});
 
 /***/ }),
@@ -31597,6 +31768,8 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\tpadding-left: 25px;\n\tpadding-right: 25px;\n\tp{\n\t\tmargin:0px;\n\t\tclear:both;\n\t}\n\t.imageSearchSwitch{\n\t\tfloat: left;\n\t\timg{\n\t\t\twidth: 30px;\n\t\t}\n\t\tinput:not(:checked){\n\t\t\t&+img{\n\t\t\t\topacity: 0.3;\n\t\t\t}\n\t\t}\n\t}\n'], ['\n\tpadding-left: 25px;\n\tpadding-right: 25px;\n\tp{\n\t\tmargin:0px;\n\t\tclear:both;\n\t}\n\t.imageSearchSwitch{\n\t\tfloat: left;\n\t\timg{\n\t\t\twidth: 30px;\n\t\t}\n\t\tinput:not(:checked){\n\t\t\t&+img{\n\t\t\t\topacity: 0.3;\n\t\t\t}\n\t\t}\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -31607,169 +31780,173 @@
 
 	var _reactRouter = __webpack_require__(180);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var OptionsDiv = _styledComponents2.default.div(_templateObject);
+
 	module.exports = _react2.default.createClass({
-	  displayName: 'Options',
-	  getInitialState: function getInitialState() {
-	    return {
-	      history: true,
-	      installType: 'normal',
-	      settings: {
-	        checkUpdate: false,
-	        videoControl: false,
-	        extractImages: false,
-	        imageSearch: false,
-	        screenshotSearch: false,
-	        imageSearchUrl_google: false,
-	        imageSearchUrl_baidu: false,
-	        imageSearchUrl_yandex: false,
-	        imageSearchUrl_bing: false,
-	        imageSearchUrl_tineye: false,
-	        imageSearchUrl_saucenao: false,
-	        imageSearchUrl_iqdb: false
-	      }
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
+			displayName: 'Options',
+			getInitialState: function getInitialState() {
+					return {
+							history: true,
+							installType: 'normal',
+							settings: {
+									checkUpdate: false,
+									videoControl: false,
+									extractImages: false,
+									imageSearch: false,
+									screenshotSearch: false,
+									imageSearchUrl_google: false,
+									imageSearchUrl_baidu: false,
+									imageSearchUrl_yandex: false,
+									imageSearchUrl_bing: false,
+									imageSearchUrl_tineye: false,
+									imageSearchUrl_saucenao: false,
+									imageSearchUrl_iqdb: false
+							}
+					};
+			},
+			componentDidMount: function componentDidMount() {
+					var _this = this;
 
-	    var switchList = ['history', 'checkUpdate', 'videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
-	    chrome.management.getSelf(function (data) {
-	      _this.setState({
-	        installType: data.installType
-	      });
-	    });
-	    for (var i = 0; i < switchList.length; i++) {
-	      isOn(switchList[i], function (ii) {
-	        this.setState(function (prevState) {
-	          prevState.settings[switchList[ii]] = true;
-	          return prevState;
-	        });
-	      }.bind(this, i), function (ii) {
-	        this.setState(function (prevState) {
-	          prevState.settings[switchList[ii]] = false;
-	          return prevState;
-	        });
-	      }.bind(this, i));
-	    }
-	  },
-	  toggleSetting: function toggleSetting(id) {
-	    var _this2 = this;
+					var switchList = ['history', 'checkUpdate', 'videoControl', 'extractImages', 'imageSearch', 'screenshotSearch', 'imageSearchUrl_google', 'imageSearchUrl_baidu', 'imageSearchUrl_yandex', 'imageSearchUrl_bing', 'imageSearchUrl_tineye', 'imageSearchUrl_saucenao', 'imageSearchUrl_iqdb'];
+					chrome.management.getSelf(function (data) {
+							_this.setState({
+									installType: data.installType
+							});
+					});
+					for (var i = 0; i < switchList.length; i++) {
+							isOn(switchList[i], function (ii) {
+									this.setState(function (prevState) {
+											prevState.settings[switchList[ii]] = true;
+											return prevState;
+									});
+							}.bind(this, i), function (ii) {
+									this.setState(function (prevState) {
+											prevState.settings[switchList[ii]] = false;
+											return prevState;
+									});
+							}.bind(this, i));
+					}
+			},
+			toggleSetting: function toggleSetting(id) {
+					var _this2 = this;
 
-	    var newValue = !this.state.settings[id];
-	    set(id, newValue, function () {
-	      _this2.setState(function (prevState) {
-	        prevState.settings[id] = newValue;
-	        return prevState;
-	      });
-	      chrome.extension.sendMessage({ job: id });
-	    });
-	  },
-	  getSwitch: function getSwitch(id, handler) {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'switch' },
-	      _react2.default.createElement(
-	        'label',
-	        { htmlFor: id },
-	        _react2.default.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
-	        _react2.default.createElement('span', { className: 'lever' })
-	      ),
-	      GL(id)
-	    );
-	  },
-	  getImageSearchSwitch: function getImageSearchSwitch(id, handler) {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'switch' },
-	      _react2.default.createElement(
-	        'label',
-	        { htmlFor: id },
-	        _react2.default.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
-	        _react2.default.createElement('img', { title: GL(id), src: '/thirdParty/' + id.slice(15) + '.png' })
-	      )
-	    );
-	  },
-	  getCheckbox: function getCheckbox(id, handler) {
-	    return _react2.default.createElement(
-	      'p',
-	      null,
-	      _react2.default.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
-	      _react2.default.createElement(
-	        'label',
-	        { htmlFor: id },
-	        GL(id)
-	      )
-	    );
-	  },
-	  render: function render() {
-	    var _this3 = this;
+					var newValue = !this.state.settings[id];
+					set(id, newValue, function () {
+							_this2.setState(function (prevState) {
+									prevState.settings[id] = newValue;
+									return prevState;
+							});
+							chrome.extension.sendMessage({ job: id });
+					});
+			},
+			getSwitch: function getSwitch(id, handler) {
+					return _react2.default.createElement(
+							'div',
+							{ className: 'switch' },
+							_react2.default.createElement(
+									'label',
+									{ htmlFor: id },
+									_react2.default.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
+									_react2.default.createElement('span', { className: 'lever' })
+							),
+							GL(id)
+					);
+			},
+			getImageSearchSwitch: function getImageSearchSwitch(id, handler) {
+					return _react2.default.createElement(
+							'div',
+							{ className: 'switch' },
+							_react2.default.createElement(
+									'label',
+									{ htmlFor: id },
+									_react2.default.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
+									_react2.default.createElement('img', { title: GL(id), src: '/thirdParty/' + id.slice(15) + '.png' })
+							)
+					);
+			},
+			getCheckbox: function getCheckbox(id, handler) {
+					return _react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement('input', { type: 'checkbox', onChange: handler || this.toggleSetting.bind(this, id), checked: this.state.settings[id], id: id }),
+							_react2.default.createElement(
+									'label',
+									{ htmlFor: id },
+									GL(id)
+							)
+					);
+			},
+			render: function render() {
+					var _this3 = this;
 
-	    var imageSearchEngines = null;
-	    if (this.state.settings['imageSearch']) {
-	      imageSearchEngines = ["imageSearchUrl_google", "imageSearchUrl_baidu", "imageSearchUrl_tineye", "imageSearchUrl_bing", "imageSearchUrl_yandex", "imageSearchUrl_saucenao", "imageSearchUrl_iqdb"].map(function (elem, index) {
-	        return _react2.default.createElement(
-	          'div',
-	          { className: 'tab-1 imageSearchSwitch', key: index },
-	          _this3.getImageSearchSwitch(elem)
-	        );
-	      });
-	    }
-	    var checkUpdate = null;
-	    if (this.state.installType != 'normal') {
-	      checkUpdate = this.getCheckbox('checkUpdate');
-	    }
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'container' },
-	      _react2.default.createElement(
-	        'div',
-	        { id: 'options' },
-	        _react2.default.createElement(
-	          'h5',
-	          { className: 'header' },
-	          GL('images')
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'tab-1' },
-	          _react2.default.createElement('p', null),
-	          this.getCheckbox('imageSearch'),
-	          imageSearchEngines,
-	          _react2.default.createElement('p', null),
-	          this.getCheckbox('extractImages'),
-	          _react2.default.createElement('p', null),
-	          this.getCheckbox('screenshotSearch'),
-	          _react2.default.createElement('p', null)
-	        ),
-	        _react2.default.createElement(
-	          'h5',
-	          { className: 'header' },
-	          GL('videoControl')
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'tab-1' },
-	          this.getCheckbox('videoControl'),
-	          _react2.default.createElement('p', null)
-	        ),
-	        _react2.default.createElement(
-	          'h5',
-	          { className: 'header' },
-	          GL('experience')
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'tab-1' },
-	          this.getCheckbox('history'),
-	          _react2.default.createElement('p', null),
-	          checkUpdate,
-	          _react2.default.createElement('p', null)
-	        )
-	      )
-	    );
-	  }
+					var imageSearchEngines = null;
+					if (this.state.settings['imageSearch']) {
+							imageSearchEngines = ["imageSearchUrl_google", "imageSearchUrl_baidu", "imageSearchUrl_tineye", "imageSearchUrl_bing", "imageSearchUrl_yandex", "imageSearchUrl_saucenao", "imageSearchUrl_iqdb"].map(function (elem, index) {
+									return _react2.default.createElement(
+											'div',
+											{ className: 'tab-1 imageSearchSwitch', key: index },
+											_this3.getImageSearchSwitch(elem)
+									);
+							});
+					}
+					var checkUpdate = null;
+					if (this.state.installType != 'normal') {
+							checkUpdate = this.getCheckbox('checkUpdate');
+					}
+					return _react2.default.createElement(
+							OptionsDiv,
+							null,
+							_react2.default.createElement(
+									'h5',
+									{ className: 'header' },
+									GL('images')
+							),
+							_react2.default.createElement(
+									'div',
+									{ className: 'tab-1' },
+									_react2.default.createElement('p', null),
+									this.getCheckbox('imageSearch'),
+									imageSearchEngines,
+									_react2.default.createElement('p', null),
+									this.getCheckbox('extractImages'),
+									_react2.default.createElement('p', null),
+									this.getCheckbox('screenshotSearch'),
+									_react2.default.createElement('p', null)
+							),
+							_react2.default.createElement(
+									'h5',
+									{ className: 'header' },
+									GL('videoControl')
+							),
+							_react2.default.createElement(
+									'div',
+									{ className: 'tab-1' },
+									this.getCheckbox('videoControl'),
+									_react2.default.createElement('p', null)
+							),
+							_react2.default.createElement(
+									'h5',
+									{ className: 'header' },
+									GL('experience')
+							),
+							_react2.default.createElement(
+									'div',
+									{ className: 'tab-1' },
+									this.getCheckbox('history'),
+									_react2.default.createElement('p', null),
+									checkUpdate,
+									_react2.default.createElement('p', null)
+							)
+					);
+			}
 	});
 
 /***/ }),
@@ -31778,6 +31955,8 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\timg{\n\t\tmax-height: 80px;\n\t\tmax-width: 120px;\n\t}\n\t.section{\n\t\tpadding-bottom: 0px;\n\t}\n'], ['\n\timg{\n\t\tmax-height: 80px;\n\t\tmax-width: 120px;\n\t}\n\t.section{\n\t\tpadding-bottom: 0px;\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -31788,7 +31967,15 @@
 
 	var _reactRouter = __webpack_require__(180);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var HistoryDiv = _styledComponents2.default.div(_templateObject);
 
 	module.exports = _react2.default.createClass({
 	  displayName: 'History',
@@ -31843,8 +32030,8 @@
 	      );
 	    }).reverse();
 	    return _react2.default.createElement(
-	      'div',
-	      { id: 'history' },
+	      HistoryDiv,
+	      null,
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'section container' },
@@ -31896,6 +32083,8 @@
 
 	'use strict';
 
+	var _templateObject = _taggedTemplateLiteral(['\n\t.shareItem{\n\t\tfloat: left;\n\t\twidth: 42px;\n\t\tmargin-left: 3px;\n\t\timg{\n\t\t\twidth: 100%;\n\t\t}\n\t}\n\t.container{\n\t\tmargin-top: -11px;\n\t\tmargin-bottom: -11px;\n\t\toverflow: hidden;\n\t}\n'], ['\n\t.shareItem{\n\t\tfloat: left;\n\t\twidth: 42px;\n\t\tmargin-left: 3px;\n\t\timg{\n\t\t\twidth: 100%;\n\t\t}\n\t}\n\t.container{\n\t\tmargin-top: -11px;\n\t\tmargin-bottom: -11px;\n\t\toverflow: hidden;\n\t}\n']);
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -31906,15 +32095,23 @@
 
 	var _reactRouter = __webpack_require__(180);
 
+	var _styledComponents = __webpack_require__(239);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var AboutDiv = _styledComponents2.default.div(_templateObject);
 
 	module.exports = _react2.default.createClass({
 	  displayName: 'About',
 	  render: function render() {
 	    if (isZh) {
 	      return _react2.default.createElement(
-	        'div',
-	        { id: 'about', className: 'container' },
+	        AboutDiv,
+	        null,
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'section container' },
@@ -32043,35 +32240,13 @@
 	              'Timeago(MIT\u534F\u8BAE)'
 	            ),
 	            '\u6765\u663E\u793A\u65F6\u95F4'
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86chuantu.biz\u7684',
-	            _react2.default.createElement(
-	              'a',
-	              { href: 'http://chuantu.biz/', target: '_blank' },
-	              '\u56FE\u5E8A\u670D\u52A1'
-	            ),
-	            '\u6765\u5B58\u50A8\u56FE\u7247'
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            '\u4E8C\u7BB1\u4F7F\u7528\u4E86postimage\u7684',
-	            _react2.default.createElement(
-	              'a',
-	              { href: 'http://old.postimage.org/', target: '_blank' },
-	              '\u56FE\u5E8A\u670D\u52A1'
-	            ),
-	            '\u6765\u5B58\u50A8\u56FE\u7247'
 	          )
 	        )
 	      );
 	    } else {
 	      return _react2.default.createElement(
-	        'div',
-	        { id: 'about', className: 'container' },
+	        AboutDiv,
+	        null,
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'section container' },
@@ -32200,28 +32375,6 @@
 	              'Timeago(MIT Liscense)'
 	            ),
 	            ' from Hust.cc to display timeago'
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            'NooBox uses ',
-	            _react2.default.createElement(
-	              'a',
-	              { href: 'http://old.postimage.org/', target: '_blank' },
-	              'Image Hosting'
-	            ),
-	            ' from postimage to store images'
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            'NooBox uses ',
-	            _react2.default.createElement(
-	              'a',
-	              { href: 'http://chuantu.biz/', target: '_blank' },
-	              'Image Hosting'
-	            ),
-	            ' from chuantu.biz to store images'
 	          )
 	        )
 	      );

@@ -48,6 +48,7 @@
 	const NooBox = {};
 	let analyticsOnce = false;
 	const analyticsLastList = {};
+	// I don't know why this works, anyway, will keep it in this form for a while
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-77112662-5']);
 
@@ -80,6 +81,7 @@
 	NooBox.Webmaster = {};
 	NooBox.History = {};
 	NooBox.Options = {};
+	NooBox.Notifications = {};
 	//Options section
 	NooBox.Options.init = null;
 	//Default settings, will be set to correspond values if the settings does not exist
@@ -94,7 +96,6 @@
 	//Functions to upload image to the internet
 	NooBox.Image.POST = {};
 	//servers for uploading
-	//NooBox.Image.POST.servers=['postimage.org','chuantu.biz'];
 	NooBox.Image.POST.servers = ['ainoob.com'];
 	//the order of uploading if one failed
 	NooBox.Image.POST.serverOrder = [0];
@@ -104,10 +105,6 @@
 	NooBox.Image.POST.general = null;
 	//call POST.server[x] to upload image
 	NooBox.Image.POST.upload = null;
-	//upload the image to Baidu and call baidu fetch function
-	//NooBox.Image.POST.baidu=null;
-	//Wrap the image for uploading
-	//NooBox.Image.DataWrapper={};
 	//add or remove image context menus
 	NooBox.Image.updateContextMenu = null;
 	//list of search engines
@@ -124,6 +121,15 @@
 	NooBox.Image.extractImages = null;
 	//record the search history
 	NooBox.History.recordImageSearch = null;
+
+	NooBox.Notifications.notImage = () => {
+		chrome.notifications.create({
+			type:'basic',
+			iconUrl: '/images/icon_128.png',
+			title: GL('reverse_image_search'),
+			message: GL('ls_0')
+		});
+	}
 
 
 
@@ -158,7 +164,7 @@
 
 	NooBox.Options.constantValues = [
 	  ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-	  ['version', '0.9.3.2']
+	  ['version', '0.9.0.2']
 	];
 
 	NooBox.Options.init = (i) => {
@@ -172,6 +178,35 @@
 	  } else {
 	    NooBox.Image.updateContextMenu();
 	  }
+	}
+
+	NooBox.Image.init = () => {
+		// I failed to find a way
+		/*NooBox.Image.imageReader = new window.FileReader();
+		NooBox.Image.imageReader.onloadend = () => {
+			const base64data = this.reader.result;                
+			chrome.runtime.sendMessage({
+				job:'analytics',
+				category:'uploadSearch',
+				action:'run'
+			}, () => {});
+			chrome.runtime.sendMessage({job: 'imageSearch_upload', data: base64data });
+		}
+		NooBox.Image.imageHolder = document.createElement('img');
+		NooBox.Image.imageHolder.onerror = chrome.runtime.sendMessage({ job: 'notImage' });
+		NooBox.Image.onload = function() {
+			fetchBlob(e.target.src, (blob) => {
+				NooBox.Image.imageReader.readAsDataURL(blob);
+			});
+		}
+
+		NooBox.Image.imageFileSelector = document.createElement('input');
+		NooBox.Image.imageFileSelector.type = 'file';
+		NooBox.Image.imageFileSelector.id = 'imageFileSelector';
+		NooBox.Image.imageFileSelector.addEventListener('change', (e) => {
+			const imageUrl = URL.createObjectURL(e.target.files[0]);
+			NooBox.Image.imageHolder.src = imageUrl;
+		});*/
 	}
 
 	NooBox.Image.updateContextMenu = () => {
@@ -774,7 +809,9 @@
 	}
 
 	NooBox.init = () => {
+		window.NooBox = NooBox;
 	  NooBox.Options.init(0);
+	  NooBox.Image.init();
 	  chrome.runtime.onMessage.addListener(
 	    (request, sender, sendResponse) => {
 	      if ('job' in request) {
@@ -790,14 +827,19 @@
 	          NooBox.Image.updateContextMenu();
 	        } else if (request.job == 'analytics') {
 	          analytics(request);
-	        } else if (request.job == 'passToFront') {
+	        } else if (request.job == 'uploadImage') {
+						console.log('uploadImage');
+						NooBox.Image.imageFileSelector.click();
+					} else if (request.job == 'passToFront') {
 	          chrome.tabs.query({
 	            active: true,
 	            currentWindow: true
 	          }, (tabs) => {
 	            chrome.tabs.sendMessage(tabs[0].id, request.message, () => {});
 	          });
-	        } else if (request.job == 'getDB') {
+	        } else if(request.job == 'notImage') {
+						chrome.NooBox.Notifications.notImage;
+					} else if (request.job == 'getDB') {
 	          getDB(request.key, (data) => {
 	            chrome.tabs.sendMessage(sender.tab.id, {
 	              job: 'returnDB',

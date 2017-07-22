@@ -189,6 +189,24 @@
 	"message":"If you installed NooBox from Chrome Web Store, Chrome will automatically update NooBox, so just wait for a bit~"
   },
   "ls_10":{
-	"message":"If you install NooBox through CRX file, click the link above and download the newest version"
+	"message":"If you install NooBox through CRX file, click the link below and download the newest version"
+  },
+  "ls_11":{
+	"message":"Upload image and perform reverse search."
+  },
+  "ls_12":{
+	"message":"You can click to upload or drag & drop."
+  },
+  "ls_13":{
+	"message":"If you are Mac user or Unix user, the popup might be closed immediately so that you cannot upload anything. If that happened, right click NooBox and select Inspect popup, and then you are good to go"
+  },
+  "ls_14":{
+	"message":"Basically HTML5 Video Control is to bring shortcuts (→ for forward, k for pause, etc), it's currently under Alpha version, so it might not work for all websites that has HTML5 video elements"
+  },
+  "ls_15":{
+	"message":"You can turn it off for certain websites, just click the Sun and it will become Cloud~"
+  },
+  "ls_16":{
+	"message":"{'→':'forward 5s','←':'rewind 5s','↑':'increase volume','↓':'lower volume','m':'mute/unmute','j':'rewind 10s','l':'forward 10s','k':'pause/play',',':'rewind a tiny tiny bit','.':'forward a tiny tiny bit','>':'increase speed','<':'lower speed', 'f': 'fullscreen','d':'download','r':'magic rotation!'}"
   }
 }
