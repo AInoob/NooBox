@@ -48,31 +48,22 @@
 	const NooBox = {};
 	let analyticsOnce = false;
 	const analyticsLastList = {};
-	// I don't know why this works, anyway, will keep it in this form for a while
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-77112662-5']);
-
-	(() => {
-	  const ga = document.createElement('script');
-	  ga.type = 'text/javascript';
-	  ga.async = true;
-	  ga.src = 'https://ssl.google-analytics.com/ga.js';
-	  const s = document.getElementsByTagName('script')[0];
-	  s.parentNode.insertBefore(ga, s);
-	})();
 
 	function analytics(request) {
-		console.log(_gaq);
-		console.log(request);
 	  if (!analyticsOnce) {
-	    _gaq.push(['_trackPageview', 'background']);
+			bello.pageview(NooBox.Options.constantValues[1][1]);
 	    analyticsOnce = true;
 	  }
 	  const time = new Date().getTime();
 	  if (!analyticsLastList[request.category] || analyticsLastList[request.category] + 500 < time) {
 	    analyticsLastList[request.category] = time;
 	  }
-	  _gaq.push(['_trackEvent', request.category, request.action, request.label]);
+
+		bello.event({
+			category: request.category,
+			action: request.action,
+			label: request.label
+		});
 	}
 	NooBox.temp = {
 	  lastVideoControl: 0
@@ -119,6 +110,8 @@
 	NooBox.Image.screenshotSearch = null;
 	//inject and run scripts to current tab
 	NooBox.Image.extractImages = null;
+	//download extracted images
+	NooBox.Image.downloadExtractImages = null;
 	//record the search history
 	NooBox.History.recordImageSearch = null;
 
@@ -164,7 +157,7 @@
 
 	NooBox.Options.constantValues = [
 	  ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-	  ['version', '0.9.3.2']
+	  ['version', '0.9.3.3']
 	];
 
 	NooBox.Options.init = (i) => {
@@ -755,6 +748,74 @@
 	  }
 	}
 
+	NooBox.Image.downloadExtractImages = (sender, files) => {
+		analytics({
+			category: 'downloadExtractImages',
+			action: 'run'
+		});
+		const zip = new JSZip();
+		let remains = files.length;
+		let total = files.length;
+		let i = 0;
+		let file = files[i];
+		const reader = new window.FileReader();
+		reader.onloadend = () => {
+			console.log(remains);
+			addImage(reader.result);
+		}
+		function addImage(dataURI) {
+			if(dataURI) {
+				const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
+				const binary = convertDataURIToBinary(dataURI);
+				zip.file(file.name + '.' + ext, binary, {
+					base64: false
+				});
+			}
+			else {
+				total --;
+			}
+			remains--;
+			chrome.tabs.sendMessage(sender.tab.id, {
+				job: 'downloadRemaining',
+				remains: remains,
+				total: total
+			}, () => {});
+			if (remains == 0) {
+				zip.generateAsync({
+					type: 'blob'
+				}).then((content) => {
+					saveAs(content, 'NooBox.zip');
+				});
+			} else {
+				file = files[++i];
+				if (file.url.slice(0, 4) == 'data') {
+					addImage(file.url);
+				} else {
+					fetchBlob(file.url, (blob) => {
+						if(blob) {
+							reader.readAsDataURL(blob);
+						}
+						else {
+							addImage();
+						}
+					});
+				}
+			}
+		}
+		if (file.url.slice(0, 4) == 'data') {
+			addImage(file.url);
+		} else {
+			fetchBlob(file.url, (blob) => {
+				if(blob) {
+					reader.readAsDataURL(blob);
+				}
+				else {
+					addImage();
+				}
+			});
+		}
+	}
+
 	NooBox.Image.screenshotSearch = (info, tab) => {
 	  chrome.tabs.sendMessage(tab.id, 'loaded', (response) => {
 	    if (response == 'yes') {
@@ -848,70 +909,17 @@
 	            });
 	          });
 	        } else if (request.job == 'urlDownloadZip') {
-	          const zip = new JSZip();
-	          const files = request.files;
-	          console.log(files);
-	          let remains = files.length;
-	          let total = files.length;
-	          let i = 0;
-	          let file = files[i];
-	          const reader = new window.FileReader();
-	          reader.onloadend = () => {
-	            console.log(remains);
-	            addImage(reader.result);
-	          }
-	          function addImage(dataURI) {
-							if(dataURI) {
-								const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
-								const binary = convertDataURIToBinary(dataURI);
-								zip.file(file.name + '.' + ext, binary, {
-									base64: false
-								});
-							}
-							else {
-								total --;
-							}
-	            remains--;
-	            chrome.tabs.sendMessage(sender.tab.id, {
-	              job: 'downloadRemaining',
-	              remains: remains,
-	              total: total
-	            }, () => {});
-	            if (remains == 0) {
-	              zip.generateAsync({
-	                type: 'blob'
-	              }).then((content) => {
-	                saveAs(content, 'NooBox.zip');
-	              });
-	            } else {
-	              file = files[++i];
-	              if (file.url.slice(0, 4) == 'data') {
-	                addImage(file.url);
-	              } else {
-	                fetchBlob(file.url, (blob) => {
-										if(blob) {
-											reader.readAsDataURL(blob);
-										}
-										else {
-											addImage();
-										}
-	                });
-	              }
-	            }
-	          }
-	          if (file.url.slice(0, 4) == 'data') {
-	            addImage(file.url);
-	          } else {
-	            fetchBlob(file.url, (blob) => {
-								if(blob) {
-									reader.readAsDataURL(blob);
-								}
-								else {
-									addImage();
-								}
-	            });
-	          }
+						NooBox.Image.downloadExtractImages(sender, request.files);
 	        } else if (request.job == 'videoControl_website_switch') {
+						let action = 'enable';
+						if(request.enable) {
+							action = 'disable';
+						}
+						analytics({
+							category: 'videoControlWebsiteSwitch',
+							action,
+							label: ''
+						});
 	          chrome.tabs.query({}, (tabs) => {
 	            for (let i = 0; i < tabs.length; i++) {
 	              if (tabs[i].url.indexOf(request.host)) {
