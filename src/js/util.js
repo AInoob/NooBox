@@ -314,14 +314,24 @@ window.fetchBlob = (uri, callback) => {
   xhr.responseType = 'blob';
 
   xhr.onload = function(e) {
-    if (this.status == 200) {
-      const blob = new Blob([this.response], {
-        type: 'image/png'
-      });;
-      if (callback) {
-        callback(blob);
-      }
-    }
+		if(xhr.readyState == 4) {
+			if (this.status == 200) {
+				const blob = new Blob([this.response], {
+					type: 'image/png'
+				});;
+				if (callback) {
+					callback(blob);
+				}
+			}
+			else {
+				console.log('error! yay');
+				callback();
+			}
+		}
   };
+	xhr.onerror = function() {
+		console.log('error! yay');
+		callback();
+	}
   xhr.send();
 };

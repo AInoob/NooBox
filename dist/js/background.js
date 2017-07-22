@@ -852,7 +852,7 @@
 	          const files = request.files;
 	          console.log(files);
 	          let remains = files.length;
-	          const total = files.length;
+	          let total = files.length;
 	          let i = 0;
 	          let file = files[i];
 	          const reader = new window.FileReader();
@@ -860,13 +860,17 @@
 	            console.log(remains);
 	            addImage(reader.result);
 	          }
-
 	          function addImage(dataURI) {
-	            const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
-	            const binary = convertDataURIToBinary(dataURI);
-	            zip.file(file.name + '.' + ext, binary, {
-	              base64: false
-	            });
+							if(dataURI) {
+								const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
+								const binary = convertDataURIToBinary(dataURI);
+								zip.file(file.name + '.' + ext, binary, {
+									base64: false
+								});
+							}
+							else {
+								total --;
+							}
 	            remains--;
 	            chrome.tabs.sendMessage(sender.tab.id, {
 	              job: 'downloadRemaining',
@@ -885,7 +889,12 @@
 	                addImage(file.url);
 	              } else {
 	                fetchBlob(file.url, (blob) => {
-	                  reader.readAsDataURL(blob);
+										if(blob) {
+											reader.readAsDataURL(blob);
+										}
+										else {
+											addImage();
+										}
 	                });
 	              }
 	            }
@@ -894,7 +903,12 @@
 	            addImage(file.url);
 	          } else {
 	            fetchBlob(file.url, (blob) => {
-	              reader.readAsDataURL(blob);
+								if(blob) {
+									reader.readAsDataURL(blob);
+								}
+								else {
+									addImage();
+								}
 	            });
 	          }
 	        } else if (request.job == 'videoControl_website_switch') {
