@@ -1,10 +1,19 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const ImageSearchDiv = styled.div`
+	#help{
+		height: ${props => props.displayHelp? 'initial' : '0px'};
+		overflow: hidden;
+		margin: 0;
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'ImageSearch',
   reader : new window.FileReader(),
   getInitialState: function() {
-    return { enabled: false };
+    return { enabled: false, displayHelp: false };
   },
   componentDidMount: function() {
     isOn('imageSearch', () => {
@@ -14,9 +23,8 @@ module.exports = React.createClass({
         chrome.extension.sendMessage({
 					job:'analytics',
 					category:'uploadSearch',
-					ction:'run'
-				}, (response) => {
-				});
+					action:'run'
+				}, () => {});
         chrome.extension.sendMessage({job: 'imageSearch_upload', data: base64data });
       }
       get('totalImageSearch', (count) => {
@@ -37,12 +45,10 @@ module.exports = React.createClass({
     e.stopPropagation();
     e.preventDefault();
     const url = URL.createObjectURL(e.dataTransfer.files[0]);
-		console.log(url);
     $('#uploadedImage').attr('src', url);
   },
   upload: function(e) {
     const url = URL.createObjectURL(e.target.files[0]);
-		console.log(url);
     $('#uploadedImage').attr('src', url);
   },
   search: function(e) {
@@ -62,14 +68,16 @@ module.exports = React.createClass({
     if(!this.state.enabled) {
       return null;
     }
-    const icons=(this.state.engines||[]).map((elem, index) => {
+    const icons = (this.state.engines||[]).map((elem, index) => {
       return (
 				<img key={index} src={'/thirdParty/'+elem+'.png'} />
 			);
     });
+    const help = <p className="important" id="help">{GL('ls_11')}<br/><br/>{GL('ls_12')}<br/><br/>{GL('ls_13')}</p>;
     return (
-      <div className="container" id="imageSearch">
-        <h5 className="header">{GL('imageSearch')}</h5>
+      <ImageSearchDiv displayHelp={this.state.displayHelp} className="container">
+        <h5 className="header">{GL('imageSearch')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(❔)</span></h5>
+				{help}
         <div id="info" className="container">
           <p className="important line">{GL('totalSearches')+' : '+this.state.totalImageSearch}</p>
           <div className="btn line">
@@ -80,7 +88,7 @@ module.exports = React.createClass({
           <div id="icons" className="line">
           </div>
         </div>
-      </div>
+      </ImageSearchDiv>
 		);
   }
 });

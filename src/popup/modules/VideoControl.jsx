@@ -1,9 +1,43 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const VideoControlDiv = styled.div`
+	#help{
+		height: ${props => props.displayHelp? 'initial' : '0px'};
+		overflow: hidden;
+		margin: 0;
+	}
+	#info{
+		font-size: 100px;
+		color: grey;
+		span{
+			line-height: 70px;
+			height: 80px;
+			float: left;
+			display: block;
+			cursor: pointer;
+			user-select: none;
+		}
+	}
+	#enabled:checked + span{
+		color: ${props => props.colorOn};
+	}
+	#shortcuts{
+		td{
+			padding-top: 8px;
+			padding-bottom: 0px;
+		}
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'VideoControl',
   getInitialState: function() {
-    return { enabled: false, websiteEnabled: true };
+		let shortcuts = JSON.parse(GL('ls_16').replace(/\'/g,'"'));
+		shortcuts = Object.keys(shortcuts).map((key) => {
+			return [key, shortcuts[key]];
+		});
+    return { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts };
   },
   componentDidMount: function() {
     isOn('videoControl', () => {
@@ -44,14 +78,22 @@ module.exports = React.createClass({
     if(this.state.websiteEnabled) {
       symbol = '☀';
     }
+		let help, shortcuts;
+		if(this.state.displayHelp) {
+			shortcuts = this.state.shortcuts.map((elem, index) => {
+				return <tr><td>{elem[0]}</td><td>{elem[1]}</td></tr>;
+			});
+			help = <p className="important" id="help">{GL('ls_14')}<br/><br/>{GL('ls_15')}<br/><table id="shortcuts">{shortcuts}</table></p>;
+		}
     return (
-      <div className="container" id="videoControl">
-        <h5 className="header">{GL('videoControl')}</h5>
+      <VideoControlDiv displayHelp={this.state.displayHelp} className="container">
+        <h5 className="header">{GL('videoControl')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(❔)</span></h5>
+				{help}
         <div id="info" className="container">
           <p className="important line">{this.state.host}</p>
           <input type="checkbox" id="enabled" readOnly checked={this.state.websiteEnabled} />
           <span onClick={this.toggle}>{symbol}</span>
         </div>
-      </div>);
+      </VideoControlDiv>);
   }
 });

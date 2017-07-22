@@ -1,6 +1,17 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+
+const HistoryDiv = styled.div`
+	img{
+		max-height: 80px;
+		max-width: 120px;
+	}
+	.section{
+		padding-bottom: 0px;
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'History',
@@ -35,7 +46,7 @@ module.exports = React.createClass({
 			);
     }).reverse();
     return (
-      <div id="history">
+      <HistoryDiv>
         <div className="section container">
           <div className="btn" onClick={this.clearHistory}>{GL('clearAll')}</div>
         </div>
@@ -51,7 +62,7 @@ module.exports = React.createClass({
             {recordList}
           </tbody>
         </table>
-      </div>
+      </HistoryDiv>
 		);
   }
 });

@@ -1,6 +1,27 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+
+const OptionsDiv = styled.div`
+	padding-left: 25px;
+	padding-right: 25px;
+	p{
+		margin:0px;
+		clear:both;
+	}
+	.imageSearchSwitch{
+		float: left;
+		img{
+			width: 30px;
+		}
+		input:not(:checked){
+			&+img{
+				opacity: 0.3;
+			}
+		}
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'Options',
@@ -116,33 +137,31 @@ module.exports = React.createClass({
       checkUpdate = this.getCheckbox('checkUpdate');
     }
     return (
-      <div className="container">
-        <div id="options">
-          <h5 className="header">{GL('images')}</h5>
-            <div className="tab-1">
-            <p></p>
-            {this.getCheckbox('imageSearch')}
-            {imageSearchEngines}
-            <p></p>
-            {this.getCheckbox('extractImages')}
-            <p></p>
-            {this.getCheckbox('screenshotSearch')}
-            <p></p>
-          </div>
-          <h5 className="header">{GL('videoControl')}</h5>
-          <div className="tab-1">
-            {this.getCheckbox('videoControl')}
-            <p></p>
-          </div>
-          <h5 className="header">{GL('experience')}</h5>
-          <div className="tab-1">
-            {this.getCheckbox('history')}
-            <p></p>
-            {checkUpdate}
-            <p></p>
-          </div>
-        </div>
-      </div>
+			<OptionsDiv>
+				<h5 className="header">{GL('images')}</h5>
+					<div className="tab-1">
+					<p></p>
+					{this.getCheckbox('imageSearch')}
+					{imageSearchEngines}
+					<p></p>
+					{this.getCheckbox('extractImages')}
+					<p></p>
+					{this.getCheckbox('screenshotSearch')}
+					<p></p>
+				</div>
+				<h5 className="header">{GL('videoControl')}</h5>
+				<div className="tab-1">
+					{this.getCheckbox('videoControl')}
+					<p></p>
+				</div>
+				<h5 className="header">{GL('experience')}</h5>
+				<div className="tab-1">
+					{this.getCheckbox('history')}
+					<p></p>
+					{checkUpdate}
+					<p></p>
+				</div>
+			</OptionsDiv>
 		);
   }
 });

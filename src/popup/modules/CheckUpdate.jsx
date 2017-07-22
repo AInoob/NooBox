@@ -1,23 +1,44 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const CheckUpdateDiv = styled.div`
+	margin: 0 auto;
+	width: 90%;
+	.listItem{
+		display: list-item;
+		list-style-type: square;
+		margin-left: 16px;
+	}
+	#help{
+		height: ${props => props.displayHelp? 'initial' : '0px'};
+		overflow: hidden;
+		margin: 0;
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'CheckUpdate',
   getInitialState: function () {
-    return {installType:'normal',enabled:false,newChanges:[],updateAvailable:false,newVersion:'0',version:'0',updateHistory:[]};
+    return {
+			enabled: false,
+			newChanges: [],
+			updateAvailable: false,
+			newVersion: '0',
+			version: '0',
+			updateHistory:[],
+			displayHelp: false,
+		};
   },
   componentDidMount: function () {
-    chrome.management.getSelf((data) => {
-      this.setState({installType:data.installType});
-    });
     get('version', (version) => {
-      this.setState({version:version},function(){
-        get('updateHistory', (data) => {
-          this.setState({updateHistory:data},this.generateReport);
+      this.setState({ version }, () => {
+        get('updateHistory', (updateHistory) => {
+          this.setState({ updateHistory }, this.generateReport);
         });
       });
     });
     isOn('checkUpdate', () => {
-      this.setState({enabled:true});
+      this.setState({ enabled: true });
       get('lastUpdateCheck', (lastCheck) => {
         const time=new Date().getTime();
         if(time > lastCheck + 1000*60*60) {
@@ -26,71 +47,94 @@ module.exports = React.createClass({
       });
     });
   },
+	compareVersion: function(a, b) {
+		const x = a.split('.').map((elem) => {
+			return parseInt(elem);
+		});;
+		const y = b.split('.').map((elem) => {
+			return parseInt(elem);
+		});;
+		for(let i = 0; i < 4; i++) {
+			if(x[i] > y[i]) {
+				return 1;
+			}
+			else if(x[i] < y[i]) {
+				return -1;
+			}
+		}
+		return 0;
+	},
   generateReport: function() {
-    const data=this.state.updateHistory;
-    if(data.length==0){
+    const data = this.state.updateHistory;
+    if(data.length == 0) {
       return;
     }
     const last = data.length - 1;
     const newVersion = data[last].version;
-    if(this.state.version != newVersion) {
-      const changes=[];
-      let reachCurrent=false;
-      for(let i = 0; i < data.length; i++) {
-        if(reachCurrent == false) {
-          if(data[i].version == this.state.version) {
-            reachCurrent = true;
-          }
-        }
-        else {
-          let newChanges = data[i].changes;
-          if(isZh) {
-            newChanges=data[i].zhChanges;
-          }
-          for(let j = 0; j < newChanges.length; j++) {
-            changes.push(newChanges[j]);
-          }
-        }
+    if(this.compareVersion(newVersion, this.state.version) > 0) {
+      const newChanges=[];
+			let i;
+      for(i = 0; i < data.length; i++) {
+				if(this.compareVersion(data[i].version, this.state.version) > 0 ) {
+					break;
+				}
       }
-      this.setState({updateAvailable:true,newVersion:newVersion,newChanges:changes});
+			for(i--; i < data.length; i++) {
+				if(i < 0) {
+					i = 0;
+				}
+				let changes = data[i].changes;
+				if(isZh) {
+					changes = data[i].zhChanges;
+				}
+				for(let j = 0; j < changes.length; j++) {
+					newChanges.push(changes[j]);
+				}
+			}
+      this.setState({ updateAvailable: true, newVersion, newChanges });
     }
     else{
-      this.setState({updateAvailable:false});
+      this.setState({ updateAvailable: false });
     }
   },
   checkUpdate: function() {
     set('lastUpdateCheck',new Date().getTime());
-      $.ajax({
-        type: 'GET',
-        url: 'https://ainoob.com/api/noobox/updateList'
-      }).done((data) => {
-        this.setState({'updateHistory':data}, () => {
-          set('updateHistory', data, () => {
-            this.generateReport();
-          });
-        });
-      });
+		$.ajax({
+			type: 'GET',
+			url: 'https://ainoob.com/api/noobox/updateList'
+		}).done((updateHistory) => {
+			this.setState({ updateHistory }, () => {
+				set('updateHistory', updateHistory, () => {
+					this.generateReport();
+				});
+			});
+		});
   },
   render: function() {
     if(!this.state.enabled) {
       return null;
     }
-    let newChanges=null;
-    let header=<p>{GL('ls_7')}</p>
-    if(this.state.updateAvailable){
-      header=<p><a target="_blank" href="https://ainoob.com/project/noobox">{GL('ls_8')+this.state.newVersion}</a><br/>{GL('ls_9')}<br/>{GL('ls_10')}</p>;
-      newChanges=this.state.newChanges.map(function(elem,index){
+    let newChanges = null;
+    let report = <p className="line">{GL('ls_7')}</p>;
+    const help = <p className="important" id="help">{GL('ls_9')}<br/><br/>{GL('ls_10')}</p>;
+    if(this.state.updateAvailable) {
+			report = <p className="line"><a target="_blank" href="https://ainoob.com/project/noobox">{GL('ls_8')+this.state.newVersion}</a></p>;
+      newChanges = this.state.newChanges.map(function(elem,index){
         return <div className="listItem" key={index}>{elem}</div>;
       });
     }
     return (
-      <div className="container" id="checkUpdate">
-        <h5 className="header">{GL('checkUpdate')}</h5>
+      <CheckUpdateDiv displayHelp={this.state.displayHelp}>
+        <h5 className="header">{GL('checkUpdate')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(❔)</span></h5>
+				{help}
         <div id="info" className="container important">
-          {header}
+          {report}
+					<div className="btn" onClick={this.checkUpdate}>{GL('checkUpdate')}</div>
+					<br />
+					<br />
           {newChanges}
-          <div className="btn" onClick={this.checkUpdate}>{GL('checkUpdate')}</div>
         </div>
-      </div>);
+      </CheckUpdateDiv>
+		);
   }
 });

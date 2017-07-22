@@ -1,13 +1,30 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+
+const AboutDiv = styled.div`
+	.shareItem{
+		float: left;
+		width: 42px;
+		margin-left: 3px;
+		img{
+			width: 100%;
+		}
+	}
+	.container{
+		margin-top: -11px;
+		margin-bottom: -11px;
+		overflow: hidden;
+	}
+`;
 
 module.exports = React.createClass({
   displayName: 'About',
   render: () => {
     if(isZh){
       return (
-        <div id="about" className="container">
+        <AboutDiv>
           <div className="section container">
             <h5 className="header">二箱是啥？</h5>
             <p>二箱是一个为你提供使用功能的Chrome拓展</p>
@@ -31,17 +48,15 @@ module.exports = React.createClass({
           <div className="section container">
             <h5 className="header">鸣谢</h5>
             <li>二箱使用了Facebook的<a href="https://github.com/facebook/react" target="_blank">React(BSD协议)</a>作为底层建筑</li>
-			<li>二箱使用了JS Foundation的<a href="https://jquery.com/" target="_blank">jQuery(MIT协议)</a>来处理一些DOM和Ajax请求</li>
-			<li>二箱使用了Hust.cc的<a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT协议)</a>来显示时间</li>
-			<li>二箱使用了chuantu.biz的<a href="http://chuantu.biz/" target="_blank">图床服务</a>来存储图片</li>
-			<li>二箱使用了postimage的<a href="http://old.postimage.org/" target="_blank">图床服务</a>来存储图片</li>
+						<li>二箱使用了JS Foundation的<a href="https://jquery.com/" target="_blank">jQuery(MIT协议)</a>来处理一些DOM和Ajax请求</li>
+						<li>二箱使用了Hust.cc的<a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT协议)</a>来显示时间</li>
           </div>
-        </div>
+        </AboutDiv>
 			);
     }
     else{
       return (
-        <div id="about" className="container">
+        <AboutDiv>
           <div className="section container">
             <h5 className="header">What is NooBox?</h5>
             <p>NooBox is a Chrome extension that brings you useful functionalities.</p>
@@ -67,10 +82,8 @@ module.exports = React.createClass({
             <li>NooBox uses <a href="https://github.com/facebook/react" target="_blank">React(BSD Liscense)</a> from Facebook to build the bases</li>
             <li>NooBox uses <a href="https://jquery.com/" target="_blank">jQuery(MIT Liscense)</a> from JS Foundation to handle DOM and Ajax requests</li>
             <li>NooBox uses <a href="https://github.com/hustcc/timeago.js" target="_blank">Timeago(MIT Liscense)</a> from Hust.cc to display timeago</li>
-            <li>NooBox uses <a href="http://old.postimage.org/" target="_blank">Image Hosting</a> from postimage to store images</li>
-            <li>NooBox uses <a href="http://chuantu.biz/" target="_blank">Image Hosting</a> from chuantu.biz to store images</li>
 					</div>
-        </div>
+        </AboutDiv>
 			);
     }
   }
