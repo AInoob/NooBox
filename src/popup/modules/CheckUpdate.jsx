@@ -79,12 +79,9 @@ module.exports = React.createClass({
 					break;
 				}
       }
-			for(i--; i < data.length; i++) {
-				if(i < 0) {
-					i = 0;
-				}
+			for(; i < data.length; i++) {
 				console.log(i);
-				conosle.log(data[i].changes);
+				console.log(data[i].changes);
 				let changes = data[i].changes;
 				if(isZh) {
 					changes = data[i].zhChanges;

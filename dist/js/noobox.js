@@ -31592,176 +31592,173 @@
 	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 	var CheckUpdateDiv = _styledComponents2.default.div(_templateObject, function (props) {
-		return props.displayHelp ? 'initial' : '0px';
+			return props.displayHelp ? 'initial' : '0px';
 	});
 
 	module.exports = _react2.default.createClass({
-		displayName: 'CheckUpdate',
-		getInitialState: function getInitialState() {
-			return {
-				enabled: false,
-				newChanges: [],
-				updateAvailable: false,
-				newVersion: '0',
-				version: '0',
-				updateHistory: [],
-				displayHelp: false
-			};
-		},
-		componentDidMount: function componentDidMount() {
-			var _this = this;
+			displayName: 'CheckUpdate',
+			getInitialState: function getInitialState() {
+					return {
+							enabled: false,
+							newChanges: [],
+							updateAvailable: false,
+							newVersion: '0',
+							version: '0',
+							updateHistory: [],
+							displayHelp: false
+					};
+			},
+			componentDidMount: function componentDidMount() {
+					var _this = this;
 
-			get('version', function (version) {
-				_this.setState({ version: version }, function () {
-					get('updateHistory', function (updateHistory) {
-						_this.setState({ updateHistory: updateHistory }, _this.generateReport);
+					get('version', function (version) {
+							_this.setState({ version: version }, function () {
+									get('updateHistory', function (updateHistory) {
+											_this.setState({ updateHistory: updateHistory }, _this.generateReport);
+									});
+							});
 					});
-				});
-			});
-			isOn('checkUpdate', function () {
-				_this.setState({ enabled: true });
-				get('lastUpdateCheck', function (lastCheck) {
-					var time = new Date().getTime();
-					if (time > lastCheck + 1000 * 60 * 60) {
-						_this.checkUpdate();
-					}
-				});
-			});
-		},
-		compareVersion: function compareVersion(a, b) {
-			var x = a.split('.').map(function (elem) {
-				return parseInt(elem);
-			});;
-			var y = b.split('.').map(function (elem) {
-				return parseInt(elem);
-			});;
-			for (var i = 0; i < 4; i++) {
-				if (x[i] > y[i]) {
-					return 1;
-				} else if (x[i] < y[i]) {
-					return -1;
-				}
-			}
-			return 0;
-		},
-		generateReport: function generateReport() {
-			var data = this.state.updateHistory;
-			if (data.length == 0) {
-				return;
-			}
-			var last = data.length - 1;
-			var newVersion = data[last].version;
-			if (this.compareVersion(newVersion, this.state.version) > 0) {
-				var newChanges = [];
-				var i = void 0;
-				for (i = 0; i < data.length; i++) {
-					if (this.compareVersion(data[i].version, this.state.version) > 0) {
-						break;
-					}
-				}
-				for (i--; i < data.length; i++) {
-					if (i < 0) {
-						i = 0;
-					}
-					console.log(i);
-					conosle.log(data[i].changes);
-					var changes = data[i].changes;
-					if (isZh) {
-						changes = data[i].zhChanges;
-					}
-					for (var j = 0; j < changes.length; j++) {
-						newChanges.push(changes[j]);
-					}
-				}
-				this.setState({ updateAvailable: true, newVersion: newVersion, newChanges: newChanges });
-			} else {
-				this.setState({ updateAvailable: false });
-			}
-		},
-		checkUpdate: function checkUpdate() {
-			var _this2 = this;
-
-			set('lastUpdateCheck', new Date().getTime());
-			$.ajax({
-				type: 'GET',
-				url: 'https://ainoob.com/api/noobox/updateList'
-			}).done(function (updateHistory) {
-				_this2.setState({ updateHistory: updateHistory }, function () {
-					set('updateHistory', updateHistory, function () {
-						_this2.generateReport();
+					isOn('checkUpdate', function () {
+							_this.setState({ enabled: true });
+							get('lastUpdateCheck', function (lastCheck) {
+									var time = new Date().getTime();
+									if (time > lastCheck + 1000 * 60 * 60) {
+											_this.checkUpdate();
+									}
+							});
 					});
-				});
-			});
-		},
-		render: function render() {
-			var _this3 = this;
+			},
+			compareVersion: function compareVersion(a, b) {
+					var x = a.split('.').map(function (elem) {
+							return parseInt(elem);
+					});;
+					var y = b.split('.').map(function (elem) {
+							return parseInt(elem);
+					});;
+					for (var i = 0; i < 4; i++) {
+							if (x[i] > y[i]) {
+									return 1;
+							} else if (x[i] < y[i]) {
+									return -1;
+							}
+					}
+					return 0;
+			},
+			generateReport: function generateReport() {
+					var data = this.state.updateHistory;
+					if (data.length == 0) {
+							return;
+					}
+					var last = data.length - 1;
+					var newVersion = data[last].version;
+					if (this.compareVersion(newVersion, this.state.version) > 0) {
+							var newChanges = [];
+							var i = void 0;
+							for (i = 0; i < data.length; i++) {
+									if (this.compareVersion(data[i].version, this.state.version) > 0) {
+											break;
+									}
+							}
+							for (; i < data.length; i++) {
+									console.log(i);
+									console.log(data[i].changes);
+									var changes = data[i].changes;
+									if (isZh) {
+											changes = data[i].zhChanges;
+									}
+									for (var j = 0; j < changes.length; j++) {
+											newChanges.push(changes[j]);
+									}
+							}
+							this.setState({ updateAvailable: true, newVersion: newVersion, newChanges: newChanges });
+					} else {
+							this.setState({ updateAvailable: false });
+					}
+			},
+			checkUpdate: function checkUpdate() {
+					var _this2 = this;
 
-			if (!this.state.enabled) {
-				return null;
-			}
-			var newChanges = null;
-			var report = _react2.default.createElement(
-				'p',
-				{ className: 'line' },
-				GL('ls_7')
-			);
-			var help = _react2.default.createElement(
-				'p',
-				{ className: 'important', id: 'help' },
-				GL('ls_9'),
-				_react2.default.createElement('br', null),
-				_react2.default.createElement('br', null),
-				GL('ls_10')
-			);
-			if (this.state.updateAvailable) {
-				report = _react2.default.createElement(
-					'p',
-					{ className: 'line' },
-					_react2.default.createElement(
-						'a',
-						{ target: '_blank', href: 'https://ainoob.com/project/noobox' },
-						GL('ls_8') + this.state.newVersion
-					)
-				);
-				newChanges = this.state.newChanges.map(function (elem, index) {
-					return _react2.default.createElement(
-						'div',
-						{ className: 'listItem', key: index },
-						elem
+					set('lastUpdateCheck', new Date().getTime());
+					$.ajax({
+							type: 'GET',
+							url: 'https://ainoob.com/api/noobox/updateList'
+					}).done(function (updateHistory) {
+							_this2.setState({ updateHistory: updateHistory }, function () {
+									set('updateHistory', updateHistory, function () {
+											_this2.generateReport();
+									});
+							});
+					});
+			},
+			render: function render() {
+					var _this3 = this;
+
+					if (!this.state.enabled) {
+							return null;
+					}
+					var newChanges = null;
+					var report = _react2.default.createElement(
+							'p',
+							{ className: 'line' },
+							GL('ls_7')
 					);
-				});
+					var help = _react2.default.createElement(
+							'p',
+							{ className: 'important', id: 'help' },
+							GL('ls_9'),
+							_react2.default.createElement('br', null),
+							_react2.default.createElement('br', null),
+							GL('ls_10')
+					);
+					if (this.state.updateAvailable) {
+							report = _react2.default.createElement(
+									'p',
+									{ className: 'line' },
+									_react2.default.createElement(
+											'a',
+											{ target: '_blank', href: 'https://ainoob.com/project/noobox' },
+											GL('ls_8') + this.state.newVersion
+									)
+							);
+							newChanges = this.state.newChanges.map(function (elem, index) {
+									return _react2.default.createElement(
+											'div',
+											{ className: 'listItem', key: index },
+											elem
+									);
+							});
+					}
+					return _react2.default.createElement(
+							CheckUpdateDiv,
+							{ displayHelp: this.state.displayHelp },
+							_react2.default.createElement(
+									'h5',
+									{ className: 'header' },
+									GL('checkUpdate'),
+									_react2.default.createElement(
+											'span',
+											{ id: 'helpButton', onClick: function onClick() {
+															_this3.setState({ displayHelp: !_this3.state.displayHelp });
+													} },
+											'\xA0(?)'
+									)
+							),
+							help,
+							_react2.default.createElement(
+									'div',
+									{ id: 'info', className: 'container important' },
+									report,
+									_react2.default.createElement(
+											'div',
+											{ className: 'btn', onClick: this.checkUpdate },
+											GL('checkUpdate')
+									),
+									_react2.default.createElement('br', null),
+									_react2.default.createElement('br', null),
+									newChanges
+							)
+					);
 			}
-			return _react2.default.createElement(
-				CheckUpdateDiv,
-				{ displayHelp: this.state.displayHelp },
-				_react2.default.createElement(
-					'h5',
-					{ className: 'header' },
-					GL('checkUpdate'),
-					_react2.default.createElement(
-						'span',
-						{ id: 'helpButton', onClick: function onClick() {
-								_this3.setState({ displayHelp: !_this3.state.displayHelp });
-							} },
-						'\xA0(?)'
-					)
-				),
-				help,
-				_react2.default.createElement(
-					'div',
-					{ id: 'info', className: 'container important' },
-					report,
-					_react2.default.createElement(
-						'div',
-						{ className: 'btn', onClick: this.checkUpdate },
-						GL('checkUpdate')
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement('br', null),
-					newChanges
-				)
-			);
-		}
 	});
 
 /***/ }),
