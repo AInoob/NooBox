@@ -19,8 +19,14 @@ const VideoControlDiv = styled.div`
 			user-select: none;
 		}
 	}
+	#indicator{
+		margin-top: -20px;
+		margin-bottom: 20px;
+	}
 	#enabled:checked + span{
 		color: ${props => props.colorOn};
+		margin-top: 0px;
+		margin-bottom: 0px;
 	}
 	#shortcuts{
 		td{
@@ -74,9 +80,9 @@ module.exports = React.createClass({
     if(!this.state.enabled) {
       return null;
     }
-    var symbol = '☁';
+    let indicator = '☁';
     if(this.state.websiteEnabled) {
-      symbol = '☀';
+      indicator = '☀';
     }
 		let help, shortcuts;
 		if(this.state.displayHelp) {
@@ -86,13 +92,13 @@ module.exports = React.createClass({
 			help = <p className="important" id="help">{GL('ls_14')}<br/><br/>{GL('ls_15')}<br/><table id="shortcuts">{shortcuts}</table></p>;
 		}
     return (
-      <VideoControlDiv displayHelp={this.state.displayHelp} className="container">
-        <h5 className="header">{GL('videoControl')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(❔)</span></h5>
+      <VideoControlDiv colorOn={shared.styled.colorOn} displayHelp={this.state.displayHelp} className="container">
+        <h5 className="header">{GL('videoControl')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
 				{help}
         <div id="info" className="container">
           <p className="important line">{this.state.host}</p>
           <input type="checkbox" id="enabled" readOnly checked={this.state.websiteEnabled} />
-          <span onClick={this.toggle}>{symbol}</span>
+          <span id="indicator" onClick={this.toggle}>{indicator}</span>
         </div>
       </VideoControlDiv>);
   }

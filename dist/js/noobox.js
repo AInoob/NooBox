@@ -31064,7 +31064,7 @@
 
 	'use strict';
 
-	var _templateObject = _taggedTemplateLiteral(['\n\twidth: 413px;\n\t.header{\n\t\tcolor: ', ';\n\t}\n\tnav{\n\t\tbackground-color: ', ';\n\t\tline-height: 36px;\n\t\theight: 36px;\n\t\tul{\n\t\t\ta{\n\t\t\t\tpadding: 0 26.5px;\n\t\t\t}\n\t\t}\n\t}\n\t.hidden{\n\t\tdisplay: none;\n\t}\n\t.line{\n\t\t  margin-top: 0.3em;\n\t\t  margin-bottom: 0.3em;\n\t}\n\t.btn{\n\t\tfont-size: 0.8rem;\n\t\tpadding: 0 1rem;\n\t\theight: 26px;\n\t\tline-height: 26px;\n\t\t*{\n\t\t\tcursor: pointer;\n\t\t}\n\t}\n\t.important{\n\t\tcolor: ', ';\n\t\tfont-size: 1rem;\n\t}\n\t.tab-1{\n\t\tmargin-left: 38px;\n\t}\n\th4{\n\t\tmargin-top: 0px;\n\t}\n\th5{\n\t\tmargin-bottom: 3px;\n\t}\n\t#helpButton{\n\t\tfont-size: 1rem;\n\t}\n\t.select-wrapper input.select-dropdown{\n\t\tbackground-color: rgba(255,255,255,0.3);\n\t\tpadding-left: 17px;\n\t}\n\t.select-dropdown{\n\t\tcolor:#26a69a;\n\t}\n'], ['\n\twidth: 413px;\n\t.header{\n\t\tcolor: ', ';\n\t}\n\tnav{\n\t\tbackground-color: ', ';\n\t\tline-height: 36px;\n\t\theight: 36px;\n\t\tul{\n\t\t\ta{\n\t\t\t\tpadding: 0 26.5px;\n\t\t\t}\n\t\t}\n\t}\n\t.hidden{\n\t\tdisplay: none;\n\t}\n\t.line{\n\t\t  margin-top: 0.3em;\n\t\t  margin-bottom: 0.3em;\n\t}\n\t.btn{\n\t\tfont-size: 0.8rem;\n\t\tpadding: 0 1rem;\n\t\theight: 26px;\n\t\tline-height: 26px;\n\t\t*{\n\t\t\tcursor: pointer;\n\t\t}\n\t}\n\t.important{\n\t\tcolor: ', ';\n\t\tfont-size: 1rem;\n\t}\n\t.tab-1{\n\t\tmargin-left: 38px;\n\t}\n\th4{\n\t\tmargin-top: 0px;\n\t}\n\th5{\n\t\tmargin-bottom: 3px;\n\t}\n\t#helpButton{\n\t\tfont-size: 1rem;\n\t}\n\t.select-wrapper input.select-dropdown{\n\t\tbackground-color: rgba(255,255,255,0.3);\n\t\tpadding-left: 17px;\n\t}\n\t.select-dropdown{\n\t\tcolor:#26a69a;\n\t}\n']);
+	var _templateObject = _taggedTemplateLiteral(['\n\twidth: 413px;\n\t.header{\n\t\tcolor: ', ';\n\t}\n\tnav{\n\t\tbackground-color: ', ';\n\t\tline-height: 36px;\n\t\theight: 36px;\n\t\tul{\n\t\t\ta{\n\t\t\t\tpadding: 0 26.5px;\n\t\t\t}\n\t\t}\n\t}\n\t.hidden{\n\t\tdisplay: none;\n\t}\n\t.line{\n\t\t  margin-top: 0.3em;\n\t\t  margin-bottom: 0.3em;\n\t}\n\t.btn{\n\t\tfont-size: 0.8rem;\n\t\tpadding: 0 1rem;\n\t\theight: 26px;\n\t\tline-height: 26px;\n\t\t*{\n\t\t\tcursor: pointer;\n\t\t}\n\t}\n\t.important{\n\t\tcolor: ', ';\n\t\tfont-size: 1rem;\n\t}\n\t.tab-1{\n\t\tmargin-left: 38px;\n\t}\n\th4{\n\t\tmargin-top: 0px;\n\t}\n\th5{\n\t\tmargin-bottom: 3px;\n\t}\n\t#helpButton{\n\t\tfont-size: 1rem;\n\t\tcursor: pointer;\n\t}\n\t.select-wrapper input.select-dropdown{\n\t\tbackground-color: rgba(255,255,255,0.3);\n\t\tpadding-left: 17px;\n\t}\n\t.select-dropdown{\n\t\tcolor:#26a69a;\n\t}\n'], ['\n\twidth: 413px;\n\t.header{\n\t\tcolor: ', ';\n\t}\n\tnav{\n\t\tbackground-color: ', ';\n\t\tline-height: 36px;\n\t\theight: 36px;\n\t\tul{\n\t\t\ta{\n\t\t\t\tpadding: 0 26.5px;\n\t\t\t}\n\t\t}\n\t}\n\t.hidden{\n\t\tdisplay: none;\n\t}\n\t.line{\n\t\t  margin-top: 0.3em;\n\t\t  margin-bottom: 0.3em;\n\t}\n\t.btn{\n\t\tfont-size: 0.8rem;\n\t\tpadding: 0 1rem;\n\t\theight: 26px;\n\t\tline-height: 26px;\n\t\t*{\n\t\t\tcursor: pointer;\n\t\t}\n\t}\n\t.important{\n\t\tcolor: ', ';\n\t\tfont-size: 1rem;\n\t}\n\t.tab-1{\n\t\tmargin-left: 38px;\n\t}\n\th4{\n\t\tmargin-top: 0px;\n\t}\n\th5{\n\t\tmargin-bottom: 3px;\n\t}\n\t#helpButton{\n\t\tfont-size: 1rem;\n\t\tcursor: pointer;\n\t}\n\t.select-wrapper input.select-dropdown{\n\t\tbackground-color: rgba(255,255,255,0.3);\n\t\tpadding-left: 17px;\n\t}\n\t.select-dropdown{\n\t\tcolor:#26a69a;\n\t}\n']);
 
 	var _react = __webpack_require__(1);
 
@@ -31393,7 +31393,7 @@
 	          { id: 'helpButton', onClick: function onClick() {
 	              _this3.setState({ displayHelp: !_this3.state.displayHelp });
 	            } },
-	          '\xA0(\u2754)'
+	          '\xA0(?)'
 	        )
 	      ),
 	      help,
@@ -31428,7 +31428,7 @@
 
 	'use strict';
 
-	var _templateObject = _taggedTemplateLiteral(['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n\t#info{\n\t\tfont-size: 100px;\n\t\tcolor: grey;\n\t\tspan{\n\t\t\tline-height: 70px;\n\t\t\theight: 80px;\n\t\t\tfloat: left;\n\t\t\tdisplay: block;\n\t\t\tcursor: pointer;\n\t\t\tuser-select: none;\n\t\t}\n\t}\n\t#enabled:checked + span{\n\t\tcolor: ', ';\n\t}\n\t#shortcuts{\n\t\ttd{\n\t\t\tpadding-top: 8px;\n\t\t\tpadding-bottom: 0px;\n\t\t}\n\t}\n'], ['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n\t#info{\n\t\tfont-size: 100px;\n\t\tcolor: grey;\n\t\tspan{\n\t\t\tline-height: 70px;\n\t\t\theight: 80px;\n\t\t\tfloat: left;\n\t\t\tdisplay: block;\n\t\t\tcursor: pointer;\n\t\t\tuser-select: none;\n\t\t}\n\t}\n\t#enabled:checked + span{\n\t\tcolor: ', ';\n\t}\n\t#shortcuts{\n\t\ttd{\n\t\t\tpadding-top: 8px;\n\t\t\tpadding-bottom: 0px;\n\t\t}\n\t}\n']);
+	var _templateObject = _taggedTemplateLiteral(['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n\t#info{\n\t\tfont-size: 100px;\n\t\tcolor: grey;\n\t\tspan{\n\t\t\tline-height: 70px;\n\t\t\theight: 80px;\n\t\t\tfloat: left;\n\t\t\tdisplay: block;\n\t\t\tcursor: pointer;\n\t\t\tuser-select: none;\n\t\t}\n\t}\n\t#indicator{\n\t\tmargin-top: -20px;\n\t\tmargin-bottom: 20px;\n\t}\n\t#enabled:checked + span{\n\t\tcolor: ', ';\n\t\tmargin-top: 0px;\n\t\tmargin-bottom: 0px;\n\t}\n\t#shortcuts{\n\t\ttd{\n\t\t\tpadding-top: 8px;\n\t\t\tpadding-bottom: 0px;\n\t\t}\n\t}\n'], ['\n\t#help{\n\t\theight: ', ';\n\t\toverflow: hidden;\n\t\tmargin: 0;\n\t}\n\t#info{\n\t\tfont-size: 100px;\n\t\tcolor: grey;\n\t\tspan{\n\t\t\tline-height: 70px;\n\t\t\theight: 80px;\n\t\t\tfloat: left;\n\t\t\tdisplay: block;\n\t\t\tcursor: pointer;\n\t\t\tuser-select: none;\n\t\t}\n\t}\n\t#indicator{\n\t\tmargin-top: -20px;\n\t\tmargin-bottom: 20px;\n\t}\n\t#enabled:checked + span{\n\t\tcolor: ', ';\n\t\tmargin-top: 0px;\n\t\tmargin-bottom: 0px;\n\t}\n\t#shortcuts{\n\t\ttd{\n\t\t\tpadding-top: 8px;\n\t\t\tpadding-bottom: 0px;\n\t\t}\n\t}\n']);
 
 	var _react = __webpack_require__(1);
 
@@ -31443,132 +31443,132 @@
 	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 	var VideoControlDiv = _styledComponents2.default.div(_templateObject, function (props) {
-	  return props.displayHelp ? 'initial' : '0px';
+			return props.displayHelp ? 'initial' : '0px';
 	}, function (props) {
-	  return props.colorOn;
+			return props.colorOn;
 	});
 
 	module.exports = _react2.default.createClass({
-	  displayName: 'VideoControl',
-	  getInitialState: function getInitialState() {
-	    var shortcuts = JSON.parse(GL('ls_16').replace(/\'/g, '"'));
-	    shortcuts = Object.keys(shortcuts).map(function (key) {
-	      return [key, shortcuts[key]];
-	    });
-	    return { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts: shortcuts };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
+			displayName: 'VideoControl',
+			getInitialState: function getInitialState() {
+					var shortcuts = JSON.parse(GL('ls_16').replace(/\'/g, '"'));
+					shortcuts = Object.keys(shortcuts).map(function (key) {
+							return [key, shortcuts[key]];
+					});
+					return { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts: shortcuts };
+			},
+			componentDidMount: function componentDidMount() {
+					var _this = this;
 
-	    isOn('videoControl', function () {
-	      _this.setState({ enabled: true });
-	      chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function (tabs) {
-	        var url = "";
-	        if (tabs[0]) {
-	          url = tabs[0].url;
-	        }
-	        var a = document.createElement('a');
-	        a.href = url;
-	        var host = a.hostname;
-	        _this.setState({ host: host });
-	        getDB('videoControl_website_' + host, function (enabled) {
-	          if (enabled == false) {
-	            _this.setState({ websiteEnabled: false });
-	          }
-	        });
-	      });
-	    });
-	  },
-	  toggle: function toggle() {
-	    var _this2 = this;
+					isOn('videoControl', function () {
+							_this.setState({ enabled: true });
+							chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function (tabs) {
+									var url = "";
+									if (tabs[0]) {
+											url = tabs[0].url;
+									}
+									var a = document.createElement('a');
+									a.href = url;
+									var host = a.hostname;
+									_this.setState({ host: host });
+									getDB('videoControl_website_' + host, function (enabled) {
+											if (enabled == false) {
+													_this.setState({ websiteEnabled: false });
+											}
+									});
+							});
+					});
+			},
+			toggle: function toggle() {
+					var _this2 = this;
 
-	    var websiteEnabled = !this.state.websiteEnabled;
-	    setDB('videoControl_website_' + this.state.host, websiteEnabled, function () {
-	      _this2.setState({ websiteEnabled: websiteEnabled });
-	      chrome.runtime.sendMessage({
-	        job: 'videoControl_website_switch',
-	        host: _this2.state.host,
-	        enabled: websiteEnabled
-	      });
-	    });
-	  },
-	  render: function render() {
-	    var _this3 = this;
+					var websiteEnabled = !this.state.websiteEnabled;
+					setDB('videoControl_website_' + this.state.host, websiteEnabled, function () {
+							_this2.setState({ websiteEnabled: websiteEnabled });
+							chrome.runtime.sendMessage({
+									job: 'videoControl_website_switch',
+									host: _this2.state.host,
+									enabled: websiteEnabled
+							});
+					});
+			},
+			render: function render() {
+					var _this3 = this;
 
-	    if (!this.state.enabled) {
-	      return null;
-	    }
-	    var symbol = '☁';
-	    if (this.state.websiteEnabled) {
-	      symbol = '☀';
-	    }
-	    var help = void 0,
-	        shortcuts = void 0;
-	    if (this.state.displayHelp) {
-	      shortcuts = this.state.shortcuts.map(function (elem, index) {
-	        return _react2.default.createElement(
-	          'tr',
-	          null,
-	          _react2.default.createElement(
-	            'td',
-	            null,
-	            elem[0]
-	          ),
-	          _react2.default.createElement(
-	            'td',
-	            null,
-	            elem[1]
-	          )
-	        );
-	      });
-	      help = _react2.default.createElement(
-	        'p',
-	        { className: 'important', id: 'help' },
-	        GL('ls_14'),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement('br', null),
-	        GL('ls_15'),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(
-	          'table',
-	          { id: 'shortcuts' },
-	          shortcuts
-	        )
-	      );
-	    }
-	    return _react2.default.createElement(
-	      VideoControlDiv,
-	      { displayHelp: this.state.displayHelp, className: 'container' },
-	      _react2.default.createElement(
-	        'h5',
-	        { className: 'header' },
-	        GL('videoControl'),
-	        _react2.default.createElement(
-	          'span',
-	          { id: 'helpButton', onClick: function onClick() {
-	              _this3.setState({ displayHelp: !_this3.state.displayHelp });
-	            } },
-	          '\xA0(\u2754)'
-	        )
-	      ),
-	      help,
-	      _react2.default.createElement(
-	        'div',
-	        { id: 'info', className: 'container' },
-	        _react2.default.createElement(
-	          'p',
-	          { className: 'important line' },
-	          this.state.host
-	        ),
-	        _react2.default.createElement('input', { type: 'checkbox', id: 'enabled', readOnly: true, checked: this.state.websiteEnabled }),
-	        _react2.default.createElement(
-	          'span',
-	          { onClick: this.toggle },
-	          symbol
-	        )
-	      )
-	    );
-	  }
+					if (!this.state.enabled) {
+							return null;
+					}
+					var indicator = '☁';
+					if (this.state.websiteEnabled) {
+							indicator = '☀';
+					}
+					var help = void 0,
+					    shortcuts = void 0;
+					if (this.state.displayHelp) {
+							shortcuts = this.state.shortcuts.map(function (elem, index) {
+									return _react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+													'td',
+													null,
+													elem[0]
+											),
+											_react2.default.createElement(
+													'td',
+													null,
+													elem[1]
+											)
+									);
+							});
+							help = _react2.default.createElement(
+									'p',
+									{ className: 'important', id: 'help' },
+									GL('ls_14'),
+									_react2.default.createElement('br', null),
+									_react2.default.createElement('br', null),
+									GL('ls_15'),
+									_react2.default.createElement('br', null),
+									_react2.default.createElement(
+											'table',
+											{ id: 'shortcuts' },
+											shortcuts
+									)
+							);
+					}
+					return _react2.default.createElement(
+							VideoControlDiv,
+							{ colorOn: shared.styled.colorOn, displayHelp: this.state.displayHelp, className: 'container' },
+							_react2.default.createElement(
+									'h5',
+									{ className: 'header' },
+									GL('videoControl'),
+									_react2.default.createElement(
+											'span',
+											{ id: 'helpButton', onClick: function onClick() {
+															_this3.setState({ displayHelp: !_this3.state.displayHelp });
+													} },
+											'\xA0(?)'
+									)
+							),
+							help,
+							_react2.default.createElement(
+									'div',
+									{ id: 'info', className: 'container' },
+									_react2.default.createElement(
+											'p',
+											{ className: 'important line' },
+											this.state.host
+									),
+									_react2.default.createElement('input', { type: 'checkbox', id: 'enabled', readOnly: true, checked: this.state.websiteEnabled }),
+									_react2.default.createElement(
+											'span',
+											{ id: 'indicator', onClick: this.toggle },
+											indicator
+									)
+							)
+					);
+			}
 	});
 
 /***/ }),
@@ -31663,6 +31663,8 @@
 					if (i < 0) {
 						i = 0;
 					}
+					console.log(i);
+					conosle.log(data[i].changes);
 					var changes = data[i].changes;
 					if (isZh) {
 						changes = data[i].zhChanges;
@@ -31741,7 +31743,7 @@
 						{ id: 'helpButton', onClick: function onClick() {
 								_this3.setState({ displayHelp: !_this3.state.displayHelp });
 							} },
-						'\xA0(\u2754)'
+						'\xA0(?)'
 					)
 				),
 				help,
@@ -31955,7 +31957,7 @@
 
 	'use strict';
 
-	var _templateObject = _taggedTemplateLiteral(['\n\timg{\n\t\tmax-height: 80px;\n\t\tmax-width: 120px;\n\t}\n\t.section{\n\t\tpadding-bottom: 0px;\n\t}\n'], ['\n\timg{\n\t\tmax-height: 80px;\n\t\tmax-width: 120px;\n\t}\n\t.section{\n\t\tpadding-bottom: 0px;\n\t}\n']);
+	var _templateObject = _taggedTemplateLiteral(['\n\timg{\n\t\tmax-height: 80px;\n\t\tmax-width: 120px;\n\t}\n\t.section{\n\t\tpadding-bottom: 0px;\n\t}\n\t.delete{\n\t\tcursor: pointer;\n\t}\n'], ['\n\timg{\n\t\tmax-height: 80px;\n\t\tmax-width: 120px;\n\t}\n\t.section{\n\t\tpadding-bottom: 0px;\n\t}\n\t.delete{\n\t\tcursor: pointer;\n\t}\n']);
 
 	var _react = __webpack_require__(1);
 
@@ -31994,17 +31996,35 @@
 	    var _this2 = this;
 
 	    getDB('history_records', function (recordList) {
-	      setDB('history_records', [], function () {
-	        _this2.setState({ recordList: [] });
-	      });
 	      for (var i = 0; i < recordList.length; i++) {
 	        var id = recordList[i].cursor;
-	        setDB('NooBox.Image.result_' + id, '');
+	        deleteDB('NooBox.Image.result_' + id);
 	      }
+	      deleteDB('history_records', function () {
+	        _this2.setState({ recordList: null });
+	      });
+	    });
+	  },
+	  deleteRecord: function deleteRecord(i) {
+	    var _this3 = this;
+
+	    getDB('history_records', function (recordList) {
+	      var id = recordList[i].cursor;
+	      deleteDB('NooBox.Image.result_' + id, function () {
+	        recordList.splice(i, 1);
+	        setDB('history_records', recordList, function () {
+	          getDB('history_records', function (newRecordList) {
+	            _this3.setState({ recordList: newRecordList });
+	          });
+	        });
+	      });
 	    });
 	  },
 	  render: function render() {
+	    var _this4 = this;
+
 	    var recordList = (this.state.recordList || [{ name: 'Nothing is here yet', id: 'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~' }]).map(function (record, index) {
+	      console.log(record);
 	      return _react2.default.createElement(
 	        'tr',
 	        { key: index },
@@ -32026,6 +32046,11 @@
 	            { target: '_blank', href: '/image.search.html?cursor=' + record.cursor + '&image=history' },
 	            _react2.default.createElement('img', { src: record.info })
 	          )
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          { className: 'delete', onClick: _this4.deleteRecord.bind(_this4, index) },
+	          '\u274C'
 	        )
 	      );
 	    }).reverse();

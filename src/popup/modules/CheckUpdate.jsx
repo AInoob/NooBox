@@ -83,6 +83,8 @@ module.exports = React.createClass({
 				if(i < 0) {
 					i = 0;
 				}
+				console.log(i);
+				conosle.log(data[i].changes);
 				let changes = data[i].changes;
 				if(isZh) {
 					changes = data[i].zhChanges;
@@ -125,7 +127,7 @@ module.exports = React.createClass({
     }
     return (
       <CheckUpdateDiv displayHelp={this.state.displayHelp}>
-        <h5 className="header">{GL('checkUpdate')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(❔)</span></h5>
+        <h5 className="header">{GL('checkUpdate')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
 				{help}
         <div id="info" className="container important">
           {report}

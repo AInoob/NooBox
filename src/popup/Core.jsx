@@ -50,6 +50,7 @@ const PopupDiv = styled.div`
 	}
 	#helpButton{
 		font-size: 1rem;
+		cursor: pointer;
 	}
 	.select-wrapper input.select-dropdown{
 		background-color: rgba(255,255,255,0.3);
