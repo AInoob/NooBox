@@ -11,6 +11,9 @@ const HistoryDiv = styled.div`
 	.section{
 		padding-bottom: 0px;
 	}
+	.delete{
+		cursor: pointer;
+	}
 `;
 
 module.exports = React.createClass({
@@ -26,22 +29,37 @@ module.exports = React.createClass({
   },
   clearHistory: function() {
     getDB('history_records', (recordList) => {
-      setDB('history_records',[], () => {
-        this.setState({ recordList: [] });
-      });
       for(let i = 0; i < recordList.length; i++) {
         const id = recordList[i].cursor;
-        setDB('NooBox.Image.result_'+id,'');
+        deleteDB('NooBox.Image.result_'+id);
       }
+      deleteDB('history_records', () => {
+        this.setState({ recordList: null });
+      });
     });
   },
+	deleteRecord: function(i) {
+    getDB('history_records', (recordList) => {
+			const id = recordList[i].cursor;
+			deleteDB('NooBox.Image.result_'+id, () => {
+				recordList.splice(i, 1);
+				setDB('history_records', recordList, () => {
+					getDB('history_records', (newRecordList) => {
+						this.setState({ recordList: newRecordList });
+					});
+				});
+			});
+		});
+	},
   render: function() {
     const recordList = (this.state.recordList || [{name:'Nothing is here yet',id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]).map((record, index) => {
+			console.log(record);
       return (
         <tr key={index}>
 					<td>{timeagoInstance.format(record.date,'locale')}</td>
 					<td className={record.event}>{GL(record.event)}</td>
 					<td><a target="_blank" href={'/image.search.html?cursor='+record.cursor+'&image=history'} ><img src={record.info} /></a></td>
+					<td className="delete" onClick={this.deleteRecord.bind(this, index)}>❌</td>
         </tr>
 			);
     }).reverse();

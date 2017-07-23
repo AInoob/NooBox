@@ -209,6 +209,33 @@ window.getDB = (key, callback) => {
   }
 }
 
+window.deleteDB = (key, callback) => {
+	const indexedDB = window.indexedDB;
+	const open = indexedDB.open("NooBox", 1);
+	open.onupgradeneeded = () => {
+		const db = open.result;
+		const store = db.createObjectStore("Store", {
+			keyPath: "key"
+		});
+	};
+	open.onsuccess = () => {
+		const db = open.result;
+		const tx = db.transaction("Store", "readwrite");
+		const store = tx.objectStore("Store");
+		const action1 = store.delete(key);
+		action1.onsuccess = (e) => {
+			if (callback) {
+				callback(true);
+			}
+		}
+		action1.onerror = () => {
+			console.log('deleteDB fail');
+			if (callback) {
+				callback(false);
+			}
+		}
+	}
+}
 window.set = (key, value, callback) => {
   const temp = {};
   temp[key] = value;

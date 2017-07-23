@@ -76,7 +76,7 @@ module.exports = React.createClass({
     const help = <p className="important" id="help">{GL('ls_11')}<br/><br/>{GL('ls_12')}<br/><br/>{GL('ls_13')}</p>;
     return (
       <ImageSearchDiv displayHelp={this.state.displayHelp} className="container">
-        <h5 className="header">{GL('imageSearch')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(❔)</span></h5>
+        <h5 className="header">{GL('imageSearch')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
 				{help}
         <div id="info" className="container">
           <p className="important line">{GL('totalSearches')+' : '+this.state.totalImageSearch}</p>
