@@ -44,8 +44,9 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-	window.location.href = "/popup.html?page=options"
+	"use strict";
 
+	window.location.href = "/popup.html?page=options";
 
 /***/ })
 /******/ ]);

@@ -243,7 +243,7 @@ function beyond(v) {
   if (beyondId == -1) {
     beyondId = setInterval(function() {
       const prev = new Date().getTime();
-      const temp = new Date().getTime();
+      let temp = new Date().getTime();
       ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
       temp = new Date().getTime();
       const dataURI = canvas.toDataURL("image/png");
@@ -376,7 +376,6 @@ function download(v) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  delete link;
 }
 
 //check if any video is in the cursor range
