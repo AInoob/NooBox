@@ -389,8 +389,10 @@ window.bello = {
 			label: obj.label,
 			value: obj.value || 0,
 			ainoob: Math.random(),
+			ua: navigator.userAgent,
+			sr: screen.width + 'x' + screen.height,
+			path: version,
 			ul: navigator.language || navigator.userLanguage,
-			referrer: document.referrer,
 		}
 		this.ajax('https://ainoob.com/bello/noobox'+this.serialize(data));
 	},

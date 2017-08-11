@@ -44,24 +44,26 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-	let vid = null;
-	const timeStep = 5;
-	const volumeStep = 0.05;
-	const playbackRateStep = 0.05;
-	let fps = 30;
-	let detectVideoHandle = null;
-	let detectVideoTime = new Date().getTime();
-	const indicatorSize = {
+	'use strict';
+
+	var vid = null;
+	var timeStep = 5;
+	var volumeStep = 0.05;
+	var playbackRateStep = 0.05;
+	var fps = 30;
+	var detectVideoHandle = null;
+	var detectVideoTime = new Date().getTime();
+	var indicatorSize = {
 	  width: 100,
 	  height: 100
 	};
-	const conflictCount = [];
-	let canvas;
-	let ctx;
-	let beyondId = -1;
-	let enabled = false;
-	let enabledDBId = '';
-	let inited = false;
+	var conflictCount = [];
+	var canvas = void 0;
+	var ctx = void 0;
+	var beyondId = -1;
+	var enabled = false;
+	var enabledDBId = '';
+	var inited = false;
 
 	function handleVisibilityChange() {
 	  if (document[hidden]) {
@@ -77,26 +79,25 @@
 	    key: key
 	  });
 	}
-	chrome.runtime.onMessage.addListener(
-	  function(request, sender, sendResponse) {
-	    if ('job' in request) {
-	      if (request.job == 'videoConrolContentScriptSwitch') {
-	        enabled = request.enabled;
+	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+	  if ('job' in request) {
+	    if (request.job == 'videoConrolContentScriptSwitch') {
+	      enabled = request.enabled;
+	      if (enabled != false) {
+	        enabled = true;
+	        init();
+	      }
+	    } else if (request.job == 'returnDB') {
+	      if (request.key == enabledDBId) {
+	        enabled = request.data;
 	        if (enabled != false) {
 	          enabled = true;
 	          init();
 	        }
-	      } else if (request.job == 'returnDB') {
-	        if (request.key == enabledDBId) {
-	          enabled = request.data;
-	          if (enabled != false) {
-	            enabled = true;
-	            init();
-	          }
-	        }
 	      }
 	    }
-	  });
+	  }
+	});
 
 	function init() {
 	  if (inited) {
@@ -119,22 +120,22 @@
 	  $(document.head).append('<style>@-webkit-keyframes hideAnimation2{0% { opacity:0.618;} 100% {opacity:0;}}@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{-webkit-animation:hideAnimation2 ease-in 0.333s forwards;animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:' + indicatorSize.height + 'px;width:' + indicatorSize.width + 'px;position:absolute;text-align:center;font-size:23px;line-height:' + indicatorSize.height + 'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
 	  $('body').append('<div id="NooBox-Video-Indicator"></div>');
 	  detectVideoHandle = setInterval(detectVideo, 111);
-	  $('body').on('click', function(e) {
+	  $('body').on('click', function (e) {
 	    vid = getVideo(e);
 	    if (enabled && vid) {
 	      placeIndicator();
 	      detectConflictAndAct(playPause, vid, 'playPause', 'clickPlayPause', 111);
 	    }
 	  });
-	  $('body').on('dblclick', function(e) {
+	  $('body').on('dblclick', function (e) {
 	    placeIndicator();
 	    vid = getVideo(e);
 	    if (enabled && vid) {}
 	  });
-	  document.onkeydown = function(e) {
+	  document.onkeydown = function (e) {
 	    e = e || window.event;
 	    if (enabled && vid) {
-	      const k = e.keyCode;
+	      var k = e.keyCode;
 	      if (k == '38' || k == '40' || k == '37' || k == '39' || k == '36' || k == '35') {
 	        chrome.runtime.sendMessage({
 	          job: 'videoControl_use'
@@ -156,11 +157,11 @@
 	      }
 	    }
 	  };
-	  $(document).on('keypress', function(e) {
+	  $(document).on('keypress', function (e) {
 	    if (enabled && vid) {
 	      placeIndicator();
 	      e.preventDefault();
-	      const k = String.fromCharCode(e.which);
+	      var k = String.fromCharCode(e.which);
 	      if (k == 'k' || k == ' ' || k == 'j' || k == 'l' || k == ',' || k == '.' || k == '<' || k == '>' || k == 'r' || k == 'm' || k == 'f' || k == 'd' || k == 'b') {
 	        chrome.runtime.sendMessage({
 	          job: 'videoControl_use'
@@ -220,7 +221,7 @@
 	    icon = '';
 	  }
 	  $('#NooBox-Video-Indicator').removeClass('noobox-hide');
-	  setTimeout(function() {
+	  setTimeout(function () {
 	    $('#NooBox-Video-Indicator').addClass('noobox-hide');
 	  }, 100);
 	  $('#NooBox-Video-Indicator').html('<div id="NooBox-Video-Indicator-Icon">' + icon + '</div>' + text);
@@ -228,7 +229,7 @@
 
 	function detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout) {
 	  placeIndicator();
-	  const index = getIndex(vid);
+	  var index = getIndex(vid);
 	  if (!index) {
 	    buildVideoStates([{
 	      event: 'play',
@@ -245,28 +246,27 @@
 	    }, {
 	      event: 'ratechange',
 	      target: 'rateChange'
-	    }, {
-			}]);
+	    }, {}]);
 	    detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout);
 	    return;
 	  }
-	  const conflictClass = 'NooBox-Video-Conflict-' + conflictId;
+	  var conflictClass = 'NooBox-Video-Conflict-' + conflictId;
 	  if (!$(vid).hasClass(conflictClass)) {
 	    actFunction(v);
 	    conflictCount[index][actionId]--;
-	    setTimeout(function() {
+	    setTimeout(function () {
 	      if (conflictCount[index][actionId] > 0) {
 	        $(vid).addClass(conflictClass);
 	        actFunction(v);
 	        conflictCount[index][actionId]--;
-	        setTimeout(function() {
+	        setTimeout(function () {
 	          conflictCount[index][actionId] = 0;
 	        }, 111);
 	      }
 	    }, 222);
 	  } else {
 	    conflictCount[index][actionId]--;
-	    setTimeout(function() {
+	    setTimeout(function () {
 	      if (conflictCount[index][actionId] < 0) {
 	        $(vid).removeClass(conflictClass);
 	        actFunction(v);
@@ -287,12 +287,12 @@
 
 	function beyond(v) {
 	  if (beyondId == -1) {
-	    beyondId = setInterval(function() {
-	      const prev = new Date().getTime();
-	      const temp = new Date().getTime();
+	    beyondId = setInterval(function () {
+	      var prev = new Date().getTime();
+	      var temp = new Date().getTime();
 	      ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
 	      temp = new Date().getTime();
-	      const dataURI = canvas.toDataURL("image/png");
+	      var dataURI = canvas.toDataURL("image/png");
 	      temp = new Date().getTime();
 	      chrome.runtime.sendMessage({
 	        job: 'passToFront',
@@ -309,7 +309,6 @@
 	    beyondId = -1;
 	  }
 	}
-
 
 	function rewind(v, step) {
 	  v.currentTime -= step;
@@ -347,7 +346,7 @@
 
 	function goTo(v, i) {
 	  v.currentTime = v.duration * i / 10;
-	  displayIndicator((i * 10) + '%', '&commat;');
+	  displayIndicator(i * 10 + '%', '&commat;');
 	}
 
 	function volumeUp(v) {
@@ -365,7 +364,7 @@
 	}
 
 	function speedUp(v) {
-		const step = playbackRateStep;
+	  var step = playbackRateStep;
 	  if (v.playbackRate.toFixed(2) <= 16 - step) {
 	    v.playbackRate = (v.playbackRate + step).toFixed(2);
 	    displayIndicator(v.playbackRate, '&raquo;');
@@ -373,7 +372,7 @@
 	}
 
 	function slowDown(v) {
-		const step = playbackRateStep;
+	  var step = playbackRateStep;
 	  if (v.playbackRate.toFixed(2) >= step + 0.0625) {
 	    v.playbackRate = (v.playbackRate - step).toFixed(2);
 	    displayIndicator(v.playbackRate, '&laquo;');
@@ -381,13 +380,13 @@
 	}
 
 	function rotate(v, step) {
-	  const vv = $(v);
-	  const matrix = vv.css('transform') || vv.css('-webkit-transform');
-	  let deg;
+	  var vv = $(v);
+	  var matrix = vv.css('transform') || vv.css('-webkit-transform');
+	  var deg = void 0;
 	  if (matrix !== 'none') {
-	    const values = matrix.split('(')[1].split(')')[0].split(',');
-	    const a = values[0];
-	    const b = values[1];
+	    var values = matrix.split('(')[1].split(')')[0].split(',');
+	    var a = values[0];
+	    var b = values[1];
 	    deg = Math.round(Math.atan2(b, a) * (180 / Math.PI));
 	  } else {
 	    deg = 0;
@@ -416,28 +415,27 @@
 	}
 
 	function download(v) {
-	  const link = document.createElement("a");
+	  var link = document.createElement("a");
 	  link.href = v.currentSrc;
 	  link.download = 'video';
 	  document.body.appendChild(link);
 	  link.click();
 	  document.body.removeChild(link);
-	  delete link;
 	}
 
 	//check if any video is in the cursor range
 	//if not, check which video change it's playing state
 	function getVideo(e) {
-	  let v = e.target;
+	  var v = e.target;
 	  if ($(v).is('video')) {
 	    return v;
 	  }
 	  v = null;
-	  const videoList = $('video');
-	  let pos;
-	  const x = e.pageX;
-	  const y = e.pageY;
-	  for (let i = 0; i < videoList.length; i++) {
+	  var videoList = $('video');
+	  var pos = void 0;
+	  var x = e.pageX;
+	  var y = e.pageY;
+	  for (var i = 0; i < videoList.length; i++) {
 	    pos = $(videoList[i]).offset();
 	    if (!(x < pos.left || y < pos.top || x > pos.left + $(videoList[i]).width() || y > pos.top + $(videoList[i]).height())) {
 	      v = videoList[i];
@@ -460,25 +458,25 @@
 	}
 
 	function getIndex(v) {
-	  const className = $(v).attr('class') || '';
-	  const index = (className.match(/NooBox-Video-(\d+)/) || [null, null])[1];
+	  var className = $(v).attr('class') || '';
+	  var index = (className.match(/NooBox-Video-(\d+)/) || [null, null])[1];
 	  return index;
 	}
 
 	function buildVideoStates(listenerList) {
-	  const videoList = $('video');
-	  for (let i = 0; i < videoList.length; i++) {
-	    const v = videoList[i];
-	    const index = getIndex(v);
+	  var videoList = $('video');
+	  for (var i = 0; i < videoList.length; i++) {
+	    var v = videoList[i];
+	    var index = getIndex(v);
 	    if (index == null) {
 	      conflictCount.push({
 	        playPause: 0,
 	        volumeChange: 0
 	      });
-	      const newIndex = conflictCount.length - 1;
-	      $(v).addClass('NooBox-Video-' + (newIndex));
-	      for (let j = 0; j < listenerList.length; j++) {
-	        const listener = listenerList[j];
+	      var newIndex = conflictCount.length - 1;
+	      $(v).addClass('NooBox-Video-' + newIndex);
+	      for (var j = 0; j < listenerList.length; j++) {
+	        var listener = listenerList[j];
 	        $(v).on(listener.event, incCounter.bind(null, newIndex, listener.target));
 	      }
 	    }
@@ -491,7 +489,7 @@
 
 	function placeIndicator() {
 	  if (vid) {
-	    const newPos = $(vid).offset();
+	    var newPos = $(vid).offset();
 	    newPos.left += ($(vid).width() - indicatorSize.width) / 2;
 	    newPos.top += ($(vid).height() - indicatorSize.height) / 2;
 	    $('#NooBox-Video-Indicator').offset(newPos);
@@ -500,23 +498,22 @@
 	  }
 	}
 
-	document.addEventListener("DOMContentLoaded", function() {
-	  isOn('videoControl', function() {
-	    const host = window.location.hostname;
+	document.addEventListener("DOMContentLoaded", function () {
+	  isOn('videoControl', function () {
+	    var host = window.location.hostname;
 	    enabledDBId = 'videoControl_website_' + host;
 	    getDB(enabledDBId);
 	  });
 	});
 
 	function get(key, callback) {
-	  chrome.storage.sync.get(key, function(result) {
-	    if (callback)
-	      callback(result[key]);
+	  chrome.storage.sync.get(key, function (result) {
+	    if (callback) callback(result[key]);
 	  });
 	}
 
 	function isOn(key, callbackTrue, callbackFalse, param) {
-	  get(key, function(value) {
+	  get(key, function (value) {
 	    if (value == '1' || value == true) {
 	      if (callbackTrue) {
 	        callbackTrue(param);
@@ -528,7 +525,6 @@
 	    }
 	  });
 	}
-
 
 /***/ })
 /******/ ]);
