@@ -82,7 +82,7 @@
 	  for (var i = 1; i < val; i++) {
 	    tempFocus2 = $(tempFocus2).parent()[0];
 	  }
-	  getAllImgs = function getAllImgs(elem) {
+	  var getAllImgs = function getAllImgs(elem) {
 	    $(elem).find('*').each(function () {
 	      if (this.tagName == "IMG") {
 	        imgSet[this.src] = true;
