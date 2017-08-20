@@ -326,7 +326,7 @@ window.convertDataURIToBinary = (dataURI) => {
       }
       return array2;
     } catch (e) {
-      return array2;
+      return ;
     }
     console.log(e);
     return array;
@@ -391,7 +391,7 @@ window.bello = {
 			ainoob: Math.random(),
 			ua: navigator.userAgent,
 			sr: screen.width + 'x' + screen.height,
-			path: version,
+			path: '0.9.3.8',
 			ul: navigator.language || navigator.userLanguage,
 		}
 		this.ajax('https://ainoob.com/bello/noobox'+this.serialize(data));
