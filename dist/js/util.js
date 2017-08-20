@@ -352,13 +352,13 @@
 	      var _base = dataURI.substring(_base64Index);
 	      var _raw = window.atob(_base);
 	      var _rawLength = _raw.length;
-	      var _array2 = new Uint8Array(new ArrayBuffer(_rawLength));
+	      var array2 = new Uint8Array(new ArrayBuffer(_rawLength));
 	      for (var j = 0; j < _rawLength; j++) {
-	        _array2[j] = _raw.charCodeAt(j);
+	        array2[j] = _raw.charCodeAt(j);
 	      }
-	      return _array2;
-	    } catch (e) {
 	      return array2;
+	    } catch (e) {
+	      return;
 	    }
 	    console.log(e);
 	    return array;
@@ -420,7 +420,7 @@
 	      ainoob: Math.random(),
 	      ua: navigator.userAgent,
 	      sr: screen.width + 'x' + screen.height,
-	      path: version,
+	      path: '0.9.3.8',
 	      ul: navigator.language || navigator.userLanguage
 	    };
 	    this.ajax('https://ainoob.com/bello/noobox' + this.serialize(data));

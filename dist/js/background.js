@@ -129,7 +129,7 @@
 	//The implementation of functions and variables
 	NooBox.Options.defaultValues = [['userId', (Math.random().toString(36) + '00000000000000000').slice(2, 19)], ['imageSearch', true], ['shorcut', false], ['unitsConverter', false], ['crypter', true], ['webmaster', true], ['general', true], ['background', false], ['imageSearchUrl_google', true], ['imageSearchUrl_baidu', true], ['imageSearchUrl_tineye', true], ['imageSearchUrl_bing', true], ['imageSearchUrl_yandex', true], ['imageSearchUrl_saucenao', true], ['imageSearchUrl_iqdb', true], ['imageSearchUrl_sogou', true], ['extractImages', true], ['screenshotSearch', true], ['videoControl', false], ['displayOrder', []], ['checkUpdate', true], ['lastUpdateCheck', 0], ['updateHistory', []], ['history', true]];
 
-	NooBox.Options.constantValues = [['displayList', ['imageSearch', 'videoControl', 'checkUpdate']], ['version', '0.9.3.7']];
+	NooBox.Options.constantValues = [['displayList', ['imageSearch', 'videoControl', 'checkUpdate']], ['version', '0.9.3.8']];
 
 	NooBox.Options.init = function (i) {
 	  var constantValues = NooBox.Options.constantValues;
