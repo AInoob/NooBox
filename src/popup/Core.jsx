@@ -15,7 +15,7 @@ const PopupDiv = styled.div`
 		height: 36px;
 		ul{
 			a{
-				padding: 0 24.5px;
+				padding: 0 21.5px;
 			}
 		}
 	}
