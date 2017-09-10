@@ -36,6 +36,9 @@ module.exports = {
 			{ from: './src/options.html' },
 			{ from: './src/popup/popup.html' },
 			{ from: './src/imageSearch/image.search.html' },
-		])
+    ]),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    })
   ]
 }
