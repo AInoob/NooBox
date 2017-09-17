@@ -53,7 +53,7 @@ NooBox.Image.POST.upload = null;
 //add or remove image context menus
 NooBox.Image.updateContextMenu = null;
 //list of search engines
-NooBox.Image.engines = ["google", "baidu", "tineye", "bing", "yandex", "saucenao", "iqdb"];
+NooBox.Image.engines = ["google", "baidu", "tineye", "bing", "yandex", "saucenao", "iqdb", "ascii2d"];
 //URLs for each search engine
 NooBox.Image.apiUrls = null;
 //search an image given URL or dataURI
@@ -96,9 +96,10 @@ NooBox.Options.defaultValues = [
   ['imageSearchUrl_tineye', true],
   ['imageSearchUrl_bing', true],
   ['imageSearchUrl_yandex', true],
-  ['imageSearchUrl_saucenao', true],
-  ['imageSearchUrl_iqdb', true],
-  ['imageSearchUrl_sogou', true],
+  ['imageSearchUrl_saucenao', false],
+  ['imageSearchUrl_iqdb', false],
+  ['imageSearchUrl_sogou', false],
+  ['imageSearchUrl_ascii2d', false],
   ['extractImages', true],
   ['screenshotSearch', true],
   ['videoControl', false],
@@ -111,7 +112,7 @@ NooBox.Options.defaultValues = [
 
 NooBox.Options.constantValues = [
   ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.3.9']
+  ['version', '0.9.4.0']
 ];
 
 NooBox.Options.init = (i) => {
@@ -241,21 +242,7 @@ NooBox.Image.imageSearch = (info) => {
       } else {
         action = 'url';
         result.imageUrl = source;
-        for (let i = 0; i < engines.length; i++) {
-          ((cursor, engine) => {
-            const url2 = NooBox.Image.apiUrls[engine] + source;
-            result[engine].url = url2;
-            $.ajax({
-              url: url2
-            }).done((data) => {
-              NooBox.Image.fetchFunctions[engine](cursor, result, data);
-            }).fail((e) => {
-              result[engine].result = 'failed';
-              NooBox.Image.update(cursor, result);
-              console.log(e);
-            });
-          })(cursor, engines[i]);
-        }
+        NooBox.Image.imageSearchByUrl(cursor, result, engines);
       }
       let type = result.imageUrl;
       if (type != 'dataURI') {
@@ -273,15 +260,57 @@ NooBox.Image.imageSearch = (info) => {
   });
 }
 
+NooBox.Image.imageSearchByUrl = (cursor, result, engines) => {
+  for (let i = 0; i < engines.length; i++) {
+    ((cursor, engine) => {
+      const ajaxRequest = NooBox.Image.generateAjaxRequest(engine, result);
+      $.ajax(ajaxRequest).done((data) => {
+        NooBox.Image.fetchFunctions[engine](cursor, result, data);
+      }).fail((e) => {
+        result[engine].result = 'failed';
+        NooBox.Image.update(cursor, result);
+        console.log(e);
+      });
+    })(cursor, engines[i]);
+  }
+}
+
+NooBox.Image.generateAjaxRequest = (engine, result) => {
+  const imageUrl = result.uploadedURL || result.imageUrl;
+  result[engine].url = NooBox.Image.apiUrls[engine] + imageUrl;
+  const ajaxRequest = {
+    success: function (temp1, temp2, xhr) {
+      if (xhr.getResponseHeader('Location')) {
+        console.log(xhr.getResponseHeader('Location'));
+        result[engine].url = xhr.getResponseHeader('Location');
+      }
+    }
+  };
+  switch (engine) {
+    case 'ascii2d':
+      ajaxRequest.url = NooBox.Image.apiUrls[engine];
+      ajaxRequest.method = 'POST';
+      ajaxRequest.data = {
+        uri: imageUrl
+      };
+      console.log('ascii2d!!!!');
+      break;
+    default:
+      ajaxRequest.url = result[engine].url;
+  }
+  return ajaxRequest;
+};
+
 NooBox.Image.apiUrls = {
-  google:   "https://www.google.com/searchbyimage?&image_url=",
-  baidu:    "https://image.baidu.com/n/pc_search?queryImageUrl=",
-  tineye:   "http://www.tineye.com/search/?url=",
-  bing:     "http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:",
-  yandex:   "https://www.yandex.com/images/search?rpt=imageview&img_url=",
-  saucenao: "http://saucenao.com/search.php?db=999&url=",
-  iqdb:     "http://iqdb.org/?url=",
-  sogou:    "http://pic.sogou.com/ris?query=",
+  google:   'https://www.google.com/searchbyimage?&image_url=',
+  baidu:    'https://image.baidu.com/n/pc_search?queryImageUrl=',
+  tineye:   'http://www.tineye.com/search/?url=',
+  bing:     'http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:',
+  yandex:   'https://www.yandex.com/images/search?rpt=imageview&img_url=',
+  saucenao: 'http://saucenao.com/search.php?db=999&url=',
+  iqdb:     'http://iqdb.org/?url=',
+  sogou:    'http://pic.sogou.com/ris?query=',
+  ascii2d:  'https://ascii2d.net/search/uri',
 };
 
 NooBox.Image.fetchFunctions.google = (cursor, result, data) => {
@@ -593,6 +622,45 @@ NooBox.Image.fetchFunctions.iqdb = (cursor, result, data) => {
 
 var x;
 
+NooBox.Image.fetchFunctions.ascii2d = (cursor, result, data) => {
+  try {
+    data = data.replace(/<img/g, "<nooboximage");
+    const page = $(data);
+    const websites = [];
+    const relatedWebsites = [];
+    const websiteList = $(page.find('.item-box')) || [];
+    for (let i = 1; i < websiteList.length; i++) {
+      const website = {
+        searchEngine: 'ascii2d',
+        description: ''
+      };
+      let temp = websiteList[i];
+      temp = $(temp);
+      const x = $(temp).find('.detail-box a')[0] || {};
+      website.title = x.innerText;
+      website.link = x.href;
+      website.description = ($(temp).find('h6')[0] || {innerHTML: ''}).innerHTML.replace(/<nooboximage/g, '<img');
+      website.imageUrl = 'https://ascii2d.net/' + $(temp).find('nooboximage').attr('src');
+      website.searchEngine = 'ascii2d';
+      if (i == 1) {
+        relatedWebsites.push(website);
+      }
+      else {
+        websites.push(website);
+      }
+    }
+    result.ascii2d.websites = websites;
+    result.ascii2d.relatedWebsites = relatedWebsites;
+    result.ascii2d.result = 'done';
+    NooBox.Image.update(cursor, result);
+  } catch (e) {
+    result.ascii2d.result = 'failed';
+    NooBox.Image.update(cursor, result);
+    console.log(e);
+  }
+};
+
+
 NooBox.Image.fetchFunctions.sogou = (cursor, result, data) => {
   try {
     data = data.replace(/<img[^>]*>/g, "");
@@ -625,19 +693,7 @@ NooBox.Image.fetchFunctions.sogou = (cursor, result, data) => {
 
 NooBox.Image.POST.general = (cursor, result, engines, data, uploadedURL) => {
   if (uploadedURL) {
-    for (let i = 0; i < engines.length; i++) {
-      ((engine) => {
-        const url = NooBox.Image.apiUrls[engine] + result.uploadedURL;
-        result[engine].url = url;
-        $.ajax({ url }).done(
-          NooBox.Image.fetchFunctions[engine].bind(null, cursor, result)
-        ).fail((e) => {
-          result[engine].result = 'failed';
-          NooBox.Image.update(cursor, result);
-          console.log(e);
-        });
-      })(engines[i])
-    }
+    NooBox.Image.imageSearchByUrl(cursor, result, engines);
   } else {
     NooBox.Image.POST.upload(cursor, result, data, NooBox.Image.POST.general.bind(null, cursor, result, engines, null));
   }

@@ -158,12 +158,13 @@ module.exports = React.createClass({
     yandex: 15,
     tineye: 18,
     saucenao: 10,
-    iqdb: -100
+    iqdb: -100,
+    ascii2d: -69,
   },
   getWeight: function(related, engine, index) {
     let weight = 0;
     if(related) {
-      weight+=100;
+      weight += 100;
     }
     weight += this.engineWeights[engine];
     weight -= index;

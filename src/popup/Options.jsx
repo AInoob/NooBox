@@ -41,7 +41,8 @@ module.exports = React.createClass({
 				imageSearchUrl_bing: false,
 				imageSearchUrl_tineye: false,
 				imageSearchUrl_saucenao: false,
-				imageSearchUrl_iqdb: false
+				imageSearchUrl_iqdb: false,
+				imageSearchUrl_ascii2d: false,
 			}
 		};
   },
@@ -59,7 +60,8 @@ module.exports = React.createClass({
 			'imageSearchUrl_bing',
 			'imageSearchUrl_tineye',
 			'imageSearchUrl_saucenao',
-			'imageSearchUrl_iqdb'
+			'imageSearchUrl_iqdb',
+			'imageSearchUrl_ascii2d',
 		];
     chrome.management.getSelf((data) => {
       this.setState({
@@ -127,7 +129,8 @@ module.exports = React.createClass({
 				"imageSearchUrl_bing",
 				"imageSearchUrl_yandex",
 				"imageSearchUrl_saucenao",
-				"imageSearchUrl_iqdb"
+				"imageSearchUrl_iqdb",
+				"imageSearchUrl_ascii2d",
 			].map((elem, index) => {
         return <div className="tab-1 imageSearchSwitch" key={index}>{this.getImageSearchSwitch(elem)}</div>;
       });
