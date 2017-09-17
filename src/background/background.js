@@ -112,7 +112,7 @@ NooBox.Options.defaultValues = [
 
 NooBox.Options.constantValues = [
   ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.4.0']
+  ['version', '0.9.4.1']
 ];
 
 NooBox.Options.init = (i) => {
@@ -263,29 +263,39 @@ NooBox.Image.imageSearch = (info) => {
 NooBox.Image.imageSearchByUrl = (cursor, result, engines) => {
   for (let i = 0; i < engines.length; i++) {
     ((cursor, engine) => {
-      const ajaxRequest = NooBox.Image.generateAjaxRequest(engine, result);
-      $.ajax(ajaxRequest).done((data) => {
-        NooBox.Image.fetchFunctions[engine](cursor, result, data);
-      }).fail((e) => {
-        result[engine].result = 'failed';
-        NooBox.Image.update(cursor, result);
-        console.log(e);
-      });
+      NooBox.Image.imageSearchByUrlEngine2(engine, result, cursor);
     })(cursor, engines[i]);
   }
 }
 
+NooBox.Image.imageSearchByUrlEngine = (engine, result, cursor) => {
+  const ajaxRequest = NooBox.Image.generateAjaxRequest(engine, result);
+  const body = {};
+  var xhr = new XMLHttpRequest();
+  xhr.open(ajaxRequest.method || 'GET', ajaxRequest.url, true);
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      result[engine].url = xhr.responseURL;
+      NooBox.Image.fetchFunctions[engine](cursor, result, xhr.responseText);
+    }
+  };
+  xhr.onerror = (e) => {
+    result[engine].result = 'failed';
+    NooBox.Image.update(cursor, result);
+    console.log(e);
+  };
+  if (ajaxRequest.contentType) {
+    xhr.setRequestHeader('Content-Type', ajaxRequest.contentType);
+  }
+  xhr.send(ajaxRequest.data ? Object.keys(ajaxRequest.data).map(
+    function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(ajaxRequest.data[k]) }
+  ).join('&') : null);
+};
+
 NooBox.Image.generateAjaxRequest = (engine, result) => {
   const imageUrl = result.uploadedURL || result.imageUrl;
   result[engine].url = NooBox.Image.apiUrls[engine] + imageUrl;
-  const ajaxRequest = {
-    success: function (temp1, temp2, xhr) {
-      if (xhr.getResponseHeader('Location')) {
-        console.log(xhr.getResponseHeader('Location'));
-        result[engine].url = xhr.getResponseHeader('Location');
-      }
-    }
-  };
+  const ajaxRequest = {};
   switch (engine) {
     case 'ascii2d':
       ajaxRequest.url = NooBox.Image.apiUrls[engine];
@@ -293,7 +303,7 @@ NooBox.Image.generateAjaxRequest = (engine, result) => {
       ajaxRequest.data = {
         uri: imageUrl
       };
-      console.log('ascii2d!!!!');
+      ajaxRequest.contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
       break;
     default:
       ajaxRequest.url = result[engine].url;
@@ -639,7 +649,7 @@ NooBox.Image.fetchFunctions.ascii2d = (cursor, result, data) => {
       const x = $(temp).find('.detail-box a')[0] || {};
       website.title = x.innerText;
       website.link = x.href;
-      website.description = ($(temp).find('h6')[0] || {innerHTML: ''}).innerHTML.replace(/<nooboximage/g, '<img');
+      website.description = ($(temp).find('h6')[0] || { innerHTML: '' }).innerHTML.replace(/<nooboximage/g, '<img');
       website.imageUrl = 'https://ascii2d.net/' + $(temp).find('nooboximage').attr('src');
       website.searchEngine = 'ascii2d';
       if (i == 1) {
