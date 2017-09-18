@@ -112,7 +112,7 @@ NooBox.Options.defaultValues = [
 
 NooBox.Options.constantValues = [
   ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.4.1']
+  ['version', '0.9.4.2']
 ];
 
 NooBox.Options.init = (i) => {
@@ -263,7 +263,7 @@ NooBox.Image.imageSearch = (info) => {
 NooBox.Image.imageSearchByUrl = (cursor, result, engines) => {
   for (let i = 0; i < engines.length; i++) {
     ((cursor, engine) => {
-      NooBox.Image.imageSearchByUrlEngine2(engine, result, cursor);
+      NooBox.Image.imageSearchByUrlEngine(engine, result, cursor);
     })(cursor, engines[i]);
   }
 }
