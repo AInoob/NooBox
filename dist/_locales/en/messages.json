@@ -155,6 +155,9 @@
   "record_history":{
     "message":"Record History"
   },
+  "autoRefresh":{
+    "message":"Auto Refresh"
+  },
   "j":{
     "message":"j"
   },
