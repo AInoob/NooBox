@@ -155,6 +155,9 @@
   "record_history":{
     "message":"記錄歷程"
   },
+  "autoRefresh":{
+    "message":"自動刷新"
+  },
   "j":{
     "message":"j"
   },

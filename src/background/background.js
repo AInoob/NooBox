@@ -103,16 +103,17 @@ NooBox.Options.defaultValues = [
   ['extractImages', true],
   ['screenshotSearch', true],
   ['videoControl', false],
+  ['autoRefresh', true],
   ['displayOrder', []],
   ['checkUpdate', true],
   ['lastUpdateCheck', 0],
   ['updateHistory', []],
-  ['history', true]
+  ['history', true],
 ];
 
 NooBox.Options.constantValues = [
-  ['displayList', ['imageSearch', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.4.2']
+  ['displayList', ['imageSearch', 'autoRefresh', 'videoControl', 'checkUpdate']],
+  ['version', '0.9.4.5']
 ];
 
 NooBox.Options.init = (i) => {
