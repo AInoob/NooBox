@@ -1,3 +1,6 @@
+require("babel-core/register");
+require("babel-polyfill");
+
 //The router of Image search, all component is under Core2.jsx
 import React from 'react';
 import ReactDOM from 'react-dom';

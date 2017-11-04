@@ -1,4 +1,6 @@
-//Using object as a class to wrap different sections and functions
+require("babel-core/register");
+require("babel-polyfill");
+
 const NooBox = {};
 let analyticsOnce = false;
 const analyticsLastList = {};
