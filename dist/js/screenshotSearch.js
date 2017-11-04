@@ -1,1 +1,260 @@
-!function(o){function e(s){if(t[s])return t[s].exports;var n=t[s]={exports:{},id:s,loaded:!1};return o[s].call(n.exports,n,n.exports,e),n.loaded=!0,n.exports}var t={};return e.m=o,e.c=t,e.p="",e(0)}([function(o,e){"use strict";function t(o){if(n.state&&!a){r.x=o.pageX-n.x,r.y=o.pageY-n.y;var e=$(n.elem).offset();$(n.elem).offset({left:e.left+r.x,top:e.top+r.y}),n.x=o.pageX,n.y=o.pageY,s($(o.target).parent())}else if(a){var t=$(o.target).parent();t.find(".NooBox-screenshot-cursorBottomRight").offset({top:o.pageY-6,left:o.pageX-6}),s($(o.target).parent())}}function s(o){var e=o.find(".NooBox-screenshot-cursorTopLeft").offset().left,t=o.find(".NooBox-screenshot-cursorTopLeft").offset().top,s=o.find(".NooBox-screenshot-cursorBottomRight").offset().left,n=o.find(".NooBox-screenshot-cursorBottomRight").offset().top,r=o.find(".NooBox-screenshot-canvas").offset().top,a=(o.find(".NooBox-screenshot-canvas").offset().left,o.find(".NooBox-screenshot-canvas").width()),i=o.find(".NooBox-screenshot-canvas").height(),c=Math.min(e,s),p=Math.min(t,n),h=Math.abs(e-s),d=Math.abs(t-n),x=6,f=a-(c+h)+x;o.find(".NooBox-screenshot-coverTop").css({left:"0px",width:a+x+"px",height:p-r+"px"}),o.find(".NooBox-screenshot-coverRight").css({top:"0px",width:f+"px",height:i+x+"px"}),o.find(".NooBox-screenshot-coverBottom").css({left:"6px",width:a+"px",height:i-(d+p-r)+"px"}),o.find(".NooBox-screenshot-coverLeft").css({top:"6px",width:c-x+"px",height:i+"px"})}var n={elem:null,x:0,y:0,state:!1},r={x:0,y:0},a=!1;chrome.runtime.onMessage.addListener(function(o,e,r){if("loaded"==o&&r("yes"),"job"in o&&"screenshotSearch"==o.job){chrome.runtime.sendMessage({job:"analytics",category:"screenshotSearch",action:"run"},function(o){}),$(document.head).append("<style>#NooBox-screenshot{margin:0px;border:0px;padding:0px;border-radius:0px}#NooBox-screenshot *{transition:none;margin:0px;border:0px;padding:0px;border-radius:0px}</style>");var i=$('<div id="NooBox-screenshot" style="width:initial;z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:'+document.body.scrollTop+'px;" ></div>'),c=new Image;c.src=o.data,c.onload=function(){i.append('<div class="NooBox-screenshot-search" style="cursor:pointer;box-sizing: content-box;height: '+($(window).height()-29-11-($(window).height()-250)/2)+"px;width: 35px;float: right;padding-top: "+($(window).height()-250)/2+'px;text-align: center;background-color:rgba(130, 186, 255, 0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">'+chrome.i18n.getMessage("search")+"!!!</div>"),i.append("<canvas width="+c.width+" height="+c.height+' style="border:6px dashed pink;height:'+($(window).height()-52)+'px" class="NooBox-screenshot-canvas"></canvas>'),i.append('<div class="NooBox-screenshot-switch" style="margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(193, 22, 59, 0.8);">'+chrome.i18n.getMessage("close")+"</div>"),i.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:12px;height:12px"></div>'),i.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="z-index:3;cursor:crosshair;left:'+($(window).height()-52)/c.height*c.width+"px;top:"+($(window).height()-52)+'px;position:absolute;border-radius:50%;width:12px;height:12px"></div>'),i.append('<div class="NooBox-screenshot-coverTop" style="pointer-events: none;position:absolute;top:6px;background-color:rgba(0,0,0,0.418)"></div>'),i.append('<div class="NooBox-screenshot-coverRight" style="left:initial;pointer-events: none;position:absolute;right:41px;background-color:rgba(0,0,0,0.418)"></div>'),i.append('<div class="NooBox-screenshot-coverBottom" style="pointer-events: none;position:absolute;bottom:37px;background-color:rgba(0,0,0,0.418)"></div>'),i.append('<div class="NooBox-screenshot-coverLeft" style="pointer-events: none;position:absolute;left:6px;background-color:rgba(0,0,0,0.418)"></div>'),$("body").append(i),$("body").append("<style>@keyframes shiny{0%{background-color:white}20%{background-color:yellow}40%{background-color:red}60%{background-color:black}80%{background-color:blue}} .NooBox-shiny{animation: shiny 5s infinite}</style>"),$(".NooBox-screenshot-switch").on("click",function(o){$(o.target).parent().remove()}),$(".NooBox-screenshot-cursorTopLeft").on("mousedown",function(o){n.state||(n.elem=this,n.x=o.pageX,n.y=o.pageY,n.state=!0)}),$(".NooBox-screenshot-cursorBottomRight").on("mousedown",function(o){n.state||(n.elem=this,n.x=o.pageX,n.y=o.pageY,n.state=!0)}),$(".NooBox-screenshot-canvas").on("mousedown",function(o){if(!a){a=!0;var e=$(o.target).parent();e.find(".NooBox-screenshot-cursorTopLeft").offset({top:o.pageY,left:o.pageX}),s($(o.target).parent())}}),$(".NooBox-screenshot-canvas").on("mouseup",function(o){a&&(a=!1)}),$(".NooBox-screenshot-cursorBottomRight").on("mouseup",function(o){a&&(a=!1)}),$(document).mousemove(t),$(document).mouseup(function(){n.state&&(n.state=!1)}),$(".NooBox-screenshot-search").on("click",function(o){var e=$(o.target).parent().find(".NooBox-screenshot-cursorTopLeft").offset().left,t=$(o.target).parent().find(".NooBox-screenshot-cursorTopLeft").offset().top,s=$(o.target).parent().find(".NooBox-screenshot-cursorBottomRight").offset().left,n=$(o.target).parent().find(".NooBox-screenshot-cursorBottomRight").offset().top,r=Math.min(e,s)+2,a=Math.min(t,n)+1,i=Math.abs(e-s),p=Math.abs(t-n),h=$(o.target).parent().find(".NooBox-screenshot-canvas").offset().top,d=$(o.target).parent().find(".NooBox-screenshot-canvas").offset().left,x=c.height/$(o.target).parent().find(".NooBox-screenshot-canvas").height(),f=$(o.target).parent().find(".NooBox-screenshot-canvas")[0].getContext("2d").getImageData((r-d)*x,(a-h)*x,i*x,p*x),g=document.createElement("canvas");g.width=i*x,g.height=p*x;var l=g.getContext("2d");l.putImageData(f,0,0);var u=g.toDataURL();chrome.extension.sendMessage({job:"imageSearch_upload",data:u})}),setTimeout(p,300)};var p=function o(){var e=$(".NooBox-screenshot-canvas").last()[0];if(e){var t=e.getContext("2d");t.drawImage(c,0,0)}else setTimeout(o,300)}}})}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 121);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 121:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var screenshotDataURL;
+var drag = {
+  elem: null,
+  x: 0,
+  y: 0,
+  state: false
+};
+var delta = {
+  x: 0,
+  y: 0
+};
+var newSelection = false;
+
+function moveCursor(e) {
+  if (drag.state && !newSelection) {
+    delta.x = e.pageX - drag.x;
+    delta.y = e.pageY - drag.y;
+    var cur_offset = $(drag.elem).offset();
+    $(drag.elem).offset({
+      left: cur_offset.left + delta.x,
+      top: cur_offset.top + delta.y
+    });
+    drag.x = e.pageX;
+    drag.y = e.pageY;
+    moveCover($(e.target).parent());
+  } else if (newSelection) {
+    var parent = $(e.target).parent();
+    parent.find('.NooBox-screenshot-cursorBottomRight').offset({
+      top: e.pageY - 6,
+      left: e.pageX - 6
+    });
+    moveCover($(e.target).parent());
+  }
+}
+
+function moveCover(parent) {
+  var left1 = parent.find('.NooBox-screenshot-cursorTopLeft').offset().left;
+  var top1 = parent.find('.NooBox-screenshot-cursorTopLeft').offset().top;
+  var left2 = parent.find('.NooBox-screenshot-cursorBottomRight').offset().left;
+  var top2 = parent.find('.NooBox-screenshot-cursorBottomRight').offset().top;
+  var canvasTop = parent.find('.NooBox-screenshot-canvas').offset().top;
+  var canvasLeft = parent.find('.NooBox-screenshot-canvas').offset().left;
+  var canvasWidth = parent.find('.NooBox-screenshot-canvas').width();
+  var canvasHeight = parent.find('.NooBox-screenshot-canvas').height();
+  var left = Math.min(left1, left2);
+  var top = Math.min(top1, top2);
+  var width = Math.abs(left1 - left2);
+  var height = Math.abs(top1 - top2);
+  var halfBall = 6;
+  var temp1 = 6 + top - canvasTop;
+  var temp2 = canvasWidth - (left + width) + halfBall;
+  parent.find('.NooBox-screenshot-coverTop').css({
+    left: 0 + 'px',
+    width: canvasWidth + halfBall + 'px',
+    height: top - canvasTop + 'px'
+  });
+  parent.find('.NooBox-screenshot-coverRight').css({
+    top: 0 + 'px',
+    width: temp2 + 'px',
+    height: canvasHeight + halfBall + 'px'
+  });
+  parent.find('.NooBox-screenshot-coverBottom').css({
+    left: '6px',
+    width: canvasWidth + 'px',
+    height: canvasHeight - (height + top - canvasTop) + 'px'
+  });
+  parent.find('.NooBox-screenshot-coverLeft').css({
+    top: 6 + 'px',
+    width: left - halfBall + 'px',
+    height: canvasHeight + 'px'
+  });
+}
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request == 'loaded') {
+    sendResponse('yes');
+  }
+  if ('job' in request) {
+    if (request.job == 'screenshotSearch') {
+      chrome.runtime.sendMessage({
+        job: 'analytics',
+        category: 'screenshotSearch',
+        action: 'run'
+      }, function (response) {});
+      $(document.head).append('<style>#NooBox-screenshot{margin:0px;border:0px;padding:0px;border-radius:0px}#NooBox-screenshot *{transition:none;margin:0px;border:0px;padding:0px;border-radius:0px}</style>');
+      var div = $('<div id="NooBox-screenshot" style="width:initial;z-index:999999999999999999999;border: 6px solid #6e64df;position:absolute;left:0px;top:' + document.body.scrollTop + 'px;" ></div>');
+      var img = new Image();
+      img.src = request.data;
+      img.onload = function () {
+        div.append('<div class="NooBox-screenshot-search" style="cursor:pointer;box-sizing: content-box;height: ' + ($(window).height() - 29 - 11 - ($(window).height() - 250) / 2) + 'px;width: 35px;float: right;padding-top: ' + ($(window).height() - 250) / 2 + 'px;text-align: center;background-color:rgba(130, 186, 255, 0.8);font-size: 44px;word-wrap: break-word;line-height: 44px;">' + chrome.i18n.getMessage('search') + '!!!</div>');
+        div.append('<canvas width=' + img.width + ' height=' + img.height + ' style="border:6px dashed pink;height:' + ($(window).height() - 52) + 'px" class="NooBox-screenshot-canvas"></canvas>');
+        div.append('<div class="NooBox-screenshot-switch" style="margin-top:-3px;cursor:pointer;user-select: none;width: 100%;height: 29px;font-size: 30px;text-align: center;line-height: 30px;background: rgba(193, 22, 59, 0.8);">' + chrome.i18n.getMessage('close') + '</div>');
+        div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="z-index:3;cursor:crosshair;left:-7px;top:-7px;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
+        div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="z-index:3;cursor:crosshair;left:' + ($(window).height() - 52) / img.height * img.width + 'px;top:' + ($(window).height() - 52) + 'px;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
+        div.append('<div class="NooBox-screenshot-coverTop" style="pointer-events: none;position:absolute;top:6px;background-color:rgba(0,0,0,0.418)"></div>');
+        div.append('<div class="NooBox-screenshot-coverRight" style="left:initial;pointer-events: none;position:absolute;right:41px;background-color:rgba(0,0,0,0.418)"></div>');
+        div.append('<div class="NooBox-screenshot-coverBottom" style="pointer-events: none;position:absolute;bottom:37px;background-color:rgba(0,0,0,0.418)"></div>');
+        div.append('<div class="NooBox-screenshot-coverLeft" style="pointer-events: none;position:absolute;left:6px;background-color:rgba(0,0,0,0.418)"></div>');
+        $('body').append(div);
+        $('body').append('<style>@keyframes shiny{0%{background-color:white}20%{background-color:yellow}40%{background-color:red}60%{background-color:black}80%{background-color:blue}} .NooBox-shiny{animation: shiny 5s infinite}</style>');
+        $('.NooBox-screenshot-switch').on('click', function (e) {
+          $(e.target).parent().remove();
+        });
+        $('.NooBox-screenshot-cursorTopLeft').on('mousedown', function (e) {
+          if (!drag.state) {
+            drag.elem = this;
+            drag.x = e.pageX;
+            drag.y = e.pageY;
+            drag.state = true;
+          }
+        });
+        $('.NooBox-screenshot-cursorBottomRight').on('mousedown', function (e) {
+          if (!drag.state) {
+            drag.elem = this;
+            drag.x = e.pageX;
+            drag.y = e.pageY;
+            drag.state = true;
+          }
+        });
+        $('.NooBox-screenshot-canvas').on('mousedown', function (e) {
+          if (!newSelection) {
+            newSelection = true;
+            var parent = $(e.target).parent();
+            parent.find('.NooBox-screenshot-cursorTopLeft').offset({
+              top: e.pageY,
+              left: e.pageX
+            });
+            moveCover($(e.target).parent());
+          }
+        });
+        $('.NooBox-screenshot-canvas').on('mouseup', function (e) {
+          if (newSelection) {
+            newSelection = false;
+          }
+        });
+        $('.NooBox-screenshot-cursorBottomRight').on('mouseup', function (e) {
+          if (newSelection) {
+            newSelection = false;
+          }
+        });
+        $(document).mousemove(moveCursor);
+        $(document).mouseup(function () {
+          if (drag.state) {
+            drag.state = false;
+          }
+        });
+        $('.NooBox-screenshot-search').on('click', function (e) {
+          var left1 = $(e.target).parent().find('.NooBox-screenshot-cursorTopLeft').offset().left;
+          var top1 = $(e.target).parent().find('.NooBox-screenshot-cursorTopLeft').offset().top;
+          var left2 = $(e.target).parent().find('.NooBox-screenshot-cursorBottomRight').offset().left;
+          var top2 = $(e.target).parent().find('.NooBox-screenshot-cursorBottomRight').offset().top;
+          var left = Math.min(left1, left2) + 2;
+          var top = Math.min(top1, top2) + 1;
+          var width = Math.abs(left1 - left2);
+          var height = Math.abs(top1 - top2);
+          var canvasTop = $(e.target).parent().find('.NooBox-screenshot-canvas').offset().top;
+          var canvasLeft = $(e.target).parent().find('.NooBox-screenshot-canvas').offset().left;
+          var ratio = img.height / $(e.target).parent().find('.NooBox-screenshot-canvas').height();
+          var imgData = $(e.target).parent().find('.NooBox-screenshot-canvas')[0].getContext('2d').getImageData((left - canvasLeft) * ratio, (top - canvasTop) * ratio, width * ratio, height * ratio);
+          var canvas1 = document.createElement("canvas");
+          canvas1.width = width * ratio;
+          canvas1.height = height * ratio;
+          var ctx = canvas1.getContext('2d');
+          ctx.putImageData(imgData, 0, 0);
+          var dataURL = canvas1.toDataURL();
+          chrome.extension.sendMessage({
+            job: 'imageSearch_upload',
+            data: dataURL
+          });
+        });
+        setTimeout(loadScreenshot, 300);
+      };
+      var loadScreenshot = function loadScreenshot() {
+        var canvas = $('.NooBox-screenshot-canvas').last()[0];
+        if (!canvas) {
+          setTimeout(loadScreenshot, 300);
+        } else {
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+        }
+      };
+    }
+  }
+});
+
+/***/ })
+
+/******/ });

@@ -1,25 +1,33 @@
 {
   "name": "noobox",
   "version": "0.1.0",
-  "description": "A Chrome extension that manages your Apps/Extensions",
+  "description": "A Chrome extension that contains useful tools",
   "main": "webpack.config.js",
   "dependencies": {
-    "babel-core": "^6.25.0",
-    "babel-loader": "^6.4.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.16.0",
-    "copy-webpack-plugin": "^4.0.1",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-helmet": "^3.2.2",
     "react-router": "^3.0.0",
-    "styled-components": "^2.1.1",
-    "webpack": "^1.15.0"
+    "styled-components": "^2.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-es2015-parameters": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.16.0",
+    "babel-register": "^6.26.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "webpack": "^3.8.1",
+    "yamljs": "^0.3.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "dev": "node ./scripts/build.js && webpack -w --env.dev=true",
+    "prod": "node ./scripts/build.js && webpack"
   },
   "repository": {
     "type": "git",
