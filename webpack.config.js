@@ -6,7 +6,7 @@ module.exports = env => {
     entry: {
       noobox: './src/popup/NooBox.jsx',
       imageSearch: './src/imageSearch/ImageSearch.jsx',
-      background: './src/background/background.js',
+      background: './src/background/index.js',
       util: './src/js/util.js',
       extractImages: './src/js/extractImages.js',
       options: './src/js/options.js',
@@ -23,6 +23,7 @@ module.exports = env => {
         {
           test: /\.jsx?$/,
           loader: 'babel-loader',
+          exclude: [/node_modules/],
           query: {
             presets: ['react', 'env'],
             plugins: [
@@ -30,15 +31,23 @@ module.exports = env => {
               "transform-es2015-parameters",
               "transform-object-rest-spread",
             ],
-          }
+          },
         }
       ]
+    },
+    resolve: {
+      extensions: ['.js', '.jsx']
     },
     plugins: [
       new CopyWebpackPlugin([
         { from: './src/options.html' },
         { from: './src/popup/popup.html' },
         { from: './src/imageSearch/image.search.html' },
+        { from: './src/manifest.json' },
+        { from: './fonts/', to: 'font' },
+        { from: './images/', to: 'images' },
+        { from: './css/', to: 'css' },
+        { from: './thirdParty/', to: 'thirdParty' },
       ]),
     ]
   }

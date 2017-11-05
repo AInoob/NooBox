@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
 import styled from 'styled-components';
 
 const OptionsDiv = styled.div`
@@ -23,10 +22,10 @@ const OptionsDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'Options',
-  getInitialState: function() {
-    return {
+class Options extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
 			history: true,
 			installType: 'normal',
 			settings: {
@@ -45,8 +44,8 @@ module.exports = React.createClass({
 				imageSearchUrl_ascii2d: false,
 			}
 		};
-  },
-  componentDidMount: function(){
+  }
+  componentDidMount() {
     const switchList = [
 			'history',
 			'checkUpdate',
@@ -85,8 +84,8 @@ module.exports = React.createClass({
         }.bind(this,i)
       );
     }
-  },
-  toggleSetting: function(id) {
+  }
+  toggleSetting(id) {
     const newValue = !this.state.settings[id];
     set(id, newValue, () => {
       this.setState((prevState) => {
@@ -95,8 +94,8 @@ module.exports = React.createClass({
       });
       chrome.extension.sendMessage({ job: id });
     });
-  },
-  getSwitch: function(id, handler) {
+  }
+  getSwitch(id, handler) {
     return <div className="switch">
       <label htmlFor={id} >
         <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
@@ -104,22 +103,22 @@ module.exports = React.createClass({
       </label>
       {GL(id)}
     </div>;
-  },
-  getImageSearchSwitch: function(id, handler) {
+  }
+  getImageSearchSwitch(id, handler) {
     return <div className="switch">
       <label htmlFor={id} >
         <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
         <img title={GL(id)} src={'/thirdParty/'+id.slice(15)+'.png'} />
       </label>
     </div>;
-  },
-  getCheckbox: function(id,handler){
+  }
+  getCheckbox(id,handler) {
     return <p>
       <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
       <label htmlFor={id} >{GL(id)}</label>
     </p>;
-  },
-  render: function() {
+  }
+  render() {
     let imageSearchEngines = null;
     if(this.state.settings['imageSearch']) {
       imageSearchEngines= [
@@ -167,4 +166,6 @@ module.exports = React.createClass({
 			</OptionsDiv>
 		);
   }
-});
+};
+
+export default Options;

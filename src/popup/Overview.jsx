@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
 import Module from './Module.jsx';
 import styled from 'styled-components';
 
@@ -25,40 +24,22 @@ const OverviewDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'Overview',
-  getInitialState: function(){
-    return {modules:[]};
-  },
-  componentDidMount: function(){
-    shared.goTo = this.props.router.push;
-    if(window.location.pathname.indexOf('popup')!=-1){
-      const page = getParameterByName('page');
-      if(page){
-        this.props.router.push(page);
-        if(page == 'overview'){
-          this.getInitialData();
-        }
-      }
-      else{
-        get('defaultPage', (url) => {
-          this.props.router.push( ( url || 'overview' ) );
-          if( !url || url == 'overview' ){
-            this.getInitialData();
-          }
-        });
-      }
-    }
-    else{
-      this.getInitialData();
-    }
-  },
-  getInitialData: function(){
+class Overview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modules:[]
+    };
+  }
+  componentDidMount() {
+    this.getInitialData();
+  }
+  getInitialData() {
     get('displayList', (modules) => {
       this.setState({modules:modules});
     });
-  },
-  render: function(){
+  }
+  render() {
     const modules = this.state.modules.map((elem, index) => {
       return <Module key={index} name={elem} />
     });
@@ -68,4 +49,6 @@ module.exports = React.createClass({
 			</OverviewDiv>
 		);
   }
-});
+};
+
+export default Overview;

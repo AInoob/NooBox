@@ -9,13 +9,14 @@ const ImageSearchDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'ImageSearch',
-  reader : new window.FileReader(),
-  getInitialState: function() {
-    return { enabled: false, displayHelp: false };
-  },
-  componentDidMount: function() {
+class ImageSearch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { enabled: false, displayHelp: false };
+    this.reader = new window.FileReader();
+    this.search = this.search.bind(this);
+  }
+  componentDidMount() {
     isOn('imageSearch', () => {
       this.setState({enabled:true});
       this.reader.onloadend = () => {
@@ -35,36 +36,36 @@ module.exports = React.createClass({
         this.setState({engines: engines});
       });
     });
-  },
-  onDragOver: function(e) {
+  }
+  onDragOver(e) {
     e.stopPropagation();
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
-  },
-  onDrop: function(e) {
+  }
+  onDrop(e) {
     e.stopPropagation();
     e.preventDefault();
     const url = URL.createObjectURL(e.dataTransfer.files[0]);
     $('#uploadedImage').attr('src', url);
-  },
-  upload: function(e) {
+  }
+  upload(e) {
     const url = URL.createObjectURL(e.target.files[0]);
     $('#uploadedImage').attr('src', url);
-  },
-  search: function(e) {
+  }
+  search(e) {
     fetchBlob(e.target.src, (blob) => {
       this.reader.readAsDataURL(blob);
     });
-  },
-  notImage: function(e) {
+  }
+  notImage(e) {
     chrome.notifications.create({
       type:'basic',
       iconUrl: '/images/icon_128.png',
       title: GL('reverse_image_search'),
       message: GL('ls_0')
     });
-  },
-  render: function() {
+  }
+  render() {
     if(!this.state.enabled) {
       return null;
     }
@@ -76,7 +77,7 @@ module.exports = React.createClass({
     const help = <p className="important" id="help">{GL('ls_11')}<br/><br/>{GL('ls_12')}<br/><br/>{GL('ls_13')}</p>;
     return (
       <ImageSearchDiv displayHelp={this.state.displayHelp} className="container">
-        <h5 className="header">{GL('imageSearch')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
+        <h5 className="header">{GL('imageSearch')}<span className="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
 				{help}
         <div id="info" className="container">
           <p className="important line">{GL('totalSearches')+' : '+this.state.totalImageSearch}</p>
@@ -91,4 +92,6 @@ module.exports = React.createClass({
       </ImageSearchDiv>
 		);
   }
-});
+};
+
+export default ImageSearch;

@@ -1,14 +1,14 @@
 //basically Website will display the website block and update image size if the image is loaded
 import React from 'react';
 
-module.exports = React.createClass({
-	displayName: 'Website',
-	getInitialState: function() {
-		return {
-			focus: false
-		};
-	},
-	componentDidMount: function() {
+class Website extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      focus: false
+    };
+  }
+	componentDidMount() {
 		const website = this.props.data;
 		if (website.searchEngine == 'iqdb') {
 			const match = website.description.match(/(\d+)×(\d+)/);
@@ -16,16 +16,16 @@ module.exports = React.createClass({
 				this.props.updateImageSize(website.imageUrl, parseInt(match[1]), parseInt(match[2]));
 			}
 		}
-	},
-	focus: function() {
+	}
+	focus() {
 		this.setState({
 			focus: !this.state.focus
 		});
-	},
-	getSize: function(e) {
+	}
+	getSize(e) {
 		this.props.updateImageSize(e.target.src, e.target.naturalWidth, e.target.naturalHeight);
-	},
-	render: function() {
+	}
+	render() {
 		let hidden = '';
 		const website = this.props.data;
 		let focus = '';
@@ -51,7 +51,7 @@ module.exports = React.createClass({
 		return (
 			<div className={"website card" + horizontal + focus + related + hidden}>
 				<div className="card-image">
-					<img onLoad={this.getSize} onClick={this.focus}	className={"image "+focus} src={website.imageUrl} /> 
+					<img onLoad={this.getSize.bind(this)} onClick={this.focus}	className={"image "+focus} src={website.imageUrl} /> 
 				</div>
 				<div className="card-stack container" >
 					<div className="caard-content">
@@ -66,4 +66,6 @@ module.exports = React.createClass({
 			</div>
 		);
 	}
-});
+};
+
+export default Website;

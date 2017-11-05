@@ -1,6 +1,4 @@
 import React from 'react';
-import Helmet from 'react-helmet';
-import { Link } from 'react-router';
 import Website from './Website.jsx';
 import styled from 'styled-components';
 
@@ -94,17 +92,26 @@ const ImageSearchDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'Result',
-  getInitialState: function() {
-    return {
+class Result extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
 			order: 'relevance',
 			imageSizes: {},
 			loadBaidu: false,
+      engineWeights: {
+        google: 30,
+        baidu: 20,
+        yandex: 15,
+        tineye: 18,
+        saucenao: 10,
+        iqdb: -100,
+        ascii2d: -69,
+      },
 		};
-  },
-  componentDidMount: function() {
-    shared.updateOrder = this.updateOrder;
+  }
+  componentDidMount() {
+    this.updateOrder = this.updateOrder.bind(this);
     this.getInitialData();
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			if(request.job == 'image_result_update' && request.cursor == getParameterByName('cursor')) {
@@ -130,14 +137,14 @@ module.exports = React.createClass({
         });
       });
     });
-    $(document).ready(function() {
+    $(document).ready(() => {
       $('select').material_select();
       $('.dropdown-content li').on('click', (e) => {
-        shared.updateOrder($(e.target).text());
+        this.updateOrder($(e.target).text());
       });
     });
-  },
-  uploadReSearch:function(){
+  }
+  uploadReSearch() {
     const img=$('#imageInput')[0];
     const workerCanvas = document.createElement('canvas');
     const workerCtx = workerCanvas.getContext('2d');
@@ -151,26 +158,17 @@ module.exports = React.createClass({
 		}, (response) => {
       window.close();
     });
-  },
-  engineWeights: {
-    google: 30,
-    baidu: 20,
-    yandex: 15,
-    tineye: 18,
-    saucenao: 10,
-    iqdb: -100,
-    ascii2d: -69,
-  },
-  getWeight: function(related, engine, index) {
+  }
+  getWeight(related, engine, index) {
     let weight = 0;
     if(related) {
       weight += 100;
     }
-    weight += this.engineWeights[engine];
+    weight += this.state.engineWeights[engine];
     weight -= index;
     return weight;
-  },
-  reloadBaiduImage: function(x) {
+  }
+  reloadBaiduImage(x) {
     let allLoaded = true;
     $('.website.baidu').find('img.image').each((e) => {
       if(!this.naturalWidth || this.naturalWidth == 0) {
@@ -195,8 +193,8 @@ module.exports = React.createClass({
       newWaiting = newWaiting > 2000 ? 2000 : newWaiting;
       setTimeout(this.reloadBaiduImage.bind(this, newWaiting), newWaiting);
     }
-  },
-  updateWebsites: function() {
+  }
+  updateWebsites() {
     const websites = [];
     const result=this.state.result;
     for(let i = 0; i < (result.engines || []).length; i++) {
@@ -230,24 +228,24 @@ module.exports = React.createClass({
       }
     }
     this.setState({ websites });
-  },
-  getInitialData: function() {
+  }
+  getInitialData() {
     const cursor = getParameterByName('cursor');
     getDB('NooBox.Image.result_' + cursor, (data) => {
       this.setState({ result: data });
       this.updateWebsites();
       console.log(data);
     });
-  },
-  getKeyword: function(engine) {
+  }
+  getKeyword(engine) {
     return (
       <a target="_blank" href={((this.state.result||{})[engine]||{}).url} className="keyword">
         <img src={'/thirdParty/'+engine+'.png'} />
         {(((this.state.result || {})[engine] || {}).keyword || '(none)')}
       </a>
 		);
-  },
-  getImageSize: function(url) {
+  }
+  getImageSize(url) {
     if(this.state.imageSizes[url]) {
       return this.state.imageSizes[url];
     }
@@ -258,8 +256,8 @@ module.exports = React.createClass({
 				area: ''
 			};
     }
-  },
-  updateImageSize: function(index, url, width, height) {
+  }
+  updateImageSize(index, url, width, height) {
     this.setState((prevState) => {
       prevState.imageSizes[url] = {};
       prevState.imageSizes[url].width = width;
@@ -272,8 +270,8 @@ module.exports = React.createClass({
       }
       return prevState;
     });
-  },
-  sort: function(a, b) {
+  }
+  sort(a, b) {
     let r = 0;
     const aa = this.getImageSize(a.imageUrl);
     const bb = this.getImageSize(b.imageUrl);
@@ -304,16 +302,16 @@ module.exports = React.createClass({
       }
     }
     return r;
-  },
-  getWebsite: function(){
+  }
+  getWebsite() {
     const websites = this.state.websites || [];
-    return websites.sort(this.sort).map((website, index) => {
+    return websites.sort(this.sort.bind(this)).map((website, index) => {
       return (
-        <Website key={index} getImageSize={this.getImageSize.bind(this,website.imageUrl)} updateImageSize={this.updateImageSize.bind(this,index)} data={website} />
+        <Website key={index} getImageSize={this.getImageSize.bind(this, website.imageUrl)} updateImageSize={this.updateImageSize.bind(this,index)} data={website} />
       );
     });
-  },
-  updateOrder: function(order) {
+  }
+  updateOrder(order) {
     switch(order) {
       case '相关':
         order = 'relevance';
@@ -329,8 +327,8 @@ module.exports = React.createClass({
         break;
     }
     this.setState({ order: order.toLowerCase() });
-  },
-  render: function() {
+  }
+  render() {
     const result = this.state.result || {};
     let uploadReSearch = null;
     let source = result.imageUrl;
@@ -398,4 +396,6 @@ module.exports = React.createClass({
       </ImageSearchDiv>
 		);
   }
-});
+};
+
+export default Result;
