@@ -8,7 +8,6 @@ const VideoControlDiv = styled.div`
 		margin: 0;
 	}
 	#info{
-		font-size: 100px;
 		color: grey;
 		span{
 			line-height: 70px;
@@ -20,6 +19,7 @@ const VideoControlDiv = styled.div`
 		}
 	}
 	#indicator{
+		font-size: 100px;
 		margin-top: -20px;
 		margin-bottom: 20px;
 	}
@@ -36,16 +36,17 @@ const VideoControlDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'VideoControl',
-  getInitialState: function() {
+class VideoControl extends React.Component {
+  constructor(props) {
+    super(props);
 		let shortcuts = JSON.parse(GL('ls_16').replace(/\'/g,'"'));
 		shortcuts = Object.keys(shortcuts).map((key) => {
 			return [key, shortcuts[key]];
 		});
-    return { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts };
-  },
-  componentDidMount: function() {
+    this.state = { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts };
+    this.toggle = this.toggle.bind(this);
+  }
+  componentDidMount() {
     isOn('videoControl', () => {
       this.setState({ enabled: true });
       chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true}, (tabs) => {
@@ -64,8 +65,8 @@ module.exports = React.createClass({
         });
       });
     });
-  },
-  toggle: function() {
+  }
+  toggle() {
     const websiteEnabled=!this.state.websiteEnabled;
     setDB('videoControl_website_'+this.state.host, websiteEnabled, () => {
       this.setState({ websiteEnabled });
@@ -75,8 +76,8 @@ module.exports = React.createClass({
 				enabled: websiteEnabled,
 			});
     });
-  },
-  render: function() {
+  }
+  render() {
     if(!this.state.enabled) {
       return null;
     }
@@ -87,13 +88,19 @@ module.exports = React.createClass({
 		let help, shortcuts;
 		if(this.state.displayHelp) {
 			shortcuts = this.state.shortcuts.map((elem, index) => {
-				return <tr><td>{elem[0]}</td><td>{elem[1]}</td></tr>;
+				return <tr key={index}><td>{elem[0]}</td><td>{elem[1]}</td></tr>;
 			});
-			help = <p className="important" id="help">{GL('ls_14')}<br/><br/>{GL('ls_15')}<br/><table id="shortcuts">{shortcuts}</table></p>;
+			help = (
+        <div className="important" id="help">
+          {GL('ls_14')}<br/><br/>
+          {GL('ls_15')}<br/>
+          <table id="shortcuts"><tbody>{shortcuts}</tbody></table>
+        </div>
+      );
 		}
     return (
       <VideoControlDiv colorOn={shared.styled.colorOn} displayHelp={this.state.displayHelp} className="container">
-        <h5 className="header">{GL('videoControl')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
+        <h5 className="header">{GL('videoControl')}<span className="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
 				{help}
         <div id="info" className="container">
           <p className="important line">{this.state.host}</p>
@@ -102,4 +109,6 @@ module.exports = React.createClass({
         </div>
       </VideoControlDiv>);
   }
-});
+};
+
+export default VideoControl;

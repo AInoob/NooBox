@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
 import styled from 'styled-components';
 
 const AboutDiv = styled.div`
@@ -19,9 +18,8 @@ const AboutDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'About',
-  render: () => {
+class About extends React.Component {
+  render() {
     switch(chrome.i18n.getUILanguage()) {
       case 'zh-CN':
         return (
@@ -121,4 +119,6 @@ module.exports = React.createClass({
         );
     }
   }
-});
+};
+
+export default About;

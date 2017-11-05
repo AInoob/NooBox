@@ -16,10 +16,10 @@ const CheckUpdateDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'CheckUpdate',
-  getInitialState: function () {
-    return {
+class CheckUpdate extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
 			enabled: false,
 			newChanges: [],
 			updateAvailable: false,
@@ -27,9 +27,10 @@ module.exports = React.createClass({
 			version: '0',
 			updateHistory:[],
 			displayHelp: false,
-		};
-  },
-  componentDidMount: function () {
+    };
+    this.checkUpdate = this.checkUpdate.bind(this);
+  }
+  componentDidMount() {
     get('version', (version) => {
       this.setState({ version }, () => {
         get('updateHistory', (updateHistory) => {
@@ -46,8 +47,8 @@ module.exports = React.createClass({
         }
       });
     });
-  },
-	compareVersion: function(a, b) {
+  }
+	compareVersion(a, b) {
 		const x = a.split('.').map((elem) => {
 			return parseInt(elem);
 		});;
@@ -63,8 +64,8 @@ module.exports = React.createClass({
 			}
 		}
 		return 0;
-	},
-  generateReport: function() {
+	}
+  generateReport() {
     const data = this.state.updateHistory;
     if(data.length == 0) {
       return;
@@ -95,8 +96,8 @@ module.exports = React.createClass({
     else{
       this.setState({ updateAvailable: false });
     }
-  },
-  checkUpdate: function() {
+  }
+  checkUpdate() {
     set('lastUpdateCheck',new Date().getTime());
 		$.ajax({
 			type: 'GET',
@@ -108,8 +109,8 @@ module.exports = React.createClass({
 				});
 			});
 		});
-  },
-  render: function() {
+  }
+  render() {
     if(!this.state.enabled) {
       return null;
     }
@@ -124,7 +125,7 @@ module.exports = React.createClass({
     }
     return (
       <CheckUpdateDiv displayHelp={this.state.displayHelp}>
-        <h5 className="header">{GL('checkUpdate')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
+        <h5 className="header">{GL('checkUpdate')}<span className="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
 				{help}
         <div id="info" className="container important">
           {report}
@@ -136,4 +137,6 @@ module.exports = React.createClass({
       </CheckUpdateDiv>
 		);
   }
-});
+};
+
+export default CheckUpdate;

@@ -1,7 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router';
 import styled from 'styled-components';
+
+import TimeAgo from 'timeago-react';
 
 const HistoryDiv = styled.div`
 	img{
@@ -16,18 +17,19 @@ const HistoryDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'History',
-  getInitialState: function() {
-    initTimeago();
-    return {};
-  },
-  componentDidMount: function() {
+class History extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      language: getLanguage(),
+    };
+  }
+  componentDidMount() {
     getDB('history_records', (recordList) => {
       this.setState({ recordList });
     });
-  },
-  clearHistory: function() {
+  }
+  clearHistory() {
     getDB('history_records', (recordList) => {
       for(let i = 0; i < recordList.length; i++) {
         const id = recordList[i].cursor;
@@ -37,8 +39,8 @@ module.exports = React.createClass({
         this.setState({ recordList: null });
       });
     });
-  },
-	deleteRecord: function(i) {
+  }
+	deleteRecord(i) {
     getDB('history_records', (recordList) => {
 			const id = recordList[i].cursor;
 			deleteDB('NooBox.Image.result_'+id, () => {
@@ -50,13 +52,13 @@ module.exports = React.createClass({
 				});
 			});
 		});
-	},
-  render: function() {
+	}
+  render() {
     const recordList = (this.state.recordList || [{name:'Nothing is here yet',id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]).map((record, index) => {
 			console.log(record);
       return (
         <tr key={index}>
-					<td>{timeagoInstance.format(record.date,'locale')}</td>
+					<td><TimeAgo datetime={record.date} locale={this.state.language} /></td>
 					<td className={record.event}>{GL(record.event)}</td>
 					<td><a target="_blank" href={'/image.search.html?cursor='+record.cursor+'&image=history'} ><img src={record.info} /></a></td>
 					<td className="delete" onClick={this.deleteRecord.bind(this, index)}>❌</td>
@@ -83,4 +85,6 @@ module.exports = React.createClass({
       </HistoryDiv>
 		);
   }
-});
+};
+
+export default History;

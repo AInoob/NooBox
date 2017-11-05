@@ -6,9 +6,9 @@
   "dependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-helmet": "^3.2.2",
-    "react-router": "^3.0.0",
-    "styled-components": "^2.1.1"
+    "react-helmet": "^5.2.0",
+    "styled-components": "^2.1.1",
+    "timeago-react": "^1.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

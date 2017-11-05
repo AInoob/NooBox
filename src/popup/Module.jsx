@@ -6,10 +6,11 @@ import AutoRefresh from './modules/AutoRefresh.jsx';
 
 const mod = { ImageSearch, VideoControl, CheckUpdate, AutoRefresh };
 
-module.exports = React.createClass({
-  displayName: 'Module',
-  render: function () {
+class Module extends React.Component {
+  render() {
     const Core = mod[capFirst(this.props.name)];
     return <div className='module'><Core /></div>;
   }
-});
+};
+
+export default Module;

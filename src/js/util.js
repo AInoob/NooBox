@@ -15,29 +15,6 @@ chrome.i18n.getAcceptLanguages((data) => {
   }
 })
 
-window.initTimeago = () => {
-  if (isZh) {
-    timeago.register('locale', (number, index) => {
-      return [
-        ['刚刚', '片刻后'],
-        ['%s秒前', '%s秒后'],
-        ['1分钟前', '1分钟后'],
-        ['%s分钟前', '%s分钟后'],
-        ['1小时前', '1小时后'],
-        ['%s小时前', '%s小时后'],
-        ['1天前', '1天后'],
-        ['%s天前', '%s天后'],
-        ['1周前', '1周后'],
-        ['%s周前', '%s周后'],
-        ['1月前', '1月后'],
-        ['%s月前', '%s月后'],
-        ['1年前', '1年后'],
-        ['%s年前', '%s年后']
-      ][index];
-    });
-  }
-  timeagoInstance = new timeago();
-}
 
 //Sorting strings without case sensitivity
 window.compare = (a, b) => {
@@ -99,6 +76,15 @@ window.getString = (elem) => {
     return elem.toString();
   }
 }
+
+window.getLanguage = () => {
+	let language = browser.i18n.getUILanguage().replace('-', '_');
+	const supportedLanguageList = [ 'ar', 'be', 'bg', 'ca', 'da', 'de', 'el', 'en', 'en_short', 'es', 'eu', 'fa', 'fi', 'fr', 'gl', 'he', 'hu', 'in_BG', 'in_HI', 'in_ID', 'it', 'ja', 'ko', 'ml', 'my', 'nb_NO', 'nl', 'nn_NO', 'pl', 'pt_BR', 'ro', 'ru', 'sv', 'ta', 'th', 'tr', 'uk', 'vi', 'zh_CN', 'zh_TW' ];
+	if (supportedLanguageList.indexOf(language) == -1) {
+		language = language.split('_')[0];
+	}
+	return supportedLanguageList.indexOf(language) == -1 ? 'en' : language;
+};
 
 window.getParameterByName = (name, url) => {
   if (!url) {

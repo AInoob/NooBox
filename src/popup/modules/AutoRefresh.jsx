@@ -9,23 +9,25 @@ const AutoRefreshDiv = styled.div`
 	}
 `;
 
-module.exports = React.createClass({
-  displayName: 'AutoRefresh',
-  reader : new window.FileReader(),
-  getInitialState: function() {
-    return { enabled: false, displayHelp: false };
-  },
-  componentDidMount: function() {
-  },
-  render: function() {
+class AutoRefresh extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      enabled: false,
+      displayHelp: false,
+    }
+  }
+  render() {
     // const help = <p className="important" id="help">{GL('ls_11')}<br/><br/>{GL('ls_12')}<br/><br/>{GL('ls_13')}</p>;
     return (
       <AutoRefreshDiv displayHelp={this.state.displayHelp} className="container">
-        <h5 className="header">{GL('autoRefresh')}<span id="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
-            ^.^
-        <div id="info" className="container">
+        <h5 className="header">{GL('autoRefresh')}<span className="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
+        <div className="container">
+          ...^.^...  On it's way
         </div>
       </AutoRefreshDiv>
     );
   }
-});
+};
+
+export default AutoRefresh;
