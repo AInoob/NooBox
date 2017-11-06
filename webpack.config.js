@@ -32,11 +32,18 @@ module.exports = env => {
               "transform-object-rest-spread",
             ],
           },
+        },
+        {
+          test: /\.css$/,
+          loaders: [
+            require.resolve('style-loader'),
+            require.resolve('css-loader'),
+          ]
         }
       ]
     },
     resolve: {
-      extensions: ['.js', '.jsx']
+      extensions: ['.webpack.js', '.js', '.jsx', '.css']
     },
     plugins: [
       new CopyWebpackPlugin([
