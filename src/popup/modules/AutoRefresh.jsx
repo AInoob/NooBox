@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from 'antd';
 
 const AutoRefreshDiv = styled.div`
 	#help{
@@ -24,6 +25,10 @@ class AutoRefresh extends React.Component {
         <h5 className="header">{GL('autoRefresh')}<span className="helpButton" onClick={()=>{this.setState({displayHelp: !this.state.displayHelp})}}>&nbsp;(?)</span></h5>
         <div className="container">
           ...^.^...  On it's way
+          <Button type="primary">Primary</Button>
+          <Button>Default</Button>
+          <Button type="dashed">Dashed</Button>
+          <Button type="danger">Danger</Button>
         </div>
       </AutoRefreshDiv>
     );

@@ -4,9 +4,12 @@
   "description": "A Chrome extension that contains useful tools",
   "main": "webpack.config.js",
   "dependencies": {
+    "antd": "^2.13.8",
+    "css-loader": "^0.28.7",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-helmet": "^5.2.0",
+    "style-loader": "^0.19.0",
     "styled-components": "^2.1.1",
     "timeago-react": "^1.2.2"
   },

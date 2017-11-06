@@ -1,6 +1,8 @@
 require("babel-core/register");
 require("babel-polyfill");
 
+import 'antd/dist/antd.css';
+
 //The router of NooBox, all component is under Core.jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
