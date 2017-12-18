@@ -103,7 +103,7 @@ experience:
 record_history:
     message: 記錄歷程
 autoRefresh:
-    message: 自動刷新
+    message: 自動重新整理
 j:
     message: j
 ls_0:
@@ -125,9 +125,9 @@ ls_7:
 ls_8:
     message: '二箱有了新的版本： '
 ls_9:
-    message: 如果你是Chrome網上商店安裝的二箱，那請稍等片刻，讓Chrome自己更新二箱。
+    message: 如果你是在Chrome線上應用程式商店安裝二箱的，那麼請稍等片刻，讓Chrome自行更新二箱。
 ls_10:
-    message: 如果你是下載CRX安裝的，請點選下面的連結下載最新版的二箱CRX。
+    message: 如果你是下載CRX檔案安裝的，請點選下面的連結下載最新版的二箱CRX檔案。
 ls_11:
     message: 上傳圖片並執行以圖搜圖.
 ls_12:
