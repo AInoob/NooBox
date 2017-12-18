@@ -67,7 +67,7 @@ tineye:
 yandex:
     message: Yandex
 saucenao:
-    message: SauceNao
+    message: SauceNAO
 iqdb:
     message: IQDB
 sogou:
@@ -83,7 +83,7 @@ imageSearchUrl_tineye:
 imageSearchUrl_yandex:
     message: Yandex
 imageSearchUrl_saucenao:
-    message: SauceNao
+    message: SauceNAO
 imageSearchUrl_iqdb:
     message: IQDB
 imageSearchUrl_sogou:
@@ -119,7 +119,7 @@ ls_4:
 ls_5:
     message: 沒結果？點這裡上傳圖片搜尋
 ls_6:
-    message: 在Product Hunt上給二箱投票吧！
+    message: 在Product Hunt上幫二箱投票吧！
 ls_7:
     message: 二箱已是最新版本
 ls_8:
