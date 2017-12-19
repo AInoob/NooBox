@@ -54,7 +54,7 @@ class History extends React.Component {
 		});
 	}
   render() {
-    const recordList = (this.state.recordList || [{name:'Nothing is here yet',id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]).map((record, index) => {
+    const recordList = (this.state.recordList || [{date: new Date(), name:'Nothing is here yet',id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]).map((record, index) => {
 			console.log(record);
       return (
         <tr key={index}>
