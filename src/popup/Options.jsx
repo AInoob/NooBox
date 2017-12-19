@@ -29,6 +29,7 @@ class Options extends React.Component {
 			history: true,
 			installType: 'normal',
 			settings: {
+				history: false,
 				checkUpdate: false,
 				videoControl: false,
 				extractImages: false,
