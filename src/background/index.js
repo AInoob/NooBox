@@ -4,13 +4,12 @@ require("babel-polyfill");
 import { defaultValues, constantValues } from './values';
 import createImage from './Image';
 import createHistory from './History';
+import createAutoRefresh from './AutoRefresh';
 
-const NooBox = {
-  Image: {},
-  History: {},
-};
+const NooBox = {};
 createImage(NooBox);
 createHistory(NooBox);
+createAutoRefresh(NooBox);
 let analyticsOnce = false;
 const analyticsLastList = {};
 
@@ -64,6 +63,11 @@ NooBox.Options.init = (i) => {
   } else {
     NooBox.Image.updateContextMenu();
   }
+  chrome.management.getSelf((data) => {
+    if(data.installType == 'normal') {
+      set('checkUpdate', false);
+    }
+  });
 }
 
 NooBox.init = () => {

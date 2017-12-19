@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 
 const AutoRefreshDiv = styled.div`
+  display: ${props => props.enabled ? 'block' : 'none' };
 	#help{
 		height: ${props => props.displayHelp? 'initial' : '0px'};
 		overflow: hidden;
