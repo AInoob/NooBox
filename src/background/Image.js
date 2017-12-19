@@ -1,4 +1,5 @@
 export default NooBox => {
+  NooBox.Image = {};
   NooBox.Image.reverseSearchCursor = 0;
   //contains functions that will fetch the useful data from search engines
   NooBox.Image.fetchFunctions = {};

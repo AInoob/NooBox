@@ -1,4 +1,5 @@
 export default NooBox => {
+  NooBox.History = {};
   //record the search history
   NooBox.History.recordImageSearch = null;
   NooBox.History.recordImageSearch = (cursor, info) => {
