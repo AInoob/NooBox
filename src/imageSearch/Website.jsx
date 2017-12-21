@@ -51,7 +51,7 @@ class Website extends React.Component {
 		return (
 			<div className={"website card" + horizontal + focus + related + hidden}>
 				<div className="card-image">
-					<img onLoad={this.getSize.bind(this)} onClick={this.focus}	className={"image "+focus} src={website.imageUrl} /> 
+					<img onLoad={this.getSize.bind(this)} onClick={this.focus.bind(this)}	className={"image "+focus} src={website.imageUrl} /> 
 				</div>
 				<div className="card-stack container" >
 					<div className="caard-content">
