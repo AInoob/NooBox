@@ -4,11 +4,7 @@ import { Popover, Button } from 'antd';
 
 
 const CheckUpdateDiv = styled.div`
-	margin-top : 30px;
-  margin-left: 20px;
-	margin-right: auto;
 `;
-
 
 class CheckUpdate extends React.Component {
 	constructor(props) {

@@ -52,7 +52,6 @@ module.exports = env => {
         { from: './src/imageSearch/image.search.html' },
         { from: './src/manifest.json' },
         { from: './images/', to: 'images' },
-        { from: './css/', to: 'css' },
         { from: './thirdParty/', to: 'thirdParty' },
       ]),
     ]

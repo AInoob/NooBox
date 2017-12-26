@@ -140,3 +140,7 @@ ls_15:
     message: 'You can turn it off for certain websites, just click the Sun and it will become Cloud~'
 ls_16:
     message: "{'→':'forward 5s','←':'rewind 5s','↑':'increase volume','↓':'lower volume','m':'mute/unmute','j':'rewind 10s','l':'forward 10s','k':'pause/play',',':'rewind a tiny tiny bit','.':'forward a tiny tiny bit','>':'increase speed','<':'lower speed', 'f': 'fullscreen','d':'download','r':'magic rotation!'}"
+ls_17:
+    message: "Clear all history?"
+ls_18:
+    message: 'click to upload or drag & drop.'
