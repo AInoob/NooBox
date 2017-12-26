@@ -51,7 +51,6 @@ module.exports = env => {
         { from: './src/popup/popup.html' },
         { from: './src/imageSearch/image.search.html' },
         { from: './src/manifest.json' },
-        { from: './fonts/', to: 'font' },
         { from: './images/', to: 'images' },
         { from: './css/', to: 'css' },
         { from: './thirdParty/', to: 'thirdParty' },
