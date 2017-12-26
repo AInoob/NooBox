@@ -1,7 +1,7 @@
 require("babel-core/register");
 require("babel-polyfill");
 
-// import 'antd/dist/antd.css';
+import 'antd/dist/antd.css';
 
 //The router of NooBox, all component is under Core.jsx
 import React from 'react';
@@ -12,25 +12,10 @@ import Options from './Options';
 import About from './About';
 import Navigator from './Navigator';
 
-import styled, { injectGlobal } from 'styled-components';
-
-injectGlobal`
-  body {
-		height: auto !important;
-  }
-`;
+import styled from 'styled-components';
 
 const NooBoxDiv = styled.div`
-	font-family: "Segoe UI", Tahoma, sans-serif;
-	line-height: 110%;
-	h1, h2, h3, h4, h5, h6 {
-		margin: 0.82rem 0 0.656rem 0;
-		font-weight: 400 !important;
-		color: #7a88e8;
-	}
-	h5 {
-		font-size: 1.64rem;
-	}
+  font-size: 15px;
   width: 413px;
   .hidden{
 		display: none;
@@ -72,53 +57,54 @@ const NooBoxDiv = styled.div`
 	.select-dropdown{
 		color:#26a69a;
   }
+ 
 `;
 
 //Log page views
-function logPageView(){
+function logPageView() {
 }
 
 class NooBox extends React.Component {
-  constructor(props) {
-    window.browser = chrome;
-    super(props);
-    this.state = {
-      page: {
-        overview: <Overview />,
-        history: <History />,
-        options: <Options />,
-        about: <About />,
-      }
-    };
-    shared.styled = {
+	constructor(props) {
+		window.browser = chrome;
+		super(props);
+		this.state = {
+			page: {
+				overview: <Overview />,
+				history: <History />,
+				options: <Options />,
+				about: <About />,
+			}
+		};
+		shared.styled = {
 			color1: '#7a88e8',
 			colorOn: '#26a69a',
 		};
-    window.goTo = location => {
-      window.history.pushState(null, null, 'popup.html?location=' + location);
-      this.forceUpdate();
-    }
-  }
-  getLocation() {
-    const location = getParameterByName('location');
-    return Object.keys(this.state.page).includes(location) ? location : 'overview';
-  }
-  render() {
-    const location = this.getLocation();
-    let page = this.state.page[location];
-    return (
-      <div>
-        <Navigator location={location} />
-        {page}
-      </div>
-    );
-  }
+		window.goTo = location => {
+			window.history.pushState(null, null, 'popup.html?location=' + location);
+			this.forceUpdate();
+		}
+	}
+	getLocation() {
+		const location = getParameterByName('location');
+		return Object.keys(this.state.page).includes(location) ? location : 'overview';
+	}
+	render() {
+		const location = this.getLocation();
+		let page = this.state.page[location];
+		return (
+			<div>
+				<Navigator location={location} />
+				{page}
+			</div>
+		);
+	}
 }
 
 //popup.html will be update to different pathname based on the parameter
 ReactDOM.render(
-  <NooBoxDiv>
-    <NooBox />
-  </NooBoxDiv>,
-  document.getElementById('noobox')
+	<NooBoxDiv>
+		<NooBox />
+	</NooBoxDiv>,
+	document.getElementById('noobox')
 );
