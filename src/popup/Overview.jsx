@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 const OverviewDiv = styled.div`
 	padding-bottom: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
 `;
 
 class Overview extends React.Component {

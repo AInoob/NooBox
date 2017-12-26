@@ -12,7 +12,13 @@ import Options from './Options';
 import About from './About';
 import Navigator from './Navigator';
 
-import styled from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
+
+injectGlobal`
+	html, body {
+		height: auto !important;
+	}
+`;
 
 const NooBoxDiv = styled.div`
   font-size: 15px;

@@ -3,6 +3,11 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import {Icon} from 'antd';
 const AboutDiv = styled.div`
+	padding: 15px;
+  padding-bottom: 10px;
+  li{
+    font-size: 13px;
+  }
 	.shareItem{
 		float: left;
 		width: 42px;
@@ -10,11 +15,6 @@ const AboutDiv = styled.div`
 		img{
 			width: 100%;
 		}
-	}
-	.container{
-		margin-top: -11px;
-		margin-bottom: -11px;
-		overflow: hidden;
 	}
 `;
 
@@ -123,6 +123,7 @@ class About extends React.Component {
         </div>):"";
 
         let ackZh = this.state.ack ? (<div>
+          <li>超级感谢<a href="https://github.com/MaMaMiY" target="_blank">George</a>加入二箱的开发</li>
           <li>超级感谢<a href="https://github.com/zhtw2013" target="_blank">zhtw2013</a>提供的繁体翻译！</li>
           <li>二箱使用了Facebook的<a href="https://github.com/facebook/react" target="_blank">React(BSD协议)</a>作为底层建筑</li>
           <li>二箱使用了JS Foundation的<a href="https://jquery.com/" target="_blank">jQuery(MIT协议)</a>来处理一些DOM和Ajax请求</li>
@@ -132,21 +133,21 @@ class About extends React.Component {
         return (
           <AboutDiv>
             <div className="section container">
-              <h5 className="header">二箱是啥？{whatSwitch}</h5>
+              <h3 className="header">二箱是啥？{whatSwitch}</h3>
               {whatZh}
             </div>
             <div className="section container">
-              <h5 className="header">隐私 {privacySwitch}</h5>
+              <h3 className="header">隐私 {privacySwitch}</h3>
               {privacyZh}
             </div>
 
             <div className="section container">
-              <h5 className="header">鸣谢 {ackSwitch}</h5>
+              <h3 className="header">鸣谢 {ackSwitch}</h3>
               {ackZh}
             </div>
 
             <div className="section container">
-              <h5 className="header">分享咩?</h5>
+              <h3 className="header">分享咩?</h3>
               <p>你喜欢二管家吗？如果觉得还不错，那就考虑一下分享二管家吧~</p>
               {shareList}
             </div>
@@ -164,6 +165,7 @@ class About extends React.Component {
         </div>):"";
 
         let ackZhtw = this.state.ack? (<div>
+          <li>超級感謝<a href="https://github.com/MaMaMiY" target="_blank">George</a>加入二箱的開發！</li>
           <li>超級感謝<a href="https://github.com/zhtw2013" target="_blank">zhtw2013</a>提供的繁體翻譯！</li>
           <li>二箱使用了Facebook的<a href="https://github.com/facebook/react" target="_blank">React(BSD授權條款)</a>作為底層構築</li>
           <li>二箱使用了JS Foundation的<a href="https://jquery.com/" target="_blank">jQuery(MIT授權條款)</a>來處理一些DOM和Ajax要求</li>
@@ -173,21 +175,21 @@ class About extends React.Component {
         return (
           <AboutDiv>
             <div className="section container">
-              <h5 className="header">二箱是什麼？{whatSwitch}</h5>
+              <h3 className="header">二箱是什麼？{whatSwitch}</h3>
               {whatZhtw}
             </div>
             <div className="section container">
-              <h5 className="header">隱私 {privacySwitch}</h5>
+              <h3 className="header">隱私 {privacySwitch}</h3>
               {privacyZhtw}
             </div>
 
             <div className="section container">
-              <h5 className="header">鳴謝 {ackSwitch} </h5>
+              <h3 className="header">鳴謝 {ackSwitch} </h3>
               {ackZhtw}
             </div>
 
             <div className="section container">
-              <h5 className="header">分享咩?</h5>
+              <h3 className="header">分享咩?</h3>
               <p>你喜歡二管家嗎？如果覺得還不錯，那就考慮一下，將二管家分享給朋友吧~</p>
               {shareList}
             </div>
@@ -202,6 +204,8 @@ class About extends React.Component {
         </div>): "";
 
         let ackEng = this.state.ack ?(<div>
+          <li>Special thanks to <a href="https://github.com/MaMaMiY" target="_blank">George</a>
+            for joining the development of NooBox!</li>
           <li>Special thanks to <a href="https://github.com/zhtw2013" target="_blank">zhtw2013</a>
             for providing zh-TW translation!</li>
           <li>NooBox uses <a href="https://github.com/facebook/react" target="_blank">React(BSD Liscense)</a>
@@ -221,21 +225,21 @@ class About extends React.Component {
         return (
           <AboutDiv>
             <div className="section container">
-              <h5 className="header">What is NooBox? {whatSwitch}</h5>
+              <h3 className="header">What is NooBox? {whatSwitch}</h3>
               {whatEng}
             </div>
             <div className="section container">
-              <h5 className="header">Privacy {privacySwitch}</h5>
+              <h3 className="header">Privacy {privacySwitch}</h3>
               {privacyEng}
             </div>
 
             <div className="section container">
-              <h5 className="header">Acknowledgements {ackSwitch}</h5>
+              <h3 className="header">Acknowledgements {ackSwitch}</h3>
               {ackEng}
             </div>
 
             <div className="section container">
-              <h5 className="header">Share please?</h5>
+              <h3 className="header">Share please?</h3>
               <p>Do you like NooBox? If so, please consider sharing it!</p>
               {shareList}
             </div>

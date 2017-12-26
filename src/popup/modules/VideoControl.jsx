@@ -89,12 +89,6 @@ class VideoControl extends React.Component {
 
     let shortcuts = JSON.parse(GL('ls_16').replace(/\'/g, '"'));
 
-    shortcuts = Object.keys(shortcuts).map((key) => {
-
-      return [key, shortcuts[key]];
-
-    });
-
     this.state = { enabled: false, websiteEnabled: true, displayHelp: false, shortcuts };
 
     this.toggle = this.toggle.bind(this);
@@ -141,11 +135,27 @@ class VideoControl extends React.Component {
   }
 
   render() {
+    let { shortcuts } = this.state;
+    shortcuts = (
+      <table>
+        <tbody>
+          {
+            Object.keys(shortcuts).map((key, index) => {
+              return (
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;{key}</td>
+                  <td>{shortcuts[key]}</td>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+    );
 
     if (!this.state.enabled) {
       return null;
     }
-    console.log(this.state.enabled);
 
     let host = this.state.host == "iioinjnmhdpbfdpilimcmljdbejnljog" ? "" : this.state.host;
     let status = this.state.websiteEnabled ? "Close ? Click" : "Open ? Click";
@@ -167,8 +177,8 @@ class VideoControl extends React.Component {
     let contentShortCut = (
 
       <Card style={{ width: 240 }} bodyStyle={{ padding: 0 }}>
-        <div className="custom-image">
-          <img height="90%" width="90%" src="http://imageshack.com/a/img922/5294/QBOeOD.png" />
+        <div className="shortcutDiv">
+          {shortcuts}
         </div>
       </Card>
     )

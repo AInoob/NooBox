@@ -180,7 +180,7 @@ class ImageSearch extends React.Component {
 
             </p>
 
-            <p className="ant-upload-text"></p>
+            <p className="ant-upload-text">{GL('ls_18')}</p>
 
             <input onChange={this.upload} type='file' accept="image/*" id='imageUpload' />
 
