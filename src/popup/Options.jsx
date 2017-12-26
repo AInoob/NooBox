@@ -22,6 +22,11 @@ const OptionsDiv = styled.div`
 		margin:0px;
 		clear:both;
 	}
+	.switch{
+		input {
+			display: none;
+		}
+	}
 	.imageSearchSwitch{
 		float: left;
 		img{

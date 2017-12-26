@@ -29,5 +29,5 @@ export const defaultValues = [
 
 export const constantValues = [
   ['displayList', ['imageSearch', 'autoRefresh', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.5.1']
+  ['version', '0.9.5.2']
 ]
