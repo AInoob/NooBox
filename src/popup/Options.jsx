@@ -120,8 +120,9 @@ class Options extends React.Component {
   }
   getCheckbox(id,handler) {
     return <p>
-      <input type="checkbox" onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id} />
-      <label htmlFor={id} >{GL(id)}</label>
+			<Checkbox onChange={(handler||this.toggleSetting.bind(this,id))} checked={this.state.settings[id]} id={id}>
+				{GL(id)}
+			</Checkbox>
     </p>;
   }
   render() {
