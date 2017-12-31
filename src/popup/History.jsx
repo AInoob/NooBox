@@ -155,7 +155,7 @@ class History extends React.Component {
     );
     return (
       <HistoryDiv>
-        <Popover  placement="right" onBlur={() => {this.setState({visible: false})}} content = {content} title = {GL('ls_17')} trigger ="click" visible = {this.state.visible} onVisibleChange = {() => this.handleVisibleChange()}>
+        <Popover  placement="right" onBlur={() => { setTimeout(() => {this.setState({visible: false})}, 100)}} content = {content} title = {GL('ls_17')} trigger ="click" visible = {this.state.visible} onVisibleChange = {() => this.handleVisibleChange()}>
           <Button id = "clearHistory" type="danger">{GL('clearAll')}</Button>
         </Popover>
         <Table columns={columns} dataSource={data} />

@@ -89,50 +89,49 @@ export default NooBox => {
     );
   }
 
-  NooBox.Image.imageSearch = (info) => {
+  NooBox.Image.imageSearch = async (info) => {
     const source = info.srcUrl || info;
-    getDB('imageCursor', (cursor) => {
-      if (typeof (cursor) === 'number') {
-        cursor++;
-      } else {
-        cursor = 0;
-      }
-      setDB('imageCursor', cursor);
-      NooBox.History.recordImageSearch(cursor, info);
-      getImageSearchEngines(NooBox.Image.engines, (engines) => {
-        let action = 'dataURI';
-        const result = {
-          engines: engines
-        };
-        for (let j = 0; j < engines.length; j++) {
-          result[engines[j]] = {
-            result: 'loading'
-          };
-        }
-        const dataURI = encodeURI(source);
-        //if it is dataURI, using NooBox.Image.POST to upload the image and search
-        if (dataURI.match(/^data/)) {
-          result.imageUrl = 'dataURI';
-          result.dataURI = dataURI;
-          NooBox.Image.POST.general(cursor, result, engines, result.dataURI);
-        } else {
-          action = 'url';
-          result.imageUrl = source;
-          NooBox.Image.imageSearchByUrl(cursor, result, engines);
-        }
-        let type = result.imageUrl;
-        if (type != 'dataURI') {
-          type = 'url';
-        }
-        const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
-        chrome.tabs.create({ url });
-        NooBox.Image.update(cursor, result);
-        analytics({
-          category: 'imageSearch',
-          action: action,
-          label: type
-        });
-      });
+    let cursor = await promisedGetDB('imageCursor');
+    if (typeof (cursor) === 'number') {
+      cursor++;
+    } else {
+      cursor = 0;
+    }
+    await promisedSetDB('imageCursor', cursor);
+    NooBox.History.recordImageSearch(cursor, info);
+    const engines = await promisedGetImageSearchEngines(NooBox.Image.engines);
+    let action = 'dataURI';
+    const result = {
+      engines: engines
+    };
+    for (let j = 0; j < engines.length; j++) {
+      result[engines[j]] = {
+        result: 'loading'
+      };
+    }
+    const dataURI = encodeURI(source);
+    //if it is dataURI, using NooBox.Image.POST to upload the image and search
+    if (dataURI.match(/^data/)) {
+      result.imageUrl = 'dataURI';
+      result.dataURI = dataURI;
+      NooBox.Image.POST.general(cursor, result, engines, result.dataURI);
+    } else {
+      action = 'url';
+      result.imageUrl = source;
+      NooBox.Image.imageSearchByUrl(cursor, result, engines);
+    }
+    let type = result.imageUrl;
+    if (type != 'dataURI') {
+      type = 'url';
+    }
+    const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
+    const openTabFront = await promisedGet('imageSearchNewTabFront');
+    chrome.tabs.create({ url, active: openTabFront });
+    NooBox.Image.update(cursor, result);
+    analytics({
+      category: 'imageSearch',
+      action: action,
+      label: type
     });
   }
 

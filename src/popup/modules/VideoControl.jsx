@@ -142,7 +142,7 @@ class VideoControl extends React.Component {
           {
             Object.keys(shortcuts).map((key, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>&nbsp;&nbsp;&nbsp;{key}</td>
                   <td>{shortcuts[key]}</td>
                 </tr>

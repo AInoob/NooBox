@@ -38,10 +38,10 @@ const ImageSearchDiv = styled.div`
     }
     
   #pop{
-        display:inline;
-        margin-left: 10px;
-        font-size: 15px;
-    }
+    display:inline;
+    margin-left: 10px;
+    font-size: 15px;
+  }
   
   #imageSearchHeader{
       font-size: 15px;
@@ -72,7 +72,6 @@ const pop = (
       <Icon type="question-circle" />
     </Popover>
   </div>
-
 );
 
 class ImageSearch extends React.Component {

@@ -138,6 +138,12 @@ window.setIfNull = (key, setValue, callback) => {
   });
 }
 
+window.promisedSetIfNull = (key, setValue) => {
+	return new Promise(async resolve => {
+		setIfNull(key, setValue, resolve);
+	});
+};
+
 window.setDB = (key, value, callback) => {
   const indexedDB = window.indexedDB;
   const open = indexedDB.open("NooBox", 1);
@@ -164,7 +170,13 @@ window.setDB = (key, value, callback) => {
       console.log('setDB fail');
     }
   }
-}
+};
+
+window.promisedSetDB = (key, value) => {
+	return new Promise(resolve => {
+		setDB(key, value, resolve);
+	});
+};
 
 window.getDB = (key, callback) => {
   if (callback) {
@@ -194,6 +206,12 @@ window.getDB = (key, callback) => {
     }
   }
 }
+
+window.promisedGetDB = (key) => {
+	return new Promise(resolve => {
+		getDB(key, resolve);
+	});
+};
 
 window.deleteDB = (key, callback) => {
 	const indexedDB = window.indexedDB;
@@ -228,6 +246,12 @@ window.set = (key, value, callback) => {
   chrome.storage.sync.set(temp, callback);
 }
 
+window.promisedSet = (key, value) => {
+	return new Promise(resolve => {
+		set(key, value, resolve);
+	});
+};
+
 window.get = (key, callback) => {
   chrome.storage.sync.get(key, (result) => {
     if (callback) {
@@ -235,6 +259,12 @@ window.get = (key, callback) => {
     }
   });
 }
+
+window.promisedGet = (key) => {
+	return new Promise(resolve => {
+		get(key, resolve);
+	});
+};
 
 window.getImageSearchEngines = (list, callback, i, result, shared) => {
   if (i == null) {
@@ -255,7 +285,26 @@ window.getImageSearchEngines = (list, callback, i, result, shared) => {
       getImageSearchEngines.bind(null, list, callback, i + 1, false, shared)
     );
   }
+} 
+
+window.getCurrentTab = () => {
+	return new Promise(resolve => {
+		chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, (tabs) => {
+			if (tabs[0]) {
+        resolve(tabs[0]);
+      }
+      else {
+        resolve(null);
+      }
+		});
+	});
 }
+
+window.promisedGetImageSearchEngines = (list) => {
+  return new Promise(resolve => {
+    getImageSearchEngines(list, resolve);
+  });
+};
 
 window.dataURItoBlob = (dataURI) => {
   try {
