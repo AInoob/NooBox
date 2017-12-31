@@ -1,5 +1,4 @@
 require("babel-core/register");
-require("babel-polyfill");
 
 import 'antd/dist/antd.css';
 
@@ -26,9 +25,15 @@ const NooBoxDiv = styled.div`
   .hidden{
 		display: none;
 	}
+	.hide{
+		display: none;
+	}
+	.pointer{
+		cursor: pointer;
+	}
 	.line{
-		  margin-top: 0.3em;
-		  margin-bottom: 0.3em;
+		margin-top: 0.3em;
+		margin-bottom: 0.3em;
 	}
 	.btn{
 		font-size: 0.8rem;

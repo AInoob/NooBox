@@ -24,7 +24,7 @@ class Overview extends React.Component {
 
 	getInitialData() {
 		get('displayList', (modules) => {
-			this.setState({modules:modules});
+			this.setState({ modules });
 		});
 	}
 
