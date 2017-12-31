@@ -19,6 +19,7 @@ const AutoRefreshDiv = styled.div`
       font-size: 15px;
       margin-bottom: 5px;
   }
+  margin-bottom: 16px;
 `;
 
 const content = (
