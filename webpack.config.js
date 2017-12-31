@@ -25,7 +25,11 @@ module.exports = env => {
           loader: 'babel-loader',
           exclude: [/node_modules/],
           query: {
-            presets: ['react', 'env'],
+            presets: ['react', ['env', {
+              targets: {
+                browsers: ['> 1%']
+              }
+            }]],
             plugins: [
               "transform-es2015-destructuring",
               "transform-es2015-parameters",
