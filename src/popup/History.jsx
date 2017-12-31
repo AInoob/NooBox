@@ -97,6 +97,7 @@ class History extends React.Component {
     }
   }
   render() {
+
     let data  = (this.state.recordList && this.state.recordList.length > 0 ? this.state.recordList : 
       [{date: new Date(), name:'Nothing is here yet', id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]
     ).map((record, index) => {
@@ -147,7 +148,7 @@ class History extends React.Component {
             <Button  type = "danger" onClick={() => this.handleDeleteButton(true)}>Yes</Button>
           </Col>
           <Col span={12} >
-            <Button  type = "primary" onClick={() =>this.handleDeleteButton(false)}>No</Button>
+            <Button  type = "primary" onClick={() => this.handleDeleteButton(false)}>No</Button>
           </Col>
         </Row>
       </div>
