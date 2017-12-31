@@ -73,8 +73,13 @@ NooBox.Options.init = (i) => {
 NooBox.init = () => {
 	window.NooBox = NooBox;
   NooBox.Options.init(0);
+  chrome.tabs.onRemoved.addListener(tabId => {
+    NooBox.AutoRefresh.stopRefresh(tabId);
+  });
+  // chrome.tabs.onReplaced(tabId => {
+  // });
   chrome.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
+    async (request, sender, sendResponse) => {
       if ('job' in request) {
         if (request.job == 'imageSearch_upload' || request.job == 'imageSearch_reSearch') {
           if (request.job == 'imageSearch_reSerach') {
@@ -130,6 +135,16 @@ NooBox.init = () => {
               }
             }
           });
+        } else if (request.job == 'stopAutoRefresh') {
+          const { tabId } = request;
+          NooBox.AutoRefresh.stop(tabId);
+        } else if (request.job == 'startAutoRefresh') {
+          const { tabId, interval } = request;
+          NooBox.AutoRefresh.start(tabId, interval);
+        } else if (request.job == 'currentTabAutoRefreshState') {
+          const { tabId } = request;
+          const setting = NooBox.AutoRefresh.tabs[tabId];
+          sendResponse( setting );
         } else if (request.job == 'videoControl_use') {
           const time = new Date().getTime();
           if (NooBox.temp.lastVideoControl + 10 * 60 * 1000 < time) {
