@@ -118,7 +118,7 @@ class AutoRefresh extends React.Component {
           {pop}
         </h5>
         <div>
-          <Checkbox checked={handler} onChange={this.toggle}>Checkbox</Checkbox>
+          <Checkbox checked={handler} onChange={this.toggle}> </Checkbox>
           <Select value={interval.toString()} style={{ width: 120 }} onChange={this.updateInterval}>
             <Option value="1000">1 s</Option>
             <Option value="2000">2 s</Option>
