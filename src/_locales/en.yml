@@ -110,6 +110,10 @@ tools:
     message: Tools
 s:
     message: 's'
+yes:
+    message: 'Yes'
+no:
+    message: 'No'
 j:
     message: j
 ls_0:
