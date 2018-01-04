@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Upload, Icon, message, Button, Popover } from 'antd';
 import { Checkbox, Select } from 'antd';
 
+const Option = Select.Option;
+
 const AutoRefreshDiv = styled.div`
 	#help{
 		height: ${props => props.displayHelp ? 'initial' : '0px'};
@@ -71,40 +73,29 @@ class AutoRefresh extends React.Component {
   updateInterval(interval) {
     interval = parseInt(interval);
     const { handler } = this.state;
-    if (handler) {
-      const { tabId } = this.state;
-      chrome.runtime.sendMessage({
-        job: 'startAutoRefresh',
-        interval,
-        tabId
-      }, () => {
-        this.setState({ handler: -1, interval });
-      });
-    }
-    else {
-        this.setState({ interval });
-    }
+    const { tabId } = this.state;
+    chrome.runtime.sendMessage({
+      job: 'updateAutoRefresh',
+      handler,
+      interval,
+      tabId
+    }, () => {
+      this.setState({ interval });
+    });
   }
+
   toggle(e) {
     const checked = e.target.checked;
     const { interval, tabId } = this.state;
-    if (checked) {
-      chrome.runtime.sendMessage({
-        job: 'startAutoRefresh',
-        interval,
-        tabId
-      }, () => {
-        this.setState({ handler: -1 });
-      });
-    }
-    else {
-      chrome.runtime.sendMessage({
-        job: 'stopAutoRefresh',
-        tabId
-      }, () => {
-        this.setState({ handler: null });
-      });
-    }
+    chrome.runtime.sendMessage({
+      job: 'updateAutoRefresh',
+      interval,
+      handler: checked,
+      tabId
+    }, () => {
+      const handler = checked ? -1 : null;
+      this.setState({ handler });
+    });
   }
   render() {
     const { enabled, handler, interval } = this.state;
@@ -121,17 +112,17 @@ class AutoRefresh extends React.Component {
         <div>
           <Checkbox checked={handler} onChange={this.toggle}> </Checkbox>
           <Select value={interval.toString()} style={{ width: 120 }} onChange={this.updateInterval}>
-            <Option value="1000">1 s</Option>
-            <Option value="2000">2 s</Option>
-            <Option value="3000">3 s</Option>
-            <Option value="5000">5 s</Option>
-            <Option value="8000">8 s</Option>
-            <Option value="13000">13 s</Option>
-            <Option value="21000">21 s</Option>
-            <Option value="34000">34 s</Option>
-            <Option value="55000">55 s</Option>
-            <Option value="55000">89 s</Option>
-            <Option value="144000">144 s</Option>
+            <Option value="1000">{`1 ${GL('s')}`}</Option>
+            <Option value="2000">{`2 ${GL('s')}`}</Option>
+            <Option value="3000">{`3 ${GL('s')}`}</Option>
+            <Option value="5000">{`5 ${GL('s')}`}</Option>
+            <Option value="8000">{`8 ${GL('s')}`}</Option>
+            <Option value="13000">{`13 ${GL('s')}`}</Option>
+            <Option value="21000">{`21 ${GL('s')}`}</Option>
+            <Option value="34000">{`34 ${GL('s')}`}</Option>
+            <Option value="55000">{`55 ${GL('s')}`}</Option>
+            <Option value="55000">{`89 ${GL('s')}`}</Option>
+            <Option value="144000">{`144 ${GL('s')}`}</Option>
           </Select>
         </div>
       </AutoRefreshDiv>

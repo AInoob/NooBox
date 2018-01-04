@@ -108,6 +108,8 @@ imageSearchNewTabFront:
     message: Open result tab in front
 tools:
     message: Tools
+s:
+    message: 's'
 j:
     message: j
 ls_0:
