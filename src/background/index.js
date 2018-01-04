@@ -135,12 +135,9 @@ NooBox.init = () => {
               }
             }
           });
-        } else if (request.job == 'stopAutoRefresh') {
-          const { tabId } = request;
-          NooBox.AutoRefresh.stop(tabId);
-        } else if (request.job == 'startAutoRefresh') {
-          const { tabId, interval } = request;
-          NooBox.AutoRefresh.start(tabId, interval);
+        } else if (request.job == 'updateAutoRefresh') {
+          const { tabId, interval, handler } = request;
+          NooBox.AutoRefresh.update(tabId, interval, handler);
         } else if (request.job == 'currentTabAutoRefreshState') {
           const { tabId } = request;
           const setting = NooBox.AutoRefresh.tabs[tabId];

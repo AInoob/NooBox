@@ -1,31 +1,24 @@
 export default NooBox => {
     const AutoRefresh = {};
     AutoRefresh.tabs = {};
-    AutoRefresh.start = (tabId, interval) => {
+    AutoRefresh.update = (tabId, interval, start) => {
         if (!tabId) {
             return;
         }
-        let setting = AutoRefresh.tabs[tabId] || { interval };
+        let setting = AutoRefresh.tabs[tabId] || { };
+        setting.interval = interval;
         let { handler } = setting;
+        setting.handler = null;
         if (handler) {
             clearInterval(handler);
         }
-        handler = setInterval(() => {
-            chrome.tabs.reload(tabId, {}, () => {});
-        }, interval);
-        setting.handler = handler;
+        if (start) {
+            handler = setInterval(() => {
+                chrome.tabs.reload(tabId, {}, () => {});
+            }, interval);
+            setting.handler = handler;
+        }
         AutoRefresh.tabs[tabId] = setting;
-    };
-    AutoRefresh.stop = (tabId) => {
-        if (!tabId) {
-            return;
-        }
-        const setting = AutoRefresh.tabs[tabId];
-        const handler = setting.handler;
-        if (handler) {
-            clearInterval(handler);
-            setting.handler = null;
-        }
     };
     NooBox.AutoRefresh = AutoRefresh;
 };
