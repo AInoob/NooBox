@@ -103,7 +103,17 @@ experience:
 record_history:
     message: Record History
 autoRefresh:
-    message: Auto Refresh
+    message: Auto Refresh (Alpha)
+imageSearchNewTabFront:
+    message: Open result tab in front
+tools:
+    message: Tools
+s:
+    message: 's'
+yes:
+    message: 'Yes'
+no:
+    message: 'No'
 j:
     message: j
 ls_0:
@@ -144,3 +154,5 @@ ls_17:
     message: "Clear all history?"
 ls_18:
     message: 'click to upload or drag & drop.'
+ls_19:
+    message: 'Auto refresh it is~'

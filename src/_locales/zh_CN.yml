@@ -103,7 +103,17 @@ experience:
 record_history:
     message: 记录历史
 autoRefresh:
-    message: 自动刷新
+    message: 自动刷新 （测试）
+imageSearchNewTabFront:
+    message: 在前台打开新的标签
+tools:
+    message: 工具
+s:
+    message: 秒
+yes:
+    message: 是
+no:
+    message: 否
 j:
     message: j
 ls_0:
@@ -144,3 +154,5 @@ ls_17:
     message: 清空所有历史？
 ls_18:
     message: 点击上传或者拖拽上传
+ls_19:
+    message: 就是自动刷新页面啦~

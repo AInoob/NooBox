@@ -1,6 +1,7 @@
 export const defaultValues = [
   ['userId', (Math.random().toString(36) + '00000000000000000').slice(2, 19)],
   ['imageSearch', true],
+  ['imageSearchNewTabFront', true],
   ['shorcut', false],
   ['unitsConverter', false],
   ['crypter', true],
@@ -29,5 +30,5 @@ export const defaultValues = [
 
 export const constantValues = [
   ['displayList', ['imageSearch', 'autoRefresh', 'videoControl', 'checkUpdate']],
-  ['version', '0.9.5.2']
+  ['version', '0.9.5.6']
 ]

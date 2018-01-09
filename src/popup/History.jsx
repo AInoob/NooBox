@@ -97,6 +97,7 @@ class History extends React.Component {
     }
   }
   render() {
+
     let data  = (this.state.recordList && this.state.recordList.length > 0 ? this.state.recordList : 
       [{date: new Date(), name:'Nothing is here yet', id:'mgehojanhfgnndgffijeglgahakgmgkj', event: 'bello~'}]
     ).map((record, index) => {
@@ -144,17 +145,17 @@ class History extends React.Component {
       <div id = 'confirmPanel'>
         <Row gutter = {48}>
           <Col span = {12} >
-            <Button  type = "danger" onClick={() => this.handleDeleteButton(true)}>Yes</Button>
+            <Button  type = "danger" onClick={() => this.handleDeleteButton(true)}>{GL('yes')}</Button>
           </Col>
           <Col span={12} >
-            <Button  type = "primary" onClick={() =>this.handleDeleteButton(false)}>No</Button>
+            <Button  type = "primary" onClick={() => this.handleDeleteButton(false)}>{GL('no')}</Button>
           </Col>
         </Row>
       </div>
     );
     return (
       <HistoryDiv>
-        <Popover  placement="right" onBlur={() => {this.setState({visible: false})}} content = {content} title = {GL('ls_17')} trigger ="click" visible = {this.state.visible} onVisibleChange = {() => this.handleVisibleChange()}>
+        <Popover  placement="right" onBlur={() => { setTimeout(() => {this.setState({visible: false})}, 100)}} content = {content} title = {GL('ls_17')} trigger ="click" visible = {this.state.visible} onVisibleChange = {() => this.handleVisibleChange()}>
           <Button id = "clearHistory" type="danger">{GL('clearAll')}</Button>
         </Popover>
         <Table columns={columns} dataSource={data} />
