@@ -29,6 +29,9 @@ function analytics(request) {
 		label: request.label
 	});
 }
+
+NooBox.analytics = analytics;
+
 NooBox.temp = {
   lastVideoControl: 0
 };
@@ -73,8 +76,13 @@ NooBox.Options.init = (i) => {
 NooBox.init = () => {
 	window.NooBox = NooBox;
   NooBox.Options.init(0);
+  chrome.tabs.onRemoved.addListener(tabId => {
+    NooBox.AutoRefresh.stopRefresh(tabId);
+  });
+  // chrome.tabs.onReplaced(tabId => {
+  // });
   chrome.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
+    async (request, sender, sendResponse) => {
       if ('job' in request) {
         if (request.job == 'imageSearch_upload' || request.job == 'imageSearch_reSearch') {
           if (request.job == 'imageSearch_reSerach') {
@@ -130,6 +138,13 @@ NooBox.init = () => {
               }
             }
           });
+        } else if (request.job == 'updateAutoRefresh') {
+          const { tabId, interval, handler } = request;
+          NooBox.AutoRefresh.update(tabId, interval, handler);
+        } else if (request.job == 'currentTabAutoRefreshState') {
+          const { tabId } = request;
+          const setting = NooBox.AutoRefresh.tabs[tabId];
+          sendResponse( setting );
         } else if (request.job == 'videoControl_use') {
           const time = new Date().getTime();
           if (NooBox.temp.lastVideoControl + 10 * 60 * 1000 < time) {

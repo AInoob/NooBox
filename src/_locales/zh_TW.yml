@@ -103,7 +103,17 @@ experience:
 record_history:
     message: 記錄歷程
 autoRefresh:
-    message: 自動重新整理
+    message: 自動重新整理（測試）
+imageSearchNewTabFront:
+    message: 在前臺打開新的標簽
+tools:
+    message: 工具
+s:
+    message: 秒
+yes:
+    message: 是
+no:
+    message: 否
 j:
     message: j
 ls_0:
@@ -144,3 +154,5 @@ ls_17:
     message: 清空所有歷史？
 ls_18:
     message: 點選上傳或是拖曳上傳
+ls_19:
+    message: 就是自動刷新頁面啦~
