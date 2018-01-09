@@ -108,6 +108,12 @@ imageSearchNewTabFront:
     message: 在前臺打開新的標簽
 tools:
     message: 工具
+s:
+    message: 秒
+yes:
+    message: 是
+no:
+    message: 否
 j:
     message: j
 ls_0:

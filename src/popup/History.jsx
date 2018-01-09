@@ -145,10 +145,10 @@ class History extends React.Component {
       <div id = 'confirmPanel'>
         <Row gutter = {48}>
           <Col span = {12} >
-            <Button  type = "danger" onClick={() => this.handleDeleteButton(true)}>Yes</Button>
+            <Button  type = "danger" onClick={() => this.handleDeleteButton(true)}>{GL('yes')}</Button>
           </Col>
           <Col span={12} >
-            <Button  type = "primary" onClick={() => this.handleDeleteButton(false)}>No</Button>
+            <Button  type = "primary" onClick={() => this.handleDeleteButton(false)}>{GL('no')}</Button>
           </Col>
         </Row>
       </div>
