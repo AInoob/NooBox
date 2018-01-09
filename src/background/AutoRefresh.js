@@ -12,6 +12,8 @@ export default NooBox => {
         }
         handler = setInterval(() => {
             chrome.tabs.reload(tabId, {}, () => {});
+            chrome.tabs.hightlight(tabId,"Test1111111111111111111111",() => {});
+            chomre.browerAction.setIcon("images/icon_128.png");
         }, interval);
         setting.handler = handler;
         AutoRefresh.tabs[tabId] = setting;

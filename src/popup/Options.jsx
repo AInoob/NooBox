@@ -1,17 +1,16 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { Checkbox } from 'antd';
+import { Checkbox, Row, Col} from 'antd';
 
 const OptionsDiv = styled.div`
-	padding-left: 25px;
+	padding-left: 5px;
 	padding-right: 25px;
-	p{
-		margin:0px;
-		clear:both;
+	.header{
+		
 	}
 	.imageSearchSwitch{
-		float: left;
+		display:inline;
 		img{
 			width: 30px;
 		}
@@ -138,7 +137,8 @@ class Options extends React.Component {
 				"imageSearchUrl_iqdb",
 				"imageSearchUrl_ascii2d",
 			].map((elem, index) => {
-        return <div className="tab-1 imageSearchSwitch" key={index}>{this.getImageSearchSwitch(elem)}</div>;
+				// return <div className="tab-1 imageSearchSwitch" key={index}>{this.getImageSearchSwitch(elem)}</div>;
+				return <Col className="imageSearchSwitch" span = {3} key={index}>{this.getImageSearchSwitch(elem)}</Col>
       });
     }
     let checkUpdate = null;
@@ -148,29 +148,29 @@ class Options extends React.Component {
     return (
 			<OptionsDiv>
 				<h5 className="header">{GL('images')}</h5>
-					<div className="tab-1">
-					<p></p>
-					{this.getCheckbox('imageSearch')}
-					{imageSearchEngines}
+					<div className="">
+					
 					{this.getCheckbox('imageSearchNewTabFront')}
-					<p></p>
 					{this.getCheckbox('extractImages')}
-					<p></p>
 					{this.getCheckbox('screenshotSearch')}
-					<p></p>
-				</div>
+					{this.getCheckbox('imageSearch')}
+					<Row gutter ={4}>
+						{imageSearchEngines}
+					</Row>
+					
+					</div>
+
 				<h5 className="header">{GL('tools')}</h5>
-				<div className="tab-1">
+
+				<div className="">
 					{this.getCheckbox('autoRefresh')}
 					{this.getCheckbox('videoControl')}
-					<p></p>
 				</div>
+
 				<h5 className="header">{GL('experience')}</h5>
-				<div className="tab-1">
+				<div className="">
 					{this.getCheckbox('history')}
-					<p></p>
 					{checkUpdate}
-					<p></p>
 				</div>
 			</OptionsDiv>
 		);
