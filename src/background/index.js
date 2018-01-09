@@ -29,6 +29,9 @@ function analytics(request) {
 		label: request.label
 	});
 }
+
+NooBox.analytics = analytics;
+
 NooBox.temp = {
   lastVideoControl: 0
 };
