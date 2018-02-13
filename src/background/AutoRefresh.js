@@ -15,6 +15,25 @@ export default NooBox => {
         if (handler) {
             clearInterval(handler);
         }
+<<<<<<< HEAD
+        handler = setInterval(() => {
+            chrome.tabs.reload(tabId, {}, () => {});
+            chrome.tabs.hightlight(tabId,"Test1111111111111111111111",() => {});
+            chomre.browerAction.setIcon("images/icon_128.png");
+        }, interval);
+        setting.handler = handler;
+        AutoRefresh.tabs[tabId] = setting;
+    };
+    AutoRefresh.stop = (tabId) => {
+        if (!tabId) {
+            return;
+        }
+        const setting = AutoRefresh.tabs[tabId];
+        const handler = setting.handler;
+        if (handler) {
+            clearInterval(handler);
+            setting.handler = null;
+=======
         if (start) {
             if (handler) {
                 action = 'updateInterval';
@@ -28,6 +47,7 @@ export default NooBox => {
                 });
             }, interval);
             setting.handler = handler;
+>>>>>>> df0fe3aa4b60c823377194c706f13d3b0a8c1bb4
         }
         AutoRefresh.tabs[tabId] = setting;
         if (userAction) {
