@@ -1,7 +1,7 @@
 //basically Website will display the website block and update image size if the image is loaded
 import React from 'react';
 
-class Website extends React.Component {
+export default class Website extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,5 +67,3 @@ class Website extends React.Component {
 		);
 	}
 };
-
-export default Website;

@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const timeWatch = require('webpack-watch-time-plugin');
+
 module.exports = env => {
   x = {
     entry: {
@@ -57,7 +59,8 @@ module.exports = env => {
         { from: './src/manifest.json' },
         { from: './images/', to: 'images' },
         { from: './thirdParty/', to: 'thirdParty' },
-      ]),
+      ],),
+      timeWatch
     ]
   }
   if (!env || !env.dev) {
