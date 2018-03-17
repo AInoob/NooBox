@@ -1,8 +1,13 @@
+import 'antd/dist/antd.css';
+
 import React from 'react';
 import Website from './Website.jsx';
 import styled from 'styled-components';
+import Brief from './Components/Brief';
+import SearchTabs from './Components/SearchContent/SearchTabs';
 
 const ImageSearchDiv = styled.div`
+  margin-top: 3%;
 	margin-left: 66px;
 	margin-right: 66px;
 	.input-field.col label {
@@ -133,7 +138,7 @@ class Result extends React.Component {
           contentType: "application/json",
           data: JSON.stringify(hi)
         }).done((data) => {
-          console.log(data);
+          // console.log(data);
         });
       });
     });
@@ -227,24 +232,50 @@ class Result extends React.Component {
         websites.push(website);
       }
     }
-    this.setState({ websites });
+    window.setTimeout(() => this.setState({ websites }),1300);
   }
   getInitialData() {
     const cursor = getParameterByName('cursor');
     getDB('NooBox.Image.result_' + cursor, (data) => {
       this.setState({ result: data });
       this.updateWebsites();
-      console.log(data);
+      // console.log(data);
     });
   }
   getKeyword(engine) {
     return (
       <a target="_blank" href={((this.state.result||{})[engine]||{}).url} className="keyword">
+
         <img src={'/thirdParty/'+engine+'.png'} />
-        {(((this.state.result || {})[engine] || {}).keyword || '(none)')}
+
+        {(((this.state.result || {})[engine] || {}).keyword || '(No suck)')}
+
       </a>
 		);
   }
+  getKeywordBeta(engine){
+    let keyWord = (( this.state.result || {} )[engine] || {}).keyword || undefined;
+    return keyWord;
+  }
+  dealKeyword(){
+    let keyWord = this.getKeywordBeta("google");
+    
+    if(keyWord != undefined){
+     
+      return <h3><a target="_blank" href={((this.state.result||{})["google"]||{}).url} className="keyword">{keyWord}</a></h3>
+    }
+    keyWord = this.getKeywordBeta("baidu");
+    if(keyWord != undefined){
+      return <a target="_blank" href={((this.state.result||{})["baidu"]||{}).url} className="keyword"><h3>{keyWord}</h3></a>
+    }
+
+    keyWord = this.getKeywordBeta("bing");
+    if(keyWord != undefined){
+      return <a target="_blank" href={((this.state.result||{})["bing"]||{}).url} className="keyword"><h3>{keyWord}</h3></a>
+    }
+
+    return <h3>No Title Info</h3>
+  } 
   getImageSize(url) {
     if(this.state.imageSizes[url]) {
       return this.state.imageSizes[url];
@@ -303,14 +334,6 @@ class Result extends React.Component {
     }
     return r;
   }
-  getWebsite() {
-    const websites = this.state.websites || [];
-    return websites.sort(this.sort.bind(this)).map((website, index) => {
-      return (
-        <Website key={index} getImageSize={this.getImageSize.bind(this, website.imageUrl)} updateImageSize={this.updateImageSize.bind(this,index)} data={website} />
-      );
-    });
-  }
   updateOrder(order) {
     switch(order) {
       case '相关':
@@ -328,8 +351,22 @@ class Result extends React.Component {
     }
     this.setState({ order: order.toLowerCase() });
   }
+
+  getWebsite() {
+    const websites = this.state.websites || [];
+    //console.log(websites);
+    return websites.sort(this.sort.bind(this)).map((website, index) => {
+      // console.log(website)
+      return (
+        <Website key={index} getImageSize={this.getImageSize.bind(this, website.imageUrl)} updateImageSize={this.updateImageSize.bind(this,index)} data={website} />
+      );
+    });
+  }
+
   render() {
     const result = this.state.result || {};
+    const websites2 = this.state.websites || [];
+
     let uploadReSearch = null;
     let source = result.imageUrl;
     if(source == 'dataURI') {
@@ -367,31 +404,35 @@ class Result extends React.Component {
         <label>{GL('sortBy')}</label>
       </div>
     );
-    const brief = (
-      <div id="brief" className="card horizontal">
-        <div className="card-image">
-          <img id="imageInput" src={source} />
-        </div>
-        <div className="card-stacked">
-          <div className="card-content">
-            {keywords}
-          </div>
-          <div className="card-action">
-            {icons}
-          </div>
-        </div>
-      </div>
-		);
+    // const brief = (
+    //   <div id="brief" className="card horizontal">
+    //     <div className="card-image">
+    //       <img id="imageInput" src={source} />
+    //     </div>
+    //     <div className="card-stacked">
+    //       <div className="card-content">
+    //         {keywords}
+    //       </div>
+    //       <div className="card-action">
+    //         {icons}
+    //       </div>
+    //     </div>
+    //   </div>
+		// );
     const websites = (
       <div className="websites">
         {this.getWebsite()}
       </div>
-		);
+    );
+    // console.log(<Brief/>);
+    let key = this.dealKeyword();
+    console.log(this.state.websites);
     return (
       <ImageSearchDiv>
-        {brief}
-        {filter}
-        {websites}
+        <Brief source ={source} keyword = {key} icons = {icons} engines ={result.engines||["Error Fetch"]}/>
+        <SearchTabs data = {this.state.websites}/>
+        {/* {filter} */}
+        {/* {websites} */}
         {uploadReSearch}
       </ImageSearchDiv>
 		);
