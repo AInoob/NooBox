@@ -128,7 +128,7 @@ export default NooBox => {
     const openTabFront = await promisedGet('imageSearchNewTabFront');
     chrome.tabs.create({ url, active: openTabFront });
     NooBox.Image.update(cursor, result);
-    analytics({
+    bello.event({
       category: 'imageSearch',
       action: action,
       label: type
@@ -644,7 +644,7 @@ export default NooBox => {
   }
 
   NooBox.Image.downloadExtractImages = (sender, files) => {
-    analytics({
+    bello.event({
       category: 'downloadExtractImages',
       action: 'run'
     });
