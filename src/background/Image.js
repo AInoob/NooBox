@@ -287,14 +287,14 @@ export default NooBox => {
             website.description = description;
 
             const tagAImage = singleItem.find("a")[1] || {};
-            if( i == 1){
-              console.log(tagAImage);
-            }
+            // if( i == 1){
+            //   console.log(tagAImage);
+            // }
            
             const tagAImageLink = tagAImage.href;
-            if( i == 1){
-              console.log(tagAImageLink);
-            }
+            // if( i == 1){
+            //   console.log(tagAImageLink);
+            // }
            
             
             if (tagAImageLink) {
