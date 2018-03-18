@@ -202,77 +202,124 @@ export default NooBox => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
-      const keyword = page.find('._gUb').text();
-      const relatedWebsites = [];
-      let relatedWebsiteList = $(page.find('#rso').find('._NId')[0]).find('.rc') || [];
-      if (relatedWebsiteList.length == 0) {
-        relatedWebsiteList = $(page.find('#rso').find('.rgsep')[0]).prev().find('.rc') || [];
-      }
-      for (let i = 0; i < relatedWebsiteList.length; i++) {
-        const website = {
-          link: '',
-          title: '',
-          description: '',
-          searchEngine: 'google',
-          related: true
-        };
-        const temp = $(relatedWebsiteList[i]);
-        const x = temp.find('a')[0] || {};
-        website.link = x.href;
-        website.title = x.innerText;
-        const y = temp.find('.s').find('.st')[0] || {};
-        website.description = y.innerHTML;
-        relatedWebsites.push(website);
-      }
-      const websites = [];
-      let websiteList = $(page.find('#rso').find('._NId')).last().find('.rc') || [];
-      if (websiteList.length == 0) {
-        websiteList = $(page.find('#rso').find('.rgsep')).last().prev().find('.rc') || [];
-      }
-      for (let i = 0; i < websiteList.length; i++) {
-        const website = {
-          link: '',
-          title: '',
-          description: '',
-          searchEngine: 'google',
-          related: false
-        };
-        const temp = $(websiteList[i]);
-        const x = temp.find('a')[0] || {};
-        website.link = x.href;
-        website.title = x.innerText;
-        const y = temp.find('.s').find('.st')[0] || {};
-        website.description = y.innerHTML;
-        const z = temp.find('._lyb').find('a')[0] || {};
-        if (z.href) {
-          const start = z.href.indexOf("imgurl=") + 7;
-          const end = z.href.indexOf("&", start);
-          if (end == -1)
-            website.imageUrl = z.href.slice(start);
-          else
-            website.imageUrl = z.href.slice(start, end);
+      window.x = page;
+
+      const keyword = page.find('.card-section').find('a[style = "font-style:italic"]')[0].innerHTML;
+
+      //03/ 17/ 2018 Update @George 
+      //format website content
+      let websitesInfo = [];
+      //let relatedWebsiteList = $(page.find('#rso').find('._NId')[0]).find('.rc') || [];
+      
+      //Two Module
+      //(only related) and (image + related)
+      let WebsiteList = page.find('#search .srg');
+
+
+      if($(WebsiteList[0]).find("g-img")[0] == undefined){
+        //get related
+        let relatedWebsiteList = $(WebsiteList[0]).find('.g');
+        console.log(relatedWebsiteList.length);
+
+        //get related website list
+        for (let i = 0; i < relatedWebsiteList.length; i++) {
+          const website = {
+            link: '',
+            title: '',
+            description: '',
+            searchEngine: 'google',
+            related: true
+          };
+
+          //get child of related wensite list
+          const singleItem = $(relatedWebsiteList[i]);
+          //get Tag <a></a> use this one to get the link and title
+          const tagA = singleItem.find('a')[0] || {};
+          
+          website.link = tagA.href;
+          website.title = tagA.innerText;
+
+          //get description
+          //looks like
+          //<span>Date -
+          //  text
+          //<em>something</em>
+          //  text
+          //</span>
+          console.log(singleItem.find(".s").find(".st")[0].innerHTML.split(" "));
+
+          const relatedDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
+          let relatedDescription = relatedDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
+          website.description = relatedDescription;
+          websitesInfo[websitesInfo.length] = website;
         }
-        if (website.imageUrl) {
-          let cut = website.imageUrl.indexOf('jpg%');
-          if (cut != -1) {
-            website.imageUrl = website.imageUrl.slice(0, cut + 3);
-          }
-          cut = website.imageUrl.indexOf('png%');
-          if (cut != -1) {
-            website.imageUrl = website.imageUrl.slice(0, cut + 3);
-          }
-          cut = website.imageUrl.indexOf('gif%');
-          if (cut != -1) {
-            website.imageUrl = website.imageUrl.slice(0, cut + 3);
-          }
-        }
-        websites.push(website);
       }
-      result.google.keyword = keyword;
-      result.google.relatedWebsites = relatedWebsites;
-      result.google.websites = websites;
-      result.google.result = 'done';
-      NooBox.Image.update(cursor, result);
+        //releted + image = releatedImageWebsites
+        let releatedImageWebsites = [];
+
+        if(WebsiteList.length == 1){
+          releatedImageWebsites = $(WebsiteList[0]).find(".g");
+        }else{
+          releatedImageWebsites = $(WebsiteList[1]).find(".g");
+        }
+          console.log(releatedImageWebsites.length);
+          for (let i = 0; i < releatedImageWebsites.length; i++) {
+            const website = {
+              link: '',
+              title: '',
+              description: '',
+              searchEngine: 'google',
+              related: false
+            };
+
+            //get child of related and Image website list
+            const singleItem = $(releatedImageWebsites[i]);
+            //get Tag <a></a> use this one to get the link and title
+            const tagA = singleItem.find('a')[0] || {};
+
+            website.link = tagA.href;
+            website.title = tagA.innerText;
+
+            const relatedImageDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
+            let description = relatedImageDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
+        
+            website.description = description;
+
+            const tagAImage = singleItem.find("a")[1] || {};
+            const tagAImageLink = tagAImage.href;
+
+            if (tagAImageLink) {
+              const start = tagAImageLink.indexOf("imgurl=") + 7;
+              const end = tagAImageLink.indexOf("&", start);
+              if (end == -1)
+                website.imageUrl = tagAImageLink.slice(start);
+              else
+                website.imageUrl = tagAImageLink.slice(start, end);
+            }
+
+            // if (website.imageUrl) {
+            //   let cut = website.imageUrl.indexOf('jpg%');
+            //   if (cut != -1) {
+            //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
+            //   }
+            //   cut = website.imageUrl.indexOf('png%');
+            //   if (cut != -1) {
+            //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
+            //   }
+            //   cut = website.imageUrl.indexOf('gif%');
+            //   if (cut != -1) {
+            //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
+            //   }
+            // }
+            websitesInfo[websitesInfo.length] = website;
+            //websites.push(website);
+          
+        }   
+        result.google.keyword = keyword;
+        result.google.relatedWebsites = websitesInfo;
+        result.google.websites = websites;
+        result.google.result = 'done';
+        NooBox.Image.update(cursor, result);  
     } catch (e) {
       console.log(e);
       result.google.result = 'failed';
