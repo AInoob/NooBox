@@ -208,7 +208,7 @@ export default NooBox => {
 
       //03/ 17/ 2018 Update @George 
       //format website content
-      let websitesInfo = [];
+      let websitesRelatedInfo = [];
       //let relatedWebsiteList = $(page.find('#rso').find('._NId')[0]).find('.rc') || [];
       
       //Two Module
@@ -219,7 +219,7 @@ export default NooBox => {
       if($(WebsiteList[0]).find("g-img")[0] == undefined){
         //get related
         let relatedWebsiteList = $(WebsiteList[0]).find('.g');
-        console.log(relatedWebsiteList.length);
+        //console.log(relatedWebsiteList.length);
 
         //get related website list
         for (let i = 0; i < relatedWebsiteList.length; i++) {
@@ -246,15 +246,16 @@ export default NooBox => {
           //<em>something</em>
           //  text
           //</span>
-          console.log(singleItem.find(".s").find(".st")[0].innerHTML.split(" "));
+         
 
           const relatedDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
           let relatedDescription = relatedDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
           website.description = relatedDescription;
-          websitesInfo[websitesInfo.length] = website;
+          websitesRelatedInfo[websitesRelatedInfo.length] = website;
         }
       }
         //releted + image = releatedImageWebsites
+        let websitesRelatedImageInfo =[];
         let releatedImageWebsites = [];
 
         if(WebsiteList.length == 1){
@@ -262,7 +263,7 @@ export default NooBox => {
         }else{
           releatedImageWebsites = $(WebsiteList[1]).find(".g");
         }
-          console.log(releatedImageWebsites.length);
+        
           for (let i = 0; i < releatedImageWebsites.length; i++) {
             const website = {
               link: '',
@@ -286,8 +287,16 @@ export default NooBox => {
             website.description = description;
 
             const tagAImage = singleItem.find("a")[1] || {};
+            // if( i == 1){
+            //   console.log(tagAImage);
+            // }
+           
             const tagAImageLink = tagAImage.href;
-
+            // if( i == 1){
+            //   console.log(tagAImageLink);
+            // }
+           
+            
             if (tagAImageLink) {
               const start = tagAImageLink.indexOf("imgurl=") + 7;
               const end = tagAImageLink.indexOf("&", start);
@@ -311,13 +320,13 @@ export default NooBox => {
             //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
             //   }
             // }
-            websitesInfo[websitesInfo.length] = website;
+            websitesRelatedImageInfo[websitesRelatedImageInfo.length] = website;
             //websites.push(website);
           
         }   
         result.google.keyword = keyword;
-        result.google.relatedWebsites = websitesInfo;
-        result.google.websites = websites;
+        result.google.relatedWebsites = websitesRelatedInfo;
+        result.google.websites = websitesRelatedImageInfo;
         result.google.result = 'done';
         NooBox.Image.update(cursor, result);  
     } catch (e) {
