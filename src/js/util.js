@@ -399,17 +399,17 @@ window.fetchBlob = (uri, callback) => {
 };
 
 window.bello = {
-	pageview: function(version) {
+	pageview: function() {
 		if(typeof window != 'object')
 			return;
 		var data = {
 			type: 'pageview',
-			path: version,
+			path: chrome.runtime.getManifest().version,
 			title: 'background',
 			referrer: '',
 			ua: navigator.userAgent,
 			sr: screen.width + 'x' + screen.height,
-			ul: navigator.language || navigator.userLanguage,
+      ul: navigator.language || navigator.userLanguage,
 			ainoob: Math.random(),
 		}
 		this.ajax('https://ainoob.com/bello/noobox'+this.serialize(data));
@@ -426,7 +426,7 @@ window.bello = {
 			ainoob: Math.random(),
 			ua: navigator.userAgent,
 			sr: screen.width + 'x' + screen.height,
-			path: '0.9.3.8',
+			path: chrome.runtime.getManifest().version,
 			ul: navigator.language || navigator.userLanguage,
 		}
 		this.ajax('https://ainoob.com/bello/noobox'+this.serialize(data));
