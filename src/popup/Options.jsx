@@ -1,11 +1,11 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { Checkbox } from 'antd';
+import { Checkbox,Row,Col } from 'antd';
 
 const OptionsDiv = styled.div`
 	padding-left: 25px;
-	padding-right: 25px;
+	padding-right: 35px;
 	p{
 		margin:0px;
 		clear:both;
@@ -20,6 +20,20 @@ const OptionsDiv = styled.div`
 				opacity: 0.3;
 			}
 		}
+	}
+
+	.ant-checkbox-wrapper{
+		display:inline-block;
+		font-size:12px;
+		font-weight:600;
+		width:100%
+	}
+
+	.optionHeader{
+		font-size:16px;
+		border-bottom: 2px solid;
+		border-bottom-width : 1px;
+		border-bottom-color : rbg(0,0,0,0.85)
 	}
 `;
 
@@ -138,40 +152,42 @@ class Options extends React.Component {
 				"imageSearchUrl_iqdb",
 				"imageSearchUrl_ascii2d",
 			].map((elem, index) => {
-        return <div className="tab-1 imageSearchSwitch" key={index}>{this.getImageSearchSwitch(elem)}</div>;
+        return <Col span = {3} className="tab-1 imageSearchSwitch" key={index}>{this.getImageSearchSwitch(elem)}</Col>;
       });
-    }
+		}
+		
     let checkUpdate = null;
     if(this.state.installType != 'normal') {
       checkUpdate = this.getCheckbox('checkUpdate');
-    }
+		}
+		
     return (
 			<OptionsDiv>
-				<h5 className="header">{GL('images')}</h5>
-					<div className="tab-1">
-					<p></p>
-					{this.getCheckbox('imageSearch')}
-					{imageSearchEngines}
+				<h5 className="optionHeader">{GL('images')}</h5>
+				
 					{this.getCheckbox('imageSearchNewTabFront')}
 					<p></p>
 					{this.getCheckbox('extractImages')}
 					<p></p>
 					{this.getCheckbox('screenshotSearch')}
 					<p></p>
-				</div>
-				<h5 className="header">{GL('tools')}</h5>
-				<div className="tab-1">
+					{this.getCheckbox('imageSearch')}
+					<Row>
+					{imageSearchEngines}
+					</Row>
+				<h5 className="optionHeader">{GL('tools')}</h5>
+		
 					{this.getCheckbox('autoRefresh')}
 					{this.getCheckbox('videoControl')}
 					<p></p>
-				</div>
-				<h5 className="header">{GL('experience')}</h5>
-				<div className="tab-1">
+				
+				<h5 className="optionHeader">{GL('experience')}</h5>
+			
 					{this.getCheckbox('history')}
 					<p></p>
 					{checkUpdate}
 					<p></p>
-				</div>
+			
 			</OptionsDiv>
 		);
   }
