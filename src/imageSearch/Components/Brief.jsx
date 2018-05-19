@@ -20,39 +20,55 @@ const BriefContainer = styled.div`
   }
 `;
 export default function Brief(props){
-   
+  const{source, keyword , results, engines} = props;
   const n = Math.floor(24/props.engines.length);
 
-  const eachCol = props.engines.map((element,index) =>{
-    return (
-            <Card.Grid style = {{width: "20%", textAlign: "center", height: "100%"}} key = {index}>
-              
-                <img style ={{height: 50}} key = {index} src={'/thirdParty/'+element+'.png'} />
-            </Card.Grid>
-            );
-  });
+  let eachIcon;
+  if(engines == ""){
+    eachIcon = engines.map((element,index) =>{
+      return (
+              <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
+                  <img style ={{height: 50}} key = {index} src={'/thirdParty/'+element+'.png'} />
+              </Card.Grid>
+              );
+    });
+
+  }else{
+    eachIcon = engines.map((element,index) =>{
+      return (
+              <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
+                <a key ={index} target="_blank" key = {index} href = {(results[element] || {}).url}>
+                  <img style ={{height: 50}} key = {index} src={'/thirdParty/'+element+'.png'} />
+                </a> 
+              </Card.Grid>
+              );
+    });
+  }
+ 
+  console.log(props)
   return(
     <BriefContainer>
       <Row type = "flex" justify="start" align="bottom">
         <Col span ={2}/>
-        <Col span ={5}>
+        <Col span ={6}>
           <Card style={{ width: "100%",height: "100%" }} bodyStyle={{ padding: 0 }}>
 
             <div className="custom-image">
-              <img id = "imageInput" alt="example" width="100%" src={props.source} />
+              <img id = "imageInput" alt="example" width="100%" src={source} />
             </div>
             
             <div className="custom-card">
-            <div> Name </div>
-            {props.keyword}
+            {/* need translate */}
+            <div> Keywords </div>
+            {keyword}
         
             </div>
           </Card>
         </Col>
-        {/* <Col span ={4}/> */}
-        <Col span ={12}>
+        <Col span ={1}/>
+        <Col span ={10}>
           <Card style={{ width: "100%"}} bodyStyle={{ padding: 0 }}>
-              {eachCol}
+              {eachIcon}
           </Card>
         </Col>
         <Col span ={2}/>

@@ -386,13 +386,6 @@ class Result extends React.Component {
         {this.getKeyword('bing')}
       </div>
 		);
-    const icons = (result.engines || []).map((elem,index) => {
-      return (
-        <a key={index} className={"icon "+result[elem].result} target="_blank" href={(result[elem]||{}).url}>
-          <img src={'/thirdParty/'+elem+'.png'} />
-        </a>
-			);
-    });
     const filter = (
       <div className="input-field col s12">
         <select defaultValue="relevance">
@@ -404,32 +397,18 @@ class Result extends React.Component {
         <label>{GL('sortBy')}</label>
       </div>
     );
-    // const brief = (
-    //   <div id="brief" className="card horizontal">
-    //     <div className="card-image">
-    //       <img id="imageInput" src={source} />
-    //     </div>
-    //     <div className="card-stacked">
-    //       <div className="card-content">
-    //         {keywords}
-    //       </div>
-    //       <div className="card-action">
-    //         {icons}
-    //       </div>
-    //     </div>
-    //   </div>
-		// );
     const websites = (
       <div className="websites">
         {this.getWebsite()}
       </div>
     );
-    // console.log(<Brief/>);
     let key = this.dealKeyword();
-    console.log(this.state.websites);
+    // console.log(this.state.websites);
+    // console.log("test");
+    // console.log(source);
     return (
       <ImageSearchDiv>
-        <Brief source ={source} keyword = {key} icons = {icons} engines ={result.engines||["Error Fetch"]}/>
+        <Brief source ={source} keyword = {key} results = {result|| ""} engines ={result.engines||[""]}/>
         <SearchTabs data = {this.state.websites}/>
         {/* {filter} */}
         {/* {websites} */}
