@@ -1,13 +1,15 @@
 export default NooBox => {
     const AutoRefresh = {};
     AutoRefresh.tabs = {};
-    AutoRefresh.update = (tabId, interval, start) => {
+    AutoRefresh.update = (tabId, interval, start, userAction) => {
         if (!tabId) {
             return;
         }
         let action = 'stop';
         let setting = AutoRefresh.tabs[tabId] || { };
-        setting.interval = interval;
+        if (interval) {
+            setting.interval = interval;
+        }
         let { handler } = setting;
         setting.handler = null;
         if (handler) {
@@ -21,15 +23,19 @@ export default NooBox => {
                 action = 'start';
             }
             handler = setInterval(() => {
-                chrome.tabs.reload(tabId, {}, () => {});
+                chrome.tabs.reload(tabId, {}, () => {
+                    console.log('refresh');
+                });
             }, interval);
             setting.handler = handler;
         }
         AutoRefresh.tabs[tabId] = setting;
-        NooBox.analytics({
-            category: 'autoRefresh',
-            action
-        });
+        if (userAction) {
+            NooBox.analytics({
+                category: 'autoRefresh',
+                action
+            });
+        }
     };
     NooBox.AutoRefresh = AutoRefresh;
 };
