@@ -77,10 +77,8 @@ NooBox.init = () => {
 	window.NooBox = NooBox;
   NooBox.Options.init(0);
   chrome.tabs.onRemoved.addListener(tabId => {
-    NooBox.AutoRefresh.stopRefresh(tabId);
+    NooBox.AutoRefresh.update(tabId, null, false);
   });
-  // chrome.tabs.onReplaced(tabId => {
-  // });
   chrome.runtime.onMessage.addListener(
     async (request, sender, sendResponse) => {
       if ('job' in request) {
@@ -140,7 +138,7 @@ NooBox.init = () => {
           });
         } else if (request.job == 'updateAutoRefresh') {
           const { tabId, interval, handler } = request;
-          NooBox.AutoRefresh.update(tabId, interval, handler);
+          NooBox.AutoRefresh.update(tabId, interval, handler, true);
         } else if (request.job == 'currentTabAutoRefreshState') {
           const { tabId } = request;
           const setting = NooBox.AutoRefresh.tabs[tabId];
