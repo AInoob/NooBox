@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import {Button, Card,Row,Col} from 'antd';
+import {Button, Card,Row,Col,Icon,Popover,InputNumber} from 'antd';
 
 const BriefContainer = styled.div`
   height: 20%;
@@ -14,6 +14,15 @@ const BriefContainer = styled.div`
   .custom-card p {
     color: #999;
   }
+  .ant-card-grid{
+    position:relative;
+    div{
+      position:absolute !important;
+      right:10px;
+      bottom:10px;
+      font-size:16px;
+    }
+  }
   .engineImages{
     margin-top: 20%;
     margin-left: 30px;
@@ -22,7 +31,10 @@ const BriefContainer = styled.div`
 export default function Brief(props){
   const{source, keyword , results, engines} = props;
   const n = Math.floor(24/props.engines.length);
-
+  const engineSetting = (<div>
+        <InputNumber min={5} max={100} defaultValue ={10}/>
+        <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
+  </div>);
   let eachIcon;
   if(engines == ""){
     eachIcon = engines.map((element,index) =>{
@@ -38,8 +50,9 @@ export default function Brief(props){
       return (
               <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
                 <a key ={index} target="_blank" key = {index} href = {(results[element] || {}).url}>
-                  <img style ={{height: 50}} key = {index} src={'/thirdParty/'+element+'.png'} />
+                  <img style ={{height: "50px"}} key = {index} src={'/thirdParty/'+element+'.png'} />
                 </a> 
+                <div><Popover title = "Max Search Number" content = {engineSetting}><Icon type="setting" /></Popover></div>
               </Card.Grid>
               );
     });
@@ -71,9 +84,10 @@ export default function Brief(props){
               {eachIcon}
           </Card>
         </Col>
-        <Col span ={2}/>
+        <Col span ={2}>
+        
+        </Col>
       </Row>
-
     </BriefContainer>
    
   );
