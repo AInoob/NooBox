@@ -159,17 +159,18 @@ export default NooBox => {
           let followingPageLink = result.google.followingPageLink;
           let times = followingPageLink.length;
           let followingPageRequest = new Array(times);
-
-          console.log(followingPageLink);
+          // console.log(typeof(result.google.websites));
+          window.abc = result.google.websites;
+          // console.log(followingPageLink);
           for(let i = 0; i< times; i++){
             (function(i,link){
-              console.log(link);
               followingPageRequest[i] = new XMLHttpRequest();
               followingPageRequest[i].open('GET',link,true);
               followingPageRequest[i].onreadystatechange = () =>{
                 if(followingPageRequest[i].readyState === XMLHttpRequest.DONE && followingPageRequest[i].status === 200){
                   // console.log(  new window.DOMParser()).parseFromString(,"text/html"),followingPageRequest[i].responseText);
-                  NooBox.Image.fetchFunctions[engine](cursor, result, followingPageRequest[i].responseText);
+                  // NooBox.Image.fetchFunctions[engine](cursor, result, followingPageRequest[i].responseText);
+                  NooBox.Image.fetchFunctions.googleFowllingPage(cursor,result, followingPageRequest[i].responseText);
                 }
               }
               followingPageRequest[i].send();
@@ -223,30 +224,81 @@ export default NooBox => {
     sogou: 'http://pic.sogou.com/ris?query=',
     ascii2d: 'https://ascii2d.net/search/uri',
   };
-  // NooBox.Image.fetchFunctions.googleAllPage = async function(cursor,result, data){
-    
-  // }
-  NooBox.Image.fetchFunctions.google = (cursor, result, data) => {
-    try {
-      console.log("Hello1234");
+  NooBox.Image.fetchFunctions.googleFowllingPage =(cursor,result,data)=>{
+    try{
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
-      window.x = page;
-      let dataStream = [data];
+      let pageId = page.find('.cur').text();
+      // window.x = page;
+      let WebsiteList = page.find('.srg')[0];
+      
+      let releatedImageWebsites    = $(WebsiteList).find('.g');
+
+      let websitesRelatedImageInfo = [];
+      for(let i = 0; i < releatedImageWebsites.length; i++){
+        const website = {
+          link: '',
+          title: '',
+          description: '',
+          searchEngine: 'google',
+          related: false
+        };
+         //get child of related and Image website list
+         const singleItem = $(releatedImageWebsites[i]);
+         //get Tag <a></a> use this one to get the link and title
+         const tagA = singleItem.find('a')[0] || {};
+
+         website.link = tagA.href;
+         website.title = tagA.innerText;
+
+         const relatedImageDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
+         let description = relatedImageDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
+     
+         website.description = description;
+
+         const tagAImage = singleItem.find("a")[1] || {};
+         const tagAImageLink = tagAImage.href;
+        
+         if (tagAImageLink) {
+          const start = tagAImageLink.indexOf("imgurl=") + 7;
+          const end = tagAImageLink.indexOf("&", start);
+          if (end == -1)
+            website.imageUrl = tagAImageLink.slice(start);
+          else
+            website.imageUrl = tagAImageLink.slice(start, end);
+        }
+    
+      
+        websitesRelatedImageInfo[websitesRelatedImageInfo.length] = website;
+      }
+      result.google.websites = result.google.websites.concat(websitesRelatedImageInfo);
+      result.google.result = 'done';
+      NooBox.Image.update(cursor, result);  
+    }catch(e){
+      console.log(e);
+      result.google.result = 'failed';
+      NooBox.Image.update(cursor, result);
+      // tesing 
+      // window.x = page;
+
+   
+    }
+  };
+  NooBox.Image.fetchFunctions.google = (cursor, result, data) => {
+    try {
+      data = data.replace(/<img[^>]*>/g, "");
+      const page = $(data);
+      // tesing 
+      // window.x = page;
       let allPageUrlData = page.find('tbody').find('a');
       let followingPageLink = [];
-      console.log(page);
-      if(!result.followingPageLink){
-        for(let i = 0; i < 9; i++){
-          if(allPageUrlData[i] && allPageUrlData[i].className ==="fl" && allPageUrlData[i].href){
-            followingPageLink[followingPageLink.length] = "https://www.google.com/search?tbs=" + allPageUrlData[i].href.split("search?tbs=")[1];
-          }
+      //console.log(page);
+      for(let i = 0; i < 9; i++){
+        if(allPageUrlData[i] && allPageUrlData[i].className ==="fl" && allPageUrlData[i].href){
+          followingPageLink[followingPageLink.length] = "https://www.google.com/search?tbs=" + allPageUrlData[i].href.split("search?tbs=")[1];
         }
-        result.google.followingPageLink = followingPageLink;
-      }else{
-        result.google.linkPushed = true;
       }
-      
+      result.google.followingPageLink = followingPageLink;
       // console.log(followingPageLink);
       const keyword = page.find('.card-section').find('a[style = "font-style:italic"]')[0].innerHTML || "";
       //console.log(page);
@@ -255,50 +307,10 @@ export default NooBox => {
       let websitesRelatedInfo = [];
       //let relatedWebsiteList = $(page.find('#rso').find('._NId')[0]).find('.rc') || [];
       
-      //Two Module
-      //(only related) and (image + related)
+      
       let WebsiteList = page.find('#search .srg');
-      // if($(WebsiteList[0]).find("g-img")[0] == undefined){
-      //   //get related
-      //   let relatedWebsiteList = $(WebsiteList[0]).find('.g');
-      //   //console.log(relatedWebsiteList.length);
-
-      //   //get related website list
-      //   for (let i = 0; i < relatedWebsiteList.length; i++) {
-      //     const website = {
-      //       link: '',
-      //       title: '',
-      //       description: '',
-      //       searchEngine: 'google',
-      //       related: true
-      //     };
-
-      //     //get child of related wensite list
-      //     const singleItem = $(relatedWebsiteList[i]);
-      //     //get Tag <a></a> use this one to get the link and title
-      //     const tagA = singleItem.find('a')[0] || {};
-          
-      //     website.link = tagA.href;
-      //     website.title = tagA.innerText;
-
-      //     //get description
-      //     //looks like
-      //     //<span>Date -
-      //     //  text
-      //     //<em>something</em>
-      //     //  text
-      //     //</span>
-         
-
-      //     const relatedDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
-      //     let relatedDescription = relatedDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
-      //     website.description = relatedDescription;
-      //     websitesRelatedInfo[websitesRelatedInfo.length] = website;
-      //   }
-      // }
-        //releted + image = releatedImageWebsites
-        let websitesRelatedImageInfo = [];
-        let releatedImageWebsites    = [];
+      let websitesRelatedImageInfo = [];
+      let releatedImageWebsites    = [];
 
         if(WebsiteList.length == 1){
           releatedImageWebsites = $(WebsiteList[0]).find(".g");
@@ -328,14 +340,7 @@ export default NooBox => {
             website.description = description;
 
             const tagAImage = singleItem.find("a")[1] || {};
-            // if( i == 1){
-            //   console.log(tagAImage);
-            // }
-           
             const tagAImageLink = tagAImage.href;
-            // if( i == 1){
-            //   console.log(tagAImageLink);
-            // }
            
             
             if (tagAImageLink) {
@@ -347,26 +352,13 @@ export default NooBox => {
                 website.imageUrl = tagAImageLink.slice(start, end);
             }
             websitesRelatedImageInfo[websitesRelatedImageInfo.length] = website;
-          
         }   
         result.google.keyword = keyword;
         // result.google.relatedWebsites = websitesRelatedInfo;
+       
         result.google.websites = websitesRelatedImageInfo;
         result.google.result = 'done';
-        NooBox.Image.update(cursor, result);
-
-        // for(let i = 0; i< allPageUrlArray.length; i++){
-        //   console.log("hit");
-        //   let req = new XMLHttpRequest();  
-        //   req.open('GET', allPageUrlArray[i], true);
-        //   req.send(null);
-        //   req.onreadystatechange = () => {
-        //     if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
-        //       console.log("finish");
-        //     }
-        //   }; 
-        // }
-        
+        NooBox.Image.update(cursor, result);   
     } catch (e) {
       console.log("Hello");
       console.log(e);
