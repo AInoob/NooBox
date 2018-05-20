@@ -278,10 +278,6 @@ export default NooBox => {
       console.log(e);
       result.google.result = 'failed';
       NooBox.Image.update(cursor, result);
-      // tesing 
-      // window.x = page;
-
-   
     }
   };
   NooBox.Image.fetchFunctions.google = (cursor, result, data) => {
@@ -307,7 +303,6 @@ export default NooBox => {
       let websitesRelatedInfo = [];
       //let relatedWebsiteList = $(page.find('#rso').find('._NId')[0]).find('.rc') || [];
       
-      
       let WebsiteList = page.find('#search .srg');
       let websitesRelatedImageInfo = [];
       let releatedImageWebsites    = [];
@@ -329,6 +324,7 @@ export default NooBox => {
             //get child of related and Image website list
             const singleItem = $(releatedImageWebsites[i]);
             //get Tag <a></a> use this one to get the link and title
+            //The critical information are all in the tag a
             const tagA = singleItem.find('a')[0] || {};
 
             website.link = tagA.href;
