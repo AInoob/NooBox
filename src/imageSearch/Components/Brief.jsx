@@ -45,7 +45,7 @@ export default function Brief(props){
     });
   }
  
-  console.log(props)
+  // console.log(props)
   return(
     <BriefContainer>
       <Row type = "flex" justify="start" align="bottom">
@@ -59,7 +59,7 @@ export default function Brief(props){
             
             <div className="custom-card">
             {/* need translate */}
-            <div> Keywords </div>
+            {/* <div> Keywords </div> */}
             {keyword}
         
             </div>

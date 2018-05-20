@@ -237,9 +237,11 @@ class Result extends React.Component {
   getInitialData() {
     const cursor = getParameterByName('cursor');
     getDB('NooBox.Image.result_' + cursor, (data) => {
+      //  console.log("test Data");
+      //  console.log(data);
       this.setState({ result: data });
       this.updateWebsites();
-      // console.log(data);
+     
     });
   }
   getKeyword(engine) {
@@ -262,19 +264,19 @@ class Result extends React.Component {
     
     if(keyWord != undefined){
      
-      return <h3><a target="_blank" href={((this.state.result||{})["google"]||{}).url} className="keyword">{keyWord}</a></h3>
+      return <h3 style = {{fontSize:"1.5rem",textAlign:"center"}}><a target="_blank" href={((this.state.result||{})["google"]||{}).url} className="keyword">{keyWord}</a></h3>
     }
     keyWord = this.getKeywordBeta("baidu");
     if(keyWord != undefined){
-      return <a target="_blank" href={((this.state.result||{})["baidu"]||{}).url} className="keyword"><h3>{keyWord}</h3></a>
+      return <h3 style = {{fontSize:"1.5rem",textAlign:"center"}}><a target="_blank" href={((this.state.result||{})["baidu"]||{}).url} className="keyword">{keyWord}</a></h3>
     }
 
     keyWord = this.getKeywordBeta("bing");
     if(keyWord != undefined){
-      return <a target="_blank" href={((this.state.result||{})["bing"]||{}).url} className="keyword"><h3>{keyWord}</h3></a>
+      return <h3 style = {{fontSize:"1.5rem",textAlign:"center"}}><a target="_blank" href={((this.state.result||{})["bing"]||{}).url} className="keyword">{keyWord}</a></h3>
     }
 
-    return <h3>No Title Info</h3>
+    return <h3 style = {{fontSize:"1.5rem",textAlign:"center"}}>No Title Info</h3>
   } 
   getImageSize(url) {
     if(this.state.imageSizes[url]) {
@@ -354,7 +356,7 @@ class Result extends React.Component {
 
   getWebsite() {
     const websites = this.state.websites || [];
-    //console.log(websites);
+    console.log(websites);
     return websites.sort(this.sort.bind(this)).map((website, index) => {
       // console.log(website)
       return (

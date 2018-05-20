@@ -41,13 +41,13 @@ export default function TabContent(props){
       }
 
       eachCol[eachCol.length] = (
-        <Card bordered={false}>
+        <Card bordered={false} key ={eachCol.length}>
           <div className="custom-image">
             <img alt = {searchEngine + "Result"} width="100%" src={imageUrl} />
           </div>
           <div className="custom-card">
             <Tooltip title ={fullTitle}>
-              <h3>{title}</h3>
+              <h3 style ={{fontSize: "1rem"}}>{title}</h3>
             </Tooltip>
             
             <Tooltip title ={fullDescription}>
@@ -66,7 +66,7 @@ export default function TabContent(props){
     <Row>
         {   renderContent.map((element,index) =>{
               return (
-                        <Col span ={4}>
+                        <Col span ={4} key = {index}>
                           {element}
                         </Col>
                      );
