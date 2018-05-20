@@ -238,7 +238,7 @@ class Result extends React.Component {
     const cursor = getParameterByName('cursor');
     getDB('NooBox.Image.result_' + cursor, (data) => {
       //  console.log("test Data");
-      //  console.log(data);
+      console.log(data);
       this.setState({ result: data });
       this.updateWebsites();
      
