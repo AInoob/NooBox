@@ -18,6 +18,7 @@ export default class SearchTab extends React.Component{
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   componentWillReceiveProps(nextProps){
+    //console.log(nextProps);
     if(nextProps.data){
       const mapPropsToTab = new Map();
       this.dealData(nextProps.data,mapPropsToTab);
@@ -38,7 +39,7 @@ export default class SearchTab extends React.Component{
     // console.log("keyPressed");
     // console.log(this.state.activeTab);
     let activeTab = this.state.activeTab;
-    console.log(event.keyCode);
+    //console.log(event.keyCode);
     switch(event.keyCode){
         case 37:
           if(activeTab - 1 == -1){
@@ -66,7 +67,7 @@ export default class SearchTab extends React.Component{
   }
 
  componentDidMount(){
-   console.log("here");
+   //console.log("here");
    document.onkeydown = this.handleKeyPress;
  }
 //  componentWillUnmount(){
@@ -91,6 +92,9 @@ export default class SearchTab extends React.Component{
     }
     return ItemCollector;
   }
+  handleTabClick(e){
+   this.setState({activeTab:e});
+  }
   render(){
 
     if(!this.props.data){
@@ -107,7 +111,7 @@ export default class SearchTab extends React.Component{
         <Row>
           <Col span = {2}></Col>
           <Col span = {20}>
-            <Tabs type="card" activeKey = {this.state.activeTab+""} >
+            <Tabs type="card" activeKey = {this.state.activeTab+""} onTabClick = {(e) => this.handleTabClick(e)}>
               {this.state.itemCollector.map((element,index) =>{
                 return(
                   <TabPane key = {index} tab={element[0]}>

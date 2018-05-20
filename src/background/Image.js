@@ -90,6 +90,7 @@ export default NooBox => {
   }
 
   NooBox.Image.imageSearch = async (info) => {
+    console.log("trigger right click");
     const source = info.srcUrl || info;
     let cursor = await promisedGetDB('imageCursor');
     if (typeof (cursor) === 'number') {
@@ -140,20 +141,45 @@ export default NooBox => {
       ((cursor, engine) => {
         NooBox.Image.imageSearchByUrlEngine(engine, result, cursor);
       })(cursor, engines[i]);
+      // NooBox.Image.imageSearchByUrlEngine(engines[i], result, cursor);
     }
   }
 
   NooBox.Image.imageSearchByUrlEngine = (engine, result, cursor) => {
     const ajaxRequest = NooBox.Image.generateAjaxRequest(engine, result);
     const body = {};
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open(ajaxRequest.method || 'GET', ajaxRequest.url, true);
+    console.log(ajaxRequest.url);
     xhr.onreadystatechange = () => {
       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
         result[engine].url = xhr.responseURL;
         NooBox.Image.fetchFunctions[engine](cursor, result, xhr.responseText);
+        if(engine == "google"){
+          let followingPageLink = result.google.followingPageLink;
+          let times = followingPageLink.length;
+          let followingPageRequest = new Array(times);
+
+          console.log(followingPageLink);
+          for(let i = 0; i< times; i++){
+            (function(i,link){
+              console.log(link);
+              followingPageRequest[i] = new XMLHttpRequest();
+              followingPageRequest[i].open('GET',link,true);
+              followingPageRequest[i].onreadystatechange = () =>{
+                if(followingPageRequest[i].readyState === XMLHttpRequest.DONE && followingPageRequest[i].status === 200){
+                  // console.log(  new window.DOMParser()).parseFromString(,"text/html"),followingPageRequest[i].responseText);
+                  NooBox.Image.fetchFunctions[engine](cursor, result, followingPageRequest[i].responseText);
+                }
+              }
+              followingPageRequest[i].send();
+            })(i,followingPageLink[i]);
+          }
+        }
+
       }
     };
+  
     xhr.onerror = (e) => {
       result[engine].result = 'failed';
       NooBox.Image.update(cursor, result);
@@ -197,15 +223,33 @@ export default NooBox => {
     sogou: 'http://pic.sogou.com/ris?query=',
     ascii2d: 'https://ascii2d.net/search/uri',
   };
-
+  // NooBox.Image.fetchFunctions.googleAllPage = async function(cursor,result, data){
+    
+  // }
   NooBox.Image.fetchFunctions.google = (cursor, result, data) => {
     try {
+      console.log("Hello1234");
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
       window.x = page;
-
-      const keyword = page.find('.card-section').find('a[style = "font-style:italic"]')[0].innerHTML;
-
+      let dataStream = [data];
+      let allPageUrlData = page.find('tbody').find('a');
+      let followingPageLink = [];
+      console.log(page);
+      if(!result.followingPageLink){
+        for(let i = 0; i < 9; i++){
+          if(allPageUrlData[i] && allPageUrlData[i].className ==="fl" && allPageUrlData[i].href){
+            followingPageLink[followingPageLink.length] = "https://www.google.com/search?tbs=" + allPageUrlData[i].href.split("search?tbs=")[1];
+          }
+        }
+        result.google.followingPageLink = followingPageLink;
+      }else{
+        result.google.linkPushed = true;
+      }
+      
+      // console.log(followingPageLink);
+      const keyword = page.find('.card-section').find('a[style = "font-style:italic"]')[0].innerHTML || "";
+      //console.log(page);
       //03/ 17/ 2018 Update @George 
       //format website content
       let websitesRelatedInfo = [];
@@ -214,56 +258,53 @@ export default NooBox => {
       //Two Module
       //(only related) and (image + related)
       let WebsiteList = page.find('#search .srg');
+      // if($(WebsiteList[0]).find("g-img")[0] == undefined){
+      //   //get related
+      //   let relatedWebsiteList = $(WebsiteList[0]).find('.g');
+      //   //console.log(relatedWebsiteList.length);
 
+      //   //get related website list
+      //   for (let i = 0; i < relatedWebsiteList.length; i++) {
+      //     const website = {
+      //       link: '',
+      //       title: '',
+      //       description: '',
+      //       searchEngine: 'google',
+      //       related: true
+      //     };
 
-      if($(WebsiteList[0]).find("g-img")[0] == undefined){
-        //get related
-        let relatedWebsiteList = $(WebsiteList[0]).find('.g');
-        //console.log(relatedWebsiteList.length);
-
-        //get related website list
-        for (let i = 0; i < relatedWebsiteList.length; i++) {
-          const website = {
-            link: '',
-            title: '',
-            description: '',
-            searchEngine: 'google',
-            related: true
-          };
-
-          //get child of related wensite list
-          const singleItem = $(relatedWebsiteList[i]);
-          //get Tag <a></a> use this one to get the link and title
-          const tagA = singleItem.find('a')[0] || {};
+      //     //get child of related wensite list
+      //     const singleItem = $(relatedWebsiteList[i]);
+      //     //get Tag <a></a> use this one to get the link and title
+      //     const tagA = singleItem.find('a')[0] || {};
           
-          website.link = tagA.href;
-          website.title = tagA.innerText;
+      //     website.link = tagA.href;
+      //     website.title = tagA.innerText;
 
-          //get description
-          //looks like
-          //<span>Date -
-          //  text
-          //<em>something</em>
-          //  text
-          //</span>
+      //     //get description
+      //     //looks like
+      //     //<span>Date -
+      //     //  text
+      //     //<em>something</em>
+      //     //  text
+      //     //</span>
          
 
-          const relatedDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
-          let relatedDescription = relatedDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
-          website.description = relatedDescription;
-          websitesRelatedInfo[websitesRelatedInfo.length] = website;
-        }
-      }
+      //     const relatedDescriptionHTML = singleItem.find(".s").find(".st")[0] == undefined ? {} : singleItem.find(".s").find(".st")[0].innerHTML;
+      //     let relatedDescription = relatedDescriptionHTML.split(" ").filter((word) => ((word.indexOf('<') == -1) && (word.indexOf('>') == -1)) ).join(' ');
+      //     website.description = relatedDescription;
+      //     websitesRelatedInfo[websitesRelatedInfo.length] = website;
+      //   }
+      // }
         //releted + image = releatedImageWebsites
-        let websitesRelatedImageInfo =[];
-        let releatedImageWebsites = [];
+        let websitesRelatedImageInfo = [];
+        let releatedImageWebsites    = [];
 
         if(WebsiteList.length == 1){
           releatedImageWebsites = $(WebsiteList[0]).find(".g");
         }else{
           releatedImageWebsites = $(WebsiteList[1]).find(".g");
         }
-        
           for (let i = 0; i < releatedImageWebsites.length; i++) {
             const website = {
               link: '',
@@ -305,31 +346,29 @@ export default NooBox => {
               else
                 website.imageUrl = tagAImageLink.slice(start, end);
             }
-
-            // if (website.imageUrl) {
-            //   let cut = website.imageUrl.indexOf('jpg%');
-            //   if (cut != -1) {
-            //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
-            //   }
-            //   cut = website.imageUrl.indexOf('png%');
-            //   if (cut != -1) {
-            //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
-            //   }
-            //   cut = website.imageUrl.indexOf('gif%');
-            //   if (cut != -1) {
-            //     website.imageUrl = website.imageUrl.slice(0, cut + 3);
-            //   }
-            // }
             websitesRelatedImageInfo[websitesRelatedImageInfo.length] = website;
-            //websites.push(website);
           
         }   
         result.google.keyword = keyword;
-        result.google.relatedWebsites = websitesRelatedInfo;
+        // result.google.relatedWebsites = websitesRelatedInfo;
         result.google.websites = websitesRelatedImageInfo;
         result.google.result = 'done';
-        NooBox.Image.update(cursor, result);  
+        NooBox.Image.update(cursor, result);
+
+        // for(let i = 0; i< allPageUrlArray.length; i++){
+        //   console.log("hit");
+        //   let req = new XMLHttpRequest();  
+        //   req.open('GET', allPageUrlArray[i], true);
+        //   req.send(null);
+        //   req.onreadystatechange = () => {
+        //     if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+        //       console.log("finish");
+        //     }
+        //   }; 
+        // }
+        
     } catch (e) {
+      console.log("Hello");
       console.log(e);
       result.google.result = 'failed';
       NooBox.Image.update(cursor, result);
