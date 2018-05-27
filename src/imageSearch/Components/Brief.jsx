@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button, Card,Row,Col,Icon,Popover,InputNumber,Alert} from 'antd';
+import { isAbsolute } from 'path';
 
 const BriefContainer = styled.div`
   height: 20%;
@@ -27,6 +28,11 @@ const BriefContainer = styled.div`
     margin-top: 20%;
     margin-left: 30px;
   }
+`;
+const AlertMessage = styled.div`
+  position:absolute;
+  top:  10px;
+  left: 50%;
 `;
 const DEFAULT_MAX_SEARCH = 10;
 const ENGINES =['google','baidu','tinyeye','bing','yandex','iqdb','saucenao','ascii2d'];
@@ -76,10 +82,13 @@ export default class Brief extends React.Component{
 
   syncSetting(){
     set("maxSearch",this.state.currentSetting,()=>{
-      console.log("successful")
+      const alert = (<Alert message="Successfully Update Your Setting" type="success" showIcon closable onClose= {() => this.alertOnclose()}/>)
+      this.setState({alert:alert})
     })
   }
-
+  alertOnclose(){
+    this.setState({alert:""});
+  }
   changeSetting(value,engineId){
     let newSetting = Object.assign({},this.state.currentSetting);
     newSetting[engineId] = value;
@@ -98,7 +107,6 @@ export default class Brief extends React.Component{
                 </Card.Grid>
                 );
       });
-
     }else{
       eachIcon = engines.map((element,index) =>{
         return (
@@ -123,10 +131,13 @@ export default class Brief extends React.Component{
                 );
       });
     }
- 
+    console.log(this.state.alert);
     //console.log(this.props)
     return(
       <BriefContainer>
+        <AlertMessage>
+            {this.state.alert}
+        </AlertMessage>
         <Row type = "flex" justify="start" align="bottom">
           <Col span ={2}/>
           <Col span ={6}>
