@@ -1,3 +1,17 @@
+const DEFAULT_MAX_SEARCH = 10;
+const ENGINES =['google','baidu','tinyeye','bing','yandex','iqdb','saucenao','ascii2d'];
+
+const DEFAULT_SETTING ={ 
+  google: DEFAULT_MAX_SEARCH,
+  baidu:  DEFAULT_MAX_SEARCH,
+  tineye: DEFAULT_MAX_SEARCH,
+  bing: DEFAULT_MAX_SEARCH,
+  yandex: DEFAULT_MAX_SEARCH,
+  iqdb:  DEFAULT_MAX_SEARCH,
+  saucenao: DEFAULT_MAX_SEARCH,
+  ascii2d: DEFAULT_MAX_SEARCH
+};
+
 export const defaultValues = [
   ['userId', (Math.random().toString(36) + '00000000000000000').slice(2, 19)],
   ['imageSearch', true],
@@ -14,18 +28,9 @@ export const defaultValues = [
   ['imageSearchUrl_bing', true],
   ['imageSearchUrl_yandex', true],
   ['imageSearchUrl_saucenao', false],
-
   ['imageSearchUrl_iqdb', false],
   ['imageSearchUrl_sogou', false],
   ['imageSearchUrl_ascii2d', false],
-  ['maxSearch_google',10],
-  ['maxSearch_baidu',10],
-  ['maxSearch_tineye',10],
-  ['maxSearch_bing',10],
-  ['maxSearch_yandex',10],
-  ['maxSearch_iqdb',10],
-  ['maxSearch_ascii2d',10],
-  ['maxSearch_saucenao',10],
   ['extractImages', true],
   ['screenshotSearch', true],
   ['videoControl', false],
@@ -35,6 +40,7 @@ export const defaultValues = [
   ['lastUpdateCheck', 0],
   ['updateHistory', []],
   ['history', true],
+  ['maxSearch',DEFAULT_SETTING],
 ];
 
 export const constantValues = [

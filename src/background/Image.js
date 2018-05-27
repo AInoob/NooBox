@@ -90,7 +90,8 @@ export default NooBox => {
   }
 
   NooBox.Image.imageSearch = async (info) => {
-    console.log("trigger right click");
+    NooBox.Image.engineMaxSearchSetting = await promisedGet('maxSearch');
+    // console.log(NooBox.Image.engineMaxSearchSetting);
     const source = info.srcUrl || info;
     let cursor = await promisedGetDB('imageCursor');
     if (typeof (cursor) === 'number') {
@@ -98,6 +99,7 @@ export default NooBox => {
     } else {
       cursor = 0;
     }
+   
     await promisedSetDB('imageCursor', cursor);
     NooBox.History.recordImageSearch(cursor, info);
     const engines = await promisedGetImageSearchEngines(NooBox.Image.engines);
@@ -139,13 +141,14 @@ export default NooBox => {
   NooBox.Image.imageSearchByUrl = (cursor, result, engines) => {
     for (let i = 0; i < engines.length; i++) {
       ((cursor, engine) => {
-        NooBox.Image.imageSearchByUrlEngine(engine, result, cursor);
+        let maxSearchSetting = NooBox.Image.engineMaxSearchSetting[engine];
+        NooBox.Image.imageSearchByUrlEngine(engine, result, cursor,maxSearchSetting);
       })(cursor, engines[i]);
       // NooBox.Image.imageSearchByUrlEngine(engines[i], result, cursor);
     }
   }
 
-  NooBox.Image.imageSearchByUrlEngine = (engine, result, cursor) => {
+  NooBox.Image.imageSearchByUrlEngine = (engine, result, cursor,maxSearchSetting) => {
     const ajaxRequest = NooBox.Image.generateAjaxRequest(engine, result);
     const body = {};
     let xhr = new XMLHttpRequest();
@@ -154,7 +157,7 @@ export default NooBox => {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
         result[engine].url = xhr.responseURL;
-        NooBox.Image.fetchFunctions[engine](cursor, result, xhr.responseText);
+        NooBox.Image.fetchFunctions[engine](cursor, result, xhr.responseText,maxSearchSetting);
         if(engine == "google"){
           let followingPageLink = result.google.followingPageLink;
           let times = followingPageLink.length;
@@ -168,8 +171,6 @@ export default NooBox => {
               followingPageRequest[i].open('GET',link,true);
               followingPageRequest[i].onreadystatechange = () =>{
                 if(followingPageRequest[i].readyState === XMLHttpRequest.DONE && followingPageRequest[i].status === 200){
-                  // console.log(  new window.DOMParser()).parseFromString(,"text/html"),followingPageRequest[i].responseText);
-                  // NooBox.Image.fetchFunctions[engine](cursor, result, followingPageRequest[i].responseText);
                   NooBox.Image.fetchFunctions.googleFowllingPage(cursor,result, followingPageRequest[i].responseText);
                 }
               }
@@ -224,7 +225,7 @@ export default NooBox => {
     sogou: 'http://pic.sogou.com/ris?query=',
     ascii2d: 'https://ascii2d.net/search/uri',
   };
-  NooBox.Image.fetchFunctions.googleFowllingPage =(cursor,result,data)=>{
+  NooBox.Image.fetchFunctions.googleFowllingPage =(cursor,result,data,maxSearchSetting)=>{
     try{
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
@@ -280,7 +281,7 @@ export default NooBox => {
       NooBox.Image.update(cursor, result);
     }
   };
-  NooBox.Image.fetchFunctions.google = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.google = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
@@ -294,6 +295,12 @@ export default NooBox => {
           followingPageLink[followingPageLink.length] = "https://www.google.com/search?tbs=" + allPageUrlData[i].href.split("search?tbs=")[1];
         }
       }
+      console.log(Math.ceil((maxSearchSetting - 5) / 10));
+      if(followingPageLink.length >  Math.ceil((maxSearchSetting - 5) / 10)){
+
+        followingPageLink.length = Math.ceil((maxSearchSetting - 5) / 10);
+      }
+      console.log(followingPageLink.length);
       result.google.followingPageLink = followingPageLink;
       // console.log(followingPageLink);
       const keyword = page.find('.card-section').find('a[style = "font-style:italic"]')[0].innerHTML || "";
@@ -363,7 +370,7 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.baidu = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.baidu = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
@@ -424,7 +431,7 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.tineye = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.tineye = (cursor, result, data,maxSearchSetting) => {
     data = data.replace(/<img[^>]*>/g, "");
     try {
       data = data.replace(/<img[^>]*>/g, "");
@@ -466,7 +473,7 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.bing = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.bing = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
       const keyword = $(data).find('.query').text();
@@ -480,7 +487,7 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.yandex = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.yandex = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
@@ -509,7 +516,7 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.saucenao = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.saucenao = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/ src=/g, " nb-src=");
       const page = $(data);
@@ -552,7 +559,7 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.iqdb = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.iqdb = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/ src=\'\/([^\/])/g, " nb-src='$1");
       data = data.replace(/ src=\"\/\//g, ' nb1-src="');
@@ -590,7 +597,7 @@ export default NooBox => {
 
   var x;
 
-  NooBox.Image.fetchFunctions.ascii2d = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.ascii2d = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img/g, "<nooboximage");
       const page = $(data);
@@ -629,7 +636,7 @@ export default NooBox => {
   };
 
 
-  NooBox.Image.fetchFunctions.sogou = (cursor, result, data) => {
+  NooBox.Image.fetchFunctions.sogou = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
       x = $(data);
