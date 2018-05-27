@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import {Button, Card,Row,Col,Icon,Popover,InputNumber} from 'antd';
+import {Button, Card,Row,Col,Icon,Popover,InputNumber,Alert} from 'antd';
 
 const BriefContainer = styled.div`
   height: 20%;
@@ -28,67 +28,134 @@ const BriefContainer = styled.div`
     margin-left: 30px;
   }
 `;
-export default function Brief(props){
-  const{source, keyword , results, engines} = props;
-  const n = Math.floor(24/props.engines.length);
-  const engineSetting = (<div>
-        <InputNumber min={5} max={100} defaultValue ={10}/>
-        <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
-  </div>);
-  let eachIcon;
-  if(engines == ""){
-    eachIcon = engines.map((element,index) =>{
-      return (
-              <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
-                  <img style ={{height: 50}} key = {index} src={'/thirdParty/'+element+'.png'} />
-              </Card.Grid>
-              );
-    });
-
-  }else{
-    eachIcon = engines.map((element,index) =>{
-      return (
-              <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
-                <a key ={index} target="_blank" key = {index} href = {(results[element] || {}).url}>
-                  <img style ={{height: "50px"}} key = {index} src={'/thirdParty/'+element+'.png'} />
-                </a> 
-                <div><Popover title = "Max Search Number" content = {engineSetting}><Icon type="setting" /></Popover></div>
-              </Card.Grid>
-              );
-    });
+const DEFAULT_MAX_SEARCH = 10;
+const ENGINES =['google','baidu','tinyeye','bing','yandex','iqdb','saucenao','ascii2d'];
+const DEFAULT_SETTING ={ 
+  google: DEFAULT_MAX_SEARCH,
+  baidu:  DEFAULT_MAX_SEARCH,
+  tineye: DEFAULT_MAX_SEARCH,
+  bing: DEFAULT_MAX_SEARCH,
+  yandex: DEFAULT_MAX_SEARCH,
+  iqdb:  DEFAULT_MAX_SEARCH,
+  saucenao: DEFAULT_MAX_SEARCH,
+  ascii2d: DEFAULT_MAX_SEARCH
+};
+export default class Brief extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      currentSetting:{},
+      getSetting:false,
+    }
   }
- 
-  // console.log(props)
-  return(
-    <BriefContainer>
-      <Row type = "flex" justify="start" align="bottom">
-        <Col span ={2}/>
-        <Col span ={6}>
-          <Card style={{ width: "100%",height: "100%" }} bodyStyle={{ padding: 0 }}>
+  //For developing
+  // componentWillMount(){
+  //   set("maxSearch",DEFAULT_SETTING,
+  //           ()=>{
+  //             console.log("success");
+  //             this.setState({currentSetting:DEFAULT_SETTING,getSetting:true});
+  //           });
+  // }
 
-            <div className="custom-image">
-              <img id = "imageInput" alt="example" width="100%" src={source} />
-            </div>
-            
-            <div className="custom-card">
-            {/* need translate */}
-            {/* <div> Keywords </div> */}
-            {keyword}
-        
-            </div>
-          </Card>
-        </Col>
-        <Col span ={1}/>
-        <Col span ={10}>
-          <Card style={{ width: "100%"}} bodyStyle={{ padding: 0 }}>
-              {eachIcon}
-          </Card>
-        </Col>
-        <Col span ={2}>
-        
-        </Col>
-      </Row>
-    </BriefContainer>
-   
-  );
+  componentWillMount(){
+    const{source, keyword , results, engines} = this.props;
+    get(["maxSearch"],(result)=>{
+      if(result == null){
+          set("maxSearch",DEFAULT_SETTING,
+            ()=>{
+              this.setState({currentSetting:DEFAULT_SETTING,getSetting:true});
+            }
+          );
+      }else{
+        // console.log("get result");
+        // console.log(result);
+        this.setState({currentSetting:result,getSetting:true});
+      }
+    })
+  }
+
+  syncSetting(){
+    set("maxSearch",this.state.currentSetting,()=>{
+      console.log("successful")
+    })
+  }
+
+  changeSetting(value,engineId){
+    let newSetting = Object.assign({},this.state.currentSetting);
+    newSetting[engineId] = value;
+    this.setState({currentSetting:newSetting});
+  }
+  render(){
+    const{source, keyword , results, engines} = this.props;
+    // console.log(engines);
+    const n = Math.floor(24/this.props.engines.length);
+    let eachIcon;
+    if(engines == ""){
+      eachIcon = engines.map((element,index) =>{
+        return (
+                <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
+                    <img style ={{height: 50}} key = {index} src={'/thirdParty/'+element+'.png'} />
+                </Card.Grid>
+                );
+      });
+
+    }else{
+      eachIcon = engines.map((element,index) =>{
+        return (
+                <Card.Grid style = {{width: "25%", textAlign: "center"}} key = {index}>
+                  <a key ={index} target="_blank" key = {index} href = {(results[element] || {}).url}>
+                    <img style ={{height: "50px"}} key = {index} src={'/thirdParty/'+element+'.png'} />
+                  </a> 
+                  {/*混乱Code 提示！，
+                  1.首先要知道是否已经从Chrome取得Setting
+                  2.然后渲染每一个Engine 的 Setting部分*/}
+                  {this.state.getSetting ? (
+                      <div>
+                        <Popover title = "Max Search Number" content = {<div>
+                                                                                <InputNumber min={5} max={100} value ={this.state.currentSetting[element]} onChange = {(value)=>this.changeSetting(value,element)}/>
+                                                                                <Button style = {{marginLeft:"10px"}} type = "primary" onClick ={()=>this.syncSetting()}>Save</Button>
+                                                                          </div>}
+                          ><Icon type="setting" />
+                          </Popover>
+                      </div>):(
+                      <div><Icon type = "loading"/></div>)}
+                </Card.Grid>
+                );
+      });
+    }
+ 
+    //console.log(this.props)
+    return(
+      <BriefContainer>
+        <Row type = "flex" justify="start" align="bottom">
+          <Col span ={2}/>
+          <Col span ={6}>
+            <Card style={{ width: "100%",height: "100%" }} bodyStyle={{ padding: 0 }}>
+
+              <div className="custom-image">
+                <img id = "imageInput" alt="example" width="100%" src={source} />
+              </div>
+              
+              <div className="custom-card">
+              {/* need translate */}
+              {/* <div> Keywords </div> */}
+              {keyword}
+          
+              </div>
+            </Card>
+          </Col>
+          <Col span ={1}/>
+          <Col span ={10}>
+            <Card style={{ width: "100%"}} bodyStyle={{ padding: 0 }}>
+                {eachIcon}
+            </Card>
+          </Col>
+          <Col span ={2}>
+          
+          </Col>
+        </Row>
+      </BriefContainer>
+    
+      );
+  }
 }

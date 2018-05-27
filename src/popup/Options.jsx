@@ -106,6 +106,7 @@ class Options extends React.Component {
     }
   }
   toggleSetting(id) {
+		console.log(id);
     const newValue = !this.state.settings[id];
     set(id, newValue, () => {
       this.setState((prevState) => {
