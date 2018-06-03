@@ -300,7 +300,6 @@ export default NooBox => {
 
         followingPageLink.length = Math.ceil((maxSearchSetting - 5) / 10);
       }
-      console.log(followingPageLink.length);
       result.google.followingPageLink = followingPageLink;
       // console.log(followingPageLink);
       const keyword = page.find('.card-section').find('a[style = "font-style:italic"]')[0].innerHTML || "";
@@ -363,7 +362,7 @@ export default NooBox => {
         result.google.result = 'done';
         NooBox.Image.update(cursor, result);   
     } catch (e) {
-      console.log("Hello");
+      // console.log("Hello");
       console.log(e);
       result.google.result = 'failed';
       NooBox.Image.update(cursor, result);
@@ -373,7 +372,17 @@ export default NooBox => {
   NooBox.Image.fetchFunctions.baidu = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
+      var doc = (new window.DOMParser()).parseFromString(data,"text/html");
+      // window.x = doc.getElementsByTagName('script')[2];
+      let node = doc.getElementsByTagName('script')[2].innerHTML;
+      console.log(node.substring(17,node.indexOf("bd.queryImageUrl")-1));
+      console.log(JSON.parse(node.substring(17,node.indexOf("bd.queryImageUrl")-1)));
+      // node.type = 'text/javascript'; 
+      // document.getElementsByTagName('head')[0].appendChild(node);
+      // console.log(doc);
       const page = $(data);
+      //  id = guessInfoMoreSize to get more image number
+      
       const keyword = page.find('.guess-info-word-link').text() || page.find('.guess-info-text-link').text();
       const relatedWebsites = [];
       let relatedWebsiteLinks = page.find('.guess-baike').find('.guess-baike-title').find('a');
