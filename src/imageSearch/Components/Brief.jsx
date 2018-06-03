@@ -35,6 +35,7 @@ const AlertMessage = styled.div`
   left: 50%;
 `;
 const DEFAULT_MAX_SEARCH = 10;
+const DEFAULT_MAX_SEARCH_GOOGLE = 5;
 const ENGINES =['google','baidu','tinyeye','bing','yandex','iqdb','saucenao','ascii2d'];
 const DEFAULT_SETTING ={ 
   google: DEFAULT_MAX_SEARCH,
@@ -62,7 +63,10 @@ export default class Brief extends React.Component{
   //             this.setState({currentSetting:DEFAULT_SETTING,getSetting:true});
   //           });
   // }
-
+  
+  //Before Render The Class
+  //Get Setting From Remote Setting
+  //IF it doesn't exist 
   componentWillMount(){
     const{source, keyword , results, engines} = this.props;
     get(["maxSearch"],(result)=>{
@@ -81,9 +85,27 @@ export default class Brief extends React.Component{
   }
 
   syncSetting(){
-    set("maxSearch",this.state.currentSetting,()=>{
+    let currentSetting = Object.assign ({},this.state.currentSetting);
+    for(let i  in currentSetting){
+      switch(i){
+        case'google':
+        if(currentSetting[i] % 10 < 5){
+          currentSetting[i] = (Math.floor(currentSetting[i] / 10) * 10) + 5;
+        }else{
+          currentSetting[i] = (Math.floor( (currentSetting[i] - 5 ) / 10) * 10) + 5;
+        }
+        // console.log(currentSetting[i]);
+        break;
+
+        default:
+        currentSetting[i] = Math.floor(currentSetting[i] /10) < 10 ? 10 : Math.floor(currentSetting[i] /10) * 10;
+        break;
+      }
+    
+    }
+    set("maxSearch",currentSetting,()=>{
       const alert = (<Alert message="Successfully Update Your Setting" type="success" showIcon closable onClose= {() => this.alertOnclose()}/>)
-      this.setState({alert:alert})
+      this.setState({alert:alert,currentSetting:currentSetting})
     })
   }
   alertOnclose(){
@@ -120,18 +142,18 @@ export default class Brief extends React.Component{
                   {this.state.getSetting ? (
                       <div>
                         <Popover title = "Max Search Number" content = {<div>
-                                                                                <InputNumber min={5} max={100} value ={this.state.currentSetting[element]} onChange = {(value)=>this.changeSetting(value,element)}/>
+                                                                                <InputNumber min={5} max={100} step ={10} value ={this.state.currentSetting[element]} onChange = {(value)=>this.changeSetting(value,element)}/>
                                                                                 <Button style = {{marginLeft:"10px"}} type = "primary" onClick ={()=>this.syncSetting()}>Save</Button>
                                                                           </div>}
                           ><Icon type="setting" />
-                          </Popover>
+                        </Popover>
                       </div>):(
                       <div><Icon type = "loading"/></div>)}
                 </Card.Grid>
                 );
       });
     }
-    console.log(this.state.alert);
+    //console.log(this.state.alert);
     //console.log(this.props)
     return(
       <BriefContainer>
