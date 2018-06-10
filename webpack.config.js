@@ -55,10 +55,11 @@ module.exports = env => {
       new CopyWebpackPlugin([
         { from: './src/options.html' },
         { from: './src/popup/popup.html' },
+        { from: './src/sandbox.html'},
         { from: './src/imageSearch/image.search.html' },
         { from: './src/manifest.json' },
         { from: './images/', to: 'images' },
-        { from: './thirdParty/', to: 'thirdParty' },
+        { from: './thirdParty/', to: 'thirdParty' }
       ],),
       timeWatch
     ]

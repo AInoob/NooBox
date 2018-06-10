@@ -1,3 +1,4 @@
+
 export default NooBox => {
   NooBox.Image = {};
   NooBox.Image.reverseSearchCursor = 0;
@@ -91,6 +92,14 @@ export default NooBox => {
 
   NooBox.Image.imageSearch = async (info) => {
     NooBox.Image.engineMaxSearchSetting = await promisedGet('maxSearch');
+
+    //create sandbox environment to run script
+    let sandbox = document.createElement("iframe");
+    sandbox.id  = "theFrame";
+    sandbox.src = "sandbox.html";
+    sandbox.style = "display:none";
+    document.getElementsByTagName("body")[0].appendChild(sandbox);
+
     // console.log(NooBox.Image.engineMaxSearchSetting);
     const source = info.srcUrl || info;
     let cursor = await promisedGetDB('imageCursor');
@@ -163,7 +172,7 @@ export default NooBox => {
           let times = followingPageLink.length;
           let followingPageRequest = new Array(times);
           // console.log(typeof(result.google.websites));
-          window.abc = result.google.websites;
+          // window.abc = result.google.websites;
           // console.log(followingPageLink);
           for(let i = 0; i< times; i++){
             (function(i,link){
@@ -177,6 +186,24 @@ export default NooBox => {
               followingPageRequest[i].send();
             })(i,followingPageLink[i]);
           }
+        }else if(engine == "tineye"){
+          let followingPageLink = result.tineye.followingPageLink;
+          let times = followingPageLink.length; 
+          let followingPageRequest = new Array(times);
+
+          for(let i = 0; i< times; i++){
+            (function(i,link){
+              followingPageRequest[i] = new XMLHttpRequest();
+              followingPageRequest[i].open('GET',link,true);
+              followingPageRequest[i].onreadystatechange = () =>{
+                if(followingPageRequest[i].readyState === XMLHttpRequest.DONE && followingPageRequest[i].status === 200){
+                  NooBox.Image.fetchFunctions.tineyeFowllingPage(cursor,result, followingPageRequest[i].responseText);
+                }
+              }
+              followingPageRequest[i].send();
+            })(i,followingPageLink[i]);
+          }
+          console.log(followingPageLink);
         }
 
       }
@@ -225,7 +252,8 @@ export default NooBox => {
     sogou: 'http://pic.sogou.com/ris?query=',
     ascii2d: 'https://ascii2d.net/search/uri',
   };
-  NooBox.Image.fetchFunctions.googleFowllingPage =(cursor,result,data,maxSearchSetting)=>{
+
+  NooBox.Image.fetchFunctions.googleFowllingPage =(cursor,result,data)=>{
     try{
       data = data.replace(/<img[^>]*>/g, "");
       const page = $(data);
@@ -281,6 +309,7 @@ export default NooBox => {
       NooBox.Image.update(cursor, result);
     }
   };
+
   NooBox.Image.fetchFunctions.google = (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
@@ -295,7 +324,7 @@ export default NooBox => {
           followingPageLink[followingPageLink.length] = "https://www.google.com/search?tbs=" + allPageUrlData[i].href.split("search?tbs=")[1];
         }
       }
-      console.log(Math.ceil((maxSearchSetting - 5) / 10));
+      // console.log(Math.ceil((maxSearchSetting - 5) / 10));
       if(followingPageLink.length >  Math.ceil((maxSearchSetting - 5) / 10)){
 
         followingPageLink.length = Math.ceil((maxSearchSetting - 5) / 10);
@@ -357,7 +386,6 @@ export default NooBox => {
         }   
         result.google.keyword = keyword;
         // result.google.relatedWebsites = websitesRelatedInfo;
-       
         result.google.websites = websitesRelatedImageInfo;
         result.google.result = 'done';
         NooBox.Image.update(cursor, result);   
@@ -369,67 +397,96 @@ export default NooBox => {
     }
   };
 
-  NooBox.Image.fetchFunctions.baidu = (cursor, result, data,maxSearchSetting) => {
+  NooBox.Image.fetchFunctions.waitForSandBox = (parseObj) =>{
+    return new Promise(function(resolve,reject){
+      //移除 listener
+      let remove = function(){
+        window.removeEventListener("message",trigger);
+      }
+      //触发Resolve
+      let trigger = function(event){
+        // console.log(this)
+        // console.log(remove);
+        remove();
+        resolve(event.data);
+      }
+      //添加Listener 
+      window.addEventListener("message",trigger);
+      //把数据发送Sandbox
+      document.getElementById('theFrame').contentWindow.postMessage(parseObj, '*');
+    })
+  }
+
+  NooBox.Image.fetchFunctions.baidu = async (cursor, result, data,maxSearchSetting) => {
     try {
       data = data.replace(/<img[^>]*>/g, "");
+      let baiduObj = {};
       var doc = (new window.DOMParser()).parseFromString(data,"text/html");
-      // window.x = doc.getElementsByTagName('script')[2];
+    
+      //处理数据
+      window.x = doc.getElementsByTagName('script')[2];
       let node = doc.getElementsByTagName('script')[2].innerHTML;
-      console.log(node.substring(17,node.indexOf("bd.queryImageUrl")-1));
-      console.log(JSON.parse(node.substring(17,node.indexOf("bd.queryImageUrl")-1)));
-      // node.type = 'text/javascript'; 
-      // document.getElementsByTagName('head')[0].appendChild(node);
-      // console.log(doc);
-      const page = $(data);
-      //  id = guessInfoMoreSize to get more image number
-      
-      const keyword = page.find('.guess-info-word-link').text() || page.find('.guess-info-text-link').text();
-      const relatedWebsites = [];
-      let relatedWebsiteLinks = page.find('.guess-baike').find('.guess-baike-title').find('a');
-      let relatedWebsiteDescriptions = page.find('.guess-baike').find('.guess-baike-text') || [];
-      for (let i = 0; i < relatedWebsiteLinks.length; i++) {
-        const website = {};
-        website.link = relatedWebsiteLinks[i].href;
-        website.title = relatedWebsiteLinks[i].innerText;
-        website.description = relatedWebsiteDescriptions[i].innerHTML;
-        website.searchEngine = 'baidu';
-        website.related = true;
-        relatedWebsites.push(website);
-      }
-      relatedWebsiteLinks = page.find('.guess-newbaike').find('.guess-newbaike-text-title').find('a');
-      relatedWebsiteDescriptions = page.find('.guess-newbaike').find('.guess-newbaike-text-box') || [];
-      for (let i = 0; i < relatedWebsiteLinks.length; i++) {
-        let website = {};
-        website.link = relatedWebsiteLinks[i].href;
-        website.title = relatedWebsiteLinks[i].innerText;
-        website.description = relatedWebsiteDescriptions[i].innerHTML;
-        website.searchEngine = 'baidu';
-        website.related = true;
-        relatedWebsites.push(website);
-      }
-      const websites = [];
-      const websiteList = page.find('.source-card-topic') || [];
-      for (let i = 0; i < websiteList.length; i++) {
-        const website = {
-          searchEngine: 'baidu'
-        };
-        const temp = $(websiteList[i]);
-        const x = temp.find('a')[0] || {};
-        website.link = x.href;
-        website.title = x.innerText;
-        const y = temp.find('.source-card-topic-content')[0] || {};
-        website.description = y.innerHTML;
-        const z = temp.find('.source-card-topic-same-image')[0];
-        if (z) {
-          const start = z.style.backgroundImage.indexOf('http');
-          const end = z.style.backgroundImage.indexOf('")');
-          website.imageUrl = z.style.backgroundImage.slice(start, end);
-          website.imageUrl = website.imageUrl.replace(/&amp;/g, '');
+      node = node.substring(17,node.indexOf("bd.queryImageUrl")-1);
+      baiduObj.bdString = "bd = " + node;
+      let websites = [];
+      //   需要取得的参数
+      //   website.link 
+      //   website.title 
+      //   website.description 
+      //   website.searchEngine = 'baidu';
+      //   website.related = true;
+      //   代码会在这里等待
+      const {simiList,sameList,guessWord} = await NooBox.Image.fetchFunctions.waitForSandBox(baiduObj);
+      let count = 0;
+      //先处理 Same List
+      if(sameList){
+        while(maxSearchSetting >= 0 && count < sameList.length){
+
+          let singleItem           = {};
+          singleItem.imageUrl      = sameList[count].thumbURL || "";
+
+          if(singleItem.imageUrl === ""){
+            count++;
+            continue;
+          }
+          singleItem.title         = sameList[count].fromPageTitle   || "";
+          singleItem.link          = sameList[count].fromURL  ||"";
+          singleItem.description   = sameList[count].textHost || "";
+          singleItem.searchEngine  = 'baidu';
+          singleItem.related       = true;
+
+          //add website to websites
+          maxSearchSetting--;
+          websites[websites.length] = singleItem;
+          count ++;
         }
-        websites.push(website);
       }
-      result.baidu.keyword = keyword;
-      result.baidu.relatedWebsites = relatedWebsites;
+      //然后处理 Similar List
+      count = 0;
+      if(simiList){
+        while(maxSearchSetting >= 0 && count < simiList.length){
+          let singleItem   = {};
+          singleItem.imageUrl      = simiList[count].MiddleThumbnailImageUrl ||"";
+ 
+
+          if(singleItem.imageUrl === ""){
+            count++;
+            continue;
+          }
+          singleItem.link        = simiList[count].fromURL  ||"";
+          singleItem.title       = simiList[count].fromPageTitle ||"";
+          singleItem.description = simiList[count].FromPageSummary || "";
+          singleItem.searchEngine  = 'baidu';
+          singleItem.related       = true;
+
+          //add website to websites
+          maxSearchSetting--;
+          websites[websites.length] = singleItem;
+          count ++;
+        }
+      }
+      //Summary
+      result.baidu.keyword  = guessWord != undefined ? guessWord[0]:"";
       result.baidu.websites = websites;
       result.baidu.result = 'done';
       NooBox.Image.update(cursor, result);
@@ -439,40 +496,142 @@ export default NooBox => {
       NooBox.Image.update(cursor, result);
     }
   };
+  NooBox.Image.fetchFunctions.tineyeFowllingPage = (cursor,result,data)=>{
+    try{
+      const page = (new window.DOMParser()).parseFromString(data,"text/html");
+      const websiteList = page.getElementsByClassName("match-row") || [];
+      let count = 0;
+      let websites = [];
+      while(count < websiteList.length){
+        let singleResult = {};
+        let singleItem   = websiteList[count];
+        let thumb        = singleItem.getElementsByClassName("match-thumb")[0];
+        let links        = singleItem.getElementsByTagName("a");
+        // console.log(thumb.getElementsByTagName("img")[0].getAttribute("src"));
+        singleResult.imageUrl = thumb.getElementsByTagName("img")[0].getAttribute("src")||"";
 
-  NooBox.Image.fetchFunctions.tineye = (cursor, result, data,maxSearchSetting) => {
-    data = data.replace(/<img[^>]*>/g, "");
-    try {
-      data = data.replace(/<img[^>]*>/g, "");
-      const page = $(data);
-      const websites = [];
-      const relatedWebsites = [];
-      const websiteList = $(page.find('.match')) || [];
-      for (let i = 0; i < websiteList.length; i++) {
-        const website = {
-          searchEngine: 'tineye',
-          related: true,
-          description: ''
+        for(let i = 0; i< links.length; i++){
+          let matchString = links[i].innerHTML;
+          if(matchString === "view image"){
+            singleResult.link     = links[i + 1] ? links[i + 1].getAttribute("href"):"";
+          }
+        }
+        // console.log(thumb);
+        // console.log(singleResult.imageUrl);
+        singleResult.imagePro     = {
+          type: thumb.getElementsByTagName("span")[0].innerHTML.replace(",","") || "",
+          imgSize : thumb.getElementsByTagName("span")[1].innerHTML.replace(",","") || "",
+          fileSize : thumb.getElementsByTagName("span")[2].innerHTML.replace(",","") || "",
         };
-        const temp = $(websiteList[i]);
-        if (temp.find('.top-padding').length > 0) {
-          website.title = $(temp).find('h4')[0].title;
-          const x = temp.find('.top-padding').find('a')[0] || {};
-          website.link = x.href;
-          relatedWebsites.push(website);
-        } else {
-          website.title = $(temp).find('h4')[0].title;
-          const x = $(temp).find('p').find('a')[2] || {};
-          website.link = x.href;
-          website.description = x.href;
-          const y = $(temp).find('p').find('a')[1] || {};
-          website.imageUrl = y.href;
-          website.searchEngine = 'tineye';
-          websites.push(website);
+
+        singleResult.searchEngine = "tineye"
+        singleResult.description  = "";
+        singleResult.title        = "";
+        count ++;
+        websites[websites.length] =   singleResult;
+      }
+      result.tineye.websites = result.tineye.websites.concat(websites);
+      // console.log(result.tineye.websites);
+      result.tineye.result = 'done';
+      NooBox.Image.update(cursor, result);
+
+    }catch(e){
+      result.tineye.result = 'failed';
+      NooBox.Image.update(cursor, result);
+      console.log(e);
+    }
+  }
+  NooBox.Image.fetchFunctions.tineye = (cursor, result, data,maxSearchSetting) => {
+    try {
+      // data = data.replace(/ src=/g, "nb-src=");
+      const page = (new window.DOMParser()).parseFromString(data,"text/html");
+      const websites = [];
+      const totalSearchResult = Number.parseInt(page.getElementsByClassName("search-details")[0].getElementsByTagName("h2")[0].innerHTML.split(" ")[0] )
+      // window.x = page;
+      if(totalSearchResult){
+        maxSearchSetting = totalSearchResult > maxSearchSetting ? maxSearchSetting : totalSearchResult;
+      }
+      // console.log(totalSearchResult);
+      const websiteList = page.getElementsByClassName("match-row") || [];
+      const links       = page.getElementsByTagName("link");
+      let   pageLink;
+      for(let i = 0; i< links.length; i++){
+        if(links[i].getAttribute("href").indexOf("https") != -1 && links[i].getAttribute("rel") == "shortcut icon"){
+          pageLink = links[i].getAttribute("href").replace("query","search");
         }
       }
+      let followingPageLink = [];
+      
+      if(pageLink){
+        const follwoing = page.getElementsByClassName("pagination-bottom")[0].getElementsByTagName("a");
+        for(let i = 0; i < follwoing.length; i++){
+          if(follwoing[i].getAttribute("class") == null){
+            followingPageLink[followingPageLink.length] = pageLink + follwoing[i].getAttribute("href");
+          }
+        }
+      }
+      // console.log(followingPageLink);
+      followingPageLink.length =  followingPageLink.length > Math.ceil( (maxSearchSetting - 10)/10) ? Math.ceil( (maxSearchSetting - 10)/10):followingPageLink.length;
+      console.log(followingPageLink.length);
+      result.tineye.followingPageLink = followingPageLink;
+      // console.log(websiteList);
+      let count = 0;
+      while(maxSearchSetting >= 0 && count < websiteList.length){
+        let singleResult = {};
+        let singleItem   = websiteList[count];
+        let thumb        = singleItem.getElementsByClassName("match-thumb")[0];
+        let links        = singleItem.getElementsByTagName("a");
+        // console.log(thumb.getElementsByTagName("img")[0].getAttribute("src"));
+        singleResult.imageUrl = thumb.getElementsByTagName("img")[0].getAttribute("src")||"";
+
+        for(let i = 0; i< links.length; i++){
+          let matchString = links[i].innerHTML;
+          if(matchString === "view image"){
+            singleResult.link     = links[i + 1] ? links[i + 1].getAttribute("href"):"";
+          }
+        }
+        // console.log(thumb);
+        // console.log(singleResult.imageUrl);
+        singleResult.imagePro     = {
+          type: thumb.getElementsByTagName("span")[0].innerHTML.replace(",","") || "",
+          imgSize : thumb.getElementsByTagName("span")[1].innerHTML.replace(",","") || "",
+          fileSize : thumb.getElementsByTagName("span")[2].innerHTML.replace(",","") || "",
+        };
+
+        singleResult.searchEngine = "tineye"
+        singleResult.description  = "";
+        singleResult.title        = "";
+        maxSearchSetting -- ;
+        count ++;
+        websites[websites.length] =   singleResult;
+      }
+      // const websiteList = $(page.find('.match')) || [];
+      // for (let i = 0; i < websiteList.length; i++) {
+      //   const website = {
+      //     searchEngine: 'tineye',
+      //     related: true,
+      //     description: ''
+      //   };
+      //   const temp = $(websiteList[i]);
+      //   if (temp.find('.top-padding').length > 0) {
+      //     website.title = $(temp).find('h4')[0].title;
+      //     const x = temp.find('.top-padding').find('a')[0] || {};
+      //     website.link = x.href;
+      //     relatedWebsites.push(website);
+      //   } else {
+      //     website.title = $(temp).find('h4')[0].title;
+      //     const x = $(temp).find('p').find('a')[2] || {};
+      //     website.link = x.href;
+      //     website.description = x.href;
+      //     const y = $(temp).find('p').find('a')[1] || {};
+      //     website.imageUrl = y.href;
+      //     website.searchEngine = 'tineye';
+      //     websites.push(website);
+      //   }
+      // }
+      result.tineye.followingPageLink
       result.tineye.websites = websites;
-      result.tineye.relatedWebsites = relatedWebsites;
+      result.tineye.relatedWebsites = [];
       result.tineye.result = 'done';
       NooBox.Image.update(cursor, result);
     } catch (e) {
@@ -842,5 +1001,4 @@ export default NooBox => {
       }
     });
   }
-
 };
