@@ -9,7 +9,11 @@ import SearchTabs from './Components/SearchContent/SearchTabs';
 const ImageSearchDiv = styled.div`
   margin-top: 3%;
 	margin-left: 66px;
-	margin-right: 66px;
+  margin-right: 66px;
+  .ant-card-body {
+    padding: 3px;
+    zoom: 1;
+  }
 	.input-field.col label {
 		left: 0rem;
 	}
@@ -238,7 +242,7 @@ class Result extends React.Component {
     const cursor = getParameterByName('cursor');
     getDB('NooBox.Image.result_' + cursor, (data) => {
       //  console.log("test Data");
-      console.log(data);
+      // console.log(data);
       this.setState({ result: data });
       this.updateWebsites();
      
@@ -356,7 +360,6 @@ class Result extends React.Component {
 
   getWebsite() {
     const websites = this.state.websites || [];
-    console.log(websites);
     return websites.sort(this.sort.bind(this)).map((website, index) => {
       // console.log(website)
       return (

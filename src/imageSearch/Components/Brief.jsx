@@ -114,8 +114,8 @@ export default class Brief extends React.Component{
   changeSetting(value,engineId){
     let newSetting = Object.assign({},this.state.currentSetting);
     newSetting[engineId] = value;
-    console.log(value);
-    console.log(engineId);
+    // console.log(value);
+    // console.log(engineId);
     this.setState({currentSetting:newSetting},function(){console.log(this.state.currentSetting)});
   }
   render(){

@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Card, Row, Col, Tooltip,Icon } from 'antd';
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faSolid from '@fortawesome/fontawesome-free-solid'
+// faInfo
 export default function TabContent(props){
 
   const content = props.data;
@@ -27,7 +30,7 @@ export default function TabContent(props){
       }
       //convert 2 demension array position to 1 demension array position
       let {imageUrl,title,description,searchEngine,link} = content[ j * colLength + i];
-      console.log(imageUrl);
+      // console.log(imageUrl);
       let fullDescription;
       let fullTitle;
 
@@ -42,7 +45,7 @@ export default function TabContent(props){
       }
 
       eachCol[eachCol.length] = (
-        <Card bordered={false} key ={eachCol.length}>
+        <Card bordered={false} key ={eachCol.length} style ={{padding:"2px"}}>
           <div className="custom-image">
             <img alt = {searchEngine + "Result"} width="100%" src={imageUrl} />
           </div>
@@ -56,7 +59,7 @@ export default function TabContent(props){
             </Tooltip>
           </div>
           <div style ={{color : "rgb(236,236,236)", width: "100%", fontSize: "14px"}}>
-            <a href = {link} target="_blank"><Icon type="link" /></a>
+            <a href = {link} target="_blank"><FontAwesomeIcon icon={faSolid.faLink} /></a>
           </div>
         </Card>
       );

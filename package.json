@@ -4,6 +4,9 @@
   "description": "A Chrome extension that contains useful tools",
   "main": "webpack.config.js",
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/react-fontawesome": "0.0.20",
     "antd": "^2.13.13",
     "css-loader": "^0.28.10",
     "puppeteer": "^1.4.0",
