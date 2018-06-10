@@ -592,7 +592,7 @@ export default NooBox => {
         }
         // console.log(thumb);
         // console.log(singleResult.imageUrl);
-        singleResult.imagePro     = {
+        singleResult.imageProp     = {
           type: thumb.getElementsByTagName("span")[0].innerHTML.replace(",","") || "",
           imgSize : thumb.getElementsByTagName("span")[1].innerHTML.replace(",","") || "",
           fileSize : thumb.getElementsByTagName("span")[2].innerHTML.replace(",","") || "",
