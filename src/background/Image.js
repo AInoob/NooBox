@@ -162,7 +162,7 @@ export default NooBox => {
     const body = {};
     let xhr = new XMLHttpRequest();
     xhr.open(ajaxRequest.method || 'GET', ajaxRequest.url, true);
-    console.log(ajaxRequest.url);
+    // console.log(ajaxRequest.url);
     xhr.onreadystatechange = () => {
       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
         result[engine].url = xhr.responseURL;
@@ -203,7 +203,7 @@ export default NooBox => {
               followingPageRequest[i].send();
             })(i,followingPageLink[i]);
           }
-          console.log(followingPageLink);
+          // console.log(followingPageLink);
         }
 
       }
@@ -572,7 +572,7 @@ export default NooBox => {
       }
       // console.log(followingPageLink);
       followingPageLink.length =  followingPageLink.length > Math.ceil( (maxSearchSetting - 10)/10) ? Math.ceil( (maxSearchSetting - 10)/10):followingPageLink.length;
-      console.log(followingPageLink.length);
+      // console.log(followingPageLink.length);
       result.tineye.followingPageLink = followingPageLink;
       // console.log(websiteList);
       let count = 0;
@@ -913,7 +913,7 @@ export default NooBox => {
     let file = files[i];
     const reader = new window.FileReader();
     reader.onloadend = () => {
-      console.log(remains);
+      // console.log(remains);
       addImage(reader.result);
     }
     function addImage(dataURI) {
