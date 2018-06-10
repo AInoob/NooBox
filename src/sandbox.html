@@ -1,0 +1,38 @@
+<!--
+  - Copyright (c) 2012 The Chromium Authors. All rights reserved.
+  - Use of this source code is governed by a BSD-style license that can be
+  - found in the LICENSE file.
+  -->
+  <!doctype html>
+  <html>
+    <head>
+    </head>
+    <body>
+      <p>1233</p>
+      <script>
+        // Set up message event handler:
+        window.addEventListener('message', function(event) {
+          let baiduObj = event.data;
+          let bdCode   = eval(baiduObj.bdString);
+          event.source.postMessage(bdCode, event.origin);
+          // // if we don't know the templateName requested, return an error message
+          // if (!template) {
+          //   result = 'Unknown template: ' + event.data.templateName;
+          // } else {
+          //   switch(command) {
+          //     case 'render':
+          //       result = template(event.data.context);
+          //       break;
+          //   // you could even do dynamic compilation, by accepting a command
+          //   // to compile a new template instead of using static ones, for example:
+          //   // case 'new':
+          //   //   template = Handlebars.compile(event.data.templateSource);
+          //   //   result = template(event.data.context);
+          //   //   break;
+          //   }
+          // }
+          // event.source.postMessage({'result': result}, event.origin);
+        });
+      </script>
+    </body>
+  </html>

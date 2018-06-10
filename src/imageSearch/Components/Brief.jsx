@@ -96,9 +96,9 @@ export default class Brief extends React.Component{
         }
         // console.log(currentSetting[i]);
         break;
-
+          
         default:
-        currentSetting[i] = Math.floor(currentSetting[i] /10) < 10 ? 10 : Math.floor(currentSetting[i] /10) * 10;
+        currentSetting[i] = currentSetting[i] < 10 ? 10 : Math.floor(currentSetting[i] /10) * 10;
         break;
       }
     
@@ -114,7 +114,9 @@ export default class Brief extends React.Component{
   changeSetting(value,engineId){
     let newSetting = Object.assign({},this.state.currentSetting);
     newSetting[engineId] = value;
-    this.setState({currentSetting:newSetting});
+    console.log(value);
+    console.log(engineId);
+    this.setState({currentSetting:newSetting},function(){console.log(this.state.currentSetting)});
   }
   render(){
     const{source, keyword , results, engines} = this.props;

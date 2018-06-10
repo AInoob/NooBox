@@ -27,6 +27,7 @@ export default function TabContent(props){
       }
       //convert 2 demension array position to 1 demension array position
       let {imageUrl,title,description,searchEngine,link} = content[ j * colLength + i];
+      console.log(imageUrl);
       let fullDescription;
       let fullTitle;
 

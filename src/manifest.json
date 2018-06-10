@@ -29,7 +29,7 @@
     }
   ],
   "sandbox": {
-    "pages":["crypter.html"]
+    "pages":["crypter.html","sandbox.html"]
   },
   "permissions": [
     "tabs",
