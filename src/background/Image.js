@@ -419,7 +419,6 @@ export default NooBox => {
 
   NooBox.Image.fetchFunctions.baidu = async (cursor, result, data,maxSearchSetting) => {
     try {
-      data = data.replace(/<img[^>]*>/g, "");
       let baiduObj = {};
       var doc = (new window.DOMParser()).parseFromString(data,"text/html");
     
