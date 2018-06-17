@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "roadhog build",
-    "dev"  : "roadhog build --watch",
+    "dev": "roadhog build --watch",
     "lint": "eslint --ext .js src test",
     "precommit": "npm run lint"
   },
