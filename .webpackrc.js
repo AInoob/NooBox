@@ -16,5 +16,7 @@ export default {
   ],
   entry: {
     popup:"./src/popup.js",
+    background:"./src/background/index.js",
+    imageSearch:"./src/imageSearch.js",
   },
 };
