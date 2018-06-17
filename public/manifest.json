@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_appName__",
+  "description": "__MSG_appDesc__",
+  "short_name": "NB",
+  "version": "0.9.6.0",
+  "browser_action": {
+    "default_icon": "static/nooboxLogos/icon_128.png",
+    "default_title": "NooBox~",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "static/nooboxLogos/icon_128.png"
+  },
+  "options_page": "options.html",
+  "content_scripts":[
+    {
+      "matches":[
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js":["popup.js"],
+      "run_at":"document_start",
+      "all_frames":true
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "notifications",
+    "<all_urls>"
+  ],
+  "minimum_chrome_version": "35",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
+}
