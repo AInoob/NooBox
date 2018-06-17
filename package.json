@@ -1,58 +1,29 @@
 {
-  "name": "noobox",
-  "version": "0.1.0",
-  "description": "A Chrome extension that contains useful tools",
-  "main": "webpack.config.js",
+  "private": true,
+  "scripts": {
+    "build": "roadhog build",
+    "dev"  : "roadhog build --watch",
+    "lint": "eslint --ext .js src test",
+    "precommit": "npm run lint"
+  },
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.8",
-    "@fortawesome/fontawesome-free-solid": "^5.0.13",
-    "@fortawesome/react-fontawesome": "0.0.20",
-    "antd": "^2.13.13",
-    "css-loader": "^0.28.10",
-    "puppeteer": "^1.4.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-helmet": "^5.2.0",
-    "style-loader": "^0.19.0",
-    "styled-components": "^2.1.1",
-    "timeago-react": "^1.2.2"
+    "antd": "^3.6.2",
+    "babel-plugin-import": "^1.8.0",
+    "dva": "^2.3.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-es2015-parameters": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.16.0",
-    "babel-register": "^6.26.0",
+    "babel-plugin-dva-hmr": "^0.3.2",
     "copy-webpack-plugin": "^4.5.1",
-    "uglifyjs-webpack-plugin": "^1.2.5",
-    "webpack": "^3.11.0",
-    "webpack-watch-time-plugin": "^0.1.2",
-    "yamljs": "^0.3.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ./scripts/build.js && webpack -w --env.dev=true",
-    "prod": "node ./scripts/build.js && webpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AInoob/NooBox.git"
-  },
-  "keywords": [
-    "NooBox",
-    "Chrome",
-    "extension",
-    "reverse image search",
-    "webmaster"
-  ],
-  "author": "AInoob",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/AInoob/NooBox/issues"
-  },
-  "homepage": "https://github.com/AInoob/NooBox#readme"
+    "eslint": "^4.14.0",
+    "eslint-config-umi": "^0.1.1",
+    "eslint-plugin-flowtype": "^2.34.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "husky": "^0.12.0",
+    "redbox-react": "^1.4.3",
+    "roadhog": "^2.0.0"
+  }
 }
