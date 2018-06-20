@@ -1,6 +1,5 @@
 import dva from 'dva';
-import './popup.css';
-
+// import './popup.css';
 // 1. Initialize
 const popup = dva();
 
