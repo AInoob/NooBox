@@ -1,11 +1,11 @@
 import React from "react";
 
-export default class About extends React.Component{
+export default class UserHistory extends React.Component{
   render(){
     return(
       <div>
         Test C hange
-        Hello World, This is Popup
+        Hello World, This is History
       </div>
     )
   }

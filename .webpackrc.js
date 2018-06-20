@@ -1,12 +1,5 @@
 
 export default {
-   extraBabelPlugins:[
-    [ "import", 
-      { libraryName: "antd", 
-        libraryDirectory: "es", 
-        style: "css" },
-    ],
-  ],
   copy: [
     {
       "from": "./src/assets",
@@ -19,4 +12,5 @@ export default {
     background:"./src/background/index.js",
     imageSearch:"./src/imageSearch.js",
   },
+  devtool: "source-map"
 };
