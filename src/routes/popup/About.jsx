@@ -5,7 +5,7 @@ export default class About extends React.Component{
     return(
       <div>
         Test C hange
-        Hello World, This is Popup
+        Hello World, This is About
       </div>
     )
   }
