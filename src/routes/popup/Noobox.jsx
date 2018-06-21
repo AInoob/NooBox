@@ -4,7 +4,6 @@ import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
 import { Menu, Icon,Button } from 'antd';
-import 'antd/dist/antd.css';
 import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../common/navURL.js";
 import {Link,Router,Redirect} from 'react-router-dom';
 const NooboxContainer = styled.div`

@@ -19,7 +19,7 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js":["popup.js"],
+      "js":["js/popup.js"],
       "run_at":"document_start",
       "all_frames":true
     }
