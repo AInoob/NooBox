@@ -3,7 +3,7 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack -w --mode development",
-    "lint": "eslint --ext .js src test",
+    "lint": "eslint --ext .js src test"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",

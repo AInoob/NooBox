@@ -17,7 +17,8 @@ class Noobox extends React.Component{
     }
   }
   render(){
-    const{match} = this.props;
+    const{match} = this.props; 
+    let a = 1;
     console.log(match);
     console.log(faSolid);
     console.log(OVERVIEW_URL);
