@@ -15,7 +15,11 @@ module.exports = {
     imageSearch:"./src/imageSearch.js",
   },
   resolve: {
-    extensions: ['.webpack.js', '.js', '.jsx']
+    extensions: ['.webpack.js', '.js', '.jsx'],
+    alias: {
+      SRC: path.resolve(__dirname, 'src/'),
+      // ASSET: path.resolve(__dirname,'assets/'),
+    }
   },
   module: {
     rules: [
@@ -36,6 +40,16 @@ module.exports = {
           ],
         },
       },
+      {
+        test: /\.(png|jp(e*)g|svg)$/,  
+        use: [{
+            loader: 'url-loader',
+            options: { 
+                // Convert images < 8kb to base64 strings
+                name: 'images/[hash]-[name].[ext]'
+            } 
+        }]
+    }
     ]
   },
   output: {
