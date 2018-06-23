@@ -4,7 +4,7 @@ import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
 import { Menu, Icon,Button } from 'antd';
-import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../common/navURL.js";
+import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../constant/navURL.js";
 import {Link,Router,Redirect} from 'react-router-dom';
 const NooboxContainer = styled.div`
   width: 520px;
@@ -25,7 +25,7 @@ class Noobox extends React.Component{
     return(
       <NooboxContainer>
         {/* <Button type = "danger">Test</Button> */}
-        <Menu 
+        <Menu
           mode="horizontal"
         >
           <Menu.Item key="Overview">
@@ -36,7 +36,7 @@ class Noobox extends React.Component{
           </Menu.Item>
           <Menu.Item key="UserHistory">
             <Link to={HISTORY_URL}>
-            <Icon type="mail" /> 
+            <Icon type="mail" />
               UserHistory
             </Link>
           </Menu.Item>
@@ -48,7 +48,7 @@ class Noobox extends React.Component{
           </Menu.Item>
           <Menu.Item key="About">
             <Link to={ABOUT_URL}>
-            <Icon type="mail" /> 
+            <Icon type="mail" />
               About
             </Link>
           </Menu.Item>

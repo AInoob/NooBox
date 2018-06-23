@@ -5,7 +5,7 @@ import Overview from './routes/popup/Overview';
 import Options from './routes/popup/Options.jsx';
 import UserHistory from './routes/popup/UserHistory';
 import About from './routes/popup/About.jsx';
-import  {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "./common/navURL";
+import  {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "./constant/navURL";
 
 function RouterConfig({ history }) {
 
