@@ -6,8 +6,16 @@ import faSolid from '@fortawesome/fontawesome-free-solid'
 import { Menu, Icon,Button } from 'antd';
 import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../constant/navURL.js";
 import {Link,Router,Redirect} from 'react-router-dom';
+import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../common/navURL.js";
+import {Link} from 'react-router-dom';
 const NooboxContainer = styled.div`
-  width: 520px;
+  width: 360px;
+  .ant-menu-item{
+    text-align:center;
+    width: 25%;
+    font-size: 14pt;
+  }
+
 `;
 class Noobox extends React.Component{
   componentWillMount(){
@@ -18,9 +26,9 @@ class Noobox extends React.Component{
   }
   render(){
     const{match} = this.props;
+    let a = 1;
     console.log(match);
     console.log(faSolid);
-    console.log(OVERVIEW_URL);
 
     return(
       <NooboxContainer>
@@ -30,26 +38,22 @@ class Noobox extends React.Component{
         >
           <Menu.Item key="Overview">
             <Link to={OVERVIEW_URL}>
-            <Icon type="mail" />
-              Overview
+            <FAIcon icon ={faSolid.faToolbox}/>
             </Link>
           </Menu.Item>
           <Menu.Item key="UserHistory">
             <Link to={HISTORY_URL}>
-            <Icon type="mail" />
-              UserHistory
+            <FAIcon icon ={faSolid.faHistory}/>
             </Link>
           </Menu.Item>
           <Menu.Item key="Options">
-            <Link to={OPTIONS_URL}>
-            <Icon type="mail" />
-              Options
+            <Link to = {OPTIONS_URL}>
+            <FAIcon icon ={faSolid.faCog}/>
             </Link>
           </Menu.Item>
           <Menu.Item key="About">
             <Link to={ABOUT_URL}>
-            <Icon type="mail" />
-              About
+            <FAIcon icon ={faSolid.faQuestion}/>
             </Link>
           </Menu.Item>
         </Menu>
