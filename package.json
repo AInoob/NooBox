@@ -3,7 +3,7 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack -w --mode development",
-    "lint": "eslint --ext .js src test",
+    "lint": "eslint --ext .js src test"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
@@ -25,9 +25,9 @@
     "babel-plugin-transform-es2015-parameters": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "copy-webpack-plugin": "^4.5.1",
     "eslint": "^4.14.0",
     "eslint-config-umi": "^0.1.1",
@@ -35,8 +35,10 @@
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
+    "file-loader": "^1.1.11",
     "husky": "^0.12.0",
     "redbox-react": "^1.4.3",
+    "url-loader": "^1.0.1",
     "webpack-cli": "^3.0.8"
   }
 }
