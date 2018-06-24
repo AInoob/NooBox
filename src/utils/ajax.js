@@ -21,7 +21,7 @@ const checkStatus = response => {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default ajax = (url, options) => {
+export default (url, options) => {
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
