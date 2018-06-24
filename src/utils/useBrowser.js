@@ -1,1 +1,3 @@
-window.browser = chrome;
+export default () => {
+  window.browser = chrome;
+}
