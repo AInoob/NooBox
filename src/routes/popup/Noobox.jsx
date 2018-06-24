@@ -1,13 +1,18 @@
 import React from "react";
 import {withRouter} from 'dva/router';
+//redux
+import {connect} from 'dva';
+import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
+import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+
+
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
-import { Menu, Icon,Button } from 'antd';
+import { Menu } from 'antd';
 import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../constant/navURL.js";
 import {Link,Router,Redirect} from 'react-router-dom';
-import {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../../common/navURL.js";
-import {Link} from 'react-router-dom';
+
 const NooboxContainer = styled.div`
   width: 360px;
   .ant-menu-item{
@@ -25,11 +30,10 @@ class Noobox extends React.Component{
     }
   }
   render(){
-    const{match} = this.props;
-    let a = 1;
-    console.log(match);
-    console.log(faSolid);
-
+    const{match,actions} = this.props;
+    console.log(this.props);
+    // console.log(match);
+    // console.log(faSolid);
     return(
       <NooboxContainer>
         {/* <Button type = "danger">Test</Button> */}
@@ -62,4 +66,4 @@ class Noobox extends React.Component{
     )
   }
 }
-export default withRouter(Noobox)
+export default withRouter(connect(reselector, reduxActions)(Noobox));

@@ -3,6 +3,11 @@ import {Table,Button} from 'antd';
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
+//redux
+import {connect} from 'dva';
+import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
+import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+
 const {Column} = Table;
 const HistoryContainer = styled.div`
   position: relative;
@@ -28,7 +33,7 @@ const HistoryContainer = styled.div`
     text-align:center;
   }
 `;
-export default class UserHistory extends React.Component{
+class UserHistory extends React.Component{
 
   delete(e){
     console.log(e);
@@ -72,3 +77,5 @@ export default class UserHistory extends React.Component{
     )
   }
 }
+
+export default connect(reselector, reduxActions)(UserHistory);
