@@ -1,3 +1,3 @@
-export default getLocale = (string) => {
+export default (string) => {
   return browser.i18n.getMessage(string);
 }
