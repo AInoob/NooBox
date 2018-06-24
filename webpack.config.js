@@ -10,9 +10,9 @@ module.exports = {
     ]),
   ],
   entry: {
-    popup:"./src/popup.js",
-    background:"./src/background/index.js",
-    imageSearch:"./src/imageSearch.js",
+    popup:['babel-polyfill',"./src/popup.js"],
+    background:['babel-polyfill',"./src/background/index.js"],
+    imageSearch:['babel-polyfill',"./src/imageSearch.js"],
   },
   resolve: {
     extensions: ['.webpack.js', '.js', '.jsx'],

@@ -1,4 +1,9 @@
 import React from "react";
+//redux
+import {connect} from 'dva';
+import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
+import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+
 import {Tree,Card, Col, Row} from 'antd';
 import styled from "styled-components";
 import google from "SRC/assets/engineLogos/google.png";
@@ -22,7 +27,7 @@ const OptionsContainer = styled.div`
     height:35px;
   }
 `;
-export default class Options extends React.Component{
+class Options extends React.Component{
   renderTreeNodes(data){
     // console.log(data);
     return data.map((item) => {
@@ -42,6 +47,29 @@ export default class Options extends React.Component{
   render(){
     return(
       <OptionsContainer>
+       
+        <div id = "exp">
+          <h4>Experience</h4>
+          <Tree
+            checkable
+            onCheck={(e)=>this.onCheck(e)}>
+            <TreeNode title ="History" key="history"/>
+          </Tree>
+        </div>
+        <div id = "tool">
+          <h4>Tools</h4>
+          <Tree
+            checkable
+            onCheck={(e)=>this.onCheck(e)}>
+            <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
+            <TreeNode   title ="HTML5 Video Control (Alpha)" key = "html5VideoControl"/>
+            <TreeNode   title ="Image Search"                key ="imageSearch">
+              <TreeNode title ="Open Result Tab In Front"    key ="openResultTabInFront"/>
+              <TreeNode title ="Extract Images"              key="extractImages"/>
+              <TreeNode title ="Screenshot & Search"         key ="screenshotSearch"/>
+            </TreeNode>
+          </Tree>
+        </div>
         <div id = "engines">
           <h4>Avaiable Engines</h4>
           <Row gutter={-1}>
@@ -89,30 +117,11 @@ export default class Options extends React.Component{
             </Col>
           </Row>
         </div>
-        <div id = "exp">
-          <h4>Experience</h4>
-          <Tree
-            checkable
-            onCheck={(e)=>this.onCheck(e)}>
-            <TreeNode title ="History" key="history"/>
-          </Tree>
-        </div>
-        <div id = "tool">
-          <h4>Tools</h4>
-          <Tree
-            checkable
-            onCheck={(e)=>this.onCheck(e)}>
-            <TreeNode   title ="Image Search"                key ="imageSearch">
-              <TreeNode title ="Open Result Tab In Front"    key ="openResultTabInFront"/>
-              <TreeNode title ="Extract Images"              key="extractImages"/>
-              <TreeNode title ="Screenshot & Search"         key ="screenshotSearch"/>
-            </TreeNode>
-            <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
-            <TreeNode   title ="HTML5 Video Control (Alpha)" key = "html5VideoControl"/>
-          </Tree>
-        </div>
         
       </OptionsContainer>
     )
   }
 }
+
+
+export default connect(reselector, reduxActions)(Options);

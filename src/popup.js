@@ -7,8 +7,10 @@ const popup = dva();
 // app.use({});
 
 // 3. Model
-// app.model(require('./models/example').default);
-
+popup.model(require('./models/popupModels/noobox.js').default);
+popup.model(require('./models/popupModels/options.js').default);
+popup.model(require('./models/popupModels/overview.js').default);
+popup.model(require('./models/popupModels/userHistory.js').default);
 // 4. Router
 popup.router(require('./popupRouter').default);
 
