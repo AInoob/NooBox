@@ -1,8 +1,7 @@
-// require("babel-core/register");
-import 'babel-polyfill';
-
 import userBrowser from '../utils/useBrowser';
 import AutoRefresh from './AutoRefresh';
+
+userBrowser();
 
 const autoRefresh = new AutoRefresh();
 window.x = autoRefresh;
