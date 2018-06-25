@@ -11,13 +11,15 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     return;
   }
   const job = request.job;
-  if (job == 'updateAutoRefresh') {
-    const { tabId, interval, handler } = request;
-    autoRefresh.update(tabId, interval, handler, true);
+  if (job === 'updateAutoRefresh') {
+    const { tabId, interval, active, startAt } = request;
+    const autoRefreshStatus = await autoRefresh.update(tabId, active, interval, startAt, true);
+    sendResponse(autoRefreshStatus);
   }
-  else if (job == 'currentTabAutoRefreshState') {
+  else if (job === 'getCurrentTabAutoRefreshStatus') {
     const { tabId } = request;
-    const autoRefreshSetting = autoRefresh.getSetting()
-    sendResponse(autoRefreshSetting);
+    const autoRefreshStatus = autoRefresh.getStatus(tabId);
+    console.log(autoRefreshStatus);
+    sendResponse(autoRefreshStatus);
   }
 });
