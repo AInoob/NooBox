@@ -36,10 +36,16 @@ const OverviewContainer = styled.div`
     color: #40a9ff;
     transition: color 2s;
   }
+  .toolStart:hover{
+    cursor:pointer
+  }
   .toolStop{
     color: #495056;
     font-size: 24px;
     transition: color 2s;
+  }
+  .toolStop:hover{
+    cursor:pointer
   }
 `;
 
