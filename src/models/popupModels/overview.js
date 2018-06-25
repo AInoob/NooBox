@@ -1,3 +1,4 @@
+
 export default {
   namespace:"overview",
   state:{
@@ -6,6 +7,9 @@ export default {
   effects:{
     *test({payload},{put,select}){
       console.log(payload);
+    },
+    *autoRefresh({payload},{put,select}){
+      
     }
   },
   reducers:{

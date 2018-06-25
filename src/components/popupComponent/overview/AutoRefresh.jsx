@@ -14,7 +14,6 @@ const AutoRefreshContainer = styled.div`
   }
 `;
 const Dragger = Upload.Dragger;
-
 export default class AutoRefresh extends React.Component{
   constructor(props){
     super(props);
