@@ -52,6 +52,10 @@ export default class AutoRefresh {
       elapsedTime,
     };
   }
+  delete(tabId) {
+    this.update(tabId, false);
+    delete data.AutoRefresh.tabs[tabId];
+  }
   update(tabId, active, interval, startAt, shouldLogEvent) {
     if (!tabId) {
       return;
