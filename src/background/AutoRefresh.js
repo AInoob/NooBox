@@ -1,5 +1,6 @@
 import data from './data';
 import { logEvent } from '../utils/bello';
+import {set} from "SRC/utils/db";
 
 const defaultSetting = {
   handler: null,
@@ -36,7 +37,21 @@ export default class AutoRefresh {
     const setting = data.AutoRefresh.tabs[tabId] || defaultSetting;
     return setting;
   }
-  async update(tabId, interval, enable, startAt, shouldLogEvent) {
+  getStatus(tabId) {
+    const { interval, handler, lastIntervalAt } = this.getSetting(tabId);
+    let active = false;
+    let elapsedTime = 0;
+    if (handler) {
+      active = true;
+      elapsedTime = new Date().getTime() - lastIntervalAt;
+    }
+    return {
+      interval,
+      active,
+      elapsedTime,
+    };
+  }
+  async update(tabId, active, interval, startAt, shouldLogEvent) {
     if (!tabId) {
       return;
     }
@@ -46,7 +61,7 @@ export default class AutoRefresh {
     let handler = setting.handler;
     let firstTimeInterval = interval;
     setting.interval = interval || setting.interval;
-    if (enable) {
+    if (active) {
       if (handler) {
         action = 'updateInterval';
       }
@@ -54,6 +69,7 @@ export default class AutoRefresh {
         action = 'start';
       }
       setting.lastIntervalAt = new Date().getTime();
+      // when startAt exist and not 0
       if (startAt) {
         firstTimeInterval = (interval - startAt) % interval;
         setting.isFirstTimeInterval = true;
@@ -71,5 +87,6 @@ export default class AutoRefresh {
         action
       });
     }
+    return this.getStatus(tabId);
   }
 }
