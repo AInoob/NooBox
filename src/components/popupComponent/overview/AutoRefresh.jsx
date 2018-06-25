@@ -41,16 +41,19 @@ export default class AutoRefresh extends React.Component {
       clearInterval(handler);
     }
   }
-  onChangeRefreshRate(e) {
-    this.setState({ interval: e, el: 0 })
-  }
   async updateStatus() {
     const status = await sendMessage({ job: 'getCurrentTabAutoRefreshStatus' });
     console.log(status);
     this.setState(status);
+    if (status.active && !this.state.handler) {
+      const handler = setInterval(this.updateStatus.bind(this), 168);
+      this.setState({ handler })
+    }
   }
   async updateAutoRefresh(active, interval, startAt) {
-    active = active || this.state.active;
+    if (active == null) {
+      active = this.state.active;
+    }
     interval = interval || this.state.interval;
     startAt = startAt || this.state.elapsedTime;
     const status = await sendMessage({
@@ -60,6 +63,8 @@ export default class AutoRefresh extends React.Component {
       interval,
       startAt
     });
+    console.log('!!!!!');
+    console.log(status);
     this.setState(status);
   }
   async toggle() {
@@ -67,20 +72,19 @@ export default class AutoRefresh extends React.Component {
       clearInterval(this.state.handler);
       await this.updateAutoRefresh(false, null, 0);
     } else {
-      const handler = setInterval(this.updateStatus.bind(this), 200);
+      const handler = setInterval(this.updateStatus.bind(this), 168);
       await this.updateAutoRefresh(true, null, 0);
       this.setState({ handler })
     }
   } 
   render() {
-    console.log(this.state.current);
-    const { elapsedTime, interval } = this.state;
+    const { elapsedTime, interval, active } = this.state;
     return (
       <AutoRefreshContainer>
         <Progress percent={(elapsedTime/interval).toFixed(2)*100} showInfo={false}/>
         <span onClick={()=> this.toggle()}>
           <FAIcon
-            className={this.state.start ? this.state.startClass :this.state.stopClass}
+            className={active ? 'toolStart' : 'toolEnd'}
             icon ={faSolid.faSync}
           />
         </span>
@@ -90,7 +94,7 @@ export default class AutoRefresh extends React.Component {
           min={1}
           formatter={value => `${value}s`}
           parser={value => value.replace('s', '')}
-          onChange={(v)=>this.updateAutoRefresh(null, v)}
+          onChange={(v)=>this.updateAutoRefresh(null, v * 1000)}
         />
       </AutoRefreshContainer>
     );

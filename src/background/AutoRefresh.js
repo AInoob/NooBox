@@ -17,6 +17,7 @@ export default class AutoRefresh {
     if (setting.handler) {
       clearInterval(setting.handler);
     }
+    setting.handler = null;
   }
   performAutoRefresh(tabId) {
     browser.tabs.reload(tabId, {}, () => {
@@ -51,7 +52,11 @@ export default class AutoRefresh {
       elapsedTime,
     };
   }
-  async update(tabId, active, interval, startAt, shouldLogEvent) {
+  delete(tabId) {
+    this.update(tabId, false);
+    delete data.AutoRefresh.tabs[tabId];
+  }
+  update(tabId, active, interval, startAt, shouldLogEvent) {
     if (!tabId) {
       return;
     }
@@ -82,7 +87,7 @@ export default class AutoRefresh {
     }
     data.AutoRefresh.tabs[tabId] = setting;
     if (shouldLogEvent) {
-      await logEvent({
+      logEvent({
         category: 'AutoRefresh',
         action
       });
