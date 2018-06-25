@@ -45,6 +45,10 @@ export default class AutoRefresh extends React.Component {
     const status = await sendMessage({ job: 'getCurrentTabAutoRefreshStatus' });
     console.log(status);
     this.setState(status);
+    if (status.active && !this.state.handler) {
+      const handler = setInterval(this.updateStatus.bind(this), 168);
+      this.setState({ handler })
+    }
   }
   async updateAutoRefresh(active, interval, startAt) {
     if (active == null) {

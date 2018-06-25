@@ -6,6 +6,10 @@ userBrowser();
 const autoRefresh = new AutoRefresh();
 window.x = autoRefresh;
 
+browser.tabs.onRemoved.addListener(tabId => {
+  autoRefresh.delete(tabId);
+});
+
 // Please keep in mind that sendResponse cannot wait for Promise
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (!request.job) {
