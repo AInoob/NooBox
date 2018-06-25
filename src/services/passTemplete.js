@@ -1,4 +1,4 @@
-import chromeSend from "SRC/utils/cMessage.js";
+import chromeSend from "SRC/utils/sendMessage.js";
 
 //AR standfor Auto Refresh
 export function updateIntervalAR (content){
