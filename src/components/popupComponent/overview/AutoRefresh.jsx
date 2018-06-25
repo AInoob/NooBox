@@ -45,18 +45,18 @@ export default class AutoRefresh extends React.Component {
       let intervalId = setInterval(this.updateProgress.bind(this),999)
       this.setState({ start: true, intervalId })
     }
-  }
+  } 
   render() {
     console.log(this.state.current);
     return (
       <AutoRefreshContainer>
         <Progress percent={(this.state.current/this.state.maxTime).toFixed(2)*100} showInfo={false}/>
         <span onClick={()=> this.toggle()}>
-              <FAIcon
-                className={this.state.start ? this.state.startClass :this.state.stopClass}
-                icon ={faSolid.faSync}
-              />
-            </span>
+          <FAIcon
+            className={this.state.start ? this.state.startClass :this.state.stopClass}
+            icon ={faSolid.faSync}
+          />
+        </span>
         <p className="ant-upload-text">Auto Refresh(Beta)</p>
         <InputNumber
           defaultValue={5}
