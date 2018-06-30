@@ -3,7 +3,7 @@ import { Upload, Icon, message, InputNumber,Progress } from 'antd';
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
-import {getCurrentTab, sendMessage} from '../../../utils/browserUtils';
+import {getCurrentTab, sendMessage} from 'SRC/utils/browserUtils';
 
 const AutoRefreshContainer = styled.div`
   .ant-upload-text{
@@ -13,6 +13,9 @@ const AutoRefreshContainer = styled.div`
   }
   .ant-progress-bg{
     height: 2px !important;
+    position: absolute;
+    top: -30px;
+    left: 0;
   }
 `;
 const Dragger = Upload.Dragger;
@@ -21,70 +24,116 @@ export default class AutoRefresh extends React.Component {
     super(props);
     this.state = {
       active: false,
-      tabId: null,
       interval: 3000,
       elapsedTime: 0,
-      handler: null,
     }
   }
-  async componentWillMount() {
-    const tab = await getCurrentTab();
-    if (!tab) {
-      return;
+  
+  autoRefreshSwitch(){
+    const {autoRefreshSwitch,tabId} = this.props;
+    let newState ={};
+    if(this.state.active){
+      let payload = {
+        job: 'updateAutoRefresh',
+        active: false,
+        tabId : tabId,
+        interval:this.state.interval,
+        startAt:0,
+      }
+      newState = {
+        active: false,
+        elapsedTime: 0,
+      }
+     this.progressControl(false);
+      autoRefreshSwitch(payload);
+    }else{
+      let payload ={
+        job: 'updateAutoRefresh',
+        active: true,
+        tabId : tabId,
+        interval: this.state.interval,
+        startAt:0,
+      }
+      this.progressControl(true);
+      newState = {
+        active: true,
+      }
+      autoRefreshSwitch(payload);
     }
-    const tabId = tab.id;
-    this.setState({ tabId }, this.updateStatus.bind(this));
+    this.setState(newState);
   }
-  componentWillUnmount() {
-    const { handler } = this.state;
-    if (handler) {
-      clearInterval(handler);
+
+  progressControl(ifActive){
+    if(ifActive){
+      let timeId =window.setInterval(()=>{
+          let nextElapsedTime = this.state.elapsedTime +1000;
+          if(nextElapsedTime >= this.state.interval-1){
+            nextElapsedTime = 0;
+          }
+          this.setState({
+            elapsedTime:nextElapsedTime,
+            animationIntervalId:timeId,
+          })
+        },1000)
+    }else{
+      let {animationIntervalId} = this.state;
+      window.clearInterval(animationIntervalId);
     }
   }
-  async updateStatus() {
-    const status = await sendMessage({ job: 'getCurrentTabAutoRefreshStatus' });
-    console.log(status);
-    this.setState(status);
-    if (status.active && !this.state.handler) {
-      const handler = setInterval(this.updateStatus.bind(this), 168);
-      this.setState({ handler })
+  componentWillMount(){
+     const{currentState} = this.props;
+     if(currentState.ifRefresh){
+       this.progressControl(true);
+     }else{
+      this.progressControl(false);
+     }
+     this.setState({
+      active:currentState.ifRefresh,
+      interval:currentState.refreshInterval,
+      elapsedTime:currentState.refreshElapsed
+     })
+  }
+
+  componentWillReceiveProps(props){
+    const{currentState} = this.props;
+     this.setState({
+      active:currentState.ifRefresh,
+      interval:currentState.refreshInterval,
+      elapsedTime:currentState.refreshElapsed
+     })
+  }
+  onChangeInterval(newInterval){
+    let {tabId,autoRefreshUpdate} = this.props;
+    if(this.state.active){
+      let payload ={
+        job: 'updateAutoRefresh',
+        active: true,
+        tabId : tabId,
+        interval: newInterval,
+        startAt:0,
+      }
+      autoRefreshUpdate(payload);
+      this.setState({
+        interval:newInterval,
+        elapsedTime:0,
+      },() => {
+        this.progressControl(false);
+        this.progressControl(true);
+      })
+    }else{
+      this.setState({
+        interval:newInterval,
+      })
     }
   }
-  async updateAutoRefresh(active, interval, startAt) {
-    if (active == null) {
-      active = this.state.active;
-    }
-    interval = interval || this.state.interval;
-    startAt = startAt || this.state.elapsedTime;
-    const status = await sendMessage({
-      job: 'updateAutoRefresh',
-      tabId: this.state.tabId,
-      active,
-      interval,
-      startAt
-    });
-    console.log('!!!!!');
-    console.log(status);
-    this.setState(status);
-  }
-  async toggle() {
-    if (this.state.active) {
-      clearInterval(this.state.handler);
-      await this.updateAutoRefresh(false, null, 0);
-    } else {
-      const handler = setInterval(this.updateStatus.bind(this), 168);
-      await this.updateAutoRefresh(true, null, 0);
-      this.setState({ handler })
-    }
-  } 
   render() {
     const { elapsedTime, interval, active } = this.state;
     return (
       <AutoRefreshContainer>
-        <Progress percent={(elapsedTime/interval).toFixed(2)*100} showInfo={false}/>
-        <span onClick={()=> this.toggle()}>
+        <Progress percent={(elapsedTime/(interval-1000)).toFixed(2)*100} showInfo={false}/>
+        <span onClick={()=> this.autoRefreshSwitch()}>
           <FAIcon
-            className={active ? 'toolStart' : 'toolEnd'}
+            className={active ? 'toolStart' : 'toolStop'}
             icon ={faSolid.faSync}
           />
         </span>
@@ -94,7 +143,7 @@ export default class AutoRefresh extends React.Component {
           min={1}
           formatter={value => `${value}s`}
           parser={value => value.replace('s', '')}
-          onChange={(v)=>this.updateAutoRefresh(null, v * 1000)}
+          onChange={(v)=>this.onChangeInterval(v * 1000)}
         />
       </AutoRefreshContainer>
     );

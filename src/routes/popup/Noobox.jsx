@@ -23,15 +23,15 @@ const NooboxContainer = styled.div`
 
 `;
 class Noobox extends React.Component{
-  componentWillMount(){
-    let {match,history} = this.props;
-    if(match.url == "/"){
-      history.push(OVERVIEW_URL);
-    }
-  }
+  // componentWillMount(){
+  //   let {match,history} = this.props;
+  //   if(match.url == "/"){
+  //     history.push(OVERVIEW_URL);
+  //   }
+  // }
   render(){
     const{match,actions} = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     // console.log(match);
     // console.log(faSolid);
     return(
@@ -39,23 +39,24 @@ class Noobox extends React.Component{
         {/* <Button type = "danger">Test</Button> */}
         <Menu
           mode="horizontal"
+          defaultSelectedKeys = {[OVERVIEW_URL]}
         >
-          <Menu.Item key="Overview">
+          <Menu.Item key={OVERVIEW_URL}>
             <Link to={OVERVIEW_URL}>
             <FAIcon icon ={faSolid.faToolbox}/>
             </Link>
           </Menu.Item>
-          <Menu.Item key="UserHistory">
+          <Menu.Item key={HISTORY_URL}>
             <Link to={HISTORY_URL}>
             <FAIcon icon ={faSolid.faHistory}/>
             </Link>
           </Menu.Item>
-          <Menu.Item key="Options">
+          <Menu.Item key={OPTIONS_URL}>
             <Link to = {OPTIONS_URL}>
-            <FAIcon icon ={faSolid.faCog}/>
+              <FAIcon icon ={faSolid.faCog}/>
             </Link>
           </Menu.Item>
-          <Menu.Item key="About">
+          <Menu.Item key={ABOUT_URL}>
             <Link to={ABOUT_URL}>
             <FAIcon icon ={faSolid.faQuestion}/>
             </Link>

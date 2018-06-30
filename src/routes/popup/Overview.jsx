@@ -7,7 +7,7 @@ import reselector   from "SRC/modelsViewsConnentor/reselector.js";
 import UploadImage from "SRC/components/popupComponent/overview/UploadImage.jsx";
 import AutoRefresh from "SRC/components/popupComponent/overview/AutoRefresh.jsx";
 import H5VideoControl from "SRC/components/popupComponent/overview/H5VideoControl.jsx";
-
+import Loader      from "SRC/components/Loader.jsx";
 import styled from "styled-components";
 const OverviewContainer = styled.div`
    margin-bottom:20px;
@@ -29,6 +29,7 @@ const OverviewContainer = styled.div`
     text-align: center;
     padding: 16px 0;
     background: #fafafa;
+    position:relative;
   }
 
   .toolStart{
@@ -50,21 +51,64 @@ const OverviewContainer = styled.div`
 `;
 
 class Overview extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      tabId:0,
+    }
+  }
+  componentWillMount(){
+    const {overview,actions} = this.props;
+    // console.log(overview);
+    if(!overview.inited){
+      actions.overviewInit();
+    }else{
+      this.setState({
+        tabId:overview.tabId,
+        inited:overview.inited,
+        autoRefresh:overview.autoRefresh,
+      })
+    }
+  }
+  componentWillReceiveProps(props){
+    const {overview} = this.props;
+    // console.log(overview);
+    if(overview.inited){
+      this.setState({
+        tabId:overview.tabId,
+        inited:overview.inited,
+        autoRefresh:overview.autoRefresh,
+      })
+    }
+  }
   render(){
-    return(
-       <OverviewContainer>
-         <div className ="uploadImage">
-          <UploadImage/>
-         </div>
-         <div className ="autoRefresh">
-          <AutoRefresh/>
-         </div>
-         <div className ="h5Video">
-          <H5VideoControl/>
-         </div>
-       </OverviewContainer>
-        
-    )
+    const {actions}= this.props;
+    if(!this.state.inited){
+      return(
+        <Loader/>
+      )
+    }else{
+      return(
+     
+        <OverviewContainer>
+          <div className ="uploadImage">
+           <UploadImage/>
+          </div>
+          <div className ="autoRefresh">
+           <AutoRefresh
+             tabId             = {this.state.tabId}
+             currentState      = {this.state.autoRefresh}
+             autoRefreshSwitch = {actions.autoRefreshSwtich}
+             autoRefreshUpdate = {actions.autoRefreshUpdate}
+           />
+          </div>
+          <div className ="h5Video">
+           <H5VideoControl/>
+          </div>
+        </OverviewContainer>
+         
+     )
+    }
   }
 }
 
