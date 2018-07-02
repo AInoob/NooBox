@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router, Route, Switch } from 'dva/router';
-import ImageSearchTest from './routes/imageSearch/ImageSearchTest.jsx';
+import ImageSearchResult from './routes/imageSearch/ImageSearchResult.jsx';
 
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
       <Switch>
-        <Route path="/" exact component={ImageSearchTest} />
+        <Route path="/" exact component={ImageSearchResult} />
       </Switch>
     </Router>
   );
