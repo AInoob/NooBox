@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Brief from 'SRC/components/imageSearchComponent/Header/Brief.jsx';
+import Engine from 'SRC/components/imageSearchComponent/Header/Engine.jsx';
+import Setting from 'SRC/components/imageSearchComponent/Header/Setting.jsx';
 import {Row,Col} from 'antd'
 const ResultContainer = styled.div`
   height:100%;
@@ -19,9 +21,18 @@ export default class ImageSearchResult extends React.Component{
       return(
         <ResultContainer>
           <div className ="header">
-            <Row>
-              <Col span ={10}>
+            <Row align="middle">
+              <Col span ={6}>
                 <Brief/>
+              </Col>
+              <Col span ={1}/>
+              <Col span ={9}>
+                <Engine/>
+              </Col>
+              <Col span ={1}/>
+              <Col span ={4}>
+              <Col span ={3}/>
+                <Setting/>
               </Col>
             </Row>
           </div>

@@ -14,7 +14,7 @@ export default class Brief extends React.Component{
       return(
         <BriefContainer>
             <Card
-              style={{ width: 200 }}
+              style={{ width: "100%" }}
               cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
               actions={[<Tooltip placement = "top" title="Download">
                          <FAIcon icon ={faSolid.faDownload}/>
