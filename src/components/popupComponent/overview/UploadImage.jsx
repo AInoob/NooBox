@@ -1,7 +1,7 @@
 import React from "react";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
-import { Upload, Icon, message } from 'antd';
+import { Upload, Icon, message, Button } from 'antd';
 const Dragger = Upload.Dragger;
 
 export default class UploadImage extends React.Component{
