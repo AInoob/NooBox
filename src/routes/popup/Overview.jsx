@@ -3,7 +3,7 @@ import React from "react";
 import {connect} from 'dva';
 import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
 import reselector   from "SRC/modelsViewsConnentor/reselector.js";
-
+import {Button} from 'antd';
 import UploadImage from "SRC/components/popupComponent/overview/UploadImage.jsx";
 import AutoRefresh from "SRC/components/popupComponent/overview/AutoRefresh.jsx";
 import H5VideoControl from "SRC/components/popupComponent/overview/H5VideoControl.jsx";
@@ -91,8 +91,11 @@ class Overview extends React.Component{
       return(
      
         <OverviewContainer>
+          <Button onClick = {()=> actions.imageSearchBegin()}>Test</Button>
           <div className ="uploadImage">
-           <UploadImage/>
+           <UploadImage
+             imageSearchBegin  = {actions.imageSearchBegin}
+           />
           </div>
           <div className ="autoRefresh">
            <AutoRefresh
