@@ -27,11 +27,17 @@ export default {
         // console.log(ifAutoRefresh);
     },
     *autoRefreshSwitch({payload},{call,put,select}){
-      console.log(payload);
-      yield call(sendMessage, payload)
+      yield call(sendMessage, payload);
     },
     *autoRefreshUpdate({payload},{call,put,select}){
-      yield call(sendMessage, payload)
+      yield call(sendMessage, payload);
+    },
+    *imageSearchBegin({payload},{call,put,select}){
+      console.log("yes");
+      let message ={
+        job: "imageSearchBegin",
+      }
+      yield call(sendMessage,message);
     }
   },
   reducers:{
