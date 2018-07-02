@@ -1,6 +1,12 @@
 export default {
   namespace:"imagesearch",
-  state:{},
-  effects:{},
+  state:{
+    inited:false,
+  },
+  effects:{
+    *init(){
+
+    }
+  },
   reducers:{},
 }

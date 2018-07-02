@@ -9,7 +9,6 @@ const defaultSetting = {
   isFirstTimeInterval: false,
   firstTimeInterval: 0,
 };
-
 export default class AutoRefresh {
   constructor() {}
   clear(tabId) {
