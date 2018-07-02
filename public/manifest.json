@@ -9,7 +9,6 @@
     "default_title": "NooBox~",
     "default_popup": "popup.html"
   },
-  "default_locale": "en",
   "icons": {
     "128": "static/nooboxLogos/icon_128.png"
   },
