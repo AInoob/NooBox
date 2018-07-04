@@ -2,23 +2,21 @@ import userBrowser from '../utils/useBrowser';
 import AutoRefresh from './AutoRefresh';
 import Image from './Image';
 import Options from './Options';
+import { getDB } from '../utils/db';
 userBrowser();
 
 const autoRefresh = new AutoRefresh();
 const image = new Image();
 const options = new Options();
 
-// window.x = autoRefresh;
-
 browser.tabs.onRemoved.addListener(tabId => {
   autoRefresh.delete(tabId);
 });
-// Please keep in mind that sendResponse cannot wait for Promise
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (!request.job) {
     return;
   }
-  // console.log(request.job);
   const job = request.job;
 
   if (job === 'updateAutoRefresh') {
@@ -37,6 +35,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     browser.tabs.create({ url:"/searchResult.html" });
   } else if (request.job == 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
+  } else if (request.job == 'getDB') {
+    const value = getDB(request.key);
+    browser.tabs.sendMessage(sender.tab.id, {
+      job: 'returnDB',
+      key: request.key,
+      data: value
+    });
   }
 });
 
