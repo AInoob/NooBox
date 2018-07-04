@@ -120,7 +120,18 @@ export default class Image {
       });
     }
   }
-  async imageSearch(){
-     let data;
+  async beginImageSearch(base64){
+    console.log(base64);
+    let aionobServer = "https://ainoob.com/api/uploadImage/";
+    let requestBody  = {
+      method: 'POST',  
+      headers: {
+        //'User-Agent': 'Mozilla/4.0 MDN Example',
+        'Content-Type': 'application/json'
+      },
+      body: base64,
+    }
+    let result = await ajax(aionobServer, requestBody);
+    console.log(result);
   }
 }

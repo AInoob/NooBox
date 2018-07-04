@@ -33,12 +33,10 @@ export default {
       yield call(sendMessage, payload);
     },
     *imageSearchBegin({payload},{call,put,select}){
-      console.log("yes");
       let message ={
-        job: "imageSearchBegin",
-        data: payload,
+        job: "beginImageSearch",
+        base64: payload,
       }
-      console.log(message);
       yield call(sendMessage,message);
     }
   },
