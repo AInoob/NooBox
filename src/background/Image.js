@@ -3,7 +3,7 @@ import { logEvent } from '../utils/bello';
 import GL from '../utils/getLocale';
 import { get } from '../utils/db';
 import { fetchBlob, convertDataURIToBinary } from '../utils';
-
+import ImageUtil from '../utils/imageSearchUtils.js';
 export default class Image {
   constructor() {}
   async init() {
@@ -14,8 +14,7 @@ export default class Image {
         "contexts": ["all"],
         "onclick": this.extractImages
       });
-    }
-    else {
+    }else {
       browser.contextMenus.remove(data.Image.extractImageHandle);
       data.Image.extractImageHandle = null;
     }
@@ -119,5 +118,8 @@ export default class Image {
         }
       });
     }
+  }
+  imageSearch(){
+    
   }
 }

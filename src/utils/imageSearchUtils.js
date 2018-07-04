@@ -62,5 +62,44 @@ export default {
 
     })
   },
+  fetchYandexLink:() =>{
+    return new Promise(function(resolve,reject){
 
+    })
+  },
+  fetchYandexData:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  },
+  fetchSauceNaoLink:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  },
+  fetchSauceNaoData:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  },
+  fetchIQDBLink:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  },
+  fetchIQDBData:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  },
+  fetchAscii2dLink:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  },
+  fetchAscii2dData:() =>{
+    return new Promise(function(resolve,reject){
+
+    })
+  }
 }
