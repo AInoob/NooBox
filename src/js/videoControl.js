@@ -38,21 +38,21 @@ chrome.runtime.onMessage.addListener(
         enabled = request.enabled;
         if (enabled != false) {
           enabled = true;
-          init();
+          initVideoControl();
         }
       } else if (request.job == 'returnDB') {
         if (request.key == enabledDBId) {
           enabled = request.data;
           if (enabled != false) {
             enabled = true;
-            init();
+            initVideoControl();
           }
         }
       }
     }
   });
 
-function init() {
+function initVideoControl() {
   if (inited) {
     return;
   }
@@ -75,6 +75,7 @@ function init() {
   detectVideoHandle = setInterval(detectVideo, 111);
   $('body').on('click', function(e) {
     vid = getVideo(e);
+    console.log(enabled + ' ' + vid);
     if (enabled && vid) {
       placeIndicator();
       detectConflictAndAct(playPause, vid, 'playPause', 'clickPlayPause', 111);
