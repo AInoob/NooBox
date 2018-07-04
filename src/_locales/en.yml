@@ -1,4 +1,6 @@
 appName:
   message: NooBox
 appDesc:
-  message: 'A useful Toolbox~'
+  message: 'Tool Box'
+imageKeyword:
+  message: 'Image Keyword'
