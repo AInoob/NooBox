@@ -3,6 +3,7 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack -w --mode development",
+    "buildLocale": "node ./scripts/buildLocale.js",
     "lint": "eslint --ext .js src test"
   },
   "dependencies": {
@@ -42,6 +43,7 @@
     "husky": "^0.12.0",
     "redbox-react": "^1.4.3",
     "url-loader": "^1.0.1",
-    "webpack-cli": "^3.0.8"
+    "webpack-cli": "^3.0.8",
+    "yamljs": "^0.3.0"
   }
 }

@@ -7,6 +7,8 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: './src/assets', to: 'static' },
       { from: './public' },
+      { from: './src/manifest.json' },
+      { from: './src/html' },
     ]),
   ],
   entry: {
