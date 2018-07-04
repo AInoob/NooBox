@@ -44,7 +44,6 @@ export default class AutoRefresh extends React.Component {
         active: false,
         elapsedTime: 0,
       }
-     this.progressControl(false);
       autoRefreshSwitch(payload);
     }else{
       let payload ={
@@ -54,44 +53,42 @@ export default class AutoRefresh extends React.Component {
         interval: this.state.interval,
         startAt:0,
       }
-      this.progressControl(true);
       newState = {
         active: true,
       }
       autoRefreshSwitch(payload);
     }
-    this.setState(newState);
+    this.setState(newState, () => {this.progressControl()});
   }
 
-  progressControl(ifActive){
-    if(ifActive){
-      let timeId =window.setInterval(()=>{
-          let nextElapsedTime = this.state.elapsedTime +1000;
-          if(nextElapsedTime >= this.state.interval-1){
-            nextElapsedTime = 0;
-          }
-          this.setState({
-            elapsedTime:nextElapsedTime,
-            animationIntervalId:timeId,
-          })
-        },1000)
-    }else{
-      let {animationIntervalId} = this.state;
-      window.clearInterval(animationIntervalId);
+  progressControl(){
+    const { active, animationIntervalId } = this.state;
+    if (animationIntervalId) {
+      clearInterval(animationIntervalId);
+    }
+    if(active) {
+      let timeId = setInterval(() => {
+        let nextElapsedTime = this.state.elapsedTime + 1000;
+        if (nextElapsedTime >= this.state.interval - 1) {
+          nextElapsedTime = 0;
+        }
+        this.setState({
+          elapsedTime: nextElapsedTime,
+        })
+      },1000);
+      this.setState({
+        animationIntervalId:timeId
+      });
     }
   }
-  componentWillMount(){
+  componentWillMount() {
      const{currentState} = this.props;
-     if(currentState.ifRefresh){
-       this.progressControl(true);
-     }else{
-      this.progressControl(false);
-     }
+
      this.setState({
       active:currentState.ifRefresh,
       interval:currentState.refreshInterval,
       elapsedTime:currentState.refreshElapsed
-     })
+     }, () => {this.progressControl()})
   }
 
   componentWillReceiveProps(props){
@@ -117,8 +114,7 @@ export default class AutoRefresh extends React.Component {
         interval:newInterval,
         elapsedTime:0,
       },() => {
-        this.progressControl(false);
-        this.progressControl(true);
+        this.progressControl();
       })
     }else{
       this.setState({
