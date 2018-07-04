@@ -5,8 +5,8 @@ import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
 //redux
 import {connect} from 'dva';
-import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
-import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+import reduxActions from "SRC/popup/reduxActions.js";
+import reselector   from "SRC/popup/reselector.js";
 
 const {Column} = Table;
 const HistoryContainer = styled.div`
@@ -38,7 +38,7 @@ class UserHistory extends React.Component{
   delete(e){
     console.log(e);
   }
-  
+
 
   render(){
     let testObj = [
@@ -52,7 +52,7 @@ class UserHistory extends React.Component{
                     </Button>);
     return(
       < HistoryContainer>
-        
+
         <Table dataSource={testObj}>
           <Column
             className ="tableHeader"
@@ -63,7 +63,7 @@ class UserHistory extends React.Component{
               <img style ={{maxWidth:"100px"}}src ={record.image}/>
             )}
           />
-          <Column 
+          <Column
            className ="tableHeader"
             title={deleteAll}
             key  ="action"

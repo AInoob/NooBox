@@ -1,8 +1,8 @@
 import React from "react";
 //redux
 import {connect} from 'dva';
-import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
-import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+import reduxActions from "SRC/popup/reduxActions.js";
+import reselector   from "SRC/popup/reselector.js";
 import {Button} from 'antd';
 import UploadImage from "SRC/popup/components/overview/UploadImage.jsx";
 import AutoRefresh from "SRC/popup/components/overview/AutoRefresh.jsx";
