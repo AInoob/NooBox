@@ -31,4 +31,5 @@ export const defaultValues = {
 export const constantValues = {
   displayList: ['imageSearch', 'autoRefresh', 'videoControl', 'checkUpdate'],
   version: chrome.runtime.getManifest().version,
+  videoControl: true,
 }
