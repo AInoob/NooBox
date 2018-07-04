@@ -15,6 +15,17 @@
   "background": {
     "scripts":["js/background.js"]
   },
+  "content_scripts":[
+    {
+      "matches":[
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js":["thirdParty/jquery.min.js", "js/extractImages.js"],
+      "run_at":"document_start",
+      "all_frames":true
+    }
+  ],
   "default_locale": "en",
   "options_page": "options.html",
   "permissions": [
