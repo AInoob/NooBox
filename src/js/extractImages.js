@@ -92,7 +92,7 @@ function getValidImage(url) {
 window.oncontextmenu = function(e) {
   focus = e.target;
 }
-const init = function() {
+const initExtractImage = function() {
   isOn("extractImages", function() {
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
@@ -189,4 +189,4 @@ const init = function() {
     );
   });
 }
-init();
+initExtractImage();
