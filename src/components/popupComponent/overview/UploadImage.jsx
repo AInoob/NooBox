@@ -13,8 +13,9 @@ export default class UploadImage extends React.Component{
     }
   }
   imageUpload(e){
+    let{imageSearchBegin} = this.props;
     this.getBase64(e.file.originFileObj,(base64)=>{
-      this.setState({base64:base64});
+      imageSearchBegin(base64);
     })
   }
   getBase64(file,callBack){
@@ -28,7 +29,7 @@ export default class UploadImage extends React.Component{
       return(
         <Dragger 
           // onChange ={(e)=>this.imageUpload(e)}
-          onChange = {(e)=>this.onChange(e)}
+          onChange = {(e)=>this.imageUpload(e)}
           showUploadList = {false}
         >
            <FAIcon className = "toolStart"  icon ={faSolid.faUpload}/>
