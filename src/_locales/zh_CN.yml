@@ -1,0 +1,158 @@
+appName:
+    message: 二箱
+appDesc:
+    message: 一个实用的工具箱！多引擎以图搜图+提取图片+截图搜索+HTML5视频控制
+overview:
+    message: 大局
+history:
+    message: 历史
+options:
+    message: 选项
+about:
+    message: 关于
+extract_images:
+    message: 提取图片
+search_this_image:
+    message: 以图搜图
+screenshot_search:
+    message: 截图搜索
+image:
+    message: 图片
+keywords:
+    message: 关键字
+more:
+    message: 更多
+relevance:
+    message: 相关
+area:
+    message: 面积
+width:
+    message: 宽度
+height:
+    message: 高度
+sortBy:
+    message: '排序 '
+reverse_image_search:
+    message: 以图搜图
+imageSearch:
+    message: 以图搜图
+extractImages:
+    message: 提取图片
+screenshotSearch:
+    message: 截图搜索
+search:
+    message: 搜索
+close:
+    message: 关闭
+notifier:
+    message: 二通知
+reader:
+    message: 二阅读
+clearAll:
+    message: 全部清空
+totalSearches:
+    message: 搜索次数
+when:
+    message: 啥时候
+event:
+    message: 事件
+detail:
+    message: 详情
+google:
+    message: 谷歌
+baidu:
+    message: 百度
+tineye:
+    message: Tineye
+yandex:
+    message: Yandex
+saucenao:
+    message: SauceNao
+iqdb:
+    message: IQDB
+sogou:
+    message: 搜狗
+bing:
+    message: 必应
+imageSearchUrl_google:
+    message: 谷歌
+imageSearchUrl_baidu:
+    message: 百度
+imageSearchUrl_tineye:
+    message: Tineye
+imageSearchUrl_yandex:
+    message: Yandex
+imageSearchUrl_saucenao:
+    message: SauceNao
+imageSearchUrl_iqdb:
+    message: IQDB
+imageSearchUrl_sogou:
+    message: 搜狗
+imageSearchUrl_bing:
+    message: 必应
+images:
+    message: 图片
+upload_image:
+    message: 上传图片
+videoControl:
+    message: HTML5视频控制（不稳定，慎用）
+checkUpdate:
+    message: 检查更新
+experience:
+    message: 体验
+record_history:
+    message: 记录历史
+autoRefresh:
+    message: 自动刷新 （测试）
+imageSearchNewTabFront:
+    message: 在前台打开新的标签
+tools:
+    message: 工具
+s:
+    message: 秒
+yes:
+    message: 是
+no:
+    message: 否
+j:
+    message: j
+ls_0:
+    message: 不支持的文件类型
+ls_1:
+    message: 截图搜索失败，
+ls_2:
+    message: 无法在当前页面使用截图搜索
+ls_3:
+    message: 拖拽图片到这里
+ls_4:
+    message: 刷新这个页面以加载二箱组件，如果还是不行就说明当前页面不支持提取图片
+ls_5:
+    message: 没结果？点这里上传图片搜索
+ls_6:
+    message: 给二箱在Product Hunt上投票吧！
+ls_7:
+    message: 二箱已是最新版本
+ls_8:
+    message: '二箱有了新的版本： '
+ls_9:
+    message: 如果你是Chrome网上商店安装的二箱，那请稍等片刻，让Chrome自己更新二箱。
+ls_10:
+    message: 如果你是下载的CRX，请点击下面的链接下载最新版的二箱CRX。
+ls_11:
+    message: 上传图片并执行以图搜图.
+ls_12:
+    message: 你可以点击上传或者拖拽上传.
+ls_13:
+    message: 如果你是Mac或者Unix用户，可能在你点上传的时候弹出内容会自己关闭。解决方法是右键二箱，选择审查弹出内容，然后就可以啦～
+ls_14:
+    message: 'HTML5视频控制基本上就是给HTML5视频增加快捷键(→ 是快进, k 是暂停, 等等), 这个功能现在还是Alpha测试阶段，所以不一定所有网站的HTML5视频都有效'
+ls_15:
+    message: 你可以选择在一些网站关闭HTML5视频控制，点击小太阳变成小云朵就可以啦～
+ls_16:
+    message: "{'→':'前进5秒','←':'倒退5秒','↑':'增大音量','↓':'降低音量','m':'静音/取消静音','j':'后退10秒','l':'前进10秒','k':'暂停/播放',',':'后退一点点点','.':'前进一点点点','>':'增大音量','<':'降低音量', 'f': '全屏','d':'下载','r':'神奇的旋转!'}"
+ls_17:
+    message: 清空所有历史？
+ls_18:
+    message: 点击上传或者拖拽上传
+ls_19:
+    message: 就是自动刷新页面啦~
