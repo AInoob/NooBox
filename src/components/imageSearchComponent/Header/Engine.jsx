@@ -50,6 +50,9 @@ const EngineContainer = styled.div`
       right:13px;
       font-size: 16px;
     }
+    .settingIcon{
+      color: rgba(0, 0, 0, 0.45)
+    }
 `;
 
 export default class Engine extends React.Component{
@@ -69,7 +72,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                   </div>
@@ -85,7 +88,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                     </div>
@@ -102,7 +105,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                   </div>
@@ -119,7 +122,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                   </div>
@@ -136,7 +139,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                     </div>
@@ -153,7 +156,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                   </div>
@@ -169,7 +172,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                   </div>
@@ -184,7 +187,7 @@ export default class Engine extends React.Component{
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
-                            ><FAIcon icon ={faSolid.faCog}/>
+                            ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
                     </div>
                   </div>
