@@ -1,10 +1,12 @@
 import userBrowser from '../utils/useBrowser';
 import AutoRefresh from './AutoRefresh';
-import ImageSearch from './ImageSearch.js';
+import Image from './Image';
+import Options from './Options';
 userBrowser();
 
 const autoRefresh = new AutoRefresh();
-const imageSearch = new ImageSearch();
+const image = new Image();
+const options = new Options();
 
 // window.x = autoRefresh;
 
@@ -30,10 +32,14 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const autoRefreshStatus = autoRefresh.getStatus(tabId);
     console.log(autoRefreshStatus);
     sendResponse(autoRefreshStatus);
-  }else if(job === "imageSearchBegin"){
+  } else if (job === "imageSearchBegin") {
     console.log("???");
-    browser.tabs.create({ url:"/searchResult.html"});
+    browser.tabs.create({ url:"/searchResult.html" });
   }
 });
 
+document.addEventListener('DOMContentLoaded', async () => {
+  await options.init();
+  await image.init();
+});
 
