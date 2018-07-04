@@ -6,8 +6,9 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       { from: './src/assets', to: 'static' },
-      { from: './public' },
+      { from: './thirdParty', to: 'thirdParty' },
       { from: './src/manifest.json' },
+      { from: './src/js', to: 'js' },
       { from: './src/html' },
     ]),
   ],

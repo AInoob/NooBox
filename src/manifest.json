@@ -13,8 +13,19 @@
     "128": "static/nooboxLogos/icon_128.png"
   },
   "background": {
-    "scripts":["js/background.js"]
+    "scripts":["thirdParty/jquery.min.js", "thirdParty/fileSavor.js", "thirdParty/jszip.min.js", "js/background.js"]
   },
+  "content_scripts":[
+    {
+      "matches":[
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js":["thirdParty/jquery.min.js", "js/extractImages.js"],
+      "run_at":"document_start",
+      "all_frames":true
+    }
+  ],
   "default_locale": "en",
   "options_page": "options.html",
   "permissions": [
