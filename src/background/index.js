@@ -35,6 +35,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (job === "imageSearchBegin") {
     console.log("???");
     browser.tabs.create({ url:"/searchResult.html" });
+  } else if (request.job == 'urlDownloadZip') {
+    image.downloadExtractImages(sender, request.files);
   }
 });
 
