@@ -1,5 +1,6 @@
 import React from "react";
 import {withRouter} from 'dva/router';
+import { LocaleProvider } from 'antd';
 //redux
 import {connect} from 'dva';
 import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
@@ -36,6 +37,7 @@ class Noobox extends React.Component{
     // console.log(match);
     // console.log(faSolid);
     return(
+      <LocaleProvider locale={i18n}>
       <NooboxContainer>
         {/* <Button type = "danger">Test</Button> */}
         <Menu
@@ -65,6 +67,7 @@ class Noobox extends React.Component{
         </Menu>
         {this.props.children}
       </NooboxContainer>
+      </LocaleProvider>
     )
   }
 }
