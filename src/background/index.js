@@ -32,9 +32,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const autoRefreshStatus = autoRefresh.getStatus(tabId);
     console.log(autoRefreshStatus);
     sendResponse(autoRefreshStatus);
-  } else if (job === "imageSearchBegin") {
-    console.log("???");
-    browser.tabs.create({ url:"/searchResult.html" });
+  } else if (job === "beginImageSearch") {
+    const {base64} = request;
+    image.beginImageSearch(base64);
+    // browser.tabs.create({ url:"/searchResult.html" });
   } else if (request.job == 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
   }
