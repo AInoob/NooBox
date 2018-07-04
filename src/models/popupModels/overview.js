@@ -36,7 +36,9 @@ export default {
       console.log("yes");
       let message ={
         job: "imageSearchBegin",
+        data: payload,
       }
+      console.log(message);
       yield call(sendMessage,message);
     }
   },

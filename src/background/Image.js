@@ -3,7 +3,8 @@ import { logEvent } from '../utils/bello';
 import GL from '../utils/getLocale';
 import { get } from '../utils/db';
 import { fetchBlob, convertDataURIToBinary } from '../utils';
-import ImageUtil from '../utils/imageSearchUtils.js';
+import imageUtil from '../utils/imageSearchUtils.js';
+import ajax from '../utils/ajax.js';
 export default class Image {
   constructor() {}
   async init() {
@@ -119,7 +120,7 @@ export default class Image {
       });
     }
   }
-  imageSearch(){
-    
+  async imageSearch(){
+     let data;
   }
 }
