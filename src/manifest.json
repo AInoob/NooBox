@@ -15,18 +15,8 @@
   "background": {
     "scripts":["js/background.js"]
   },
+  "default_locale": "en",
   "options_page": "options.html",
-  "content_scripts":[
-    {
-      "matches":[
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js":["js/popup.js"],
-      "run_at":"document_start",
-      "all_frames":true
-    }
-  ],
   "permissions": [
     "tabs",
     "contextMenus",
