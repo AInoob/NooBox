@@ -13,9 +13,9 @@ module.exports = {
     ]),
   ],
   entry: {
-    popup:['babel-polyfill',"./src/popup.js"],
+    popup:['babel-polyfill',"./src/popup/popup.js"],
     background:['babel-polyfill',"./src/background/index.js"],
-    imageSearch:['babel-polyfill',"./src/imageSearch.js"],
+    imageSearch:['babel-polyfill',"./src/imageSearch/imageSearch.js"],
   },
   resolve: {
     extensions: ['.webpack.js', '.js', '.jsx'],
@@ -44,13 +44,13 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jp(e*)g|svg)$/,  
+        test: /\.(png|jp(e*)g|svg)$/,
         use: [{
             loader: 'url-loader',
-            options: { 
+            options: {
                 // Convert images < 8kb to base64 strings
                 name: 'images/[hash]-[name].[ext]'
-            } 
+            }
         }]
     }
     ]

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router, Route, Switch } from 'dva/router';
-import Noobox from './routes/popup/Noobox.jsx';
-import Overview from './routes/popup/Overview';
-import Options from './routes/popup/Options.jsx';
-import UserHistory from './routes/popup/UserHistory';
-import About from './routes/popup/About.jsx';
-import  {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "./constant/navURL";
+import Noobox from './routes/Noobox.jsx';
+import Overview from './routes/Overview';
+import Options from './routes/Options.jsx';
+import UserHistory from './routes/UserHistory';
+import About from './routes/About.jsx';
+import  {OVERVIEW_URL,HISTORY_URL,OPTIONS_URL,ABOUT_URL} from "../constant/navURL";
 
 function RouterConfig({ history }) {
 

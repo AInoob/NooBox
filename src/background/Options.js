@@ -1,6 +1,6 @@
 import { isOptionOn, getDB, setDB, deleteDB, set, get } from "../utils/db";
 import { HISTORY_DB_KEY } from "../constant/constants";
-import { defaultValues, constantValues } from './values';
+import { defaultValues, constantValues } from '../constant/values';
 import data from './data';
 
 export default class Options {
