@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Brief from 'SRC/components/imageSearchComponent/Header/Brief.jsx';
-import Engine from 'SRC/components/imageSearchComponent/Header/Engine.jsx';
-import Setting from 'SRC/components/imageSearchComponent/Header/Setting.jsx';
-import ImageList from 'SRC/components/imageSearchComponent/Content/ImageList.jsx';
+import Brief from 'SRC/imageSearch/component/Header/Brief.jsx';
+import Engine from 'SRC/imageSearch/component/Header/Engine.jsx';
+import Setting from 'SRC/imageSearch/component/Header/Setting.jsx';
+import ImageList from 'SRC/imageSearch/component/Content/ImageList.jsx';
 import {Row,Col} from 'antd'
 const testData =[
   {

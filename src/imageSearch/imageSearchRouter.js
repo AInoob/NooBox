@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch } from 'dva/router';
-import ImageSearchResult from './routes/imageSearch/ImageSearchResult.jsx';
+import ImageSearchResult from './routes/ImageSearchResult.jsx';
 
 function RouterConfig({ history }) {
   return (
