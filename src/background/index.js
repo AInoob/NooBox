@@ -4,7 +4,7 @@ import ImageSearch from './ImageSearch.js';
 userBrowser();
 
 const autoRefresh = new AutoRefresh();
-const iamgeSearch = new ImageSearch();
+const imageSearch = new ImageSearch();
 
 // window.x = autoRefresh;
 
