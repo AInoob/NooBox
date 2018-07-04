@@ -1,8 +1,8 @@
 import React from "react";
 //redux
 import {connect} from 'dva';
-import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
-import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+import reduxActions from "SRC/popup/reduxActions.js";
+import reselector   from "SRC/popup/reselector.js";
 
 import {Tree,Card, Col, Row} from 'antd';
 import styled from "styled-components";
@@ -47,7 +47,7 @@ class Options extends React.Component{
   render(){
     return(
       <OptionsContainer>
-       
+
         <div id = "exp">
           <h4>Experience</h4>
           <Tree
@@ -117,7 +117,7 @@ class Options extends React.Component{
             </Col>
           </Row>
         </div>
-        
+
       </OptionsContainer>
     )
   }

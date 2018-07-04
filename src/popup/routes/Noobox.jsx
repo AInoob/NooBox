@@ -3,8 +3,8 @@ import {withRouter} from 'dva/router';
 import { LocaleProvider } from 'antd';
 //redux
 import {connect} from 'dva';
-import reduxActions from "SRC/modelsViewsConnentor/reduxActions.js";
-import reselector   from "SRC/modelsViewsConnentor/reselector.js";
+import reduxActions from "SRC/popup/reduxActions.js";
+import reselector   from "SRC/popup/reselector.js";
 
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
