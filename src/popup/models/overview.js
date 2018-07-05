@@ -26,11 +26,15 @@ export default {
         yield put({type:"updateState",payload:initState});
         // console.log(ifAutoRefresh);
     },
-    *autoRefreshSwitch({payload},{call,put,select}){
-      yield call(sendMessage, payload);
-    },
     *autoRefreshUpdate({payload},{call,put,select}){
-      yield call(sendMessage, payload);
+      const { tabId, active, interval, startAt } = payload;
+      yield call(sendMessage, {
+        job: 'updateAutoRefresh',
+        active,
+        tabId,
+        interval,
+        startAt,
+      });
     },
     *imageSearchBegin({payload},{call,put,select}){
       let message ={
