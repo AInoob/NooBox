@@ -1,7 +1,11 @@
 import fetch from 'dva/fetch';
 
-const parseJSON = response => {
-  return response.json();
+const parseResponse = response => {
+  if(response.headers.get('Content-Type') === "text/html; charset=utf-8"){
+    return response.text();
+  }else{
+    return response.json();
+  }
 }
 
 const checkStatus = response => {
@@ -22,9 +26,10 @@ const checkStatus = response => {
  * @return {object}           An object containing either "data" or "err"
  */
 export default (url, options) => {
+  console.log(options);
   return fetch(url, options)
     .then(checkStatus)
-    .then(parseJSON)
-    .then(data => ({ data }))
+    .then(parseResponse)
+    .then(data => ({data}))
     .catch(err => ({ err }));
 }
