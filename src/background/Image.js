@@ -129,10 +129,6 @@ export default class Image {
         //'User-Agent': 'Mozilla/4.0 MDN Example',
         'Content-Type': 'application/json'
       },
-<<<<<<< HEAD
-=======
-      mode:"cors",
->>>>>>> Raynor
       body: JSON.stringify({data:base64}),
     }
     let result = await ajax(aionobServer, requestBody);
