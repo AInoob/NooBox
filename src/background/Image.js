@@ -8,6 +8,77 @@ import ajax from '../utils/ajax.js';
 export default class Image {
   constructor() {}
   async init() {
+    await this.updateExtractImageContextMenu();
+    await this.updateImageSearchContextMenu();
+    await this.updateScreenshotSearchContextMenu();
+  }
+
+  async updateScreenshotSearchContextMenu() {
+    if (await get('screenshotSearch')) {
+      data.Image.screenshotSearchHandle = browser.contextMenus.create({
+        "id": "screenshotSearch",
+        "title": GL("screenshot_search"),
+        "contexts": ["all"],
+        "onclick": this.screenshotSearch
+      });
+    }else {
+      browser.contextMenus.remove(data.Image.screenshotSearchHandle);
+      data.Image.screenshotSearchHandle = null;
+    }
+  }
+
+  async screenshotSearch(info, tab){
+    browser.tabs.sendMessage(tab.id, 'loaded', (response) => {
+      if (response == 'yes') {
+        browser.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+          browser.tabs.sendMessage(tab.id, {
+            job: "screenshotSearch",
+            data: dataURL
+          });
+        });
+      } else {
+        browser.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+          browser.tabs.executeScript(tab.id, { file: 'thirdParty/jquery.min.js' }, () => {
+            if (browser.runtime.lastError) {
+              browser.notifications.create('screenshotFailed', {
+                type: 'basic',
+                iconUrl: '/images/icon_128.png',
+                title: GL("ls_1"),
+                message: GL("ls_2")
+              }, voidFunc);
+              return;
+            }
+            browser.tabs.executeScript(tab.id, { file: 'js/screenshotSearch.js' }, () => {
+              browser.tabs.sendMessage(tab.id, {
+                job: "screenshotSearch",
+                data: dataURL
+              });
+            });
+          });
+        });
+      }
+    });
+  }
+
+  async updateImageSearchContextMenu() {
+    if (await get('imageSearch')) {
+      data.Image.imageSearchHandle = browser.contextMenus.create({
+        "id": "imageSearch",
+        "title": GL("search_this_image"),
+        "contexts": ["image"],
+        "onclick": this.imageSearch
+      });
+    }else {
+      browser.contextMenus.remove(data.Image.imageSearchHandle);
+      data.Image.imageSearchHandle = null;
+    }
+  }
+
+  async imageSearch() {
+
+  }
+
+  async updateExtractImageContextMenu() {
     if (await get('extractImages')) {
       data.Image.extractImageHandle = browser.contextMenus.create({
         "id": "extractImages",
@@ -20,6 +91,7 @@ export default class Image {
       data.Image.extractImageHandle = null;
     }
   }
+
   extractImages(info, tab) {
     try {
       browser.tabs.sendMessage(tab.id, {
@@ -124,7 +196,7 @@ export default class Image {
     console.log(base64);
     let aionobServer = "https://ainoob.com/api/uploadImage/";
     let requestBody  = {
-      method: 'POST',  
+      method: 'POST',
       headers: {
         //'User-Agent': 'Mozilla/4.0 MDN Example',
         'Content-Type': 'application/json'
