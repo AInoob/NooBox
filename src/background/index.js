@@ -31,6 +31,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     console.log(autoRefreshStatus);
     sendResponse(autoRefreshStatus);
   } else if (job === "beginImageSearch") {
+    console.log(1);
     const {base64} = request;
     image.beginImageSearch(base64);
     // browser.tabs.create({ url:"/searchResult.html" });

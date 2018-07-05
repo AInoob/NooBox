@@ -12,9 +12,10 @@ export default class UploadImage extends React.Component{
       fileList:[],
     }
   }
-  imageUpload(e){
+  imageUpload(file){
     let{imageSearchBegin} = this.props;
-    this.getBase64(e.file.originFileObj,(base64)=>{
+    // console.log(file);
+    this.getBase64(file,(base64)=>{
       imageSearchBegin(base64);
     })
   }
@@ -29,8 +30,9 @@ export default class UploadImage extends React.Component{
       return(
         <Dragger 
           // onChange ={(e)=>this.imageUpload(e)}
-          onChange = {(e)=>this.imageUpload(e)}
+          // onChange = {(e)=>this.imageUpload(e)}
           showUploadList = {false}
+          beforeUpload ={(file) => this.imageUpload(file)}
         >
            <FAIcon className = "toolStart"  icon ={faSolid.faUpload}/>
           <p className="ant-upload-text">Reverse Image Search</p>
