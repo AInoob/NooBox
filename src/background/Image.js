@@ -121,7 +121,6 @@ export default class Image {
     }
   }
   async beginImageSearch(base64){
-    console.log(base64);
     let aionobServer = "https://ainoob.com/api/uploadImage/";
     let requestBody  = {
       method: 'POST',  
@@ -129,6 +128,7 @@ export default class Image {
         //'User-Agent': 'Mozilla/4.0 MDN Example',
         'Content-Type': 'application/json'
       },
+      mode:"cors",
       body: JSON.stringify({data:base64}),
     }
     let result = await ajax(aionobServer, requestBody);
