@@ -22,13 +22,11 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (job === 'updateAutoRefresh') {
     const { tabId, interval, active, startAt } = request;
     const autoRefreshStatus = autoRefresh.update(tabId, active, interval, startAt, true);
-    console.log(autoRefreshStatus);
     sendResponse(autoRefreshStatus);
   }
   else if (job === 'getCurrentTabAutoRefreshStatus') {
     const { tabId } = request;
     const autoRefreshStatus = autoRefresh.getStatus(tabId);
-    console.log(autoRefreshStatus);
     sendResponse(autoRefreshStatus);
   } else if (job === "beginImageSearch") {
     const {base64} = request;
