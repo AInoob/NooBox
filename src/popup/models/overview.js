@@ -17,7 +17,7 @@ export default {
         const tabData   = yield call(getCurrentTab);
         initState.tabId = tabData.id;
         //Auto Refresh Status
-        const refreshStatus =  yield call(sendMessage,{ job: 'getCurrentTabAutoRefreshStatus' });
+        const refreshStatus =  yield call(sendMessage,{ job: 'getCurrentTabAutoRefreshStatus', tabId: tabData.id });
         initState.ifRefresh = refreshStatus.active;
         initState.refreshElapsed  = refreshStatus.elapsedTime;
         initState.refreshInterval = refreshStatus.interval;

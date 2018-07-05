@@ -2,6 +2,8 @@ import data from './data';
 import { logEvent } from '../utils/bello';
 import {set} from "SRC/utils/db";
 
+window.x = data;
+
 const defaultSetting = {
   handler: null,
   interval: 3000,
@@ -34,7 +36,7 @@ export default class AutoRefresh {
     data.AutoRefresh.tabs[tabId] = setting;
   }
   getSetting(tabId) {
-    const setting = data.AutoRefresh.tabs[tabId] || defaultSetting;
+    const setting = data.AutoRefresh.tabs[tabId] || JSON.parse(JSON.stringify(defaultSetting));
     return setting;
   }
   getStatus(tabId) {
@@ -66,7 +68,6 @@ export default class AutoRefresh {
     setting.interval = interval || setting.interval;
     interval = setting.interval;
     let firstTimeInterval = interval;
-    console.log('interval: ' + interval + ' startAt: ' + startAt);
     if (active) {
       if (handler) {
         action = 'updateInterval';
