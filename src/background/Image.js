@@ -129,7 +129,7 @@ export default class Image {
         //'User-Agent': 'Mozilla/4.0 MDN Example',
         'Content-Type': 'application/json'
       },
-      body: base64,
+      body: JSON.stringify({data:base64}),
     }
     let result = await ajax(aionobServer, requestBody);
     console.log(result);
