@@ -41,6 +41,7 @@ export default {
         job: "beginImageSearch",
         base64: payload,
       }
+      console.log("asdfsdfdsf");
       yield call(sendMessage,message);
     }
   },

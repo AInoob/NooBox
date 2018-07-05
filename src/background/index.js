@@ -19,7 +19,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     return;
   }
   const job = request.job;
-
+  console.log(request);
   if (job === 'updateAutoRefresh') {
     const { tabId, interval, active, startAt } = request;
     const autoRefreshStatus = autoRefresh.update(tabId, active, interval, startAt, true);
@@ -30,6 +30,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     const autoRefreshStatus = autoRefresh.getStatus(tabId);
     sendResponse(autoRefreshStatus);
   } else if (job === "beginImageSearch") {
+   
     const {base64} = request;
     image.beginImageSearch(base64);
     // browser.tabs.create({ url:"/searchResult.html" });
