@@ -26,7 +26,6 @@ const checkStatus = response => {
  * @return {object}           An object containing either "data" or "err"
  */
 export default (url, options) => {
-  console.log(options);
   return fetch(url, options)
     .then(checkStatus)
     .then(parseResponse)
