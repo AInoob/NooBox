@@ -63,8 +63,10 @@ export default class AutoRefresh {
     let action = 'stop';
     let setting = this.getSetting(tabId);
     let handler = setting.handler;
-    let firstTimeInterval = interval;
     setting.interval = interval || setting.interval;
+    interval = setting.interval;
+    let firstTimeInterval = interval;
+    console.log('interval: ' + interval + ' startAt: ' + startAt);
     if (active) {
       if (handler) {
         action = 'updateInterval';

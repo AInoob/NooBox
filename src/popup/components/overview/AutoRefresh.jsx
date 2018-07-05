@@ -28,35 +28,16 @@ export default class AutoRefresh extends React.Component {
       elapsedTime: 0,
     }
   }
-  
+
   autoRefreshSwitch(){
-    const {autoRefreshSwitch,tabId} = this.props;
-    let newState ={};
-    if(this.state.active){
-      let payload = {
-        job: 'updateAutoRefresh',
-        active: false,
-        tabId : tabId,
-        interval:this.state.interval,
-        startAt:0,
-      }
-      newState = {
-        active: false,
-        elapsedTime: 0,
-      }
-      autoRefreshSwitch(payload);
-    }else{
-      let payload ={
-        job: 'updateAutoRefresh',
-        active: true,
-        tabId : tabId,
-        interval: this.state.interval,
-        startAt:0,
-      }
-      newState = {
-        active: true,
-      }
-      autoRefreshSwitch(payload);
+    const {autoRefreshUpdate,tabId} = this.props;
+    let { active } = this.state;
+    autoRefreshUpdate({ tabId, active: !active });
+    let newState ={
+      active: !active,
+    };
+    if (active) {
+      newState.elapsedTime = 0;
     }
     this.setState(newState, () => {this.progressControl()});
   }
@@ -100,25 +81,17 @@ export default class AutoRefresh extends React.Component {
      })
   }
   onChangeInterval(newInterval){
-    let {tabId,autoRefreshUpdate} = this.props;
-    if(this.state.active){
-      let payload ={
-        job: 'updateAutoRefresh',
-        active: true,
-        tabId : tabId,
-        interval: newInterval,
-        startAt:0,
-      }
-      autoRefreshUpdate(payload);
+    let { tabId, autoRefreshUpdate } = this.props;
+    let { active } = this.state;
+    autoRefreshUpdate({ tabId, active, interval: newInterval, startAt: 0 });
+    this.setState({
+      interval:newInterval,
+    })
+    if (this.state.active) {
       this.setState({
-        interval:newInterval,
         elapsedTime:0,
       },() => {
         this.progressControl();
-      })
-    }else{
-      this.setState({
-        interval:newInterval,
       })
     }
   }

@@ -101,7 +101,6 @@ class Overview extends React.Component{
            <AutoRefresh
              tabId             = {this.state.tabId}
              currentState      = {this.state.autoRefresh}
-             autoRefreshSwitch = {actions.autoRefreshSwtich}
              autoRefreshUpdate = {actions.autoRefreshUpdate}
            />
           </div>
