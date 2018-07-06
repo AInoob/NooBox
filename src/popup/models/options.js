@@ -32,17 +32,61 @@ export default {
       }
       yield put({type:"updateState",payload:{currentTool,currentExp,currentEngine,inited:true}})
     },
-    *onChecked({payload},{put,select}){
-    
+    *onCheckEngine({payload},{call,put,select}){
+      let {currentEngine} = yield select(state => state.options);
+      if(currentEngine[payload]){
+         yield call(set,payload,false);
+         currentEngine[payload] = false;
+      }else{
+        yield call(set,payload,true);
+        currentEngine[payload] = true;
+      }
+      yield put({type:"updateState",payload:{currentEngine}})
     },
-    *onCheckEngine({payload},{put,select}){
+    *onCheckTool({payload},{call,put,select}){
+      let newSetting = payload.filter(name => name !== "image");
 
+      let {currentTool} = yield select(state => state.options);
+      if(currentTool.length > newSetting.length){
+        for(let name of currentTool){
+          if(!newSetting.includes(name)){
+            yield call(set,name,false);
+          }
+        }
+        currentTool = newSetting;
+      }else{
+        for(let name of newSetting){
+          if(!currentTool.includes(name)){
+            yield call(set,name,true);
+          }
+        }
+        currentTool = newSetting;
+      }
+      yield put({type:"updateState",payload:{currentTool:newSetting}})
     },
-    *onCheckTool({payload},{put,select}){
-
-    },
-    *onCheckExp({payload},{put,select}){
-
+    *onCheckExp({payload},{call,put,select}){
+      // if the setting has parent
+      // let newSetting = payload.fliter(name => name !== "image");
+      let newSetting = payload;
+      let {currentExp} = yield select(state => state.options);
+      console.log(currentExp);
+      if(currentExp.length > newSetting.length){
+        for(let name of currentExp){
+          if(!newSetting.includes(name)){
+            yield call(set,name,false);
+          }
+        }
+        currentExp = newSetting;
+      }else{
+        for(let name of newSetting){
+          if(!currentExp.includes(name)){
+            yield call(set,name,true);
+          }
+        }
+        currentExp = newSetting;
+      }
+      console.log(currentExp);
+      yield put({type:"updateState",payload:{currentExp:currentExp}})
     },
   },
   reducers:{

@@ -67,30 +67,20 @@ class Options extends React.Component{
       return <TreeNode {...item} />;
     });
   }
-  onCheckEngine(name){
-    if(this.state[name]){
-      let obj = {};
-      obj[name] = false;
-      this.setState(obj);
-    }else{
-      let obj = {};
-      obj[name] = true;
-      this.setState(obj);
-    }
-  }
-  generateIcon(){
+  generateIcon(actions){
     return engineMap.map((element,index) => (
     <Col span ={6} key ={index}>
       <Card bordered={false}>
         <img 
           src ={element.icon}
-          onClick ={() => this.onCheckEngine(element.dbName)} 
+          onClick ={() => actions.optionsCheckEngine(element.dbName)} 
           className ={this.state.currentEngine[element.dbName] ?"engineOpen":"engineClose"} />
       </Card>
     </Col>
     ))
   }
   render(){
+    let {actions} = this.props;
     if(!this.state.inited){
       return <Loader/>
     }
@@ -100,7 +90,7 @@ class Options extends React.Component{
           <h4>Experience</h4>
           <Tree
             checkable
-            onCheck={(e)=>this.onCheckOptionsExperience(e)}
+            onCheck={(e)=>actions.optionsCheckExp(e)}
             defaultCheckedKeys = {this.state.currentExp}>
             <TreeNode title ="History"      key = "history"/>
             <TreeNode title ="Check Update" key = "checkUpdate"/>
@@ -110,7 +100,7 @@ class Options extends React.Component{
           <h4>Tools</h4>
           <Tree
             checkable
-            onCheck={(e)=>this.onCheckOptionsTool(e)}
+            onCheck={(e)=>actions.optionsCheckTool(e)}
             defaultCheckedKeys = {this.state.currentTool}
           >
             <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
@@ -126,7 +116,7 @@ class Options extends React.Component{
         <div id = "engines">
           <h4>Avaiable Engines</h4>
           <Row gutter={-1}>
-            {this.generateIcon()}
+            {this.generateIcon(this.props.actions)}
           </Row>
         </div>
       </OptionsContainer>
