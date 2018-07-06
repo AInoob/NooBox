@@ -4,55 +4,11 @@ import {connect} from 'dva';
 import reduxActions from "SRC/popup/reduxActions.js";
 import reselector   from "SRC/popup/reselector.js";
 
-import {Tree,Card, Col, Row} from 'antd';
+import {Tree,Card, Col, Row,Spin} from 'antd';
 import styled from "styled-components";
-import google from "SRC/assets/engineLogos/google.png";
-import baidu  from "SRC/assets/engineLogos/baidu.png";
-import ascii2d from "SRC/assets/engineLogos/ascii2d.png";
-import bing from "SRC/assets/engineLogos/bing.png";
-import saucenao from "SRC/assets/engineLogos/saucenao.png";
-import sogou from "SRC/assets/engineLogos/sogou.png";
-import tineye from "SRC/assets/engineLogos/tineye.png";
-import iqdb from "SRC/assets/engineLogos/iqdb.png";
-import yandex from "SRC/assets/engineLogos/yandex.png";
+import {engineMap} from 'SRC/constant/settingMap.js';
+import Loader      from "SRC/common/component/Loader.jsx";
 const TreeNode  = Tree.TreeNode;
-const engineMap =[
-  {
-    name:"google",
-    icon: google,
-    optionsName:"imageSearchUrl_google",
-  },
-  {
-    name:"baidu",
-    icon: baidu,
-    optionsName:"imageSearchUrl_baidu",
-  }, {
-    name:"yandex",
-    icon: yandex,
-    optionsName:"imageSearchUrl_yandex",
-  }, {
-    name:"bing",
-    icon: bing,
-    optionsName:"imageSearchUrl_bing",
-  }, {
-    name:"tineye",
-    icon: tineye,
-    optionsName:"imageSearchUrl_tineye",
-  }, {
-    name:"saucenao",
-    icon: saucenao ,
-    optionsName:"imageSearchUrl_saucenao",
-  }, {
-    name:"iqdb",
-    icon: iqdb,
-    optionsName:"imageSearchUrl_iqdb",
-  }, {
-    name:"ascii2d",
-    icon: ascii2d,
-    optionsName:"imageSearchUrl_ascii2d",
-  },
-  
-]
 const OptionsContainer = styled.div`
   margin-left:15px;
   margin-top:5px;
@@ -80,11 +36,15 @@ const OptionsContainer = styled.div`
 class Options extends React.Component{
   constructor(props){
     super(props);
+    this.state ={
+      inited:false,
+    }
   }
   componentWillMount(){
-    const {options} = this.props;
+    const {options,actions} = this.props;
+    console.log(options);
     if(!options.inited){
-      //inited
+      actions.optionsInit();
     }else{
       this.setState(options);
     }
@@ -122,12 +82,18 @@ class Options extends React.Component{
     return engineMap.map((element,index) => (
     <Col span ={6} key ={index}>
       <Card bordered={false}>
-        <img onClick ={() => this.onCheckEngine(element.optionsName)} className ={this.state[element.optionsName] ?"engineOpen":"engineClose"} src ={element.icon}/>
+        <img 
+          src ={element.icon}
+          onClick ={() => this.onCheckEngine(element.dbName)} 
+          className ={this.state.currentEngine[element.dbName] ?"engineOpen":"engineClose"} />
       </Card>
     </Col>
     ))
   }
   render(){
+    if(!this.state.inited){
+      return <Loader/>
+    }
     return(
       <OptionsContainer>
         <div id = "exp">
@@ -135,7 +101,7 @@ class Options extends React.Component{
           <Tree
             checkable
             onCheck={(e)=>this.onCheckOptionsExperience(e)}
-            defaultCheckedKeys = {this.state.experienceChecked}>
+            defaultCheckedKeys = {this.state.currentExp}>
             <TreeNode title ="History"      key = "history"/>
             <TreeNode title ="Check Update" key = "checkUpdate"/>
           </Tree>
@@ -145,7 +111,7 @@ class Options extends React.Component{
           <Tree
             checkable
             onCheck={(e)=>this.onCheckOptionsTool(e)}
-            defaultCheckedKeys = {this.state.toolsChecked}
+            defaultCheckedKeys = {this.state.currentTool}
           >
             <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
             <TreeNode   title ="HTML5 Video Control (Alpha)" key = "videoControl"/>
@@ -163,7 +129,6 @@ class Options extends React.Component{
             {this.generateIcon()}
           </Row>
         </div>
-
       </OptionsContainer>
     )
   }

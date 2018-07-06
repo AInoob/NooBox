@@ -15,39 +15,7 @@ export const overviewSelector    = (state) => {
     autoRefresh,
   }
 };
-export const optionsSelector     = (state) => {
-    const options  = state.options;
-    
-    let experience = 
-    ["history",
-    "checkUpdate"];
-
-    let tools = [
-      "autoRefresh",
-      "videoControl",
-      "extractImages",
-      "imageSearch",
-      "imageSearchNewTabFront",
-      "screenshotSearch"];
-    let experienceChecked = [];
-    let toolsChecked      = [];
-    for(let i = 0; i< experience.length; i++){
-       if(options[experience[i]] === true){
-        experienceChecked[experienceChecked.length] = experience[i];
-       }
-    }
-    for(let i = 0; i< tools.length; i++){
-       if(options[tools[i]] === true){
-        toolsChecked[toolsChecked.length] = tools[i];
-       }
-    }
-    console.log(toolsChecked);
-  return{
-    toolsChecked:toolsChecked,
-    experienceChecked:experienceChecked,
-    ...options,
-  }
-};
+export const optionsSelector     = (state) => state.options;
 export const userHistorySelector = (state) => state.userHistory;
 export default createSelector(
   [nooboxSelector,overviewSelector,userHistorySelector,optionsSelector],
