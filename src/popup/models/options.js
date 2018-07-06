@@ -1,38 +1,36 @@
-import {engineMap} from 'SRC/constant/engineNameMap.js';
+import {engineMap,toolSettingMap,expSettingMap} from 'SRC/constant/settingMap.js';
+import {get,set} from 'SRC/utils/db.js';
 export default {
   namespace:"options",
   state:{
-    autoRefresh: true,
-    history: false,
-    checkUpdate: false,
-    videoControl: false,
-    extractImages: true,
-    imageSearch: true,
-    imageSearchNewTabFront: true,
-    screenshotSearch: true,
-    imageSearchUrl_google: false,
-    imageSearchUrl_baidu: false,
-    imageSearchUrl_yandex: false,
-    imageSearchUrl_bing: false,
-    imageSearchUrl_tineye: false,
-    imageSearchUrl_saucenao: false,
-    imageSearchUrl_iqdb: false,
-    imageSearchUrl_ascii2d: false,
-    inited:true,
-    tools:[
-      "autoRefresh",
-      "videoControl",
-      "extractImages",
-      "imageSearch",
-      "imageSearchNewTabFront",
-      "screenshotSearch"],
-    experience:
-    ["history",
-    "checkUpdate"],
+    inited:false,
   },
   effects:{
-    *init(){
-      let current = 
+    *init({payload},{call,put}){
+      let currentTool   = [];
+      let currentExp    = [];
+      let currentEngine = {};
+      for(let i = 0; i< toolSettingMap.length; i++){
+        let checked = yield call(get,toolSettingMap[i].name);
+        if(checked && checked[toolSettingMap[i].name]){
+          currentTool[currentTool.length] = toolSettingMap[i].name
+        }
+      }
+      for(let i = 0; i<expSettingMap.length; i++){
+        let checked = yield call(get,expSettingMap[i].name);
+        if(checked && checked[expSettingMap[i].name]){
+          currentExp[currentExp.length] = expSettingMap[i].name;
+        }
+      }
+      for(let i = 0; i<engineMap.length; i++){
+        let checked = yield call(get,engineMap[i].dbName);
+        if(checked && checked[engineMap[i].dbName]){
+          currentEngine[engineMap[i].dbName] = true;
+        }else{
+          currentEngine[engineMap[i].dbName] = false;
+        }
+      }
+      yield put({type:"updateState",payload:{currentTool,currentExp,currentEngine,inited:true}})
     },
     *onChecked({payload},{put,select}){
     
