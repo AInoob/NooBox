@@ -15,7 +15,44 @@ import sogou from "SRC/assets/engineLogos/sogou.png";
 import tineye from "SRC/assets/engineLogos/tineye.png";
 import iqdb from "SRC/assets/engineLogos/iqdb.png";
 import yandex from "SRC/assets/engineLogos/yandex.png";
-const TreeNode = Tree.TreeNode;
+const TreeNode  = Tree.TreeNode;
+const engineMap =[
+  {
+    name:"google",
+    icon: google,
+    optionsName:"imageSearchUrl_google",
+  },
+  {
+    name:"baidu",
+    icon: baidu,
+    optionsName:"imageSearchUrl_baidu",
+  }, {
+    name:"yandex",
+    icon: yandex,
+    optionsName:"imageSearchUrl_yandex",
+  }, {
+    name:"bing",
+    icon: bing,
+    optionsName:"imageSearchUrl_bing",
+  }, {
+    name:"tineye",
+    icon: tineye,
+    optionsName:"imageSearchUrl_tineye",
+  }, {
+    name:"saucenao",
+    icon: saucenao ,
+    optionsName:"imageSearchUrl_saucenao",
+  }, {
+    name:"iqdb",
+    icon: iqdb,
+    optionsName:"imageSearchUrl_iqdb",
+  }, {
+    name:"ascii2d",
+    icon: ascii2d,
+    optionsName:"imageSearchUrl_ascii2d",
+  },
+  
+]
 const OptionsContainer = styled.div`
   margin-left:15px;
   margin-top:5px;
@@ -23,13 +60,42 @@ const OptionsContainer = styled.div`
   h4{
     border-bottom: 1px solid #d9d9d9;
   }
-  .engine{
+  .engineOpen{
     height:35px;
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+  }
+  .engineOpen:hover{
+    cursor:pointer
+  }
+  .engineClose{
+    height:35px;
+    opacity: 0.2;
+    transition: opacity .25s ease-in-out;
+  }
+  .engineClose:hover{
+    cursor:pointer
   }
 `;
 class Options extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  componentWillMount(){
+    const {options} = this.props;
+    if(!options.inited){
+      //inited
+    }else{
+      this.setState(options);
+    }
+  }
+  componentWillReceiveProps(props){
+    const {options} = props;
+    if(options.inited){
+      this.setState(options);
+    }
+  }
   renderTreeNodes(data){
-    // console.log(data);
     return data.map((item) => {
       if (item.children) {
         return (
@@ -41,80 +107,60 @@ class Options extends React.Component{
       return <TreeNode {...item} />;
     });
   }
-  onCheck(){
-
+  onCheckEngine(name){
+    if(this.state[name]){
+      let obj = {};
+      obj[name] = false;
+      this.setState(obj);
+    }else{
+      let obj = {};
+      obj[name] = true;
+      this.setState(obj);
+    }
+  }
+  generateIcon(){
+    return engineMap.map((element,index) => (
+    <Col span ={6} key ={index}>
+      <Card bordered={false}>
+        <img onClick ={() => this.onCheckEngine(element.optionsName)} className ={this.state[element.optionsName] ?"engineOpen":"engineClose"} src ={element.icon}/>
+      </Card>
+    </Col>
+    ))
   }
   render(){
     return(
       <OptionsContainer>
-
         <div id = "exp">
           <h4>Experience</h4>
           <Tree
             checkable
-            onCheck={(e)=>this.onCheck(e)}>
-            <TreeNode title ="History" key="history"/>
+            onCheck={(e)=>this.onCheckOptionsExperience(e)}
+            defaultCheckedKeys = {this.state.experienceChecked}>
+            <TreeNode title ="History"      key = "history"/>
+            <TreeNode title ="Check Update" key = "checkUpdate"/>
           </Tree>
         </div>
         <div id = "tool">
           <h4>Tools</h4>
           <Tree
             checkable
-            onCheck={(e)=>this.onCheck(e)}>
+            onCheck={(e)=>this.onCheckOptionsTool(e)}
+            defaultCheckedKeys = {this.state.toolsChecked}
+          >
             <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
-            <TreeNode   title ="HTML5 Video Control (Alpha)" key = "html5VideoControl"/>
-            <TreeNode   title ="Image Search"                key ="imageSearch">
-              <TreeNode title ="Open Result Tab In Front"    key ="openResultTabInFront"/>
-              <TreeNode title ="Extract Images"              key="extractImages"/>
-              <TreeNode title ="Screenshot & Search"         key ="screenshotSearch"/>
+            <TreeNode   title ="HTML5 Video Control (Alpha)" key = "videoControl"/>
+            <TreeNode   title ="Image"                       key = "image">
+              <TreeNode title ="Reverse Image Search"        key = "imageSearch"/>
+              <TreeNode title ="Open Result Tab In Front"    key = "imageSearchNewTabFront"/>
+              <TreeNode title ="Extract Images"              key = "extractImages"/>
+              <TreeNode title ="Screenshot & Search"         key = "screenshotSearch"/>
             </TreeNode>
           </Tree>
         </div>
         <div id = "engines">
           <h4>Avaiable Engines</h4>
           <Row gutter={-1}>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={google}/>
-              </Card>
-            </Col>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={baidu}/>
-              </Card>
-            </Col>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={yandex}/>
-              </Card>
-            </Col>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={tineye}/>
-              </Card>
-            </Col>
-          </Row>
-          <Row gutter={-1}>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={ascii2d}/>
-              </Card>
-            </Col>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={saucenao}/>
-              </Card>
-            </Col>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={bing}/>
-              </Card>
-            </Col>
-            <Col span ={6}>
-              <Card bordered={false}>
-                <img className ="engine" src ={iqdb}/>
-              </Card>
-            </Col>
+            {this.generateIcon()}
           </Row>
         </div>
 
