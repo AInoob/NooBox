@@ -8,6 +8,7 @@ export const get = key => {
 
 export const set = (key, value) => {
   return new Promise(resolve => {
+    // console.log(key,value);
     const temp = {};
     temp[key] = value;
     browser.storage.sync.set(temp, resolve);
