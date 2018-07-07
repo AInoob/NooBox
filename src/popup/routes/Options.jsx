@@ -35,25 +35,10 @@ const OptionsContainer = styled.div`
   }
 `;
 class Options extends React.Component{
-  constructor(props){
-    super(props);
-    this.state ={
-      inited:false,
-    }
-  }
   componentWillMount(){
     const {options,actions} = this.props;
-    console.log(options);
     if(!options.inited){
       actions.optionsInit();
-    }else{
-      this.setState(options);
-    }
-  }
-  componentWillReceiveProps(props){
-    const {options} = props;
-    if(options.inited){
-      this.setState(options);
     }
   }
   renderTreeNodes(data){
@@ -68,21 +53,21 @@ class Options extends React.Component{
       return <TreeNode {...item} />;
     });
   }
-  generateIcon(actions){
+  generateIcon(actions,currentEngine){
     return engineMap.map((element,index) => (
     <Col span ={6} key ={index}>
       <Card bordered={false}>
         <img 
           src ={element.icon}
           onClick ={() => actions.optionsCheckEngine(element.dbName)} 
-          className ={this.state.currentEngine[element.dbName] ?"engineOpen":"engineClose"} />
+          className ={currentEngine[element.dbName] ?"engineOpen":"engineClose"} />
       </Card>
     </Col>
     ))
   }
   render(){
-    let {actions} = this.props;
-    if(!this.state.inited){
+    let {actions,options} = this.props;
+    if(!options.inited){
       return <Loader/>
     }
     return(
@@ -92,7 +77,7 @@ class Options extends React.Component{
           <Tree
             checkable
             onCheck={(e)=>actions.optionsCheckExp(e)}
-            defaultCheckedKeys = {this.state.currentExp}>
+            defaultCheckedKeys = {options.currentExp}>
             <TreeNode title ="History"      key = "history"/>
             <TreeNode title ="Check Update" key = "checkUpdate"/>
           </Tree>
@@ -102,7 +87,7 @@ class Options extends React.Component{
           <Tree
             checkable
             onCheck={(e)=>actions.optionsCheckTool(e)}
-            defaultCheckedKeys = {this.state.currentTool}
+            defaultCheckedKeys = {options.currentTool}
           >
             <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
             <TreeNode   title ="HTML5 Video Control (Alpha)" key = "videoControl"/>
@@ -114,12 +99,16 @@ class Options extends React.Component{
             </TreeNode>
           </Tree>
         </div>
-        <div id = "engines">
-          <h4>Avaiable Engines</h4>
-          <Row gutter={-1}>
-            {this.generateIcon(this.props.actions)}
-          </Row>
-        </div>
+        {
+          options.showEngines ?
+           (<div id = "engines">
+              <h4>Avaiable Engines</h4>
+              <Row gutter={-1}>
+                {this.generateIcon(this.props.actions,options.currentEngine)}
+              </Row>
+            </div>): ("")
+        }
+       
       </OptionsContainer>
     )
   }
