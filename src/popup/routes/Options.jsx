@@ -1,5 +1,6 @@
 import React from "react";
 //redux
+//__MSG_appName__
 import {connect} from 'dva';
 import reduxActions from "SRC/popup/reduxActions.js";
 import reselector   from "SRC/popup/reselector.js";
