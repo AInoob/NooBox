@@ -11,7 +11,10 @@ export const overviewSelector    = (state) => {
   }
   return{
     inited:overview.inited,
-    tabId:overview.tabId,
+    tabId: overview.tabId,
+    showImageSearch:overview.showImageSearch,
+    showAutoRefresh:overview.showAutoRefresh,
+    showHtml5Video: overview.showHtml5Video,
     autoRefresh,
   }
 };

@@ -10,16 +10,14 @@ export default {
     showEngines:true,
   },
   effects:{
-    *init({payload},{call,put}){
+    *init({payload},{call,put,select}){
       let currentTool   = [];
       let currentExp    = [];
       let currentEngine = {};
-      let showEngines   = true;
-      let showExps      = true;
-      let showTools     = true;
+      let {showEngines,showExps,showTools}   = yield select(state => state.options);
       for(let i = 0; i< toolSettingMap.length; i++){
         let checked = yield call(get,toolSettingMap[i].name);
-        
+
         if(toolSettingMap[i].name == "imageSearch" && !checked[toolSettingMap[i].name]){
           showEngines = false;
         }
@@ -44,6 +42,7 @@ export default {
       }
       yield put({type:"updateState",payload:{currentTool,currentExp,currentEngine,inited:true,showEngines:showEngines}})
     },
+
     *onCheckEngine({payload},{call,put,select}){
       let {currentEngine} = yield select(state => state.options);
       if(currentEngine[payload]){
@@ -55,25 +54,43 @@ export default {
       }
       yield put({type:"updateState",payload:{currentEngine}})
     },
+
     *onCheckTool({payload},{call,put,select}){
       let newSetting  = payload.filter(name => name !== "image");
-      let showEngines = true;
-      let {currentTool} = yield select(state => state.options);
+      let {currentTool,showEngines} = yield select(state => state.options);
       if(currentTool.length > newSetting.length){
+        //Close Tool
         for(let name of currentTool){
           if(!newSetting.includes(name)){
             if(name == "imageSearch"){
-             showEngines = false;
+              showEngines = false;
+              yield put({type:"overview/hideImageSearch"})
             }
+            if(name == "autoRefresh"){
+              yield put({type:"overview/autoRefreshShutDown"});
+              yield put({type:"overview/hideAutoRefresh"});
+            }
+            if(name == "videoControl"){
+              yield put({type:"overview/hideHtml5Video"});
+            }
+
             yield call(set,name,false);
           }
         }
         currentTool = newSetting;
       }else{
+        //Open Tool
         for(let name of newSetting){
           if(!currentTool.includes(name)){
             if(name == "imageSearch"){
               showEngines = true;
+              yield put({type:"overview/showImageSearch"})
+            }
+            if(name == "autoRefresh"){
+              yield put({type:"overview/showAutoRefresh"});
+            }
+            if(name == "videoControl"){
+              yield put({type:"overview/showHtml5Video"});
             }
             yield call(set,name,true);
           }

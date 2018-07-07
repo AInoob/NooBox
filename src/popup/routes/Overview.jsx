@@ -51,62 +51,42 @@ const OverviewContainer = styled.div`
 `;
 
 class Overview extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      tabId:0,
-    }
-  }
   componentWillMount(){
     const {overview,actions} = this.props;
     // console.log(overview);
     if(!overview.inited){
       actions.overviewInit();
-    }else{
-      this.setState({
-        tabId:overview.tabId,
-        inited:overview.inited,
-        autoRefresh:overview.autoRefresh,
-      })
-    }
-  }
-  componentWillReceiveProps(props){
-    const {overview} = this.props;
-    // console.log(overview);
-    if(overview.inited){
-      this.setState({
-        tabId:overview.tabId,
-        inited:overview.inited,
-        autoRefresh:overview.autoRefresh,
-      })
     }
   }
   render(){
-    const {actions}= this.props;
-    if(!this.state.inited){
+    const {actions,overview}= this.props;
+    if(!overview.inited){
       return(
         <Loader/>
       )
     }else{
       return(
-
         <OverviewContainer>
-          <Button onClick = {()=> actions.imageSearchBegin()}>Test</Button>
-          <div className ="uploadImage">
-           <UploadImage
-             imageSearchBegin  = {actions.imageSearchBegin}
-           />
-          </div>
-          <div className ="autoRefresh">
+          {
+            overview.showImageSearch ?(<div className ="uploadImage">
+            <UploadImage
+              imageSearchBegin  = {actions.imageSearchBegin}
+            />
+           </div>):""
+          }
+          {
+           overview.showAutoRefresh ?( <div className ="autoRefresh">
            <AutoRefresh
-             tabId             = {this.state.tabId}
-             currentState      = {this.state.autoRefresh}
+             tabId             = {overview.tabId}
+             currentState      = {overview.autoRefresh}
              autoRefreshUpdate = {actions.autoRefreshUpdate}
            />
-          </div>
-          <div className ="h5Video">
-           <H5VideoControl/>
-          </div>
+          </div>):""
+          }
+          {overview.showHtml5Video ?(<div className ="h5Video">
+              <H5VideoControl/>
+            </div>):""
+          }
         </OverviewContainer>
 
      )
