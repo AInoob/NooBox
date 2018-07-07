@@ -8,10 +8,13 @@ import UploadImage from "SRC/popup/components/overview/UploadImage.jsx";
 import AutoRefresh from "SRC/popup/components/overview/AutoRefresh.jsx";
 import H5VideoControl from "SRC/popup/components/overview/H5VideoControl.jsx";
 import Loader      from "SRC/common/component/Loader.jsx";
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
 import styled from "styled-components";
+import emoji   from "SRC/assets/funSh*t/emoji.svg";
 const OverviewContainer = styled.div`
    margin-bottom:20px;
-
+   
   .uploadImage{
     margin:20px 20px 0 20px;
   }
@@ -48,6 +51,25 @@ const OverviewContainer = styled.div`
   .toolStop:hover{
     cursor:pointer
   }
+
+  .funStuff{
+    @keyframes moveArrow { from { padding-Top: 10px; } to { padding-Top: 0px; }}
+    margin-left:25%;
+    text-align:center;
+    .arrow{
+      font-size:16pt;
+      animation: .5s linear 0s infinite alternate moveArrow;
+    }
+    .description{
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .emoji{
+      img{
+        width: 60px;
+      }
+    }
+  }
 `;
 
 class Overview extends React.Component{
@@ -65,28 +87,41 @@ class Overview extends React.Component{
         <Loader/>
       )
     }else{
+      let imageSearch =  overview.showImageSearch ?(<div className ="uploadImage">
+                          <UploadImage
+                            imageSearchBegin  = {actions.imageSearchBegin}
+                          />
+                        </div>):undefined;
+      let autoRefresh = overview.showAutoRefresh ?(<div className ="autoRefresh">
+                          <AutoRefresh
+                            tabId             = {overview.tabId}
+                            currentState      = {overview.autoRefresh}
+                            autoRefreshUpdate = {actions.autoRefreshUpdate}
+                            />
+                          </div>):undefined;
+      let html5Video = overview.showHtml5Video ?(<div className ="h5Video">
+                          <H5VideoControl/>
+                        </div>):undefined;
+      let funStuff;
+      if(!imageSearch && !autoRefresh && !html5Video){
+        funStuff =(<div className= "funStuff">
+          <div className ="arrow">
+            <FAIcon icon ={faSolid.faArrowUp}/>
+          </div>
+          <div className = "description">
+            <span>Choose Tools From Here</span>
+          </div>
+          <div className = "emoji">
+            <img src ={emoji}/>
+          </div>
+        </div>)
+      }
       return(
         <OverviewContainer>
-          {
-            overview.showImageSearch ?(<div className ="uploadImage">
-            <UploadImage
-              imageSearchBegin  = {actions.imageSearchBegin}
-            />
-           </div>):""
-          }
-          {
-           overview.showAutoRefresh ?( <div className ="autoRefresh">
-           <AutoRefresh
-             tabId             = {overview.tabId}
-             currentState      = {overview.autoRefresh}
-             autoRefreshUpdate = {actions.autoRefreshUpdate}
-           />
-          </div>):""
-          }
-          {overview.showHtml5Video ?(<div className ="h5Video">
-              <H5VideoControl/>
-            </div>):""
-          }
+          {imageSearch}
+          {autoRefresh}
+          {html5Video}
+          {funStuff}
         </OverviewContainer>
 
      )

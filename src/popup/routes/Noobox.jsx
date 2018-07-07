@@ -35,7 +35,7 @@ class Noobox extends React.Component{
     console.log(i18n);
     // console.log(this.props);
     // console.log(match);
-    // console.log(faSolid);
+    console.log(faSolid);
     return(
       <LocaleProvider locale={i18n}>
       <NooboxContainer>
