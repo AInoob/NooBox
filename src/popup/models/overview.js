@@ -13,6 +13,7 @@ export default {
   },
   effects:{
     *init({payload},{put,call,select}){
+        
         let initState   = {};
         const tabData   = yield call(getCurrentTab);
         initState.tabId = tabData.id;
@@ -43,7 +44,8 @@ export default {
       }
       console.log("asdfsdfdsf");
       yield call(sendMessage,message);
-    }
+    },
+    autoRefreshShu
   },
   reducers:{
     updateState(state,{payload}){
