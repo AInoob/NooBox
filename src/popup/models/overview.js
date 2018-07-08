@@ -1,7 +1,7 @@
 import AutoRefresh from "../components/overview/AutoRefresh";
 import Overview from "../routes/Overview";
-import {getCurrentTab, sendMessage} from 'SRC/utils/browserUtils';
-import {get,set} from 'SRC/utils/db.js';
+import { getCurrentTab, sendMessage } from 'SRC/utils/browserUtils';
+import { get } from 'SRC/utils/db.js';
 export default {
   namespace:"overview",
   state:{
@@ -21,9 +21,9 @@ export default {
         // Get All Tool Situation
         let initState   = {};
         let {showImageSearch,showAutoRefresh,showHtml5Video} = yield select(state => state.overview);
-        initState.showImageSearch = (yield call(get,"imageSearch"))["imageSearch"];
-        initState.showAutoRefresh = (yield call(get,"autoRefresh"))["autoRefresh"];
-        initState.showHtml5Video  = (yield call(get,"videoControl"))["videoControl"];
+        initState.showImageSearch = (yield call(get,"imageSearch"));
+        initState.showAutoRefresh = (yield call(get,"autoRefresh"));
+        initState.showHtml5Video  = (yield call(get,"videoControl"));
       
         //Init Auto Refresh
         const tabData   = yield call(getCurrentTab);

@@ -2,7 +2,9 @@ const indexedDB = window.indexedDB;
 
 export const get = key => {
   return new Promise(resolve => {
-      browser.storage.sync.get(key, resolve);
+      browser.storage.sync.get(key, (result) => {
+        resolve(result[key]);
+      });
   });
 };
 
@@ -14,6 +16,10 @@ export const set = (key, value) => {
     browser.storage.sync.set(temp, resolve);
   })
 };
+
+export const bgSet = (key, value) => {
+  browser.runtime.sendMessage({ job: 'set', key, value });
+}
 
 export const isOptionOn = async key => {
   const value = await getSyncDB(key);
