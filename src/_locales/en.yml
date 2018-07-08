@@ -1,23 +1,41 @@
+#New Locale
 appName:
   message: NooBox
 appDesc:
-  message: 'Tool Box'
+  message: Tool Box
+auto_refresh:
+  message: Auto Refresh (Beta)
+video_control:
+  message: HTML5 Video Control (Alpha)
+image:
+  message: Image
+reverse_image_search:
+  message: Reverse Image Search
+result_page_tab_front:
+  message: Open Result Tab In Front
+extract_images:
+  message: Extract Images
+screenshot_search:
+  message: Screenshot & Search
+tools:
+    message: Tools Setting
+avaiable_engine:
+    message: Available Engines Setting
+experience:
+    message: Experience Setting
+
+    
+#Old Language Pack
 overview:
-    message: Overview
+  message: Overview
 history:
     message: History
 options:
     message: Options
 about:
     message: About
-extract_images:
-    message: Extract images
 search_this_image:
     message: Search this image
-screenshot_search:
-    message: Screenshot search
-image:
-    message: Image
 keywords:
     message: Keywords
 more:
@@ -98,16 +116,12 @@ videoControl:
     message: HTML5 Video Control (Alpha)
 checkUpdate:
     message: Check Update
-experience:
-    message: Experience
+
 record_history:
     message: Record History
-autoRefresh:
-    message: Auto Refresh (Alpha)
+
 imageSearchNewTabFront:
     message: Open result tab in front
-tools:
-    message: Tools
 s:
     message: 's'
 yes:
