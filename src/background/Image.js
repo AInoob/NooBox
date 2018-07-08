@@ -1,9 +1,10 @@
 import data from './data';
 import { logEvent } from '../utils/bello';
 import GL from '../utils/getLocale';
-import { get } from '../utils/db';
 import { fetchBlob, convertDataURIToBinary } from '../utils';
-import imageUtil from '../utils/imageSearchUtils.js';
+import imageUtil from 'SRC/utils/imageSearchUtils.js';
+import {engineMap} from 'SRC/constant/settingMap.js';
+import {get,set} from 'SRC/utils/db.js';
 import ajax from '../utils/ajax.js';
 export default class Image {
   constructor() {}
@@ -121,6 +122,7 @@ export default class Image {
     }
   }
   async beginImageSearch(base64){
+    //Generate Image Link
     let aionobServer = "https://ainoob.com/api/uploadImage/";
     let requestBody  = {
       method: 'POST',  
@@ -131,7 +133,20 @@ export default class Image {
       mode:"cors",
       body: JSON.stringify({data:base64}),
     }
-    let result = await ajax(aionobServer, requestBody);
-    console.log(result);
+    let imageLink       = await ajax(aionobServer, requestBody);
+    //Get Opened Engine
+
+    let openedEngine = [];
+    for(let i = 0; i< engineMap.length; i++){
+       let dbName = engineMap[i].dbName;
+       let name   = engineMap[i].name;
+       let check  = await get(dbName);
+       if(check[dbName]){
+         openedEngine[openedEngine.length] = name;
+       }
+    }
+    //
+    console.log(openedEngine);
+    console.log(imageLink);
   }
 }
