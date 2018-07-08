@@ -1,6 +1,6 @@
 import {engineMap,toolSettingMap,expSettingMap} from 'SRC/constant/settingMap.js';
 //get set meaning chrome sync
-import {get,set} from 'SRC/utils/db.js';
+import {get,bgSet} from 'SRC/utils/db.js';
 export default {
   namespace:"options",
   state:{
@@ -18,23 +18,23 @@ export default {
       for(let i = 0; i< toolSettingMap.length; i++){
         let checked = yield call(get,toolSettingMap[i].name);
 
-        if(toolSettingMap[i].name == "imageSearch" && !checked[toolSettingMap[i].name]){
+        if(toolSettingMap[i].name == "imageSearch" && !checked){
           showEngines = false;
         }
 
-        if(checked && checked[toolSettingMap[i].name]){
+        if(checked){
           currentTool[currentTool.length] = toolSettingMap[i].name
         }
       }
       for(let i = 0; i<expSettingMap.length; i++){
         let checked = yield call(get,expSettingMap[i].name);
-        if(checked && checked[expSettingMap[i].name]){
+        if(checked){
           currentExp[currentExp.length] = expSettingMap[i].name;
         }
       }
       for(let i = 0; i<engineMap.length; i++){
         let checked = yield call(get,engineMap[i].dbName);
-        if(checked && checked[engineMap[i].dbName]){
+        if(checked){
           currentEngine[engineMap[i].dbName] = true;
         }else{
           currentEngine[engineMap[i].dbName] = false;
@@ -46,10 +46,10 @@ export default {
     *onCheckEngine({payload},{call,put,select}){
       let {currentEngine} = yield select(state => state.options);
       if(currentEngine[payload]){
-         yield call(set,payload,false);
+         yield call(bgSet,payload,false);
          currentEngine[payload] = false;
       }else{
-        yield call(set,payload,true);
+        yield call(bgSet,payload,true);
         currentEngine[payload] = true;
       }
       yield put({type:"updateState",payload:{currentEngine}})
@@ -74,7 +74,7 @@ export default {
               yield put({type:"overview/hideHtml5Video"});
             }
 
-            yield call(set,name,false);
+            yield call(bgSet,name,false);
           }
         }
         currentTool = newSetting;
@@ -92,7 +92,7 @@ export default {
             if(name == "videoControl"){
               yield put({type:"overview/showHtml5Video"});
             }
-            yield call(set,name,true);
+            yield call(bgSet,name,true);
           }
         }
         currentTool = newSetting;
@@ -108,14 +108,14 @@ export default {
       if(currentExp.length > newSetting.length){
         for(let name of currentExp){
           if(!newSetting.includes(name)){
-            yield call(set,name,false);
+            yield call(bgSet,name,false);
           }
         }
         currentExp = newSetting;
       }else{
         for(let name of newSetting){
           if(!currentExp.includes(name)){
-            yield call(set,name,true);
+            yield call(bgSet,name,true);
           }
         }
         currentExp = newSetting;
