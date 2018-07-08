@@ -73,7 +73,7 @@ class Options extends React.Component{
     return(
       <OptionsContainer>
         <div id = "exp">
-          <h4>Experience</h4>
+          <h4>{__("experience")}</h4>
           <Tree
             checkable
             onCheck={(e)=>actions.optionsCheckExp(e)}
@@ -83,26 +83,26 @@ class Options extends React.Component{
           </Tree>
         </div>
         <div id = "tool">
-          <h4>Tools</h4>
+          <h4>{__("tools")}</h4>
           <Tree
             checkable
             onCheck={(e)=>actions.optionsCheckTool(e)}
             defaultCheckedKeys = {options.currentTool}
           >
-            <TreeNode   title ="Auto Refresh (Alpha)"        key = "autoRefresh"/>
-            <TreeNode   title ="HTML5 Video Control (Alpha)" key = "videoControl"/>
-            <TreeNode   title ="Image"                       key = "image">
-              <TreeNode title ="Reverse Image Search"        key = "imageSearch"/>
-              <TreeNode title ="Open Result Tab In Front"    key = "imageSearchNewTabFront"/>
-              <TreeNode title ="Extract Images"              key = "extractImages"/>
-              <TreeNode title ="Screenshot & Search"         key = "screenshotSearch"/>
+            <TreeNode   title = {__("auto_refresh")}              key = "autoRefresh"/>
+            <TreeNode   title = {__("video_control")}             key = "videoControl"/>
+            <TreeNode   title = {__("image")}                     key = "image">
+              <TreeNode title = {__("reverse_image_search")}      key = "imageSearch"/>
+              <TreeNode title = {__("result_page_tab_front")}     key = "imageSearchNewTabFront"/>
+              <TreeNode title = {__("extract_images")}            key = "extractImages"/>
+              <TreeNode title = {__("screenshot_search")}         key = "screenshotSearch"/>
             </TreeNode>
           </Tree>
         </div>
         {
           options.showEngines ?
            (<div id = "engines">
-              <h4>Avaiable Engines</h4>
+              <h4>{__("avaiable_engine")}</h4>
               <Row gutter={-1}>
                 {this.generateIcon(this.props.actions,options.currentEngine)}
               </Row>
