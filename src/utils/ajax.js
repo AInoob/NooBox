@@ -1,7 +1,8 @@
 import fetch from 'dva/fetch';
 
 const parseResponse = response => {
-  if(response.headers.get('Content-Type') === "text/html; charset=utf-8"){
+  console.log(response);
+  if(response.headers.get('Content-Type').indexOf("text/html") !== -1){
     return response.text();
   }else{
     return response.json();

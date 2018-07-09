@@ -6,28 +6,20 @@ import reverseImageSearch from 'SRC/js/reverseImageSearch.js';
 import {engineMap} from 'SRC/constant/settingMap.js';
 import {apiUrls} from 'SRC/constant/searchApiUrl.js';
 import {get,set} from 'SRC/utils/db.js';
-import ajax from '../utils/ajax.js';
+import ajax from 'SRC/utils/ajax.js';
 export default class Image {
   constructor() {
     this.noobUploadUrl = "https://ainoob.com/api/uploadImage/";
     this.noobDownLoadUrl    = "https://ainoob.com/api/getImage/";
     this.fetchFunction ={
       googleLink: reverseImageSearch.fetchGoogleLink,
-      googleData: reverseImageSearch.fetchGoogleData,
       baiduLink: reverseImageSearch.fetchBaiduLink,
-      baiduData: reverseImageSearch.fetchBaiduData,
       tinEyeLink: reverseImageSearch.fetchTineyeLink,
-      tinEyeData: reverseImageSearch.fetchTineyeData,
       bingLink: reverseImageSearch.fetchBingLink,
-      bingData: reverseImageSearch.fetchBingData,
       yandexLink: reverseImageSearch.fetchYandexLink,
-      yandexData: reverseImageSearch.fetchYandexData,
       saucenaoLink: reverseImageSearch.fetchSauceNaoLink,
-      saucenaoData: reverseImageSearch.fetchSauceNaoData,
       iqdbLink: reverseImageSearch.fetchIQDBLink,
-      iqdbData: reverseImageSearch.fetchIQDBData,
       ascii2dLink: reverseImageSearch.fetchAscii2dLink,
-      ascii2dData: reverseImageSearch.fetchAscii2dData,
     }
   }
   async init() {
@@ -164,11 +156,8 @@ export default class Image {
       let name   = engineMap[i].name;
       let check  = await get(dbName);
       if(check[dbName]){
-         engineName[engineName.length] = name;
-         promiseGetLinks[promiseGetLinks.length] = fetchFunction[name+"Link"]();
+         this.fetchFunction[name+"Link"](apiUrls[name] + imageLink);
       }
     }
-    
-    console.log(engineSearch);
   }
 }

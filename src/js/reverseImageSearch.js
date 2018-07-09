@@ -1,3 +1,6 @@
+import {get,set} from 'SRC/utils/db.js';
+import ajax from 'SRC/utils/ajax.js';
+const HTML = new DOMParser();
 export default {
   waitForSandBox:(pareseObj) =>{
     return new Promise(function(resolve,reject){
@@ -19,85 +22,101 @@ export default {
     })
   },
   /*Fetch Available Page Link On Goolge*/
-  fetchGoogleLink:(link) => {
-    return new Promise(function(resolve,reject){
+  fetchGoogleLink: async (link) => {
+    // console.log(123+"reachf");
+    console.log(link);
+    const {data} = await ajax(link,{method: 'GET'});
+    const page = HTML.parseFromString(data, "application/xml");
+    // let allPageUrlData = page.find('tbody').find('a');
+    // let followingPageLink = [];
+    // //console.log(page);
+    // for(let i = 0; i < 9; i++){
+    //   if(allPageUrlData[i] && allPageUrlData[i].className ==="fl" && allPageUrlData[i].href){
+    //     followingPageLink[followingPageLink.length] = "https://www.google.com/search?tbs=" + allPageUrlData[i].href.split("search?tbs=")[1];
+    //   }
+    // }
 
-    })
+    const followingPageSrouce = page.getElementsByTagName('tbody')[0].getElementsByTagName('a');
+    let followingPageUrl = [];
+    for(let i = 0; i< 9; i++){
+      
+    }
+    console.log(page);
   },
   /*Fetch Data by Maximum Setting*/
-  fetchGoogleData:() =>{
+  fetchGoogleData: async () =>{
     return new Promise(function(resolve,reject){
 
     })
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
-  fetchBaiduLink:(link) =>{
+  fetchBaiduLink: async (link) =>{
     return new Promise(function(resolve,reject){
 
     })
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
-  fetchBaiduData:() =>{
+  fetchBaiduData: async () =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchTineyeLink:(link)=>{
+  fetchTineyeLink: async (link)=>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchTineyeData:()=>{
+  fetchTineyeData: async ()=>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchBingLink:(link)=>{
+  fetchBingLink:async (link)=>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchBingData:()=>{
+  fetchBingData: async ()=>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchYandexLink:(link) =>{
+  fetchYandexLink: async (link) =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchYandexData:() =>{
+  fetchYandexData: async () =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchSauceNaoLink:(link) =>{
+  fetchSauceNaoLink: async(link) =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchSauceNaoData:() =>{
+  fetchSauceNaoData: async () =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchIQDBLink:(link) =>{
+  fetchIQDBLink: async (link) =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchIQDBData:() =>{
+  fetchIQDBData: async () =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchAscii2dLink:(link) =>{
+  fetchAscii2dLink: async (link) =>{
     return new Promise(function(resolve,reject){
 
     })
   },
-  fetchAscii2dData:() =>{
+  fetchAscii2dData: async () =>{
     return new Promise(function(resolve,reject){
 
     })
