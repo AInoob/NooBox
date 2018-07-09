@@ -19,7 +19,7 @@ export default {
     })
   },
   /*Fetch Available Page Link On Goolge*/
-  fetchGoogleLink:() => {
+  fetchGoogleLink:(link) => {
     return new Promise(function(resolve,reject){
 
     })
@@ -31,7 +31,7 @@ export default {
     })
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
-  fetchBaiduLink:() =>{
+  fetchBaiduLink:(link) =>{
     return new Promise(function(resolve,reject){
 
     })
@@ -42,7 +42,7 @@ export default {
 
     })
   },
-  fetchTineyeLink:()=>{
+  fetchTineyeLink:(link)=>{
     return new Promise(function(resolve,reject){
 
     })
@@ -52,7 +52,7 @@ export default {
 
     })
   },
-  fetchBingLink:()=>{
+  fetchBingLink:(link)=>{
     return new Promise(function(resolve,reject){
 
     })
@@ -62,7 +62,7 @@ export default {
 
     })
   },
-  fetchYandexLink:() =>{
+  fetchYandexLink:(link) =>{
     return new Promise(function(resolve,reject){
 
     })
@@ -72,7 +72,7 @@ export default {
 
     })
   },
-  fetchSauceNaoLink:() =>{
+  fetchSauceNaoLink:(link) =>{
     return new Promise(function(resolve,reject){
 
     })
@@ -82,7 +82,7 @@ export default {
 
     })
   },
-  fetchIQDBLink:() =>{
+  fetchIQDBLink:(link) =>{
     return new Promise(function(resolve,reject){
 
     })
@@ -92,7 +92,7 @@ export default {
 
     })
   },
-  fetchAscii2dLink:() =>{
+  fetchAscii2dLink:(link) =>{
     return new Promise(function(resolve,reject){
 
     })
