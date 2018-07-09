@@ -2,12 +2,34 @@ import data from './data';
 import { logEvent } from '../utils/bello';
 import GL from '../utils/getLocale';
 import { fetchBlob, convertDataURIToBinary } from '../utils';
-import imageUtil from 'SRC/utils/imageSearchUtils.js';
+import reverseImageSearch from 'SRC/js/reverseImageSearch.js';
 import {engineMap} from 'SRC/constant/settingMap.js';
+import {apiUrls} from 'SRC/constant/searchApiUrl.js';
 import {get,set} from 'SRC/utils/db.js';
 import ajax from '../utils/ajax.js';
 export default class Image {
-  constructor() {}
+  constructor() {
+    this.noobUploadUrl = "https://ainoob.com/api/uploadImage/";
+    this.noobDownLoadUrl    = "https://ainoob.com/api/getImage/";
+    this.fetchFunction ={
+      googleLink: reverseImageSearch.fetchGoogleLink,
+      googleData: reverseImageSearch.fetchGoogleData,
+      baiduLink: reverseImageSearch.fetchBaiduLink,
+      baiduData: reverseImageSearch.fetchBaiduData,
+      tinEyeLink: reverseImageSearch.fetchTineyeLink,
+      tinEyeData: reverseImageSearch.fetchTineyeData,
+      bingLink: reverseImageSearch.fetchBingLink,
+      bingData: reverseImageSearch.fetchBingData,
+      yandexLink: reverseImageSearch.fetchYandexLink,
+      yandexData: reverseImageSearch.fetchYandexData,
+      saucenaoLink: reverseImageSearch.fetchSauceNaoLink,
+      saucenaoData: reverseImageSearch.fetchSauceNaoData,
+      iqdbLink: reverseImageSearch.fetchIQDBLink,
+      iqdbData: reverseImageSearch.fetchIQDBData,
+      ascii2dLink: reverseImageSearch.fetchAscii2dLink,
+      ascii2dData: reverseImageSearch.fetchAscii2dData,
+    }
+  }
   async init() {
     if (await get('extractImages')) {
       data.Image.extractImageHandle = browser.contextMenus.create({
@@ -123,8 +145,7 @@ export default class Image {
   }
   async beginImageSearch(base64){
     //Generate Image Link
-    let aionobServer = "https://ainoob.com/api/uploadImage/";
-    let requestBody  = {
+    const requestBody   = {
       method: 'POST',  
       headers: {
         //'User-Agent': 'Mozilla/4.0 MDN Example',
@@ -133,20 +154,21 @@ export default class Image {
       mode:"cors",
       body: JSON.stringify({data:base64}),
     }
-    let imageLink       = await ajax(aionobServer, requestBody);
+    const imageLink       = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
     //Get Opened Engine
+    let engineName        = [];
+    let promiseGetLinks   = [];
 
-    let openedEngine = [];
     for(let i = 0; i< engineMap.length; i++){
-       let dbName = engineMap[i].dbName;
-       let name   = engineMap[i].name;
-       let check  = await get(dbName);
-       if(check[dbName]){
-         openedEngine[openedEngine.length] = name;
-       }
+      let dbName = engineMap[i].dbName;
+      let name   = engineMap[i].name;
+      let check  = await get(dbName);
+      if(check[dbName]){
+         engineName[engineName.length] = name;
+         promiseGetLinks[promiseGetLinks.length] = fetchFunction[name+"Link"]();
+      }
     }
-    //
-    console.log(openedEngine);
-    console.log(imageLink);
+    
+    console.log(engineSearch);
   }
 }
