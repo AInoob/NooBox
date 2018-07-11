@@ -105,7 +105,7 @@ record_history:
 autoRefresh:
     message: 自動重新整理（測試）
 imageSearchNewTabFront:
-    message: 在前臺打開新的標簽
+    message: 在前景新分頁中開啟
 tools:
     message: 工具
 s:
@@ -129,7 +129,7 @@ ls_4:
 ls_5:
     message: 沒結果？點這裡上傳圖片搜尋
 ls_6:
-    message: 在Product Hunt上幫二箱投票吧！
+    message: 在 Product Hunt 上幫二箱投票吧！
 ls_7:
     message: 二箱已是最新版本
 ls_8:
@@ -151,8 +151,8 @@ ls_15:
 ls_16:
     message: "{'→':'快轉5秒','←':'倒轉5秒','↑':'提升音量','↓':'降低音量','m':'靜音/取消靜音','j':'倒轉10秒','l':'快轉10秒','k':'暫停/播放',',':'倒轉一點點點','.':'快轉一點點點','>':'提升音量','<':'降低音量', 'f': '全螢幕','d':'下載','r':'神奇的旋轉!'}"
 ls_17:
-    message: 清空所有歷史？
+    message: 清除所有歷程？
 ls_18:
     message: 點選上傳或是拖曳上傳
 ls_19:
-    message: 就是自動刷新頁面啦~
+    message: 就是自動重新整理頁面啦~

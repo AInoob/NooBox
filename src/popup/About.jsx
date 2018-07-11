@@ -162,7 +162,7 @@ class About extends React.Component {
             </Panel>
         
             <Panel header = "分享咩?" key = "4" style ={customPanelStyle}>
-              <p>你喜歡二管家嗎？如果覺得還不錯，那就考慮一下，將二管家分享給朋友吧~</p>
+              <p>你喜歡二箱嗎？如果覺得還不錯，那就考慮一下，將二箱分享給朋友吧~</p>
               {shareList}
             </Panel>
 
