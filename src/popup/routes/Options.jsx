@@ -35,7 +35,7 @@ const OptionsContainer = styled.div`
   }
 `;
 class Options extends React.Component{
-  componentWillMount(){
+  componentDidMount(){
     const {options,actions} = this.props;
     if(!options.inited){
       actions.optionsInit();
