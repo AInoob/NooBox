@@ -2,7 +2,7 @@ import data from './data';
 import { logEvent } from '../utils/bello';
 import GL from '../utils/getLocale';
 import { fetchBlob, convertDataURIToBinary } from '../utils';
-import reverseImageSearch from 'SRC/js/reverseImageSearch.js';
+import {reverseImageSearch} from 'SRC/js/reverseImageSearch.js';
 import {engineMap} from 'SRC/constant/settingMap.js';
 import {apiUrls} from 'SRC/constant/searchApiUrl.js';
 import {get,set} from 'SRC/utils/db.js';
@@ -147,10 +147,8 @@ export default class Image {
       body: JSON.stringify({data:base64}),
     }
     const imageLink       = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+    browser.tabs.create({url: "/searchResult.html"});
     //Get Opened Engine
-    let engineName        = [];
-    let promiseGetLinks   = [];
-
     for(let i = 0; i< engineMap.length; i++){
       let dbName = engineMap[i].dbName;
       let name   = engineMap[i].name;
@@ -159,5 +157,8 @@ export default class Image {
          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink);
       }
     }
+    // const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
+    // const openTabFront = await promisedGet('imageSearchNewTabFront');
+  
   }
 }

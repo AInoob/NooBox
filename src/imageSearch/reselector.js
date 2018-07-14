@@ -1,3 +1,3 @@
 import {createSelector} from 'reselect';
 
-export const nooboxSelector      = (state) => state.noobox;
+export const imageSearchSelector     = (state) => state.imagesearch;
