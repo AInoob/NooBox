@@ -1,5 +1,6 @@
 import dva from 'dva';
-
+import bowser from "SRC/utils/useBrowser.js";
+bowser();
 // 1. Initialize
 const imageSearch = dva();
 
@@ -7,7 +8,7 @@ const imageSearch = dva();
 // app.use({});
 
 // 3. Model
-// app.model(require('./models/example').default);
+imageSearch.model(require('./models/imageSearch').default);
 
 // 4. Router
 imageSearch.router(require('./imageSearchRouter').default);
