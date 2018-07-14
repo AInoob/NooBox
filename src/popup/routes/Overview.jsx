@@ -73,7 +73,7 @@ const OverviewContainer = styled.div`
 `;
 
 class Overview extends React.Component{
-  componentWillMount(){
+  componentDidMount(){
     const {overview,actions} = this.props;
     // console.log(overview);
     if(!overview.inited){
