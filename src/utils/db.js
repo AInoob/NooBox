@@ -22,7 +22,7 @@ export const bgSet = (key, value) => {
 }
 
 export const isOptionOn = async key => {
-  const value = await getSyncDB(key);
+  const value = await get(key);
   if (value == '1' || value == true) {
     return true;
   } else {
