@@ -55,7 +55,7 @@ export default {
       for(let i= 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
-        let openCheck  = await get(dbName);
+        // let openCheck  = await get(dbName);
         // let maxCheck   = await get()
         if(check){
           engineStatus[name] = true;
