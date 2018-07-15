@@ -57,7 +57,7 @@ const EngineContainer = styled.div`
 
 export default class Engine extends React.Component{
   render(){
-    console.log(faSolid)
+    // console.log(faSolid)
     let inited = true;
       return(
         <EngineContainer>

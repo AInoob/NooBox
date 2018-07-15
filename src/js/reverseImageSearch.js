@@ -8,7 +8,7 @@ const HTML = new DOMParser();
 //     keyWordLink:
 //     engine:
 //     imageInfo:{
-//       height:""
+//      height:""
 //      weight:""
 //     }
 // }
@@ -16,8 +16,8 @@ const HTML = new DOMParser();
 // Result Image ={
 //  title:"",
 //  thumbUrl:"",
-//  SourceUrl:"",
-//  imageSourceUrl:"",
+//  imageUrl:"",
+//  sourceUrl:"",
 //  imageInfor:{
 //    height:""
 //    weight:""
@@ -36,7 +36,7 @@ export const reverseImageSearch = {
   },
   engineDone:(engine) =>{
     browser.runtime.sendMessage({
-      job:'image_done',
+      job:'engine_done',
       engine:engine,
     },()=>{
       console.log("Send Done Message");
@@ -44,7 +44,14 @@ export const reverseImageSearch = {
   },
   updateSearchImage:(result) =>{
     browser.runtime.sendMessage({
-      job:'image_info_update'
+      job:'image_info_update',
+      result:result,
+    })
+  },
+  updateImage64:(base64) =>{
+    browser.runtime.sendMessage({
+      job:'image_base64',
+      base64:base64,
     })
   },
   waitForSandBox:(pareseObj) =>{
@@ -104,9 +111,10 @@ export const reverseImageSearch = {
     if(keyword){
       // console.log(keyword.innerHTML);
       searchImage.keyword = keyword.innerHTML;
-      searchImage.keywordLink = "https://www.google.com/" +keyword.getAttribute("href");
+      searchImage.keywordLink = "https://www.google.com" +keyword.getAttribute("href");
     }
     // Send Message of Search image info to front page
+    reverseImageSearch.updateSearchImage(searchImage);
     // process first page source
     reverseImageSearch.processGoogleData(page);
     //  google
@@ -116,8 +124,6 @@ export const reverseImageSearch = {
         return new Promise((resolve)=>{
           ajax(url,{method:"GET"}).then(({data}) =>{
             const page = HTML.parseFromString(data,"text/html");
-            console.log(page);
-            console.log(url);
             reverseImageSearch.processGoogleData(page);
             resolve("");
           })
@@ -132,6 +138,7 @@ export const reverseImageSearch = {
       //pass done message
     }else{
       //pass done message Directly
+      reverseImageSearch.engineDone("google");
     }
     
     // console.log(searchImage);
@@ -139,7 +146,6 @@ export const reverseImageSearch = {
   /*process Data*/
   processGoogleData: function (page){
       let websiteList = page.getElementsByClassName('srg');
-      console.log()
       let list    = websiteList[websiteList.length -1].getElementsByClassName("g");
       let results = [];
       for(let i = 0; i< list.length; i++){
@@ -159,8 +165,9 @@ export const reverseImageSearch = {
         const tagA = singleItem.getElementsByTagName("a");
         singleResult.sourceUrl = tagA[0].getAttribute("href");
         singleResult.title = tagA[0].innerHTML;
-        singleResult.imageUrl = "https://www.google.com/" + tagA[1].getAttribute("href");
-        singleResult.thumbUrl = tagA[1].getElementsByTagName("img")[0].getAttribute("src");
+        let link = tagA[1].getAttribute("href");
+        singleResult.imageUrl = link.substring(link.indexOf("=")+1,link.indexOf("&imgre"));
+        singleResult.thumbUrl = singleResult.imageUrl;
         //process description
         //class st span contain N child, first child is size info
         //behind children are description,conbine them
@@ -172,7 +179,7 @@ export const reverseImageSearch = {
             singleResult.imageInfo.width = Number.parseInt(size[0],10);
             singleResult.imageInfo.height =  Number.parseInt(size[1],10);
           }else{
-            description += tagSpan[i].innerHTML;
+            description += tagSpan[i].innerHTML || tagSpan[i].textContent;
           }
         }
         singleResult.description = description;

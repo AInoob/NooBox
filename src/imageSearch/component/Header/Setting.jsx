@@ -29,31 +29,32 @@ const SettingContainer = styled.div`
 `;
 export default class Setting extends React.Component{
   render(){
-    console.log(faSolid)
+    const{updateSetting} = this.props;
+    // console.log(faSolid)
     let inited = true;
       return(
         <SettingContainer>
           <div className ="displayMode">
-            <h3>Display Mode</h3>
-            <RadioGroup>
-              <Radio value={1}>List</Radio>
-              <Radio value={2}>Image Wall</Radio>
+            <h3>{i18n("display_mode")}</h3>
+            <RadioGroup onChange ={(e)=>updateSetting({displayMode:e.target.value})}>
+              <Radio value={1}>{i18n("list")}</Radio>
+              <Radio value={2}>{i18n("image_wall")}</Radio>
             </RadioGroup>
           </div>
           <div className ="sortSelection">
-            <h3>Sort By  <RadioGroup>  
-                            <RadioButton value="area">Area</RadioButton>
-                            <RadioButton value="width">Width</RadioButton>
-                            <RadioButton value="height">Height</RadioButton>
+            <h3>{i18n("sort_by")}  <RadioGroup>  
+                            <RadioButton value="area">{i18n("area")}</RadioButton>
+                            <RadioButton value="width">{i18n("width")}</RadioButton>
+                            <RadioButton value="height">{i18n("height")}</RadioButton>
                           </RadioGroup></h3>
             <RadioGroup>
-              <Radio value={1}>Increase</Radio>
-              <Radio value={2}>Decrease</Radio>
+              <Radio value={1}>{i18n("increase")}</Radio>
+              <Radio value={2}>{i18n("decrease")}</Radio>
             </RadioGroup>
           </div>
           <div className = "settingAction">
-            <Button type = "primary" style={{marginLeft:"10px"}}>Save</Button>
-            <Button style={{marginLeft:"10px"}}>Clear</Button>
+            <Button type = "primary" style={{marginLeft:"10px"}}>{i18n("save")}</Button>
+            <Button style={{marginLeft:"10px"}}>{i18n("clear")}</Button>
           </div>  
         </SettingContainer>
       )

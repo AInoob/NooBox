@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome';
 import faSolid from '@fortawesome/fontawesome-free-solid';
-import {Row,Col,List,Avatar,Modal} from 'antd';
+import {engineIcon} from "SRC/constant/settingMap.js";
+import {Row,Col,Icon,List,Avatar,Modal} from 'antd';
 const ResultContainer = styled.div`
 background:white;
 padding:36px;
@@ -29,7 +30,8 @@ export default class ImageList extends React.Component{
     })
   }
   render(){
-      let {imageDataList} = this.props;
+    let {imageDataList} = this.props;
+    if(imageDataList.length > 0){
       return(
         <ResultContainer>
            <List
@@ -40,21 +42,25 @@ export default class ImageList extends React.Component{
           renderItem={item => (
             <List.Item
               key={item.title}
-              actions={[<FAIcon onClick={()=> this.showModal(item.sourceUrl)}icon ={faSolid.faSearchPlus} />,<FAIcon icon ={faSolid.faDownload}/>]}
-              extra={<img width={272} alt="logo" src={item.thumbUrl} />}
+              actions={[<FAIcon onClick={()=> this.showModal(item.imageUrl)}icon ={faSolid.faSearchPlus} />,
+                        <FAIcon icon ={faSolid.faDownload}/>,
+                        <Avatar src={engineIcon[item["searchEngine"]]} />]}
+              extra={<img width={272} alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
             >
              <List.Item.Meta
-                avatar={<Avatar src={item.searchEngine} />}
-                title={<a href={item.titleUrl} target="_blank">{item.title}</a>}
+                title={<a href={item.sourceUrl} target="_blank">{item.title}</a>}
               />
               {item.description}
             </List.Item>
           )}
         />
         <Modal visible={this.state.showModal} footer={null} onCancel={()=>this.hideModal()}>
-          <img alt="example" style={{ width: '100%' }} src={this.state.imageUrl} />
+          <img alt="Image Down Sorry" style={{ width: '100%' }} src={this.state.imageUrl} />
         </Modal>
         </ResultContainer>
       )
+    }else{
+      return (<ResultContainer/>)
+    }
   }
 }
