@@ -6,7 +6,7 @@ export const logPageView = async () => {
   if(typeof window != 'object')
     return;
   const params = {
-    type: 'logPageView',
+    type: 'pageview',
     path: await get('version'),
     title: 'background',
     referrer: '',
@@ -22,7 +22,7 @@ export const logEvent = async obj => {
   if(typeof window != 'object')
     return;
   const params = {
-    type: 'logEvent',
+    type: 'event',
     category: obj.category,
     action: obj.action,
     label: obj.label,
