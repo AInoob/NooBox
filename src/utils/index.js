@@ -1,5 +1,11 @@
 const BASE64_MARKER = ';base64,';
 
+export const wait = duration => {
+  return new Promise(resolve => {
+    setTimeout(resolve, duration);
+  });
+}
+
 export const fetchBlob = (uri, callback) => {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', uri, true);
