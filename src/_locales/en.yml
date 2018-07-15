@@ -70,7 +70,7 @@ width:
     message: Width
 height:
     message: Height
-sortBy:
+sort_by:
     message: 'Sort by '
 reverse_image_search:
     message: Reverse Image Search

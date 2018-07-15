@@ -11,6 +11,7 @@ import ImageWall from 'SRC/imageSearch/component/Content/ImageWall.jsx';
 import {Row,Col} from 'antd';
 const ResultContainer = styled.div`
   height:auto;
+  min-height:100%;
   width:100%;
   background:#f0f2f5;
   padding-top:5%;
@@ -43,7 +44,7 @@ class ImageSearchResult extends React.Component{
           </div>
           <div className ="result">
           {
-            imageSearch.displayMode === 0 ? null:
+            // imageSearch.displayMode === 0 ? null:
               imageSearch.displayMode === 1 ? <ImageList imageDataList ={imageSearch.searchResult}/>:
                 <ImageWall imageDataList ={imageSearch.searchResult}/>
           }

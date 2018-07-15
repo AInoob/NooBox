@@ -21,7 +21,7 @@ module.exports = {
     extensions: ['.webpack.js', '.js', '.jsx'],
     alias: {
       SRC: path.resolve(__dirname, 'src/'),
-      // ASSET: path.resolve(__dirname,'assets/'),
+      ASSET: path.resolve(__dirname,'src/assets/'),
     }
   },
   module: {
@@ -44,7 +44,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jp(e*)g|svg)$/,
+        test: /\.(png|jp(e*)g|svg|gif)$/,
         use: [{
             loader: 'url-loader',
             options: {

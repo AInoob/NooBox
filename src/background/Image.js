@@ -7,6 +7,7 @@ import {engineMap} from 'SRC/constant/settingMap.js';
 import {apiUrls} from 'SRC/constant/searchApiUrl.js';
 import {get,set} from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
+import {createNewTab,sendMessage} from 'SRC/utils/browserUtils'
 export default class Image {
   constructor() {
     this.noobUploadUrl = "https://ainoob.com/api/uploadImage/";
@@ -146,9 +147,8 @@ export default class Image {
       mode:"cors",
       body: JSON.stringify({data:base64}),
     }
-    const imageLink       = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
-    browser.tabs.create({url: "/searchResult.html"});
-    //
+    const imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+    await createNewTab("/searchResult.html");
     reverseImageSearch.updateImage64({base64:base64});
     //Get Opened Engine
     for(let i = 0; i< engineMap.length; i++){

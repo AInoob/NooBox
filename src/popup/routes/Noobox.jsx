@@ -20,15 +20,8 @@ const NooboxContainer = styled.div`
     width: 25%;
     font-size: 14pt;
   }
-
 `;
 class Noobox extends React.Component{
-  // componentWillMount(){
-  //   let {match,history} = this.props;
-  //   if(match.url == "/"){
-  //     history.push(OVERVIEW_URL);
-  //   }
-  // }
   render(){
     const{match,actions} = this.props;
     let i18n = browser.i18n.getUILanguage();
