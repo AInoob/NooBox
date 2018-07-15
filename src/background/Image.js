@@ -24,6 +24,105 @@ export default class Image {
     }
   }
   async init() {
+    await this.updateExtractImageContextMenu();
+    await this.updateImageSearchContextMenu();
+    await this.updateScreenshotSearchContextMenu();
+  }
+  async updateScreenshotSearchContextMenu() {
+    if (await get('screenshotSearch')) {
+      data.Image.screenshotSearchHandle = browser.contextMenus.create({
+        "id": "screenshotSearch",
+        "title": GL("screenshot_search"),
+        "contexts": ["all"],
+        "onclick": this.screenshotSearch
+      });
+    }else {
+      if (data.Image.screenshotSearchHandle) {
+        browser.contextMenus.remove(data.Image.screenshotSearchHandle);
+        data.Image.screenshotSearchHandle = null;
+      }
+    }
+  }
+  async screenshotSearch(info, tab){
+    browser.tabs.sendMessage(tab.id, 'loaded', (response) => {
+      if (response == 'yes') {
+        browser.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+          browser.tabs.sendMessage(tab.id, {
+            job: "screenshotSearch",
+            data: dataURL
+          });
+        });
+      } else {
+        browser.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+          browser.tabs.executeScript(tab.id, { file: 'thirdParty/jquery.min.js' }, () => {
+            if (browser.runtime.lastError) {
+              browser.notifications.create('screenshotFailed', {
+                type: 'basic',
+                iconUrl: '/images/icon_128.png',
+                title: GL("ls_1"),
+                message: GL("ls_2")
+              }, voidFunc);
+              return;
+            }
+            browser.tabs.executeScript(tab.id, { file: 'js/screenshotSearch.js' }, () => {
+              browser.tabs.sendMessage(tab.id, {
+                job: "screenshotSearch",
+                data: dataURL
+              });
+            });
+          });
+        });
+      }
+    });
+  }
+  async updateImageSearchContextMenu() {
+    if (await get('imageSearch')) {
+      data.Image.imageSearchHandle = browser.contextMenus.create({
+        "id": "imageSearch",
+        "title": GL("search_this_image"),
+        "contexts": ["image"],
+        "onclick": this.imageSearch
+      });
+    }else {
+      if (data.Image.imageSearchHandle) {
+        browser.contextMenus.remove(data.Image.imageSearchHandle);
+        data.Image.imageSearchHandle = null;
+      }
+    }
+  }
+
+  extractImages(info, tab) {
+    try {
+      browser.tabs.sendMessage(tab.id, {
+        job: "extractImages"
+      }, {
+          frameId: info.frameId
+        }, (response) => {
+          if (!response) {
+            browser.notifications.create('extractImages', {
+              type: 'basic',
+              iconUrl: '/static/nooboxLogos/icon_128.png',
+              title: GL("extractImages"),
+              message: GL("ls_4")
+            }, () => {});
+          }
+        });
+    } catch (e) {
+      browser.tabs.sendMessage(tab.id, {
+        job: "extractImages"
+      }, (response) => {
+        if (!response) {
+          brwoser.notifications.create('extractImages', {
+            type: 'basic',
+            iconUrl: '/static/nooboxLogos/icon_128.png',
+            title: GL("extractImages"),
+            message: GL("ls_4")
+          }, () => {});
+        }
+      });
+    }
+  }
+  async updateExtractImageContextMenu() {
     if (await get('extractImages')) {
       data.Image.extractImageHandle = browser.contextMenus.create({
         "id": "extractImages",
@@ -31,11 +130,14 @@ export default class Image {
         "contexts": ["all"],
         "onclick": this.extractImages
       });
-    }else {
-      browser.contextMenus.remove(data.Image.extractImageHandle);
-      data.Image.extractImageHandle = null;
+    } else {
+      if (data.Image.extractImageHandle) {
+        browser.contextMenus.remove(data.Image.extractImageHandle);
+        data.Image.extractImageHandle = null;
+      }
     }
   }
+
   extractImages(info, tab) {
     try {
       browser.tabs.sendMessage(tab.id, {
