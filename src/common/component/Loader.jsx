@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Spin} from 'antd';
+import {Spin,Icon} from 'antd';
 import styled from "styled-components";
 const LoaderContainer = styled.div`
     height:200px;
@@ -8,8 +8,9 @@ const LoaderContainer = styled.div`
 export default class Loader extends Component{
     render(){
         return ( 
-            <LoaderContainer>
+            <LoaderContainer style ={this.props.style||{}}>
                 <Spin size="large" />
+                {/* <Icon type="loading" /> */}
             </LoaderContainer>
         );
     }

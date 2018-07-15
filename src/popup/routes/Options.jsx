@@ -1,6 +1,6 @@
 import React from "react";
 //redux
-//__MSG_appName__
+//i18nMSG_appNamei18n
 import {connect} from 'dva';
 import reduxActions from "SRC/popup/reduxActions.js";
 import reselector   from "SRC/popup/reselector.js";
@@ -73,7 +73,7 @@ class Options extends React.Component{
     return(
       <OptionsContainer>
         <div id = "exp">
-          <h4>{__("experience")}</h4>
+          <h4>{i18n("experience")}</h4>
           <Tree
             checkable
             onCheck={(e)=>actions.optionsCheckExp(e)}
@@ -83,26 +83,26 @@ class Options extends React.Component{
           </Tree>
         </div>
         <div id = "tool">
-          <h4>{__("tools")}</h4>
+          <h4>{i18n("tools")}</h4>
           <Tree
             checkable
             onCheck={(e)=>actions.optionsCheckTool(e)}
             defaultCheckedKeys = {options.currentTool}
           >
-            <TreeNode   title = {__("auto_refresh")}              key = "autoRefresh"/>
-            <TreeNode   title = {__("video_control")}             key = "videoControl"/>
-            <TreeNode   title = {__("image")}                     key = "image">
-              <TreeNode title = {__("reverse_image_search")}      key = "imageSearch"/>
-              <TreeNode title = {__("result_page_tab_front")}     key = "imageSearchNewTabFront"/>
-              <TreeNode title = {__("extract_images")}            key = "extractImages"/>
-              <TreeNode title = {__("screenshot_search")}         key = "screenshotSearch"/>
+            <TreeNode   title = {i18n("auto_refresh")}              key = "autoRefresh"/>
+            <TreeNode   title = {i18n("video_control")}             key = "videoControl"/>
+            <TreeNode   title = {i18n("image")}                     key = "image">
+              <TreeNode title = {i18n("reverse_image_search")}      key = "imageSearch"/>
+              <TreeNode title = {i18n("result_page_tab_front")}     key = "imageSearchNewTabFront"/>
+              <TreeNode title = {i18n("extract_images")}            key = "extractImages"/>
+              <TreeNode title = {i18n("screenshot_search")}         key = "screenshotSearch"/>
             </TreeNode>
           </Tree>
         </div>
         {
           options.showEngines ?
            (<div id = "engines">
-              <h4>{__("avaiable_engine")}</h4>
+              <h4>{i18n("avaiable_engine")}</h4>
               <Row gutter={-1}>
                 {this.generateIcon(this.props.actions,options.currentEngine)}
               </Row>

@@ -2,6 +2,7 @@ appName:
     message: 二箱
 appDesc:
     message: 一個實用的工具箱！多搜尋引擎以圖搜圖+提取圖片+擷圖搜尋+HTML5影片控制
+#Option
 auto_refresh:
   message: 自動頁面刷新 (測試版)
 video_control:
@@ -22,6 +23,27 @@ avaiable_engine:
     message: 搜索引擎設置
 experience:
     message: 體驗設置
+#Image Search
+display_mode:
+  message: 顯示模式
+list:
+  message: 圖片列表
+image_wall:
+  message: 圖片墻
+area:
+  message: 面積
+width:
+  message: 寬度
+height:
+  message: 高度
+increase:
+  message: 升序
+decrease:
+  message: 降序
+save:
+  message: 保存
+clear:
+  message: 清除    
 # overview:
 #     message: 概觀
 # history:

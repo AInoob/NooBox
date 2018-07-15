@@ -148,6 +148,8 @@ export default class Image {
     }
     const imageLink       = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
     browser.tabs.create({url: "/searchResult.html"});
+    //
+    reverseImageSearch.updateImage64({base64:base64});
     //Get Opened Engine
     for(let i = 0; i< engineMap.length; i++){
       let dbName = engineMap[i].dbName;
@@ -159,6 +161,5 @@ export default class Image {
     }
     // const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
     // const openTabFront = await promisedGet('imageSearchNewTabFront');
-  
   }
 }

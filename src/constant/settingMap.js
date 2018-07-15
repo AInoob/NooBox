@@ -7,6 +7,16 @@ import sogou from "SRC/assets/engineLogos/sogou.png";
 import tineye from "SRC/assets/engineLogos/tineye.png";
 import iqdb from "SRC/assets/engineLogos/iqdb.png";
 import yandex from "SRC/assets/engineLogos/yandex.png";
+export const engineIcon={
+  google:google,
+  baidu:baidu,
+  ascii2d:ascii2d,
+  bing:bing,
+  saucenao:saucenao,
+  tineye:tineye,
+  iqdb:iqdb,
+  yandex:yandex,
+}
 export const engineMap =[
   {
     name:"google",

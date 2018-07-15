@@ -3,6 +3,8 @@ appName:
   message: NooBox
 appDesc:
   message: Tool Box
+
+#Option
 auto_refresh:
   message: Auto Refresh (Beta)
 video_control:
@@ -23,8 +25,28 @@ avaiable_engine:
     message: Available Engines Setting
 experience:
     message: Experience Setting
-
-    
+#Image Search
+display_mode:
+  message: Display Mode
+list:
+  message: List
+image_wall:
+  message: Image Wall
+area:
+  message: Area
+width:
+  message: Width
+height:
+  message: Height
+increase:
+  message: Ascending
+decrease:
+  message: Descending
+save:
+  message: SAVE
+clear:
+  message: CLEAR
+  
 #Old Language Pack
 overview:
   message: Overview
