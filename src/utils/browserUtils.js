@@ -18,3 +18,16 @@ export const getCurrentTab = () => {
     });
   });
 };
+
+export const createNewTab = (url) =>{
+  return new Promise(resolve =>{
+    browser.tabs.create({url,active:true}, async tab => {
+      browser.tabs.onUpdated.addListener(function listener (tabId, info) {
+          if (info.status === 'complete' && tabId === tab.id) {
+              chrome.tabs.onUpdated.removeListener(listener);
+              resolve();
+          }
+      });
+    });
+  })
+}

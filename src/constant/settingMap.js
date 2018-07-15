@@ -22,35 +22,43 @@ export const engineMap =[
     name:"google",
     icon: google,
     dbName:"imageSearchUrl_google",
+    dbNameMaxSearch:"imageSearchUrl_google_max",
   },
   {
     name:"baidu",
     icon: baidu,
     dbName:"imageSearchUrl_baidu",
+    dbNameMaxSearch:"imageSearchUrl_baidu_max",
   }, {
     name:"yandex",
     icon: yandex,
     dbName:"imageSearchUrl_yandex",
+    dbNameMaxSearch:"imageSearchUrl_yandex_max",
   }, {
     name:"bing",
     icon: bing,
     dbName:"imageSearchUrl_bing",
+    dbNameMaxSearch:"imageSearchUrl_bing_max",
   }, {
     name:"tineye",
     icon: tineye,
     dbName:"imageSearchUrl_tineye",
+    dbNameMaxSearch:"imageSearchUrl_tineye_max",
   }, {
     name:"saucenao",
     icon: saucenao ,
     dbName:"imageSearchUrl_saucenao",
+    dbNameMaxSearch:"imageSearchUrl_saucenao_max",
   }, {
     name:"iqdb",
     icon: iqdb,
     dbName:"imageSearchUrl_iqdb",
+    dbNameMaxSearch:"imageSearchUrl_iqdb_max",
   }, {
     name:"ascii2d",
     icon: ascii2d,
     dbName:"imageSearchUrl_ascii2d",
+    dbNameMaxSearch:"imageSearchUrl_ascii2d_max",
   },  
 ]
 export const settingsMap =[

@@ -1,5 +1,6 @@
 import {get,set} from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
+
 const HTML = new DOMParser();
 // Data Format
 
@@ -52,6 +53,8 @@ export const reverseImageSearch = {
     browser.runtime.sendMessage({
       job:'image_base64',
       base64:base64,
+    },()=>{
+      console.log("Send base 64 Message");
     })
   },
   waitForSandBox:(pareseObj) =>{

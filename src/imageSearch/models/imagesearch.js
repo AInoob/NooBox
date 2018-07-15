@@ -1,3 +1,4 @@
+import {engineMap} from 'SRC/constant/settingMap.js';
 export default {
   namespace:"imageSearch",
   state:{
@@ -50,7 +51,16 @@ export default {
   },
   effects:{
     *init(){
-
+      let engineStatus ={};
+      for(let i= 0; i< engineMap.length; i++){
+        let dbName = engineMap[i].dbName;
+        let name   = engineMap[i].name;
+        let openCheck  = await get(dbName);
+        let maxCheck   = await get()
+        if(check){
+          engineStatus[name] = true;
+        }
+      }
     }
   },
   reducers:{
@@ -71,6 +81,7 @@ export default {
   subscriptions:{
     setupListener({dispatch}){
       browser.runtime.onMessage.addListener((message,sender,response) =>{
+        console.log(message)
         if(message.job === "image_result_update"){
           dispatch({type:"updateSearchResult",payload:message.result});
         }else if(message.job === "engine_done"){
@@ -80,7 +91,8 @@ export default {
         }else if(message.job === "image_info_update"){
           dispatch({type:"updateImageInfo",payload:message.result});
         }else if(message.job === "image_base64"){
-          dispatch({type:"updateState",payload:{base64:message.base64}})
+          console.log("getIt");
+          dispatch({type:"updateState",payload:message.base64})
         }
       })
     }

@@ -4,11 +4,18 @@ import FAIcon from '@fortawesome/react-fontawesome';
 import faSolid from '@fortawesome/fontawesome-free-solid';
 import {Row,Col,Card, Icon, Avatar} from 'antd';
 import {engineIcon} from "SRC/constant/settingMap.js";
+import {dogeLoading} from "ASSET/funSh*t/dogeLoading.gif";
 const ResultContainer = styled.div`
   background:white;
   padding:36px;
   border: 1px solid #e8e8e8;
   margin-top:20px;
+  #dogeLoading{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 `;
 
 export default class ImageWall extends React.Component{
@@ -46,6 +53,7 @@ export default class ImageWall extends React.Component{
               style ={{ width: "100%" }}
               // actions={[<FAIcon onClick={()=> this.showModal(item.imageUrl)}icon ={faSolid.faSearchPlus} />,
               //           <FAIcon icon ={faSolid.faDownload}/>]}
+              key ={count}
               cover ={<img alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
             >
               <Card.Meta
@@ -63,17 +71,25 @@ export default class ImageWall extends React.Component{
   }
   render(){
     let {imageDataList} = this.props;
-    let imageWall = this.generateCardList(imageDataList);
-    return(
-    <ResultContainer>
-      <Row>
-        {imageWall.map((item,index) =>{
-            return (<Col key ={index} span ={4}>
-                      {item}
-                    </Col>)
-          })}
-      </Row> 
-    </ResultContainer>
-    );
+    if(imageDataList.length> 0){
+      let imageWall = this.generateCardList(imageDataList);
+      return(
+      <ResultContainer>
+        <Row>
+          {imageWall.map((item,index) =>{
+              return (<Col key ={index} span ={4}>
+                        {item}
+                      </Col>)
+            })}
+        </Row> 
+      </ResultContainer>
+      );
+    }else{
+      return (
+        <ResultContainer>
+          <img id ="dogeLoading" src ="./static/funSh*t/dogeLoading.gif"/>
+        </ResultContainer>
+      );
+    }
   }
 }

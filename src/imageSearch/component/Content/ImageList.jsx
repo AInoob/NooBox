@@ -3,12 +3,19 @@ import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome';
 import faSolid from '@fortawesome/fontawesome-free-solid';
 import {engineIcon} from "SRC/constant/settingMap.js";
+import {dogeLoading} from "ASSET/funSh*t/dogeLoading.gif";
 import {Row,Col,Icon,List,Avatar,Modal} from 'antd';
 const ResultContainer = styled.div`
-background:white;
-padding:36px;
-border: 1px solid #e8e8e8;
-margin-top:20px;
+  background:white;
+  padding:36px;
+  border: 1px solid #e8e8e8;
+  margin-top:20px;
+  #dogeLoading{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 `;
 export default class ImageList extends React.Component{
   constructor(props){
@@ -60,7 +67,9 @@ export default class ImageList extends React.Component{
         </ResultContainer>
       )
     }else{
-      return (<ResultContainer/>)
+      return (<ResultContainer>
+        <img id ="dogeLoading" src = "./static/funSh*t/dogeLoading.gif"/>
+      </ResultContainer>)
     }
   }
 }
