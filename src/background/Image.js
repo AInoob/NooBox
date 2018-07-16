@@ -257,11 +257,11 @@ export default class Image {
       let dbName = engineMap[i].dbName;
       let name   = engineMap[i].name;
       let check  = await get(dbName);
-      if(check[dbName]){
+      if(check){
          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink);
       }
     }
-    // const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
-    // const openTabFront = await promisedGet('imageSearchNewTabFront');
+    //const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
+    //const openTabFront = await promisedGet('imageSearchNewTabFront');
   }
 }

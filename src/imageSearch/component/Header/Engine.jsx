@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Card,Tooltip,Popover,InputNumber,Button } from 'antd';
+import { Card,Tooltip,Popover,InputNumber,Button,Icon } from 'antd';
 import FAIcon from '@fortawesome/react-fontawesome';
 import faSolid from '@fortawesome/fontawesome-free-solid';
 import google from "SRC/assets/engineLogos/google.png";
@@ -11,6 +11,7 @@ import saucenao from "SRC/assets/engineLogos/saucenao.png";
 import sogou from "SRC/assets/engineLogos/sogou.png";
 import tineye from "SRC/assets/engineLogos/tineye.png";
 import iqdb from "SRC/assets/engineLogos/iqdb.png";
+import Loader      from "SRC/common/component/Loader.jsx";
 import yandex from "SRC/assets/engineLogos/yandex.png";
 const { Meta } = Card;
 const gridStyle = {
@@ -39,10 +40,17 @@ const EngineContainer = styled.div`
       right: 0;
     }
     .engineImage{
-        width: 50px;
-        position: relative;
+      width: 50px;
+      position: relative;
       top: 50%;
       transform: translateY(-50%);
+    }
+    .engineImageHide{
+      width: 50px;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.2;
     }
     .engineSetting{
       position:absolute;
@@ -53,44 +61,57 @@ const EngineContainer = styled.div`
     .settingIcon{
       color: rgba(0, 0, 0, 0.45)
     }
+    .engineLoading{
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      font-size: 15px;
+      bottom: 0;
+      z-index:10;
+    }
+    .engineLoading{
+      width: 50px;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
 `;
 
 export default class Engine extends React.Component{
   render(){
     // console.log(faSolid)
-    let inited = true;
       return(
         <EngineContainer>
-             <Card>
+             <Card >
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                     <div className = "engineContainer">
-                      <img  className ="engineImage"src = {google}/>
+                      <img className = {this.props.google ? (this.props.googleDone  ? "engineImage" : "engineLoading"):"engineImageHide"} src = {google}/>
                     </div>
-                    <div className ="engineSetting">
+                    {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                   </div>
                 </Card.Grid>
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                     <div className = "engineContainer">
                       <div className = "engineContainer">
-                        <img  className ="engineImage"src = {baidu}/>
+                        <img  className = {this.props.baidu ? (this.props.baiduDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {baidu}/>
                       </div>
-                      <div className ="engineSetting">
+                      {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                     </div>
                   </div>
                 </Card.Grid>
@@ -98,16 +119,16 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                       <div className = "engineContainer">
-                        <img  className ="engineImage"src = {yandex}/>
+                        <img  className = {this.props.yandex ? (this.props.yandexDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {yandex}/>
                       </div>
-                      <div className ="engineSetting">
+                      {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                   </div>
                   </div>
                 </Card.Grid>
@@ -115,16 +136,16 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                      <div className = "engineContainer">
-                        <img  className ="engineImage"src = {tineye}/>
+                        <img  className = {this.props.tineye ? (this.props.tineyeDone?"engineImage":"engineLoading"):"engineImageHide"} src = {tineye}/>
                     </div>
-                    <div className ="engineSetting">
+                    {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                   </div>
                   </div>
                 </Card.Grid>
@@ -132,64 +153,63 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                     <div className = "engineContainer">
-                        <img  className ="engineImage"src = {bing}/>
+                        <img  className = {this.props.bing ? (this.props.bingDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {bing}/>
                       </div>
-                    <div className ="engineSetting">
+                    {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                     </div>
                   </div>
                 </Card.Grid>
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
-   
                   <div className = "engineContainer">
-                        <img  className ="engineImage"src = {saucenao}/>
-                      </div>
-                      <div className ="engineSetting">
+                    <img  className = {this.props.saucenao ? (this.props.saucenaoDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {saucenao}/>
+                  </div>
+                      {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                   </div>
                 </Card.Grid>
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
  
                   <div className = "engineContainer">
-                        <img  className ="engineImage"src = {ascii2d}/>
+                        <img  className = {this.props.ascii2d ? (this.props.ascii2dDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {ascii2d}/>
                       </div>
-                      <div className ="engineSetting">
+                      {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                   </div>
                 </Card.Grid>
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                   <div className = "engineContainer">
-                        <img  className ="engineImage"src = {iqdb}/>
+                        <img  className = {this.props.iqdb ? (this.props.iqdbDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {iqdb}/>
                       </div>
-                      <div className ="engineSetting">
+                      {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
                                                                                   <InputNumber min={5} max={100} step ={10} />
                                                                                   <Button style = {{marginLeft:"10px"}} type = "primary">Save</Button>
                                                                             </div>}
                             ><FAIcon className = 'settingIcon' icon ={faSolid.faCog}/>
                       </Popover>
-                    </div>
+                    </div> */}
                   </div>
                 </Card.Grid>
               </Card>

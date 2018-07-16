@@ -1,4 +1,5 @@
 import {engineMap} from 'SRC/constant/settingMap.js';
+import {get,set} from 'SRC/utils/db.js';
 export default {
   namespace:"imageSearch",
   state:{
@@ -6,62 +7,78 @@ export default {
     base64:"",
     searchImageInfo:[],
     searchResult:[],
-    displayMode:0,
-    sortBy:{by:"",order:0},
+    displayMode:2,
 
-    googleStatus:false,
+    sortBy:"",
+    sortByOrder:0,
+
+    google:false,
     googleDone:false,
-    googleMaxSearch:5,
-    // googleResult:[],
+    googleMax:5,
 
-    baiduStatus:false,
+    baidu:false,
     baiduDone:false,
-    baiduMaxSearch:1,
-    // baiduResult:[],
+    baiduMax:1,
 
-    yandexStatus:false,
+    yandex:false,
     yandexDone:false,
-    yandexMaxSearch:1,
-    // yandexResult:[],
+    yandexMax:1,
 
-    bingStatus:false,
+    bing:false,
     bingDone:false,
-    bingMaxSearch:1,
-    // bingResult:[],
+    bingMax:1,
 
-    tineyeStatus:false,
+    tineye:false,
     tineyeDone:false,
-    tineyeMaxSearch:1,
-    // tineyeResult:[],
+    tineyeMax:1,
 
-    sausaoStatus:false,
+    sausao:false,
     sausaoDone:false,
-    sausaoMaxSearch:1,
-    // sausaoResult:[],
+    sausaoMax:1,
 
-    iqdbStatus:false,
+    iqdb:false,
     iqdbDone:false,
-    iqdbMaxSearch:1,
-    // iqdbResult:[],
+    iqdbMax:1,
 
-    ascii2dStatus:false,
+    ascii2d:false,
     ascii2dDone:false,
-    ascii2dMaxSearch:1,
-    // ascii2dResult:[],
+    ascii2dMax:1,
   },
   effects:{
-    *init(){
+    *init({payload},{call,put}){
       let engineStatus ={};
       for(let i= 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
-        // let openCheck  = await get(dbName);
-        // let maxCheck   = await get()
-        if(check){
+        let dbNameMax = engineMap[i].dbNameMaxSearch;
+        let openCheck  = yield call(get,dbName);
+        let maxSearch  = yield call(get,dbNameMax);
+        if(openCheck){
           engineStatus[name] = true;
         }
+        if(maxSearch){
+          engineStatus[name+"Max"] = maxSearch;
+        }else if(maxSearch == undefined || maxSearch == null){
+          yield call(set,dbName+"_max")
+        }
       }
+      let displayMode = yield call(get,"displayMode");
+      console.log(displayMode);
+      if(displayMode){
+        engineStatus.displayMode = displayMode;
+      }else if(displayMode == undefined || displayMode == null){
+        engineStatus.displayMode = 1;
+        yield call(set,"displayMode",1)
+      }
+      engineStatus.inited = true;
+      yield put({type:"updateState",payload:engineStatus})
+    },
+    *updateDisplayMode({payload},{call,put}){
+      console.log(payload);
+       yield call(set,"displayMode",payload);
+       yield put({type:"updateState",payload:{displayMode:payload}})
     }
+
   },
   reducers:{
     updateState(state,{payload}){
@@ -81,7 +98,6 @@ export default {
   subscriptions:{
     setupListener({dispatch}){
       browser.runtime.onMessage.addListener((message,sender,response) =>{
-        console.log(message)
         if(message.job === "image_result_update"){
           dispatch({type:"updateSearchResult",payload:message.result});
         }else if(message.job === "engine_done"){

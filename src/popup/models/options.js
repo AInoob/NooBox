@@ -1,6 +1,6 @@
 import {engineMap,toolSettingMap,expSettingMap} from 'SRC/constant/settingMap.js';
 //get set meaning chrome sync
-import {get,bgSet} from 'SRC/utils/db.js';
+import {get,set} from 'SRC/utils/db.js';
 export default {
   namespace:"options",
   state:{
@@ -46,10 +46,10 @@ export default {
     *onCheckEngine({payload},{call,put,select}){
       let {currentEngine} = yield select(state => state.options);
       if(currentEngine[payload]){
-         yield call(bgSet,payload,false);
+         yield call(set,payload,false);
          currentEngine[payload] = false;
       }else{
-        yield call(bgSet,payload,true);
+        yield call(set,payload,true);
         currentEngine[payload] = true;
       }
       yield put({type:"updateState",payload:{currentEngine}})
@@ -74,7 +74,7 @@ export default {
               yield put({type:"overview/hideHtml5Video"});
             }
 
-            yield call(bgSet,name,false);
+            yield call(set,name,false);
           }
         }
         currentTool = newSetting;
@@ -92,7 +92,7 @@ export default {
             if(name == "videoControl"){
               yield put({type:"overview/showHtml5Video"});
             }
-            yield call(bgSet,name,true);
+            yield call(set,name,true);
           }
         }
         currentTool = newSetting;
@@ -108,14 +108,14 @@ export default {
       if(currentExp.length > newSetting.length){
         for(let name of currentExp){
           if(!newSetting.includes(name)){
-            yield call(bgSet,name,false);
+            yield call(set,name,false);
           }
         }
         currentExp = newSetting;
       }else{
         for(let name of newSetting){
           if(!currentExp.includes(name)){
-            yield call(bgSet,name,true);
+            yield call(set,name,true);
           }
         }
         currentExp = newSetting;
