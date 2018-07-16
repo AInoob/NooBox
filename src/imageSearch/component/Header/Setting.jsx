@@ -6,10 +6,11 @@ import faSolid from '@fortawesome/fontawesome-free-solid';
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const { Meta } = Card;
+  // border: 1px solid #e8e8e8;
 const SettingContainer = styled.div`
   background:white;
   padding:24px 24px 22px 24px;
-  border: 1px solid #e8e8e8;
+
   .displayMode{
     margin-bottom: 15px;
   }
@@ -29,14 +30,14 @@ const SettingContainer = styled.div`
 `;
 export default class Setting extends React.Component{
   render(){
-    const{updateSetting} = this.props;
+    const{updateSetting,displayMode} = this.props;
     // console.log(faSolid)
     let inited = true;
       return(
         <SettingContainer>
           <div className ="displayMode">
             <h3>{i18n("display_mode")}</h3>
-            <RadioGroup onChange ={(e)=>updateSetting({displayMode:e.target.value})}>
+            <RadioGroup onChange ={(e)=>updateSetting(e.target.value)} defaultValue = {displayMode}>
               <Radio value={1}>{i18n("list")}</Radio>
               <Radio value={2}>{i18n("image_wall")}</Radio>
             </RadioGroup>
@@ -51,11 +52,7 @@ export default class Setting extends React.Component{
               <Radio value={1}>{i18n("increase")}</Radio>
               <Radio value={2}>{i18n("decrease")}</Radio>
             </RadioGroup>
-          </div>
-          <div className = "settingAction">
-            <Button type = "primary" style={{marginLeft:"10px"}}>{i18n("save")}</Button>
-            <Button style={{marginLeft:"10px"}}>{i18n("clear")}</Button>
-          </div>  
+          </div> 
         </SettingContainer>
       )
   }
