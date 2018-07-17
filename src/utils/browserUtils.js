@@ -18,7 +18,12 @@ export const getCurrentTab = () => {
     });
   });
 };
-
+export const generateNewTabUrl = (path) =>{
+  return new Promise(resolve =>{
+    let url = browser.runtime.getURL(path);
+    resolve(url);
+  });
+}
 export const createNewTab = (url) =>{
   return new Promise(resolve =>{
     browser.tabs.create({url,active:true}, async tab => {

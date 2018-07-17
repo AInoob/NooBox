@@ -16,6 +16,17 @@ const ResultContainer = styled.div`
     margin-right: auto;
     width: 50%;
   }
+  .searchEngine{
+    width:20px;
+    height:20px;
+  }
+  .searchImage{
+    max-width:150px;
+    max-height:150px;
+  }
+  .sizeInfo{
+    margin:0;
+  }
 `;
 export default class ImageList extends React.Component{
   constructor(props){
@@ -50,9 +61,10 @@ export default class ImageList extends React.Component{
             <List.Item
               key={item.title}
               actions={[<FAIcon onClick={()=> this.showModal(item.imageUrl)}icon ={faSolid.faSearchPlus} />,
-                        <FAIcon icon ={faSolid.faDownload}/>,
-                        <Avatar src={engineIcon[item["searchEngine"]]} />]}
-              extra={<img width={272} alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
+                        // <FAIcon icon ={faSolid.faDownload}/>,
+                        <p className = "sizeInfo">{item.imageInfo.height +" x "+ item.imageInfo.width}</p>,
+                        <img className = "searchEngine" src={engineIcon[item["searchEngine"]]} />]}
+              extra={<img className ="searchImage" alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
             >
              <List.Item.Meta
                 title={<a href={item.sourceUrl} target="_blank">{item.title}</a>}

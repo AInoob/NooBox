@@ -106,44 +106,49 @@ export const reverseImageSearch = {
     const sizeInfo = childNode[0].childNodes[1].childNodes[0].innerHTML.replace(/<br>|&nbsp;|Image size|:|：|图片尺寸|圖片尺寸/g,"");
     if(sizeInfo){
       //"x" is special Character
+     
       let size = sizeInfo.split("×");
       searchImage.imageInfo.width = Number.parseInt(size[0],10);
       searchImage.imageInfo.height = Number.parseInt(size[1],10);
     }
     const keyword  = childNode[1].getElementsByTagName("a")[0];
     if(keyword){
-      // console.log(keyword.innerHTML);
+      console.log(childNode[1]);
+      console.log(keyword.innerHTML);
       searchImage.keyword = keyword.innerHTML;
       searchImage.keywordLink = "https://www.google.com" +keyword.getAttribute("href");
     }
-    // Send Message of Search image info to front page
+    // Send message of search image info to front page
     reverseImageSearch.updateSearchImage(searchImage);
-    // process first page source
-    reverseImageSearch.processGoogleData(page);
+    // Process first page source
+    let firstPage = reverseImageSearch.processGoogleData(page);
     //  google
     //  maximum
     if(followingPageUrl.length > 0){
-      let fetchFunciton = function(url){
+      let tempFunciton = function(url){
         return new Promise((resolve)=>{
           ajax(url,{method:"GET"}).then(({data}) =>{
             const page = HTML.parseFromString(data,"text/html");
-            reverseImageSearch.processGoogleData(page);
-            resolve("");
+            let singleResult = reverseImageSearch.processGoogleData(page);
+            resolve(singleResult);
           })
         })
       } 
       let taskSeq = [];
+      
       for(let i = 0; i < followingPageUrl.length; i++){
-        taskSeq[taskSeq.length] = fetchFunciton(followingPageUrl[i]);
+        taskSeq[taskSeq.length] = tempFunciton(followingPageUrl[i]);
       }
-      await Promise.all(taskSeq);
-      reverseImageSearch.engineDone("google");
-      //pass done message
-    }else{
+      let results = await Promise.all(taskSeq);
+      //merge results to first page
+      for(let i = 0; i< results.length; i++){
+        firstPage = firstPage.concat(results[i]);
+      }
+    }
+      reverseImageSearch.updateResultImage(firstPage);
       //pass done message Directly
       reverseImageSearch.engineDone("google");
-    }
-    
+   
     // console.log(searchImage);
   },
   /*process Data*/
@@ -178,9 +183,12 @@ export const reverseImageSearch = {
         let description = "";
         for(let i = 0; i< tagSpan.length; i++){
           if(i == 0){
-            let size = tagSpan[i].innerHTML.replace(/ |-/g,"").split("×");
-            singleResult.imageInfo.width = Number.parseInt(size[0],10);
-            singleResult.imageInfo.height =  Number.parseInt(size[1],10);
+            let size = tagSpan[i].innerHTML.split("-")[0];
+            size = size.replace(/ /g,"").split("×");
+            if(size){
+              singleResult.imageInfo.width = Number.parseInt(size[0],10);
+              singleResult.imageInfo.height =  Number.parseInt(size[1],10);
+            }
           }else{
             description += tagSpan[i].innerHTML || tagSpan[i].textContent;
           }
@@ -188,7 +196,7 @@ export const reverseImageSearch = {
         singleResult.description = description;
         results[results.length] = singleResult;
       }
-      reverseImageSearch.updateResultImage(results);
+      return results;
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
   fetchBaiduLink: async (link) =>{

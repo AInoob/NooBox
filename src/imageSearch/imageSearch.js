@@ -1,5 +1,6 @@
 import dva from 'dva';
 import bowser from "SRC/utils/useBrowser.js";
+import { createBrowserHistory } from 'history'
 bowser();
 // 1. Initialize
 const imageSearch = dva();

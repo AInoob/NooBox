@@ -12,6 +12,7 @@
   "icons": {
     "128": "static/nooboxLogos/icon_128.png"
   },
+  "web_accessible_resources":["searchResult.html"],
   "background": {
     "scripts":["thirdParty/jquery.min.js", "thirdParty/fileSavor.js", "thirdParty/jszip.min.js", "js/background.js"]
   },

@@ -5,9 +5,9 @@ import { fetchBlob, convertDataURIToBinary } from '../utils';
 import {reverseImageSearch} from 'SRC/js/reverseImageSearch.js';
 import {engineMap} from 'SRC/constant/settingMap.js';
 import {apiUrls} from 'SRC/constant/searchApiUrl.js';
-import {get,set} from 'SRC/utils/db.js';
+import {get,set,getDB,setDB} from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
-import {createNewTab,sendMessage} from 'SRC/utils/browserUtils'
+import {createNewTab,sendMessage,generateNewTabUrl} from 'SRC/utils/browserUtils'
 export default class Image {
   constructor() {
     this.noobUploadUrl = "https://ainoob.com/api/uploadImage/";
@@ -15,7 +15,7 @@ export default class Image {
     this.fetchFunction ={
       googleLink: reverseImageSearch.fetchGoogleLink,
       baiduLink: reverseImageSearch.fetchBaiduLink,
-      tinEyeLink: reverseImageSearch.fetchTineyeLink,
+      tineyeLink: reverseImageSearch.fetchTineyeLink,
       bingLink: reverseImageSearch.fetchBingLink,
       yandexLink: reverseImageSearch.fetchYandexLink,
       saucenaoLink: reverseImageSearch.fetchSauceNaoLink,
@@ -250,14 +250,22 @@ export default class Image {
       body: JSON.stringify({data:base64}),
     }
     const imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
-    await createNewTab("/searchResult.html");
+    let cursor = await getDB('imageCursor');
+    console.log(cursor);
+    if (typeof (cursor) === 'number') {
+      cursor++;
+    } else {
+      cursor = 0;
+    }
+    let url = await generateNewTabUrl("searchResult.html");
+    await createNewTab(url+"#/"+cursor);
     reverseImageSearch.updateImage64({base64:base64});
     //Get Opened Engine
     for(let i = 0; i< engineMap.length; i++){
       let dbName = engineMap[i].dbName;
       let name   = engineMap[i].name;
       let check  = await get(dbName);
-      if(check){
+      if(check && this.fetchFunction[name+"Link"]){ 
          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink);
       }
     }
