@@ -259,14 +259,14 @@ export default class Image {
     }
     let url = await generateNewTabUrl("searchResult.html");
     await createNewTab(url+"#/"+cursor);
-    reverseImageSearch.updateImage64({base64:base64});
+    reverseImageSearch.updateImage64(base64,cursor);
     //Get Opened Engine
     for(let i = 0; i< engineMap.length; i++){
       let dbName = engineMap[i].dbName;
       let name   = engineMap[i].name;
       let check  = await get(dbName);
       if(check && this.fetchFunction[name+"Link"]){ 
-         this.fetchFunction[name+"Link"](apiUrls[name] + imageLink);
+         this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
       }
     }
     //const url = '/image.search.html?cursor=' + cursor + '&image=' + type;

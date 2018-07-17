@@ -1,8 +1,9 @@
 import {engineMap} from 'SRC/constant/settingMap.js';
-import {get,set} from 'SRC/utils/db.js';
+import {get,set,getDB,setDB} from 'SRC/utils/db.js';
 export default {
   namespace:"imageSearch",
   state:{
+    pageId:"",
     inited:false,
     base64:"",
     searchImageInfo:[],
@@ -46,8 +47,21 @@ export default {
   },
   effects:{
     *init({payload},{call,put}){
-      let engineStatus ={};
-      for(let i= 0; i< engineMap.length; i++){
+      yield put({type:"updateState",payload:{pageId:payload}})
+      let engineStatus = {};
+      let cursor = yield call(getDB,"imageCursor");
+      let dataBaseFlag = false;
+      
+      if(cursor != null && payload <= cursor){
+        let hasDataBase = yield call(getDB,Number.parseInt(payload));
+        if(hasDataBase){
+          engineStatus.base64 = hasDataBase.base64;
+          engineStatus.searchImageInfo = hasDataBase.searchImageInfo;
+          engineStatus.searchResult = hasDataBase.searchResult;
+          dataBaseFlag = true;
+        }
+      }
+      for(let i = 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
         let dbNameMax = engineMap[i].dbNameMaxSearch;
@@ -55,6 +69,9 @@ export default {
         let maxSearch  = yield call(get,dbNameMax);
         if(openCheck){
           engineStatus[name] = true;
+          if(dataBaseFlag){
+            engineStatus[name +"Done"] = true;
+          }
         }
         if(maxSearch){
           engineStatus[name+"Max"] = maxSearch;
@@ -63,7 +80,6 @@ export default {
         }
       }
       let displayMode = yield call(get,"displayMode");
-      console.log(displayMode);
       if(displayMode){
         engineStatus.displayMode = displayMode;
       }else if(displayMode == undefined || displayMode == null){
@@ -77,8 +93,24 @@ export default {
       console.log(payload);
        yield call(set,"displayMode",payload);
        yield put({type:"updateState",payload:{displayMode:payload}})
+    },
+    *updateEngineDone({payload},{call,put,select}){
+      console.log(payload);
+      let{base64,searchImageInfo,searchResult,pageId} = yield select(state => state.imageSearch);
+      if(pageId == payload.cursor){
+        let data ={
+          base64,
+          searchImageInfo,
+          searchResult,
+        }
+        yield call(setDB,"imageCursor",payload.cursor);
+        yield call(setDB,payload.cursor,data);
+        let doneState = {};
+        doneState[payload.engine+"Done"] = true;
+        yield put({type:"updateState",payload:doneState})
+      }
+     
     }
-
   },
   reducers:{
     updateState(state,{payload}){
@@ -90,31 +122,75 @@ export default {
     updateSortByOrder(state,{payload}){
       return Object.assign({},state,{sortByOrder:payload})
     },
+
+    updateImageData(state,{payload}){
+      console.log(state);
+      let {pageId} = state;
+      
+      console.log(payload);
+      console.log(pageId == payload.cursor);
+      console.log(pageId);
+      console.log(payload.cursor);
+      if(pageId == payload.cursor){
+        return Object.assign({},state,{base64:payload.result});
+      }else{
+        return state;
+      } 
+    },
     updateSearchResult(state,{payload}){
-      let{searchResult} = state;
-      let newSearchResult = searchResult.concat(payload);
-      return Object.assign({},state,{searchResult:newSearchResult});
+      let { pageId,searchResult } = state;
+      if(pageId == payload.cursor){
+        let newSearchResult = searchResult.concat(payload.result);
+        return Object.assign({},state,{searchResult:newSearchResult});
+      }else{
+        return state;
+      }
+   
     },
     updateImageInfo(state,{payload}){
-      let{searchImageInfo} = state;
-      let newSearchImageInfo = searchImageInfo.concat(payload);
-      return Object.assign({},state,{searchImageInfo:newSearchImageInfo});
+      let{pageId,searchImageInfo} = state;
+      if(pageId == payload.cursor){
+        let newSearchImageInfo = searchImageInfo.concat(payload.result);
+        return Object.assign({},state,{searchImageInfo:newSearchImageInfo});
+      }else{
+        return state;
+      }
     }
   },
   subscriptions:{
-    setupListener({dispatch}){
+    setupListener({dispatch,history}){
       browser.runtime.onMessage.addListener((message,sender,response) =>{
+        let type;
+        let payload;
+      
         if(message.job === "image_result_update"){
-          dispatch({type:"updateSearchResult",payload:message.result});
+          type = "updateSearchResult";
+          payload ={
+            cursor : message.cursor,
+            result : message.result
+          };
         }else if(message.job === "engine_done"){
-          let payload ={};
-          payload[message.engine+"Done"] = true;
-          dispatch({type:"updateState",payload});
+          type = "updateEngineDone";
+          payload ={
+            engine : message.engine,
+            cursor : message.cursor,
+          };
         }else if(message.job === "image_info_update"){
-          dispatch({type:"updateImageInfo",payload:message.result});
+          type = "updateImageInfo";
+          payload = {
+            cursor: message.cursor,
+            result: message.result
+          }
         }else if(message.job === "image_base64"){
-          console.log("getIt");
-          dispatch({type:"updateState",payload:message.base64})
+          console.log(message);
+          type ="updateImageData"
+          payload ={
+            cursor:message.cursor,
+            result:message.result,
+          }
+        }
+        if(type){
+          dispatch({type:type,payload:payload})
         }
       })
     }

@@ -27,32 +27,36 @@ const HTML = new DOMParser();
 //  description:"",
 // }
 export const reverseImageSearch = {
-  updateResultImage:(result)=>{
+  updateResultImage:(result,cursor)=>{
     browser.runtime.sendMessage({
       job:'image_result_update',
       result:result,
+      cursor:cursor
     },()=>{
       console.log("Send Search Result");
     })
   },
-  engineDone:(engine) =>{
+  engineDone:(engine,cursor) =>{
     browser.runtime.sendMessage({
       job:'engine_done',
       engine:engine,
+      cursor:cursor,
     },()=>{
       console.log("Send Done Message");
     })
   },
-  updateSearchImage:(result) =>{
+  updateSearchImage:(result,cursor) =>{
     browser.runtime.sendMessage({
       job:'image_info_update',
       result:result,
+      cursor:cursor,
     })
   },
-  updateImage64:(base64) =>{
+  updateImage64:(base64,cursor) =>{
     browser.runtime.sendMessage({
       job:'image_base64',
-      base64:base64,
+      result:base64,
+      cursor:cursor,
     },()=>{
       console.log("Send base 64 Message");
     })
@@ -77,7 +81,7 @@ export const reverseImageSearch = {
     })
   },
   /*Fetch Available Page Link On Goolge*/
-  fetchGoogleLink: async (link) => {
+  fetchGoogleLink: async (link,cursor) => {
    let searchImage = {
           keyword:"",
           keywordLink:"",
@@ -119,7 +123,7 @@ export const reverseImageSearch = {
       searchImage.keywordLink = "https://www.google.com" +keyword.getAttribute("href");
     }
     // Send message of search image info to front page
-    reverseImageSearch.updateSearchImage(searchImage);
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
     // Process first page source
     let firstPage = reverseImageSearch.processGoogleData(page);
     //  google
@@ -145,9 +149,9 @@ export const reverseImageSearch = {
         firstPage = firstPage.concat(results[i]);
       }
     }
-      reverseImageSearch.updateResultImage(firstPage);
+      reverseImageSearch.updateResultImage(firstPage,cursor);
       //pass done message Directly
-      reverseImageSearch.engineDone("google");
+      reverseImageSearch.engineDone("google",cursor);
    
     // console.log(searchImage);
   },
