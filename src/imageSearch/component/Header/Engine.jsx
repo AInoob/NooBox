@@ -63,17 +63,11 @@ const EngineContainer = styled.div`
     }
     .engineLoading{
       position: absolute;
-      left: 2px;
-      top: 2px;
+      left: 4px;
+      top: 4px;
       font-size: 15px;
       bottom: 0;
       z-index:10;
-    }
-    .engineLoading{
-      width: 50px;
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
     }
 `;
 
@@ -86,7 +80,10 @@ export default class Engine extends React.Component{
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                     <div className = "engineContainer">
-                      <img className = {this.props.google ? (this.props.googleDone  ? "engineImage" : "engineLoading"):"engineImageHide"} src = {google}/>
+                      {
+                        !this.props.google || this.props.googleDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                      <img className = {this.props.google ?"engineImage" :"engineImageHide"} src = {google}/>
                     </div>
                     {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -102,7 +99,10 @@ export default class Engine extends React.Component{
                   <div className ="box">
                     <div className = "engineContainer">
                       <div className = "engineContainer">
-                        <img  className = {this.props.baidu ? (this.props.baiduDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {baidu}/>
+                      {
+                        !this.props.baidu || this.props.baiduDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                        <img  className = {this.props.baidu ? "engineImage":"engineImageHide"} src = {baidu}/>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -119,7 +119,10 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                       <div className = "engineContainer">
-                        <img  className = {this.props.yandex ? (this.props.yandexDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {yandex}/>
+                      {
+                        !this.props.yandex || this.props.yandexDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                        <img  className = {this.props.yandex ? "engineImage":"engineImageHide"} src = {yandex}/>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -136,7 +139,10 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                      <div className = "engineContainer">
-                        <img  className = {this.props.tineye ? (this.props.tineyeDone?"engineImage":"engineLoading"):"engineImageHide"} src = {tineye}/>
+                     {
+                        !this.props.tineye || this.props.tineyeDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                        <img  className = {this.props.tineye ?"engineImage":"engineImageHide"} src = {tineye}/>
                     </div>
                     {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -153,7 +159,10 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                     <div className = "engineContainer">
-                        <img  className = {this.props.bing ? (this.props.bingDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {bing}/>
+                    {
+                        !this.props.bing || this.props.bingDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                        <img  className = {this.props.bing ? "engineImage":"engineImageHide"} src = {bing}/>
                       </div>
                     {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -169,7 +178,10 @@ export default class Engine extends React.Component{
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                   <div className = "engineContainer">
-                    <img  className = {this.props.saucenao ? (this.props.saucenaoDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {saucenao}/>
+                  {
+                        !this.props.saucenao || this.props.saucenaoDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                    <img  className = {this.props.saucenao ?"engineImage":"engineImageHide"} src = {saucenao}/>
                   </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -185,7 +197,10 @@ export default class Engine extends React.Component{
                   <div className ="box">
  
                   <div className = "engineContainer">
-                        <img  className = {this.props.ascii2d ? (this.props.ascii2dDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {ascii2d}/>
+                  {
+                        !this.props.ascii2d || this.props.ascii2dDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                        <img  className = {this.props.ascii2d ? "engineImage":"engineImageHide"} src = {ascii2d}/>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -200,7 +215,10 @@ export default class Engine extends React.Component{
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                   <div className = "engineContainer">
-                        <img  className = {this.props.iqdb ? (this.props.iqdbDone ? "engineImage":"engineLoading"):"engineImageHide"} src = {iqdb}/>
+                  {
+                        !this.props.iqdb || this.props.iqdbDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                      }
+                        <img  className = {this.props.iqdb ?"engineImage":"engineImageHide"} src = {iqdb}/>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>

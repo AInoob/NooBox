@@ -21,13 +21,14 @@ const ResultContainer = styled.div`
 `;
 class ImageSearchResult extends React.Component{
   componentDidMount(){
-    const{actions,imageSearch} = this.props;
+    const{actions,imageSearch,match} = this.props;
     if(!imageSearch.inited){
       actions.imageSearchInit();
     }
   }
   render(){
-    const{actions,imageSearch} = this.props;
+    const{actions,imageSearch,match} = this.props;
+    console.log(match);
     if(!imageSearch.inited){
       return(<Loader/>)
     }else{
@@ -36,7 +37,8 @@ class ImageSearchResult extends React.Component{
           <div className ="header">
             <Row  type="flex" align="bottom">
               <Col span ={11}>
-                <Brief base64 ={imageSearch.base64} imageInfo = {imageSearch.searchImageInfo}/>
+                <Brief base64 ={imageSearch.base64} 
+                       imageInfo = {imageSearch.searchImageInfo}/>
               </Col>
               <Col span ={2}/>
               <Col span ={11}>
@@ -65,7 +67,14 @@ class ImageSearchResult extends React.Component{
                   ascii2d  ={imageSearch["ascii2d"]}
                   ascii2dDone = {imageSearch["ascii2dDone"]}
                   />
-                <Setting updateSetting = {actions.imageSearchUpdateSetting} displayMode ={imageSearch.displayMode}/>
+                <Setting updateDisplayMode = {actions.imageSearchUpdateDisplayMode} 
+                         updateSortBy = {actions.imageSearchSortBy}
+                         updateSortByOrder ={actions.imageSearchSoryByOrder}
+                         displayMode = {imageSearch.displayMode}
+                         sortBy = {imageSearch.sortBy}
+                         sortByOrder = {imageSearch.sortByOrder}
+                         />
+                         
               </Col>
             </Row>
           </div>

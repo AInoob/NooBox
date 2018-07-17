@@ -84,6 +84,12 @@ export default {
     updateState(state,{payload}){
       return Object.assign({},state,payload);
     },
+    updateSortBy(state,{payload}){
+      return Object.assign({},state,{sortBy:payload})
+    },
+    updateSortByOrder(state,{payload}){
+      return Object.assign({},state,{sortByOrder:payload})
+    },
     updateSearchResult(state,{payload}){
       let{searchResult} = state;
       let newSearchResult = searchResult.concat(payload);

@@ -30,25 +30,27 @@ const SettingContainer = styled.div`
 `;
 export default class Setting extends React.Component{
   render(){
-    const{updateSetting,displayMode} = this.props;
+    const{updateDisplayMode,updateSortBy,updateSortByOrder,displayMode,sortBy,sortByOrder} = this.props;
     // console.log(faSolid)
     let inited = true;
       return(
         <SettingContainer>
           <div className ="displayMode">
             <h3>{i18n("display_mode")}</h3>
-            <RadioGroup onChange ={(e)=>updateSetting(e.target.value)} defaultValue = {displayMode}>
+            <RadioGroup onChange ={(e)=>updateDisplayMode(e.target.value)} defaultValue = {displayMode}>
               <Radio value={1}>{i18n("list")}</Radio>
               <Radio value={2}>{i18n("image_wall")}</Radio>
             </RadioGroup>
           </div>
           <div className ="sortSelection">
-            <h3>{i18n("sort_by")}  <RadioGroup>  
-                            <RadioButton value="area">{i18n("area")}</RadioButton>
-                            <RadioButton value="width">{i18n("width")}</RadioButton>
-                            <RadioButton value="height">{i18n("height")}</RadioButton>
-                          </RadioGroup></h3>
-            <RadioGroup>
+            <h3>{i18n("sort_by")}  
+              <RadioGroup onChange ={(e) =>updateSortBy(e.target.value)} defaultValue = {sortBy}>  
+                <RadioButton value="height">{i18n("height")}</RadioButton>
+                <RadioButton value="width">{i18n("width")}</RadioButton>
+                <RadioButton value="area">{i18n("area")}</RadioButton>
+              </RadioGroup>
+            </h3>
+            <RadioGroup onChange ={(e) => updateSortByOrder(e.target.value)} defaultValue = {sortByOrder}>
               <Radio value={1}>{i18n("increase")}</Radio>
               <Radio value={2}>{i18n("decrease")}</Radio>
             </RadioGroup>
