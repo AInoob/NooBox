@@ -11,8 +11,10 @@
       <script>
         // Set up message event handler:
         window.addEventListener('message', function(event) {
+          console.log("get message");
           let baiduObj = event.data;
-          let bdCode   = eval(baiduObj.bdString);
+          let bdCode   = eval(baiduObj.dbString);
+          console.log(bdCode);
           event.source.postMessage(bdCode, event.origin);
         });
       </script>

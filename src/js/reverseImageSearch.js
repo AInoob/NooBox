@@ -4,7 +4,7 @@ import ajax from 'SRC/utils/ajax.js';
 const HTML = new DOMParser();
 // Data Format
 
-// Search Image ={
+// searchImage ={
 //     keyWord:
 //     keyWordLink:
 //     engine:
@@ -14,11 +14,15 @@ const HTML = new DOMParser();
 //     }
 // }
 
-// Result Image ={
+// resultImage ={
 //  title:"",
+//  Image Display Url
 //  thumbUrl:"",
+//  Original Image Url
 //  imageUrl:"",
+//  Image Where url
 //  sourceUrl:"",
+//  Image Info
 //  imageInfor:{
 //    height:""
 //    weight:""
@@ -61,7 +65,7 @@ export const reverseImageSearch = {
       console.log("Send base 64 Message");
     })
   },
-  waitForSandBox:(pareseObj) =>{
+  waitForSandBox:(parseObj) =>{
     return new Promise(function(resolve,reject){
       //移除 listener
       let remove = function(){
@@ -69,6 +73,7 @@ export const reverseImageSearch = {
       }
       //触发Resolve
       let trigger = function(event){
+        console.log("callback123");
         // console.log(this)
         // console.log(remove);
         remove();
@@ -139,7 +144,10 @@ export const reverseImageSearch = {
         })
       } 
       let taskSeq = [];
-      
+      //Raynor First Version, cut the search Number to 25
+      if(followingPageUrl.length > 2){
+         followingPageUrl.length = 2;
+      }
       for(let i = 0; i < followingPageUrl.length; i++){
         taskSeq[taskSeq.length] = tempFunciton(followingPageUrl[i]);
       }
@@ -203,13 +211,75 @@ export const reverseImageSearch = {
       return results;
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
-  fetchBaiduLink: async (link) =>{
+  fetchBaiduLink: async (link,cursor) =>{
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"baidu",
+      imageInfo:{
+      }
+    }
     const {data} = await ajax(link,{method: 'GET'});
-    const page =  HTML.parseFromString(data,"text/html");
+    let baiduObj = {};
+    //Parse Db
+    const page   =  HTML.parseFromString(data,"text/html");
+    let node = page.getElementsByTagName('script')[2].innerHTML;
+    node = node.substring(17,node.indexOf("bd.queryImageUrl")-1);
+    baiduObj.dbString = "bd = " + node;
+    let {simiList,sameList,guessWord} = await reverseImageSearch.waitForSandBox(baiduObj);
+    //Get result from sandbox
+    console.log("success");
+    searchImage.keyword = guessWord;
+    //Raynor Version
+    //Pick 5 from sameList
+    let count  = 25;
+    let result =[];
+    if(sameList.length > 5){
+      sameList.length = 5;
+    }
+    count -= sameList.length;
+    for(let i = 0; i< sameList.length; i++){
+      let singleResult = {
+        title: sameList[i].fromPageTitle || "",
+        thumbUrl:  sameList[i].thumbURL || "",
+        imageUrl:  sameList[i].objURL ||"",
+        sourceUrl: sameList[i].fromURL  ||"",
+        imageInfo:{
+          height:sameList[i].height,
+          width:sameList[i].width,
+        },
+        searchEngine:"baidu",
+        description:sameList[i].textHost || "",
+      }
+      result[result.length] = singleResult;
+    }
+
+    //Pick 20 from simiList
+    if(simiList > count){
+      simiList.length = count;
+    }
+    for(let i = 0; i< simiList.length; i++){
+      let singleResult = {
+        title: simiList[i].fromPageTitle || "",
+        thumbUrl:  simiList[i].MiddleThumbnailImageUrl || "",
+        imageUrl:  simiList[i].objURL ||"",
+        sourceUrl: simiList[i].fromURL  ||"",
+        imageInfo:{
+          height:simiList[i].height,
+          width:simiList[i].width,
+        },
+        searchEngine:"baidu",
+        description:simiList[i].FromPageSummary || "",
+      }
+      result[result.length] = singleResult;
+    }
+    reverseImageSearch.updateResultImage(result,cursor);
+    //pass done message Directly
+    reverseImageSearch.engineDone("baidu",cursor);
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
   fetchBaiduData: async () =>{
-    
+    /* Dummy Code To Maintain File Shape*/
   },
   fetchTineyeLink: async (link)=>{
     return new Promise(function(resolve,reject){

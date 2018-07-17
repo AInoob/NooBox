@@ -7,7 +7,7 @@ import {engineMap} from 'SRC/constant/settingMap.js';
 import {apiUrls} from 'SRC/constant/searchApiUrl.js';
 import {get,set,getDB,setDB} from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
-import {createNewTab,sendMessage,generateNewTabUrl} from 'SRC/utils/browserUtils'
+import {createNewTab,sendMessage,generateNewTabUrl,createSandbox} from 'SRC/utils/browserUtils'
 export default class Image {
   constructor() {
     this.noobUploadUrl = "https://ainoob.com/api/uploadImage/";
@@ -251,7 +251,7 @@ export default class Image {
     }
     const imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
     let cursor = await getDB('imageCursor');
-    console.log(cursor);
+    // console.log(cursor);
     if (typeof (cursor) === 'number') {
       cursor++;
     } else {
@@ -266,6 +266,9 @@ export default class Image {
       let name   = engineMap[i].name;
       let check  = await get(dbName);
       if(check && this.fetchFunction[name+"Link"]){ 
+         if(name === "baidu"){
+           await createSandbox();
+         }
          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
       }
     }
