@@ -18,12 +18,14 @@ export const getCurrentTab = () => {
     });
   });
 };
+
 export const generateNewTabUrl = (path) =>{
   return new Promise(resolve =>{
     let url = browser.runtime.getURL(path);
     resolve(url);
   });
 }
+
 export const createNewTab = (url) =>{
   return new Promise(resolve =>{
     browser.tabs.create({url,active:true}, async tab => {
@@ -34,5 +36,18 @@ export const createNewTab = (url) =>{
           }
       });
     });
+  })
+}
+
+export const createSandbox =() =>{
+  return new Promise(resolve =>{
+    let sandbox = document.createElement("iframe");
+    sandbox.onload = function(){
+      console.log("Load Sanbox");
+      resolve();
+    }
+    sandbox.id  = "theFrame";
+    sandbox.src = "sandbox.html";
+    document.getElementsByTagName("body")[0].appendChild(sandbox);
   })
 }

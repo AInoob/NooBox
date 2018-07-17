@@ -27,7 +27,6 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     sendResponse(autoRefreshStatus);
   }
   else if (job === 'set') {
-    console.log(request);
     const { key, value } = request;
     await set(key, value);
     switch (key) {
