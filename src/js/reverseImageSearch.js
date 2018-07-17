@@ -117,8 +117,8 @@ export const reverseImageSearch = {
     }
     const keyword  = childNode[1].getElementsByTagName("a")[0];
     if(keyword){
-      console.log(childNode[1]);
-      console.log(keyword.innerHTML);
+      // console.log(childNode[1]);
+      // console.log(keyword.innerHTML);
       searchImage.keyword = keyword.innerHTML;
       searchImage.keywordLink = "https://www.google.com" +keyword.getAttribute("href");
     }
@@ -204,15 +204,12 @@ export const reverseImageSearch = {
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
   fetchBaiduLink: async (link) =>{
-    return new Promise(function(resolve,reject){
-
-    })
+    const {data} = await ajax(link,{method: 'GET'});
+    const page =  HTML.parseFromString(data,"text/html");
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
   fetchBaiduData: async () =>{
-    return new Promise(function(resolve,reject){
-
-    })
+    
   },
   fetchTineyeLink: async (link)=>{
     return new Promise(function(resolve,reject){
