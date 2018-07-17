@@ -124,13 +124,7 @@ export default {
     },
 
     updateImageData(state,{payload}){
-      console.log(state);
       let {pageId} = state;
-      
-      console.log(payload);
-      console.log(pageId == payload.cursor);
-      console.log(pageId);
-      console.log(payload.cursor);
       if(pageId == payload.cursor){
         return Object.assign({},state,{base64:payload.result});
       }else{
@@ -182,7 +176,6 @@ export default {
             result: message.result
           }
         }else if(message.job === "image_base64"){
-          console.log(message);
           type ="updateImageData"
           payload ={
             cursor:message.cursor,
