@@ -79,9 +79,7 @@ export const setDB = (key, value) => {
         value
       });
       action1.onsuccess = () => {
-        if (callback) {
-          resolve();
-        }
+          resolve("set !");
       }
       action1.onerror = (e) => {
         console.log('setDB fail');

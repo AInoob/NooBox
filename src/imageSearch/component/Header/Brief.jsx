@@ -19,7 +19,7 @@ const BriefContainer = styled.div`
 export default class Brief extends React.Component{
   generateImageInfo(imageInfo){
     return imageInfo.map((item,index) =>{
-      return <li><a href ={item.keywordLink}>{item.keyword}</a></li>
+      return <li key ={index}><a href ={item.keywordLink}>{item.keyword}</a></li>
     })
   }
   render(){

@@ -23,7 +23,7 @@ class ImageSearchResult extends React.Component{
   componentDidMount(){
     const{actions,imageSearch,match} = this.props;
     if(!imageSearch.inited){
-      actions.imageSearchInit();
+      actions.imageSearchInit(match.params.id);
     }
   }
   render(){
