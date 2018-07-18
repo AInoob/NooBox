@@ -6,20 +6,23 @@ import faSolid from '@fortawesome/fontawesome-free-solid';
 import Loader      from "SRC/common/component/Loader.jsx";
 const { Meta } = Card;
 const BriefContainer = styled.div`
-  ul{
+  .keyword{
     list-style-type: none;
+    padding:0;
     li{
       display:inline;
       border-right: 1px solid #e8e8e8;
       text-align: center;
       margin: 12px 0;
+      margin-right:10px;
+      padding-right: 10px;
     }
   }
 `;
 export default class Brief extends React.Component{
   generateImageInfo(imageInfo){
     return imageInfo.map((item,index) =>{
-      return <li key ={index}><a href ={item.keywordLink}>{item.keyword}</a></li>
+      return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
     })
   }
   render(){
@@ -50,7 +53,7 @@ export default class Brief extends React.Component{
             >
               <Meta
                 title="Image Keyword"
-                description= {(<ul>{keyword}</ul>)}
+                description= {(<ul className ="keyword">{keyword}</ul>)}
               />
             </Card>
         </BriefContainer>
