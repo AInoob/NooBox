@@ -23,7 +23,7 @@ const HTML = new DOMParser();
 //  Image Where url
 //  sourceUrl:"",
 //  Image Info
-//  imageInfor:{
+//  imageInfo:{
 //    height:""
 //    weight:""
 //  }
@@ -230,6 +230,8 @@ export const reverseImageSearch = {
     //Get result from sandbox
     console.log("success");
     searchImage.keyword = guessWord;
+    // Send message of search image info to front page
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
     //Raynor Version
     //Pick 5 from sameList
     let count  = 25;

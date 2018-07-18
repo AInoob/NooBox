@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome';
 import faSolid from '@fortawesome/fontawesome-free-solid';
-import {Row,Col,Card, Icon, Avatar} from 'antd';
+import {Row,Col,Card, Icon,Popover, Avatar} from 'antd';
 import {engineIcon} from "SRC/constant/settingMap.js";
 import {dogeLoading} from "ASSET/funSh*t/dogeLoading.gif";
 const ResultContainer = styled.div`
   background:white;
-  padding:36px;
   border: 1px solid #e8e8e8;
   margin-top:20px;
   #dogeLoading{
@@ -16,8 +15,27 @@ const ResultContainer = styled.div`
     margin-right: auto;
     width: 50%;
   }
-`;
+  .cardMetaWrapper{
+    position: absolute;
+    left: 4px;
+    bottom: 6px;
+  }
+  .ant-card-body{
+    padding: 0px;
+  }
+  .ant-avatar{
+    opacity: 0.5
+  }
+  .ant-avatar:hover{
+    opacity:0.8
+    transition: opacity .25s ease-in-out;
+  }
 
+`;
+const popoverContent ={
+  maxWidth: "256px",
+  margin:0,
+}
 export default class ImageWall extends React.Component{
   constructor(props){
     super(props);
@@ -49,18 +67,28 @@ export default class ImageWall extends React.Component{
         let item = imageDataList[count];
         let thatCol = container[eachRowCount];
         thatCol[thatCol.length]=(
+          <Popover  key ={count} content ={<div style ={popoverContent}>
+                                            <p>{item.imageInfo.width +"x" +item.imageInfo.height}</p>
+                                            {item.description}
+                                          </div>} 
+                                 title ={<div style ={popoverContent}>
+                                          <a target ="_blank" href = {item.sourceUrl}>{item.title}</a>
+                                        </div>}>
             <Card
+              hoverable = {true}
               style ={{ width: "100%" }}
               // actions={[<FAIcon onClick={()=> this.showModal(item.imageUrl)}icon ={faSolid.faSearchPlus} />,
               //           <FAIcon icon ={faSolid.faDownload}/>]}
-              key ={count}
               cover ={<img alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
             >
-              <Card.Meta
-                avatar={<Avatar src={engineIcon[item["searchEngine"]]} />}
-                title={<a href={item.sourceUrl} target="_blank">{item.title}</a>}
-              />
+              <div className = "cardMetaWrapper">
+                  <Card.Meta
+                    avatar={<Avatar src={engineIcon[item["searchEngine"]]} />}
+                    // title={<p>{item.imageInfo.width +"x" +item.imageInfo.height}</p>}
+                  />
+              </div>  
             </Card>
+          </Popover>
         )
         count ++;
         eachRowCount++;
