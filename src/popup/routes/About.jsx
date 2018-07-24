@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Collapse,Alert } from 'antd';
+import { Collapse,Alert, List, Avatar,Icon  } from 'antd';
+
 const Panel = Collapse.Panel;
 
 const AboutContainer = styled.div`
@@ -8,8 +9,42 @@ const AboutContainer = styled.div`
   .ant-collapse{
     border-radius: 0;
   }
+  .privacyInfo{
+    padding:12px;
+    background: #f7f7f7;
+    border-radius: 0;
+    border: 0;
+  }
 `;
-
+const customPanelStyle = {
+  background: '#f7f7f7',
+  borderRadius: 0,
+  border: 0,
+  padding:0,
+  overflow: 'hidden',
+};
+const privacyData =[
+  {
+    title: i18n("about_privacy_message_0"),
+    description : i18n("about_privacy_message_1"),
+    type :"1"
+  },
+  {
+    title: i18n("about_privacy_message_2"),
+    description : i18n("about_privacy_message_3"),
+    type :"1"
+  },
+  {
+    title: i18n("about_privacy_message_4"),
+    description : i18n("about_privacy_message_5"),
+    type :"1"
+  },
+  {
+    title: i18n("about_privacy_message_6"),
+    description : i18n("about_privacy_message_7"),
+    type :"2"
+  },
+];
 export default class About extends React.Component{
   render(){
     console.log(i18n("about_what"));
@@ -25,17 +60,19 @@ export default class About extends React.Component{
             </ul>
           </Panel>
           <Panel header = {i18n("about_privacy")} key="2">
-            <Collapse bordered={false}>
-              <Panel header = {i18n("about_privacy_message_0")} key="1" showArrow={false}>
-                <Alert message ={i18n("about_privacy_message_1")}style={{ paddingLeft: 36 }} type="error" showIcon/>
-              </Panel>
-              <Panel header = {i18n("about_privacy_message_2")} key="2" showArrow={false}>
-                <Alert message ={i18n("about_privacy_message_3")}sage style={{ paddingLeft: 36 }} type="error" showIcon/>
-              </Panel>
-              <Panel header = {i18n("about_privacy_message_4")} key="3" showArrow={false}>
-              <Alert message = {i18n("about_privacy_message_5")} style={{ paddingLeft: 36 }} type="error" showIcon/>
-              </Panel>
-            </Collapse>
+            <List
+              itemLayout="horizontal"
+              dataSource={privacyData}
+              renderItem={item => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={item.type == "1" ? <Avatar ><Icon type="exclamation" /></Avatar> :<Avatar><Icon type="check" /></Avatar>}
+                  title={item.title}
+                  description={item.description}
+                />
+                </List.Item>
+              )}
+            />
           </Panel>
           <Panel header = {i18n("about_development")} key="3">
             test3
