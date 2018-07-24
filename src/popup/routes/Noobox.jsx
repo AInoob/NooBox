@@ -26,8 +26,6 @@ class Noobox extends React.Component{
     const{match,actions} = this.props;
     let i18n = browser.i18n.getUILanguage();
     console.log(i18n);
-    // console.log(this.props);
-    // console.log(match);
     console.log(faSolid);
     return(
       <LocaleProvider locale={i18n}>

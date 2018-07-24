@@ -24,7 +24,6 @@ export default class H5VideoControl extends React.Component{
 
   }
   startOrStop(){
-    console.log(1);
     if(this.state.start){
       this.setState({active:false})
     }else{
@@ -39,7 +38,7 @@ export default class H5VideoControl extends React.Component{
               className = {this.state.start ? this.state.startClass :this.state.stopClass}
               icon ={faSolid.faVideo}/>
             </span>
-           <p className="ant-upload-text">HTML 5 Video Control(Beta)</p>
+           <p className="ant-upload-text">{i18n("html_5_video_control")}</p>
         </H5VideoControlContainer>
       );
   }

@@ -2,6 +2,19 @@ appName:
     message: 二箱
 appDesc:
     message: 一個實用的工具箱！多搜尋引擎以圖搜圖+提取圖片+擷圖搜尋+HTML5影片控制
+# overview:
+choose_tools_from_here:
+  message: 選擇一種工具？
+reverse_image_search:
+  message: 以圖搜圖
+support_for_a_single_upload:
+  message: 支持單個上傳圖片
+html_5_video_control:
+  message: HTML 5 視頻控制 (預覽版)
+auto_refresh:
+  message: 網頁自動刷新 (測試版)
+s:
+  message: 秒
 #Option
 auto_refresh:
   message: 自動頁面刷新 (測試版)
@@ -43,9 +56,34 @@ decrease:
 save:
   message: 保存
 clear:
-  message: 清除    
-# overview:
-#     message: 概觀
+  message: 清除  
+#About  
+about_what:
+  message: Noobox 是什麽?
+about_what_message_0:
+  message: NooBox 是壹個工具箱，並且提供以下功能
+about_what_message_1:
+  message: 以圖搜圖
+about_what_message_2:
+  message: 網頁自動刷新
+about_what_message_3:
+  message: HTML 5 視頻控制
+about_privacy:
+  message: 隱私
+about_privacy_message_0:
+  message: 追蹤和記錄您的歷史記錄?
+about_privacy_message_1:
+  message: 不, Noobox 不會的 !
+about_privacy_message_2:
+  message: 知道您是誰?
+about_privacy_message_3:
+  message: 不, Noobox 不會的 !
+about_privacy_message_4:
+  message: 提供您的信息給其他人 ?
+about_privacy_message_5:
+  message: 不, 從不 !
+about_privacy_message_6:
+  message: Noobox 僅僅知道有多少人在使用,僅此而已
 # history:
 #     message: 歷程
 # options:

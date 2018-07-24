@@ -3,16 +3,24 @@ appName:
   message: NooBox
 appDesc:
   message: Tool Box
-
-#Option
+#Overview
+choose_tools_from_here:
+  message: Choose Tools From Here
+reverse_image_search:
+  message: Reverse Image Search
+support_for_a_single_upload:
+  message: Support for single upload
+html_5_video_control:
+  message: HTML 5 Video Control (Alpha)
 auto_refresh:
   message: Auto Refresh (Beta)
+s:
+  message: S
+#Option
 video_control:
   message: HTML5 Video Control (Alpha)
 image:
   message: Image
-reverse_image_search:
-  message: Reverse Image Search
 result_page_tab_front:
   message: Open Result Tab In Front
 extract_images:
@@ -46,149 +54,181 @@ save:
   message: SAVE
 clear:
   message: CLEAR
-  
-#Old Language Pack
-overview:
-  message: Overview
-history:
-    message: History
-options:
-    message: Options
-about:
-    message: About
-search_this_image:
-    message: Search this image
-keywords:
-    message: Keywords
-more:
-    message: More
-relevance:
-    message: Relevance
-area:
-    message: Area
-width:
-    message: Width
-height:
-    message: Height
-sort_by:
-    message: 'Sort by '
-reverse_image_search:
-    message: Reverse Image Search
-imageSearch:
-    message: Reverse Image Search
-extractImages:
-    message: Extract images
-screenshotSearch:
-    message: 'Screenshot & Search'
-search:
-    message: Search
-close:
-    message: Close
-notifier:
-    message: Notifier
-reader:
-    message: Reader
-clearAll:
-    message: Clear All
-totalSearches:
-    message: Total searches
-when:
-    message: When
-event:
-    message: Event
-detail:
-    message: Detail
-google:
-    message: Google
-baidu:
-    message: Baidu
-tineye:
-    message: Tineye
-yandex:
-    message: Yandex
-saucenao:
-    message: SauceNao
-iqdb:
-    message: IQDB
-sogou:
-    message: Sogou
-bing:
-    message: Bing
-imageSearchUrl_google:
-    message: Google
-imageSearchUrl_baidu:
-    message: Baidu
-imageSearchUrl_tineye:
-    message: Tineye
-imageSearchUrl_yandex:
-    message: Yandex
-imageSearchUrl_saucenao:
-    message: SauceNao
-imageSearchUrl_iqdb:
-    message: IQDB
-imageSearchUrl_sogou:
-    message: Sogou
-imageSearchUrl_bing:
-    message: Bing
-images:
-    message: Images
-upload_image:
-    message: Upload Image
-videoControl:
-    message: HTML5 Video Control (Alpha)
-checkUpdate:
-    message: Check Update
+#About
+about_what:
+  message: What is Noobox ?
+about_what_message_0:
+  message: NooBox is a Tool Box providing
+about_what_message_1:
+  message: Reverse Image Search
+about_what_message_2:
+  message: Auto Refresh
+about_what_message_3:
+  message: HTML 5 Video Control
+about_privacy:
+  message: Privacy
+about_privacy_message_0:
+  message: TRACK and RECORD your history ?
+about_privacy_message_1:
+  message: No, Noobox Doesn't !
+about_privacy_message_2:
+  message: KNOW who you are ?
+about_privacy_message_3:
+  message: No, Noobox Doesn't !
+about_privacy_message_4:
+  message: Provide your data to others ?
+about_privacy_message_5:
+  message: No, Never !
+about_privacy_message_6:
+  message: Noobox only know how many users is using it,
+about_development:
+  message: Developing Status
+about_feedback:
+  message: Feedback 
 
-record_history:
-    message: Record History
 
-imageSearchNewTabFront:
-    message: Open result tab in front
-s:
-    message: 's'
-yes:
-    message: 'Yes'
-no:
-    message: 'No'
-j:
-    message: j
-ls_0:
-    message: Not supported file type
-ls_1:
-    message: Screenshot search failed
-ls_2:
-    message: Cannot perform screenshot search on this tab
-ls_3:
-    message: Drop the image here
-ls_4:
-    message: 'Reload this page to load NooBox components, if fail again, this page is not supported'
-ls_5:
-    message: No result? Click here to upload the image and search
-ls_6:
-    message: 'Vote for NooBox on Product Hunt!'
-ls_7:
-    message: 'NooBox is updated~'
-ls_8:
-    message: 'NooBox has a new version: '
-ls_9:
-    message: 'If you installed NooBox from Chrome Web Store, Chrome will automatically update NooBox, so just wait for a bit~'
-ls_10:
-    message: 'If you install NooBox through CRX file, click the link below and download the newest version'
-ls_11:
-    message: Upload image and perform reverse search.
-ls_12:
-    message: 'You can click to upload or drag & drop.'
-ls_13:
-    message: 'If you are Mac user or Unix user, the popup might be closed immediately so that you cannot upload anything. If that happened, right click NooBox and select Inspect popup, and then you are good to go'
-ls_14:
-    message: "Basically HTML5 Video Control is to bring shortcuts (→ for forward, k for pause, etc), it's currently under Alpha version, so it might not work for all websites that has HTML5 video elements"
-ls_15:
-    message: 'You can turn it off for certain websites, just click the Sun and it will become Cloud~'
-ls_16:
-    message: "{'→':'forward 5s','←':'rewind 5s','↑':'increase volume','↓':'lower volume','m':'mute/unmute','j':'rewind 10s','l':'forward 10s','k':'pause/play',',':'rewind a tiny tiny bit','.':'forward a tiny tiny bit','>':'increase speed','<':'lower speed', 'f': 'fullscreen','d':'download','r':'magic rotation!'}"
-ls_17:
-    message: "Clear all history?"
-ls_18:
-    message: 'click to upload or drag & drop.'
-ls_19:
-    message: 'Auto refresh it is~'
+# #Old Language Pack
+# overview:
+#   message: Overview
+# history:
+#     message: History
+# options:
+#     message: Options
+# about:
+#     message: About
+# search_this_image:
+#     message: Search this image
+# keywords:
+#     message: Keywords
+# more:
+#     message: More
+# relevance:
+#     message: Relevance
+# area:
+#     message: Area
+# width:
+#     message: Width
+# height:
+#     message: Height
+# sort_by:
+#     message: 'Sort by '
+# reverse_image_search:
+#     message: Reverse Image Search
+# imageSearch:
+#     message: Reverse Image Search
+# extractImages:
+#     message: Extract images
+# screenshotSearch:
+#     message: 'Screenshot & Search'
+# search:
+#     message: Search
+# close:
+#     message: Close
+# notifier:
+#     message: Notifier
+# reader:
+#     message: Reader
+# clearAll:
+#     message: Clear All
+# totalSearches:
+#     message: Total searches
+# when:
+#     message: When
+# event:
+#     message: Event
+# detail:
+#     message: Detail
+# google:
+#     message: Google
+# baidu:
+#     message: Baidu
+# tineye:
+#     message: Tineye
+# yandex:
+#     message: Yandex
+# saucenao:
+#     message: SauceNao
+# iqdb:
+#     message: IQDB
+# sogou:
+#     message: Sogou
+# bing:
+#     message: Bing
+# imageSearchUrl_google:
+#     message: Google
+# imageSearchUrl_baidu:
+#     message: Baidu
+# imageSearchUrl_tineye:
+#     message: Tineye
+# imageSearchUrl_yandex:
+#     message: Yandex
+# imageSearchUrl_saucenao:
+#     message: SauceNao
+# imageSearchUrl_iqdb:
+#     message: IQDB
+# imageSearchUrl_sogou:
+#     message: Sogou
+# imageSearchUrl_bing:
+#     message: Bing
+# images:
+#     message: Images
+# upload_image:
+#     message: Upload Image
+# videoControl:
+#     message: HTML5 Video Control (Alpha)
+# checkUpdate:
+#     message: Check Update
+
+# record_history:
+#     message: Record History
+
+# imageSearchNewTabFront:
+#     message: Open result tab in front
+# s:
+#     message: 's'
+# yes:
+#     message: 'Yes'
+# no:
+#     message: 'No'
+# j:
+#     message: j
+# ls_0:
+#     message: Not supported file type
+# ls_1:
+#     message: Screenshot search failed
+# ls_2:
+#     message: Cannot perform screenshot search on this tab
+# ls_3:
+#     message: Drop the image here
+# ls_4:
+#     message: 'Reload this page to load NooBox components, if fail again, this page is not supported'
+# ls_5:
+#     message: No result? Click here to upload the image and search
+# ls_6:
+#     message: 'Vote for NooBox on Product Hunt!'
+# ls_7:
+#     message: 'NooBox is updated~'
+# ls_8:
+#     message: 'NooBox has a new version: '
+# ls_9:
+#     message: 'If you installed NooBox from Chrome Web Store, Chrome will automatically update NooBox, so just wait for a bit~'
+# ls_10:
+#     message: 'If you install NooBox through CRX file, click the link below and download the newest version'
+# ls_11:
+#     message: Upload image and perform reverse search.
+# ls_12:
+#     message: 'You can click to upload or drag & drop.'
+# ls_13:
+#     message: 'If you are Mac user or Unix user, the popup might be closed immediately so that you cannot upload anything. If that happened, right click NooBox and select Inspect popup, and then you are good to go'
+# ls_14:
+#     message: "Basically HTML5 Video Control is to bring shortcuts (→ for forward, k for pause, etc), it's currently under Alpha version, so it might not work for all websites that has HTML5 video elements"
+# ls_15:
+#     message: 'You can turn it off for certain websites, just click the Sun and it will become Cloud~'
+# ls_16:
+#     message: "{'→':'forward 5s','←':'rewind 5s','↑':'increase volume','↓':'lower volume','m':'mute/unmute','j':'rewind 10s','l':'forward 10s','k':'pause/play',',':'rewind a tiny tiny bit','.':'forward a tiny tiny bit','>':'increase speed','<':'lower speed', 'f': 'fullscreen','d':'download','r':'magic rotation!'}"
+# ls_17:
+#     message: "Clear all history?"
+# ls_18:
+#     message: 'click to upload or drag & drop.'
+# ls_19:
+#     message: 'Auto refresh it is~'

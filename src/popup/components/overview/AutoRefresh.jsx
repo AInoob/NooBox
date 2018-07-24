@@ -106,12 +106,12 @@ export default class AutoRefresh extends React.Component {
             icon ={faSolid.faSync}
           />
         </span>
-        <p className="ant-upload-text">Auto Refresh(Beta)</p>
+        <p className="ant-upload-text">{i18n("auto_refresh")}</p>
         <InputNumber
           defaultValue={interval/1000}
           min={1}
-          formatter={value => `${value}s`}
-          parser={value => value.replace('s', '')}
+          formatter={value => `${value} ${i18n("s")}`}
+          parser={value => value.replace(i18n("s"), '')}
           onChange={(v)=>this.onChangeInterval(v * 1000)}
         />
       </AutoRefreshContainer>
