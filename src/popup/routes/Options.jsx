@@ -11,9 +11,7 @@ import {engineMap} from 'SRC/constant/settingMap.js';
 import Loader      from "SRC/common/component/Loader.jsx";
 const TreeNode  = Tree.TreeNode;
 const OptionsContainer = styled.div`
-  margin-left:15px;
-  margin-top:5px;
-  margin-right:15px;
+  margin: 10px 20px;
   h4{
     border-bottom: 1px solid #d9d9d9;
   }
@@ -32,6 +30,9 @@ const OptionsContainer = styled.div`
   }
   .engineClose:hover{
     cursor:pointer
+  }
+  .ant-tree-checkbox-inner{
+    border-radius:0;
   }
 `;
 class Options extends React.Component{

@@ -14,9 +14,12 @@ import styled from "styled-components";
 import emoji   from "SRC/assets/funSh*t/emoji.svg";
 const OverviewContainer = styled.div`
    margin-bottom:20px;
-   
+
   .uploadImage{
     margin:20px 20px 0 20px;
+    .ant-upload{
+      border-radius:0;
+    }
   }
 
   .h5Video{
@@ -109,7 +112,7 @@ class Overview extends React.Component{
             <FAIcon icon ={faSolid.faArrowUp}/>
           </div>
           <div className = "description">
-            <span>Choose Tools From Here</span>
+            <span>{i18n("Choose Tools From Here")}</span>
           </div>
           <div className = "emoji">
             <img src ={emoji}/>
