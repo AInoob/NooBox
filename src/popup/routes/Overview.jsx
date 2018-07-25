@@ -13,24 +13,23 @@ import faSolid from '@fortawesome/fontawesome-free-solid';
 import styled from "styled-components";
 import emoji   from "SRC/assets/funSh*t/emoji.svg";
 const OverviewContainer = styled.div`
-   margin-bottom:20px;
-
+   margin-bottom:10px;
   .uploadImage{
-    margin:20px 20px 0 20px;
+    margin:10px 10px 0 10px;
     .ant-upload{
       border-radius:0;
     }
   }
 
   .h5Video{
-    margin:20px 20px 0 20px;
+    margin:10px 10px 0 10px;
     border: 1px dashed #d9d9d9;
     text-align: center;
     padding: 16px 0;
     background: #fafafa;
   }
   .autoRefresh{
-    margin:20px 20px 0 20px;
+    margin:10px 10px 0 10px;
     border: 1px dashed #d9d9d9;
     text-align: center;
     padding: 16px 0;

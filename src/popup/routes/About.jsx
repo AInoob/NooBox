@@ -5,7 +5,7 @@ import { Collapse,Alert, List, Avatar,Icon  } from 'antd';
 const Panel = Collapse.Panel;
 
 const AboutContainer = styled.div`
-  margin:20px;
+  margin:10px;
   .ant-collapse{
     border-radius: 0;
   }
