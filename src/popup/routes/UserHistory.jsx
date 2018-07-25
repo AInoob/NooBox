@@ -1,5 +1,5 @@
 import React from "react";
-import {Table,Button,Card} from 'antd';
+import {Table,Button,Card,Tooltip} from 'antd';
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
@@ -85,8 +85,6 @@ class UserHistory extends React.Component{
                   if(firstKeyword == "" && e.keyword !== ""){
                     firstKeyword = e.keyword;
                   }
-                  console.log(index);
-                  console.log(e.engine);
                   if(e.engine){
                     usedEngine[usedEngine.length] =(
                       <img style ={{width: 14, marginRight: 2}} src = {engineIcon[e.engine]}/>
@@ -100,6 +98,11 @@ class UserHistory extends React.Component{
                   <Card
                     style = {{width: "125px", margin: "auto",}}
                     cover = {<img src = {record.data.base64}/>}
+                    actions ={[
+                      <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
+                      <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
+                      <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
+                    ]}
                   >
                     <Meta
                       title = {i18n("image_size")}
