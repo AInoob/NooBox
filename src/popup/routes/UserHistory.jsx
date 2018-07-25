@@ -32,17 +32,15 @@ const HistoryContainer = styled.div`
     text-align:center;
   }
   .ant-card-body{
-    padding: 5px;
-    
+    padding: 0px; 
   }
-  .ant-card-meta-title{
-    float:left;
-    margin-right: 5px;
-    font-size:12px;
+  .ant-card-actions{
+    span{
+      font-size: 10px;
+    }
   }
-  .ant-card-meta-description{
-    float:left;
-    font-size:12px;
+  .ant-btn{
+    border-radius: 0;
   }
   td{
     text-align:center;
@@ -96,15 +94,15 @@ class UserHistory extends React.Component{
                 })
                 return(
                   <Card
-                    style = {{width: "125px", margin: "auto",}}
+                    style = {{width: "164px", margin: "auto",}}
                     cover = {<img src = {record.data.base64}/>}
                     actions ={[
                       <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
-                      <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
-                      <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
+                      <Tooltip title = {i18n("image_first_keyowrd")}>{firstKeyword}</Tooltip>,
+                      <Tooltip title = {i18n("image_used_engine")}>{usedEngine}</Tooltip>,
                     ]}
                   >
-                    <Meta
+                    {/* <Meta
                       title = {i18n("image_size")}
                       description = {sizeInfo}
                     />
@@ -115,7 +113,7 @@ class UserHistory extends React.Component{
                      <Meta
                       title = {i18n("image_used_engine")}
                       description = {usedEngine}
-                    />
+                    /> */}
                   </Card>
                 )
               }}
