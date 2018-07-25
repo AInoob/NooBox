@@ -16,6 +16,15 @@ auto_refresh:
   message: Auto Refresh (Beta)
 s:
   message: S
+#History
+clear_all:
+  message: Delete All
+image_size:
+  message: Image Size
+image_first_keyowrd:
+  message: Image First Keyword
+image_used_engine:
+  message: Used Engines
 #Option
 video_control:
   message: HTML5 Video Control (Alpha)
@@ -87,6 +96,7 @@ about_development:
   message: Developing Status
 about_feedback:
   message: Feedback 
+#Image Search Page
 
 
 # #Old Language Pack

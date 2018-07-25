@@ -69,7 +69,7 @@ class Options extends React.Component{
   render(){
     let {actions,options} = this.props;
     if(!options.inited){
-      return <Loader/>
+      return <Loader style ={{marginTop: "20%"}}/>
     }
     return(
       <OptionsContainer>

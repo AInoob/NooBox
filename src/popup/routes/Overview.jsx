@@ -87,7 +87,7 @@ class Overview extends React.Component{
     const {actions,overview}= this.props;
     if(!overview.inited){
       return(
-        <Loader/>
+        <Loader style ={{marginTop: "20%"}}/>
       )
     }else{
       let imageSearch =  overview.showImageSearch ?(<div className ="uploadImage">
