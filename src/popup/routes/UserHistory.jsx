@@ -13,7 +13,7 @@ const { Meta } = Card;
 const {Column} = Table;
 const HistoryContainer = styled.div`
   position: relative;
-
+  margin-bottom:10px;
   .ant-table-wrapper{
     margin-left: 10px;
     margin-right: 10px;
@@ -62,7 +62,7 @@ class UserHistory extends React.Component{
     }
   }
   render(){
-    const{userHistory} = this.props;
+    const{userHistory,actions} = this.props;
     let deleteAll = (<Button type ="danger">
                       {i18n("clear_all")}
                     </Button>);
@@ -124,7 +124,7 @@ class UserHistory extends React.Component{
               key  ="action"
               dataIndex = "action"
               render ={(text,record) =>(
-                <Button type ="danger" ><FAIcon onClick = {() =>this.delete(record.dbKey)} icon ={faSolid.faTrash}/></Button>
+                <Button type ="danger" ><FAIcon onClick = {() =>actions.userHistoryDeleteSingle(record.dbKey)} icon ={faSolid.faTrash}/></Button>
               )}
               />
           </Table>

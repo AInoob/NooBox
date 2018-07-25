@@ -11,7 +11,7 @@ import {engineMap} from 'SRC/constant/settingMap.js';
 import Loader      from "SRC/common/component/Loader.jsx";
 const TreeNode  = Tree.TreeNode;
 const OptionsContainer = styled.div`
-  margin: 10px 20px;
+  margin:10px;
   h4{
     border-bottom: 1px solid #d9d9d9;
   }

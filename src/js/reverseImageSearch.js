@@ -219,16 +219,20 @@ export const reverseImageSearch = {
       imageInfo:{
       }
     }
+    // console.log(link)
     const {data} = await ajax(link,{method: 'GET'});
+    // console.log(data);
     let baiduObj = {};
     //Parse Db
     const page   =  HTML.parseFromString(data,"text/html");
-    let node = page.getElementsByTagName('script')[2].innerHTML;
+    let node = page.getElementsByTagName('script')[1].innerHTML;
+    // console.log(page.getElementsByTagName('script'));
     node = node.substring(17,node.indexOf("bd.queryImageUrl")-1);
     baiduObj.dbString = "bd = " + node;
+    // console.log(baiduObj.dbString);
     let {simiList,sameList,guessWord} = await reverseImageSearch.waitForSandBox(baiduObj);
     //Get result from sandbox
-    console.log("success");
+    // console.log("success");
     searchImage.keyword = guessWord;
     // Send message of search image info to front page
     reverseImageSearch.updateSearchImage(searchImage,cursor);
@@ -236,45 +240,49 @@ export const reverseImageSearch = {
     //Pick 5 from sameList
     let count  = 25;
     let result =[];
-    if(sameList.length > 5){
-      sameList.length = 5;
-    }
-    count -= sameList.length;
-    for(let i = 0; i< sameList.length; i++){
-      let singleResult = {
-        title: sameList[i].fromPageTitle || "",
-        thumbUrl:  sameList[i].thumbURL || "",
-        imageUrl:  sameList[i].objURL ||"",
-        sourceUrl: sameList[i].fromURL  ||"",
-        imageInfo:{
-          height:sameList[i].height,
-          width:sameList[i].width,
-        },
-        searchEngine:"baidu",
-        description:sameList[i].textHost || "",
+    if(sameList){
+      if(sameList.length > 5){
+        sameList.length = 5;
       }
-      result[result.length] = singleResult;
+      count -= sameList.length;
+      for(let i = 0; i< sameList.length; i++){
+        let singleResult = {
+          title: sameList[i].fromPageTitle || "",
+          thumbUrl:  sameList[i].thumbURL || "",
+          imageUrl:  sameList[i].objURL ||"",
+          sourceUrl: sameList[i].fromURL  ||"",
+          imageInfo:{
+            height:sameList[i].height,
+            width:sameList[i].width,
+          },
+          searchEngine:"baidu",
+          description:sameList[i].textHost || "",
+        }
+        result[result.length] = singleResult;
+      }
     }
-
+   
+    if(simiList){
+      if(simiList > count){
+        simiList.length = count;
+      }
+      for(let i = 0; i< simiList.length; i++){
+        let singleResult = {
+          title: simiList[i].fromPageTitle || "",
+          thumbUrl:  simiList[i].MiddleThumbnailImageUrl || "",
+          imageUrl:  simiList[i].objURL ||"",
+          sourceUrl: simiList[i].fromURL  ||"",
+          imageInfo:{
+            height:simiList[i].height,
+            width:simiList[i].width,
+          },
+          searchEngine:"baidu",
+          description:simiList[i].FromPageSummary || "",
+        }
+        result[result.length] = singleResult;
+      }
+    }
     //Pick 20 from simiList
-    if(simiList > count){
-      simiList.length = count;
-    }
-    for(let i = 0; i< simiList.length; i++){
-      let singleResult = {
-        title: simiList[i].fromPageTitle || "",
-        thumbUrl:  simiList[i].MiddleThumbnailImageUrl || "",
-        imageUrl:  simiList[i].objURL ||"",
-        sourceUrl: simiList[i].fromURL  ||"",
-        imageInfo:{
-          height:simiList[i].height,
-          width:simiList[i].width,
-        },
-        searchEngine:"baidu",
-        description:simiList[i].FromPageSummary || "",
-      }
-      result[result.length] = singleResult;
-    }
     reverseImageSearch.updateResultImage(result,cursor);
     //pass done message Directly
     reverseImageSearch.engineDone("baidu",cursor);
