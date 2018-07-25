@@ -238,6 +238,10 @@ export default class Image {
       });
     }
   }
+  async loadImageHistory(cursor){
+    let url = await generateNewTabUrl("searchResult.html");
+    await createNewTab(url+"#/"+cursor);
+  }
   async beginImageSearch(base64){
     //Generate Image Link
     const requestBody   = {
@@ -272,7 +276,6 @@ export default class Image {
          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
       }
     }
-    //const url = '/image.search.html?cursor=' + cursor + '&image=' + type;
-    //const openTabFront = await promisedGet('imageSearchNewTabFront');
   }
+
 }

@@ -44,6 +44,9 @@ const HistoryContainer = styled.div`
   td{
     text-align:center;
   }
+  .historyImage:hover{
+    cursor: pointer
+  }
 `;
 // style = {{
 //   width: "256px",
@@ -94,7 +97,7 @@ class UserHistory extends React.Component{
                   }
                   if(e.engine){
                     usedEngine[usedEngine.length] =(
-                      <img style ={{width: 14, marginRight: 2}} src = {engineIcon[e.engine]}/>
+                      <img key = {index}  style ={{width: 14, marginRight: 2}} src = {engineIcon[e.engine]}/>
                     )
                   }
                   if(sizeInfo == undefined && e.imageInfo["height"]){
@@ -104,7 +107,7 @@ class UserHistory extends React.Component{
                 return(
                   <Card
                     style = {{width: "164px", margin: "auto",}}
-                    cover = {<img src = {record.data.base64}/>}
+                    cover = {<img className ="historyImage" src = {record.data.base64}  onClick = {()=>actions.userHistoryLoadHisotry(record.dbKey)}/>}
                     actions ={[
                       <Tooltip title = {i18n("image_size")}>{sizeInfo}</Tooltip>,
                       <Tooltip title = {i18n("image_first_keyowrd")}>{firstKeyword}</Tooltip>,
