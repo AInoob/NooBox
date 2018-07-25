@@ -273,8 +273,8 @@ export const reverseImageSearch = {
           imageUrl:  simiList[i].objURL ||"",
           sourceUrl: simiList[i].fromURL  ||"",
           imageInfo:{
-            height:simiList[i].height,
-            width:simiList[i].width,
+            height:simiList[i].ImageHeight,
+            width:simiList[i].ImageWidth,
           },
           searchEngine:"baidu",
           description:simiList[i].FromPageSummary || "",

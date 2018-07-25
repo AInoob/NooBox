@@ -50,7 +50,10 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     const {base64} = request;
     image.beginImageSearch(base64);
     // browser.tabs.create({ url:"/searchResult.html" });
-  } else if (request.job == 'urlDownloadZip') {
+  } else if(job === "loadImageHistory"){
+    const {cursor} = request;
+    image.loadImageHistory(cursor);
+  }else if (request.job == 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
   } else if (request.job == 'getDB') {
     const value = await getDB(request.key);

@@ -1,5 +1,6 @@
 
 import {getDB,deleteDB,setDB} from 'SRC/utils/db.js';
+import { getCurrentTab, sendMessage } from 'SRC/utils/browserUtils';
 export default {
   namespace:"userHistory",
   state:{
@@ -49,6 +50,12 @@ export default {
       yield put({type:"updateState", payload:{
         dbData:[],
       }})
+    },
+    *loadImageHistory({payload},{put,call}){
+      yield call(sendMessage,{
+        job:"loadImageHistory",
+        cursor:payload,
+      })
     }
   },
   reducers:{
