@@ -8,6 +8,7 @@ export const imageSearchBegin   =  createAction('overview/imageSearchBegin');
 
 export const userHistoryInit    =  createAction('userHistory/init');
 export const userHistoryDeleteSingle = createAction("userHistory/deleteSingle");
+export const userHistoryDeleteAll = createAction("userHistory/deleteAll");
 
 export const optionsInit        =  createAction('options/init');
 export const optionsCheckEngine =  createAction('options/onCheckEngine');

@@ -1,5 +1,5 @@
 
-import {getDB,deleteDB} from 'SRC/utils/db.js';
+import {getDB,deleteDB,setDB} from 'SRC/utils/db.js';
 export default {
   namespace:"userHistory",
   state:{
@@ -31,15 +31,24 @@ export default {
       }})
     },
     *deleteSingle({payload},{select,put,call}){
-        console.log(payload);
-        yield call(deleteDB,payload);
-        console.log("successfully delete");
-        let {dbData} = yield select(state => state.userHistory);
-        let newdbData = dbData.filter(e => e.dbKey !== payload);
-        console.log(newdbData);
-        yield put({type:"updateState",payload:{
-          dbData:newdbData,
-        }});
+      yield call(deleteDB,payload);
+      let {dbData} = yield select(state => state.userHistory);
+      let newdbData = dbData.filter(e => e.dbKey !== payload);
+      yield put({type:"updateState",payload:{
+        dbData:newdbData,
+      }});
+    },
+    *deleteAll({payload},{put,call}){
+      let imageCursor = yield getDB("imageCursor");
+      if(imageCursor != null){
+        for(let i = 0; i <= imageCursor; i++){
+          yield call(deleteDB,i);
+        }
+        yield call(setDB, "imageCursor",-1);
+      }
+      yield put({type:"updateState", payload:{
+        dbData:[],
+      }})
     }
   },
   reducers:{

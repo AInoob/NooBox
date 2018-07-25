@@ -1,5 +1,5 @@
 import React from "react";
-import {Table,Button,Card,Tooltip} from 'antd';
+import {Table,Button,Card,Tooltip,Popconfirm} from 'antd';
 import styled from "styled-components";
 import FAIcon from '@fortawesome/react-fontawesome'
 import faSolid from '@fortawesome/fontawesome-free-solid'
@@ -12,7 +12,6 @@ import Loader      from "SRC/common/component/Loader.jsx";
 const { Meta } = Card;
 const {Column} = Table;
 const HistoryContainer = styled.div`
-  position: relative;
   margin-bottom:10px;
   .ant-table-wrapper{
     margin-left: 10px;
@@ -46,6 +45,10 @@ const HistoryContainer = styled.div`
     text-align:center;
   }
 `;
+// style = {{
+//   width: "256px",
+//   margin:0,
+// }}
 class UserHistory extends React.Component{
 
   delete(e){
@@ -63,9 +66,15 @@ class UserHistory extends React.Component{
   }
   render(){
     const{userHistory,actions} = this.props;
-    let deleteAll = (<Button type ="danger">
-                      {i18n("clear_all")}
-                    </Button>);
+    let deleteAll = (
+                    <Popconfirm  title = {i18n("clear_all") +" ?"} onConfirm ={()=>actions.userHistoryDeleteAll()} placement="left">
+                      <div style ={{maxWidth:100,margin:"auto"}}>
+                        <Button type ="danger">
+                          <FAIcon icon ={faSolid.faTrash}/>
+                        </Button>
+                      </div>
+                    </Popconfirm>
+                     );
     if(userHistory.inited){
       return(
         < HistoryContainer>
@@ -102,18 +111,6 @@ class UserHistory extends React.Component{
                       <Tooltip title = {i18n("image_used_engine")}>{usedEngine}</Tooltip>,
                     ]}
                   >
-                    {/* <Meta
-                      title = {i18n("image_size")}
-                      description = {sizeInfo}
-                    />
-                     <Meta
-                      title = {i18n("image_first_keyowrd")}
-                      description = {firstKeyword}
-                    />
-                     <Meta
-                      title = {i18n("image_used_engine")}
-                      description = {usedEngine}
-                    /> */}
                   </Card>
                 )
               }}
