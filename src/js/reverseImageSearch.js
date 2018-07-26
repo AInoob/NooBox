@@ -230,33 +230,33 @@ export const reverseImageSearch = {
     node = node.substring(17,node.indexOf("bd.queryImageUrl")-1);
     baiduObj.dbString = "bd = " + node;
     // console.log(baiduObj.dbString);
-    let {simiList,sameList,guessWord} = await reverseImageSearch.waitForSandBox(baiduObj);
+    let {simiList,sameSizeList,guessWord,multitags} = await reverseImageSearch.waitForSandBox(baiduObj);
     //Get result from sandbox
     // console.log("success");
-    searchImage.keyword = guessWord;
+    searchImage.keyword = guessWord == "" ? multitags||"" :guessWord;
     // Send message of search image info to front page
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     //Raynor Version
-    //Pick 5 from sameList
+    //Pick 5 from sameSizeList
     let count  = 25;
     let result =[];
-    if(sameList){
-      if(sameList.length > 5){
-        sameList.length = 5;
+    if(sameSizeList){
+      if(sameSizeList.length > 5){
+        sameSizeList.length = 5;
       }
-      count -= sameList.length;
-      for(let i = 0; i< sameList.length; i++){
+      count -= sameSizeList.length;
+      for(let i = 0; i< sameSizeList.length; i++){
         let singleResult = {
-          title: sameList[i].fromPageTitle || "",
-          thumbUrl:  sameList[i].thumbURL || "",
-          imageUrl:  sameList[i].objURL ||"",
-          sourceUrl: sameList[i].fromURL  ||"",
+          title: sameSizeList[i].fromPageTitle || "",
+          thumbUrl:  sameSizeList[i].thumbURL || "",
+          imageUrl:  sameSizeList[i].objURL ||"",
+          sourceUrl: sameSizeList[i].fromURL  ||"",
           imageInfo:{
-            height:sameList[i].height,
-            width:sameList[i].width,
+            height:sameSizeList[i].height,
+            width:sameSizeList[i].width,
           },
           searchEngine:"baidu",
-          description:sameList[i].textHost || "",
+          description:sameSizeList[i].textHost || "",
         }
         result[result.length] = singleResult;
       }
@@ -268,10 +268,10 @@ export const reverseImageSearch = {
       }
       for(let i = 0; i< simiList.length; i++){
         let singleResult = {
-          title: simiList[i].fromPageTitle || "",
+          title: simiList[i].fromPageTitle || simiList[i].FromPageSummary || simiList[i].FromPageSummaryOrig || "",
           thumbUrl:  simiList[i].MiddleThumbnailImageUrl || "",
-          imageUrl:  simiList[i].objURL ||"",
-          sourceUrl: simiList[i].fromURL  ||"",
+          imageUrl:  simiList[i].ObjURL ||"",
+          sourceUrl: simiList[i].FromURL  ||"",
           imageInfo:{
             height:simiList[i].ImageHeight,
             width:simiList[i].ImageWidth,
