@@ -254,6 +254,7 @@ export default class Image {
       body: JSON.stringify({data:base64}),
     }
     const imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+    console.log(imageLink);
     let cursor = await getDB('imageCursor');
     // console.log(cursor);
     if (typeof (cursor) === 'number') {
