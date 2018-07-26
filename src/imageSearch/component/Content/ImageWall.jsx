@@ -76,7 +76,7 @@ export default class ImageWall extends React.Component{
                                         </div>}>
             <Card
               hoverable = {true}
-              style ={{ width: "100%" }}
+              style ={{ width: "100%",minHeight:60 }}
               // actions={[<FAIcon onClick={()=> this.showModal(item.imageUrl)}icon ={faSolid.faSearchPlus} />,
               //           <FAIcon icon ={faSolid.faDownload}/>]}
               cover ={<img alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
