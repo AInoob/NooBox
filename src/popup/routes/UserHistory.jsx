@@ -124,7 +124,7 @@ class UserHistory extends React.Component{
               key  ="action"
               dataIndex = "action"
               render ={(text,record) =>(
-                <Button type ="danger" ><FAIcon onClick = {() =>actions.userHistoryDeleteSingle(record.dbKey)} icon ={faSolid.faTrash}/></Button>
+                <Button onClick = {() =>actions.userHistoryDeleteSingle(record.dbKey)} type ="danger" ><FAIcon  icon ={faSolid.faTrash}/></Button>
               )}
               />
           </Table>
