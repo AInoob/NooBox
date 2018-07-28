@@ -73,7 +73,6 @@ export const reverseImageSearch = {
       }
       //触发Resolve
       let trigger = function(event){
-        console.log("callback123");
         // console.log(this)
         // console.log(remove);
         remove();
@@ -230,33 +229,33 @@ export const reverseImageSearch = {
     node = node.substring(17,node.indexOf("bd.queryImageUrl")-1);
     baiduObj.dbString = "bd = " + node;
     // console.log(baiduObj.dbString);
-    let {simiList,sameList,guessWord} = await reverseImageSearch.waitForSandBox(baiduObj);
+    let {simiList,sameSizeList,guessWord,multitags} = await reverseImageSearch.waitForSandBox(baiduObj);
     //Get result from sandbox
     // console.log("success");
-    searchImage.keyword = guessWord;
+    searchImage.keyword = guessWord == "" ? multitags||"" :guessWord;
     // Send message of search image info to front page
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     //Raynor Version
-    //Pick 5 from sameList
+    //Pick 5 from sameSizeList
     let count  = 25;
     let result =[];
-    if(sameList){
-      if(sameList.length > 5){
-        sameList.length = 5;
+    if(sameSizeList){
+      if(sameSizeList.length > 5){
+        sameSizeList.length = 5;
       }
-      count -= sameList.length;
-      for(let i = 0; i< sameList.length; i++){
+      count -= sameSizeList.length;
+      for(let i = 0; i< sameSizeList.length; i++){
         let singleResult = {
-          title: sameList[i].fromPageTitle || "",
-          thumbUrl:  sameList[i].thumbURL || "",
-          imageUrl:  sameList[i].objURL ||"",
-          sourceUrl: sameList[i].fromURL  ||"",
+          title: sameSizeList[i].fromPageTitle || "",
+          thumbUrl:  sameSizeList[i].thumbURL || "",
+          imageUrl:  sameSizeList[i].objURL ||"",
+          sourceUrl: sameSizeList[i].fromURL  ||"",
           imageInfo:{
-            height:sameList[i].height,
-            width:sameList[i].width,
+            height:sameSizeList[i].height,
+            width:sameSizeList[i].width,
           },
           searchEngine:"baidu",
-          description:sameList[i].textHost || "",
+          description:sameSizeList[i].textHost || "",
         }
         result[result.length] = singleResult;
       }
@@ -268,10 +267,10 @@ export const reverseImageSearch = {
       }
       for(let i = 0; i< simiList.length; i++){
         let singleResult = {
-          title: simiList[i].fromPageTitle || "",
+          title: simiList[i].fromPageTitle || simiList[i].FromPageSummary || simiList[i].FromPageSummaryOrig || "",
           thumbUrl:  simiList[i].MiddleThumbnailImageUrl || "",
-          imageUrl:  simiList[i].objURL ||"",
-          sourceUrl: simiList[i].fromURL  ||"",
+          imageUrl:  simiList[i].ObjURL ||"",
+          sourceUrl: simiList[i].FromURL  ||"",
           imageInfo:{
             height:simiList[i].ImageHeight,
             width:simiList[i].ImageWidth,
@@ -288,67 +287,164 @@ export const reverseImageSearch = {
     reverseImageSearch.engineDone("baidu",cursor);
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
-  fetchBaiduData: async () =>{
+  processBaiduData: async () =>{
     /* Dummy Code To Maintain File Shape*/
   },
-  fetchTineyeLink: async (link)=>{
-    return new Promise(function(resolve,reject){
-
-    })
+  fetchTineyeLink: async (link,cursor)=>{
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"tineye",
+      imageInfo:{
+      }
+    }
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
+    //Tineye doesn't have image Info
+    const {data} = await ajax(link,{method: 'GET'});
+    const page = HTML.parseFromString(data,"text/html");
+    //Get Total Search Result
+    const totalSearchResult = Number.parseInt(page.getElementsByClassName("search-details")[0].getElementsByTagName("h2")[0].innerHTML.split(" ")[0]);
+    //Get Curreent Search Link
+    const links       = page.getElementsByTagName("link");
+    let   pageLink;
+    for(let i = 0; i< links.length; i++){
+      if(links[i].getAttribute("href").indexOf("https") != -1 && links[i].getAttribute("rel") == "shortcut icon"){
+        pageLink = links[i].getAttribute("href").replace("query","search");
+      }
+    }
+    //if pageLink exist
+    if(pageLink){
+      if(totalSearchResult && totalSearchResult !== 0){
+        // let searchNumber = 20;
+        // if(totalSearchResult){
+        //   searchNumber = totalSearchResult >= 20 ? 20: totalSearchResult;
+        // }
+        let firstPage = reverseImageSearch.processTineyeData(page);
+        const followingPage = page.getElementsByClassName("pagination-bottom")[0].getElementsByTagName("a");
+        if(followingPage){
+          let tempFunciton = function(url){
+            return new Promise((resolve)=>{
+              ajax(url,{method:"GET"}).then(({data}) =>{
+                const page = HTML.parseFromString(data,"text/html");
+                let singleResult = reverseImageSearch.processTineyeData(page);
+                resolve(singleResult);
+              })
+            })
+          }
+          let taskSeq =[]; 
+          for(let i = 0; i < followingPage.length - 1 && i<2; i++){
+            let link = pageLink+followingPage[i].getAttribute("href");
+            taskSeq[taskSeq.length] = tempFunciton(link);
+          }
+          let result = await Promise.all(taskSeq);
+    
+          for(let i = 0; i< result.length; i++){
+            firstPage = firstPage.concat(result[i]);
+          }
+        }
+        reverseImageSearch.updateResultImage(firstPage,cursor);
+        }
+    }
+    reverseImageSearch.engineDone("tineye",cursor);
   },
-  fetchTineyeData: async ()=>{
-    return new Promise(function(resolve,reject){
+  processTineyeData:  (page)=>{
+    const list = page.getElementsByClassName("match-row") || [];
+    let results = [];
+    for(let i = 0; i< list.length; i++){
+      let singleResult = {
+        title:"",
+        thumbUrl:"",
+        imageUrl:"",
+        sourceUrl:"",
+        imageInfo:{},
+        searchEngine:"tineye",
+        description:"",
+      }
+      let singleItem = list[i];
+      //match thum contain thumbUrl and Size
+      let thumbAndSize = singleItem.getElementsByClassName("match-thumb")[0];
+      singleResult.thumbUrl = thumbAndSize.getElementsByTagName("img")[0].getAttribute("src")||"";
+      //get size info
+      let sizeInfo = thumbAndSize.getElementsByTagName("span")[1].innerHTML;
+      if(sizeInfo){
+        sizeInfo = sizeInfo.substring(0,sizeInfo.indexOf(",")).split("x");
+        singleResult.imageInfo.width = Number.parseInt(sizeInfo[0],10);
+        singleResult.imageInfo.height = Number.parseInt(sizeInfo[1],10);
+      }
+      singleResult.title = singleItem.getElementsByTagName("h4")[0].getElementsByTagName("a")[0].innerHTML.replace(/&nbsp;|\n/g,"") || "";
 
-    })
+      //image Url Source Url
+      const urlPart = singleItem.getElementsByClassName("match-details")[0].getElementsByTagName("p");
+      if(urlPart){
+        for(let i = 0; i< urlPart.length; i++){
+          let singleTagP = urlPart[i];
+          let type = singleTagP.getAttribute("class");
+          if(!type && singleResult.sourceUrl === ""){
+            singleResult.sourceUrl = singleTagP.getElementsByTagName("a")[0].getAttribute("href");
+          }else if(type && type.indexOf("image-link") !== -1 &&  singleResult.imageUrl === ""){
+            singleResult.imageUrl = singleTagP.getElementsByTagName("a")[0].getAttribute("href");
+          }
+        }
+      }
+      results[results.length] = singleResult;
+    }
+    return results;
   },
   fetchBingLink:async (link)=>{
-    return new Promise(function(resolve,reject){
 
-    })
   },
   fetchBingData: async ()=>{
-    return new Promise(function(resolve,reject){
-
-    })
+   
   },
   fetchYandexLink: async (link) =>{
-    return new Promise(function(resolve,reject){
-
-    })
+    console.log(link)
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"yandex",
+      imageInfo:{
+      }
+    }
+    const {data} = await ajax(link,{method: 'GET'});
+    const page = HTML.parseFromString(data,"text/html");
+    window.x = page;
+    let sizeInfo = page.getElementsByClassName("original-image__thumb-info")[0];
+    if(sizeInfo){
+      let size = sizeInfo.innerHTML.split("×");
+      searchImage.imageInfo.width = size[0];
+      searchImage.imageInfo.height = size[1];
+    }
+    let keywordWrapper = page.getElementsByClassName("tags__content");
+    let keyword
+    console.log(keywordWrapper);
+    if(keywordWrapper){
+      keywords = keywordWrapper[0].getElementsByTagName("a");
+      if(keywords.length > 0){
+        searchImage.keyword = keywords[0].innerHTML;
+        searchImage.keywordLink = keywords[0].getAttribute("href");
+      }
+    }
+    console.log(searchImage);
   },
   fetchYandexData: async () =>{
-    return new Promise(function(resolve,reject){
-
-    })
+   
   },
   fetchSauceNaoLink: async(link) =>{
-    return new Promise(function(resolve,reject){
-
-    })
+   
   },
   fetchSauceNaoData: async () =>{
-    return new Promise(function(resolve,reject){
 
-    })
   },
   fetchIQDBLink: async (link) =>{
-    return new Promise(function(resolve,reject){
-
-    })
+  
   },
   fetchIQDBData: async () =>{
-    return new Promise(function(resolve,reject){
-
-    })
+ 
   },
   fetchAscii2dLink: async (link) =>{
-    return new Promise(function(resolve,reject){
-
-    })
+   
   },
   fetchAscii2dData: async () =>{
-    return new Promise(function(resolve,reject){
-
-    })
+   
   }
 }

@@ -209,7 +209,7 @@ export default class Image {
     let total = files.length;
     let i = 0;
     let file = files[i];
-    console.log(file);
+    // console.log(file);
     const reader = new window.FileReader();
     reader.onloadend = () => {
       console.log(remains);
@@ -284,11 +284,12 @@ export default class Image {
       body: JSON.stringify({data:base64}),
     }
     const imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+    console.log(imageLink);
     let cursor = await getDB('imageCursor');
     // console.log(cursor);
     if (typeof (cursor) === 'number') {
       cursor++;
-    } else {
+    }else{
       cursor = 0;
     }
     let url = await generateNewTabUrl("searchResult.html");
