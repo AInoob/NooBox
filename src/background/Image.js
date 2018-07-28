@@ -10,8 +10,11 @@ import ajax from 'SRC/utils/ajax.js';
 import {createNewTab,sendMessage,generateNewTabUrl,createSandbox} from 'SRC/utils/browserUtils'
 export default class Image {
   constructor() {
-    this.noobUploadUrl = "https://ainoob.com/api/uploadImage/";
-    this.noobDownLoadUrl    = "https://ainoob.com/api/getImage/";
+    this.noobUploadUrl;
+    this.noobDownLoadUrl;
+    this.updateImageUploadUrl('ainoob.com');
+    this.updateImageDownloadUrl('ainoob.com');
+    this.noobFetchImageServerUrls    = "https://ainoob.com/api/get/imageServers/";
     this.fetchFunction ={
       googleLink: reverseImageSearch.fetchGoogleLink,
       baiduLink: reverseImageSearch.fetchBaiduLink,
@@ -23,11 +26,38 @@ export default class Image {
       ascii2dLink: reverseImageSearch.fetchAscii2dLink,
     }
   }
+
+  updateImageUploadUrl(server) {
+    this.noobUploadUrl = 'https://' + server + '/api/uploadImage/';
+  }
+
+  updateImageDownloadUrl(server) {
+    this.noobDownLoadUrl = 'https://' + server + '/api/getImage/';
+  }
+
   async init() {
     await this.updateExtractImageContextMenu();
     await this.updateImageSearchContextMenu();
     await this.updateScreenshotSearchContextMenu();
+    await this.getUploadServer();
   }
+
+  async getUploadServer() {
+    const serverUrls = (await ajax(this.noobFetchImageServerUrls, {})).data;
+    let fastestServer = null;
+    const pingPath = '/search';
+    serverUrls.forEach(async server => {
+      let startTime = new Date().getTime();
+      await ajax('https://' + server + pingPath);
+      console.log('fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server);
+      if (!fastestServer) {
+        fastestServer = server;
+        this.updateImageUploadUrl(server);
+        this.updateImageDownloadUrl(server);
+      }
+    });
+  }
+
   async updateScreenshotSearchContextMenu() {
     if (await get('screenshotSearch')) {
       data.Image.screenshotSearchHandle = browser.contextMenus.create({
