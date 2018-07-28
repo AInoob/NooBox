@@ -397,7 +397,34 @@ export const reverseImageSearch = {
    
   },
   fetchYandexLink: async (link) =>{
-   
+    console.log(link)
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"yandex",
+      imageInfo:{
+      }
+    }
+    const {data} = await ajax(link,{method: 'GET'});
+    const page = HTML.parseFromString(data,"text/html");
+    window.x = page;
+    let sizeInfo = page.getElementsByClassName("original-image__thumb-info")[0];
+    if(sizeInfo){
+      let size = sizeInfo.innerHTML.split("×");
+      searchImage.imageInfo.width = size[0];
+      searchImage.imageInfo.height = size[1];
+    }
+    let keywordWrapper = page.getElementsByClassName("tags__content");
+    let keyword
+    console.log(keywordWrapper);
+    if(keywordWrapper){
+      keywords = keywordWrapper[0].getElementsByTagName("a");
+      if(keywords.length > 0){
+        searchImage.keyword = keywords[0].innerHTML;
+        searchImage.keywordLink = keywords[0].getAttribute("href");
+      }
+    }
+    console.log(searchImage);
   },
   fetchYandexData: async () =>{
    
