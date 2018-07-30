@@ -66,8 +66,10 @@ export default class ImageWall extends React.Component{
       while(count < imageDataList.length && eachRowCount < eachRowNumber){
         let item = imageDataList[count];
         let thatCol = container[eachRowCount];
+        console.log(count);
         thatCol[thatCol.length]=(
-          <Popover  key ={count} content ={<div style ={popoverContent}>
+          <div  key = {count} >
+            <Popover  content ={<div style ={popoverContent}>
                                             <p>{item.imageInfo.width +"x" +item.imageInfo.height}</p>
                                             {item.description}
                                           </div>} 
@@ -88,7 +90,8 @@ export default class ImageWall extends React.Component{
                   />
               </div>  
             </Card>
-          </Popover>
+            </Popover>
+          </div>
         )
         count ++;
         eachRowCount++;
