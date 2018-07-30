@@ -396,7 +396,7 @@ export const reverseImageSearch = {
   fetchBingData: async ()=>{
    
   },
-  fetchYandexLink: async (link) =>{
+  fetchYandexLink: async (link,cursor) =>{
     console.log(link)
     let searchImage = {
       keyword:"",
@@ -416,18 +416,87 @@ export const reverseImageSearch = {
     }
     let keywordWrapper = page.getElementsByClassName("tags__content");
     let keyword
-    console.log(keywordWrapper);
-    if(keywordWrapper){
+    if(keywordWrapper.length != 0){
       keywords = keywordWrapper[0].getElementsByTagName("a");
       if(keywords.length > 0){
         searchImage.keyword = keywords[0].innerHTML;
         searchImage.keywordLink = keywords[0].getAttribute("href");
       }
+    }else{
+      searchImage.keyword = "";
     }
-    console.log(searchImage);
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
+    let results = reverseImageSearch.processYandexData(page);
+    console.log(results);
+    reverseImageSearch.updateResultImage(results,cursor);
+    reverseImageSearch.engineDone("yandex",cursor);
   },
-  fetchYandexData: async () =>{
-   
+  processYandexData:(page) =>{
+    let results = [];
+    let similar = page.getElementsByClassName("similar__thumbs");
+    if(similar.length > 0){
+      const similarList = similar[0].getElementsByTagName("li");
+      for(let i = 0; i< similarList.length; i++){
+        let singleResult = {
+          title:"",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"yandex",
+          description:"",
+        }
+        singleResult.title = "Yandex";
+        let singleItem = similarList[i];
+        let sizeInfo = singleItem.getAttribute("style").split(";");
+        if(sizeInfo){
+          let maxWidth = Number.parseInt(sizeInfo[0].substring(sizeInfo[0].indexOf(":")+1,sizeInfo[0].indexOf("px")),10);
+          let width = Number.parseInt(sizeInfo[1].substring(sizeInfo[1].indexOf(":")+1,sizeInfo[1].indexOf("px")),10);
+          let aveWidth = Math.floor( (maxWidth + width)/2 );
+          singleResult.imageInfo.width  = aveWidth;
+          singleResult.imageInfo.height = 130; 
+        }
+        let imageSource = singleItem.getElementsByTagName("a")[0];
+        singleResult.sourceUrl = "https://yandex.com" + imageSource.getAttribute("href");
+
+        let imagePart = singleItem.getElementsByTagName("img")[0];
+        singleResult.thumbUrl = "https:" +imagePart.getAttribute("src");
+        singleResult.imageUrl = "https:" +imagePart.getAttribute("src");
+        results[results.length] = singleResult;
+      }
+    }
+    let otherSite = page.getElementsByClassName("other-sites__container");
+    if(otherSite.length > 0){
+      const otherSiteList = otherSite[0].getElementsByTagName("li");
+      for(let i = 0; i< otherSiteList.length; i++){
+        let singleResult = {
+          title:"",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"yandex",
+          description:"",
+        }
+        let singleItem = otherSiteList[i];
+        let thumbUrl = singleItem.getElementsByClassName("other-sites__preview-link")[0].getAttribute("href");
+        singleResult.thumbUrl = thumbUrl;
+        singleResult.imageUrl = thumbUrl;
+        let sizeInfo = singleItem.getElementsByClassName("other-sites__meta")[0].innerHTML || singleItem.getElementsByClassName("serp-item__meta")[0].innerHTML|| undefined;
+        if(sizeInfo){
+          const size = sizeInfo.split("×");
+          singleResult.imageInfo.width  = Number.parseInt(size[0],10);
+          singleResult.imageInfo.height = Number.parseInt(size[1],10);
+        }
+        let title = singleItem.getElementsByClassName("other-sites__title-link")[0];
+        singleResult.title = title.innerHTML;
+        singleResult.sourceUrl = title.getAttribute("href");
+        let description = singleItem.getElementsByClassName("other-sites__desc")[0].innerHTML;
+        singleResult.description = description;
+        results[results.length] = singleResult;
+      }
+    }
+    return results;
   },
   fetchSauceNaoLink: async(link) =>{
    
