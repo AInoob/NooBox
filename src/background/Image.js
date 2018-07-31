@@ -304,7 +304,12 @@ export default class Image {
          if(name === "baidu"){
            await createSandbox();
          }
-         this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
+         if(name === "bing"){
+          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
+         }else{
+          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
+         }
+        
       }
     }
   }

@@ -13,6 +13,7 @@
     "antd": "^3.6.3",
     "babel-loader": "^7.1.4",
     "dva": "^2.3.1",
+    "nightmare": "^3.0.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
