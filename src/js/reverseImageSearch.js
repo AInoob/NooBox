@@ -281,7 +281,6 @@ export const reverseImageSearch = {
         result[result.length] = singleResult;
       }
     }
-    //Pick 20 from simiList
     reverseImageSearch.updateResultImage(result,cursor);
     //pass done message Directly
     reverseImageSearch.engineDone("baidu",cursor);
@@ -394,12 +393,11 @@ export const reverseImageSearch = {
     let searchImage = {
       keyword:"",
       keywordLink:"",
-      engine:"yandex",
+      engine:"bing",
       imageInfo:{
       }
     }
-    
-    const {data} = await ajax(link,{method: "GET",});
+    const {data} = await ajax(link,{method: "GET",credentials:"same-origin"});
     const page = HTML.parseFromString(data,"text/html");
     let allScript = page.getElementsByTagName("script");
     let ig;
@@ -431,7 +429,7 @@ export const reverseImageSearch = {
       let IGString = "IG=" + ig;
       let IID = "IID=idpins";
       let SFX = "SFX=1";
-      let comboLink = baseURL + halfAnd + 
+      let magicLink = baseURL + halfAnd + 
                       modules + halfAnd + 
                       imageurl + halfAnd + 
                       rshighlight + halfAnd + 
@@ -442,241 +440,89 @@ export const reverseImageSearch = {
                       IGString + halfAnd +
                       IID + halfAnd +
                       SFX;
-      console.log(comboLink);
-      const {data} = await ajax(comboLink,{method: "GET"});
+      const {data} = await ajax(magicLink,{method: "GET",credentials:"same-origin"});
+
       console.log(data);
+      let  {bestRepresentativeQuery,image} = data;
+      searchImage.keyword = bestRepresentativeQuery.displayText || bestRepresentativeQuery.text || "";
+      searchImage.keywordLink = bestRepresentativeQuery.webSearchUrl || "";
+      searchImage.imageInfo.width = image.width || "";
+      searchImage.imageInfo.height = image.height || "";
+      reverseImageSearch.updateSearchImage(searchImage,cursor);
+      let results =reverseImageSearch.processBingData(data);
+      reverseImageSearch.updateResultImage(results,cursor);
     }
+    reverseImageSearch.engineDone("bing",cursor);
   },
-  fetchBingLink: async (link,imageLink,cursor)=>{
-    let searchImage = {
-      keyword:"",
-      keywordLink:"",
-      engine:"yandex",
-      imageInfo:{
+  processBingData: (data)=>{
+    let results = [];
+    let {imageBasedRelatedSearches,relatedSearches,visuallySimilarImages} =  data;
+    if(imageBasedRelatedSearches.value.length > 0){
+      let content = imageBasedRelatedSearches.value;
+      for(let i = 0; i< content.length; i++){
+        let singleResult = {
+          title:"",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"bing",
+          description:"",
+        }
+        singleResult.thumbUrl = content[i].thumbnail.url;
+        singleResult.title = content[i].text || content[i].displayText || "";
+        singleResult.sourceUrl = content[i].webSearchUrl;
+        singleResult.imageUrl = content[i].thumbnail.url;
+        singleResult.imageInfo.width = "";
+        singleResult.imageInfo.height = "";
+        results[results.length] = singleResult;
       }
     }
-    
-    const {data} = await ajax(link,{method: "GET",});
-    const page = HTML.parseFromString(data,"text/html");
-    let allScript = page.getElementsByTagName("script");
-    let ig;
-    let skey;
-    for(let i = 0; i< allScript.length; i++){
-      let singleItem = allScript[i].innerHTML;
-      if(singleItem.indexOf("IG:\"") != -1 ){
-        let igString = singleItem.substring(singleItem.indexOf("IG:\""),singleItem.indexOf("\",EventID"));
-        ig = igString.substring(igString.indexOf("\"") + 1,igString.length);
-      }
-      if(singleItem.indexOf("skey=") != -1){
-        let skeyEqu = singleItem.substring(singleItem.indexOf("skey="),singleItem.indexOf("&safeSearch="));
-        skey = skeyEqu.substring(skeyEqu.indexOf("=")+1,skeyEqu.length);
-      }
-      if(ig && skey){
-        break;
-      }
-    }
-    if(ig && skey){
-      let halfAnd = "&"
-      let baseURL = "https://www.bing.com/images/api/custom/details?";
-      let modules = "modules=brq,objectdetection,objectrecognition,imagebasedrelatedsearches,relatedsearches,image,caption,similarimages,similarproducts";
-      let imageurl = "imgurl=" + imageLink;
-      let rshighlight = "rshighlight=true";
-      let textDecorations = "textDecorations=true";
-      let internalFeatures = "internalFeatures=share";
-      let skeyString = "skey=" + skey;
-      let safeSearch = "safeSearch=Strict";
-      let IGString = "IG=" + ig;
-      let IID = "IID=idpins";
-      let SFX = "SFX=1";
-      let comboLink = baseURL + halfAnd + 
-                      modules + halfAnd + 
-                      imageurl + halfAnd + 
-                      rshighlight + halfAnd + 
-                      textDecorations + halfAnd + 
-                      internalFeatures + halfAnd + 
-                      skeyString + halfAnd + 
-                      safeSearch + halfAnd +
-                      IGString + halfAnd +
-                      IID + halfAnd +
-                      SFX;
-      console.log(comboLink);
-      const {data} = await ajax(comboLink,{method: "GET"});
-      console.log(data);
-    }
-  },
-  fetchBingLink: async (link,imageLink,cursor)=>{
-    let searchImage = {
-      keyword:"",
-      keywordLink:"",
-      engine:"yandex",
-      imageInfo:{
+
+    if(relatedSearches.value.length > 0){
+      let content = relatedSearches.value;
+      for(let i = 0; i< content.length; i++){
+        let singleResult = {
+          title:"",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"bing",
+          description:"",
+        }
+        singleResult.thumbUrl = content[i].thumbnail.url;
+        singleResult.title = content[i].text || content[i].displayText || "";
+        singleResult.sourceUrl = content[i].webSearchUrl;
+        singleResult.imageUrl = content[i].thumbnail.url;
+        singleResult.imageInfo.width = "";
+        singleResult.imageInfo.height = "";
+        results[results.length] = singleResult;
       }
     }
-    
-    const {data} = await ajax(link,{method: "GET",});
-    const page = HTML.parseFromString(data,"text/html");
-    let allScript = page.getElementsByTagName("script");
-    let ig;
-    let skey;
-    for(let i = 0; i< allScript.length; i++){
-      let singleItem = allScript[i].innerHTML;
-      if(singleItem.indexOf("IG:\"") != -1 ){
-        let igString = singleItem.substring(singleItem.indexOf("IG:\""),singleItem.indexOf("\",EventID"));
-        ig = igString.substring(igString.indexOf("\"") + 1,igString.length);
-      }
-      if(singleItem.indexOf("skey=") != -1){
-        let skeyEqu = singleItem.substring(singleItem.indexOf("skey="),singleItem.indexOf("&safeSearch="));
-        skey = skeyEqu.substring(skeyEqu.indexOf("=")+1,skeyEqu.length);
-      }
-      if(ig && skey){
-        break;
-      }
-    }
-    if(ig && skey){
-      let halfAnd = "&"
-      let baseURL = "https://www.bing.com/images/api/custom/details?";
-      let modules = "modules=brq,objectdetection,objectrecognition,imagebasedrelatedsearches,relatedsearches,image,caption,similarimages,similarproducts";
-      let imageurl = "imgurl=" + imageLink;
-      let rshighlight = "rshighlight=true";
-      let textDecorations = "textDecorations=true";
-      let internalFeatures = "internalFeatures=share";
-      let skeyString = "skey=" + skey;
-      let safeSearch = "safeSearch=Strict";
-      let IGString = "IG=" + ig;
-      let IID = "IID=idpins";
-      let SFX = "SFX=1";
-      let comboLink = baseURL + halfAnd + 
-                      modules + halfAnd + 
-                      imageurl + halfAnd + 
-                      rshighlight + halfAnd + 
-                      textDecorations + halfAnd + 
-                      internalFeatures + halfAnd + 
-                      skeyString + halfAnd + 
-                      safeSearch + halfAnd +
-                      IGString + halfAnd +
-                      IID + halfAnd +
-                      SFX;
-      console.log(comboLink);
-      const {data} = await ajax(comboLink,{method: "GET"});
-      console.log(data);
-    }
-  },
-  fetchBingLink: async (link,imageLink,cursor)=>{
-    let searchImage = {
-      keyword:"",
-      keywordLink:"",
-      engine:"yandex",
-      imageInfo:{
+
+    if(visuallySimilarImages.value.length > 0){
+      let content = visuallySimilarImages.value;
+      for(let i = 0; i< content.length; i++){
+        let singleResult = {
+          title:"",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"bing",
+          description:"",
+        }
+        singleResult.thumbUrl = content[i].thumbnailUrl;
+        singleResult.title = content[i].name || "";
+        singleResult.sourceUrl = content[i].hostPageUrl || content[i].hostPageDisplayUrl || "";
+        singleResult.imageUrl = content[i].contentUrl;
+        singleResult.imageInfo.width = content[i].width;
+        singleResult.imageInfo.height = content[i].height;
+        results[results.length] = singleResult;
       }
     }
-    
-    const {data} = await ajax(link,{method: "GET",});
-    const page = HTML.parseFromString(data,"text/html");
-    let allScript = page.getElementsByTagName("script");
-    let ig;
-    let skey;
-    for(let i = 0; i< allScript.length; i++){
-      let singleItem = allScript[i].innerHTML;
-      if(singleItem.indexOf("IG:\"") != -1 ){
-        let igString = singleItem.substring(singleItem.indexOf("IG:\""),singleItem.indexOf("\",EventID"));
-        ig = igString.substring(igString.indexOf("\"") + 1,igString.length);
-      }
-      if(singleItem.indexOf("skey=") != -1){
-        let skeyEqu = singleItem.substring(singleItem.indexOf("skey="),singleItem.indexOf("&safeSearch="));
-        skey = skeyEqu.substring(skeyEqu.indexOf("=")+1,skeyEqu.length);
-      }
-      if(ig && skey){
-        break;
-      }
-    }
-    if(ig && skey){
-      let halfAnd = "&"
-      let baseURL = "https://www.bing.com/images/api/custom/details?";
-      let modules = "modules=brq,objectdetection,objectrecognition,imagebasedrelatedsearches,relatedsearches,image,caption,similarimages,similarproducts";
-      let imageurl = "imgurl=" + imageLink;
-      let rshighlight = "rshighlight=true";
-      let textDecorations = "textDecorations=true";
-      let internalFeatures = "internalFeatures=share";
-      let skeyString = "skey=" + skey;
-      let safeSearch = "safeSearch=Strict";
-      let IGString = "IG=" + ig;
-      let IID = "IID=idpins";
-      let SFX = "SFX=1";
-      let comboLink = baseURL + halfAnd + 
-                      modules + halfAnd + 
-                      imageurl + halfAnd + 
-                      rshighlight + halfAnd + 
-                      textDecorations + halfAnd + 
-                      internalFeatures + halfAnd + 
-                      skeyString + halfAnd + 
-                      safeSearch + halfAnd +
-                      IGString + halfAnd +
-                      IID + halfAnd +
-                      SFX;
-      console.log(comboLink);
-      const {data} = await ajax(comboLink,{method: "GET"});
-      console.log(data);
-    }
-  },
-  fetchBingLink: async (link,imageLink,cursor)=>{
-    let searchImage = {
-      keyword:"",
-      keywordLink:"",
-      engine:"yandex",
-      imageInfo:{
-      }
-    }
-    
-    const {data} = await ajax(link,{method: "GET",});
-    const page = HTML.parseFromString(data,"text/html");
-    let allScript = page.getElementsByTagName("script");
-    let ig;
-    let skey;
-    for(let i = 0; i< allScript.length; i++){
-      let singleItem = allScript[i].innerHTML;
-      if(singleItem.indexOf("IG:\"") != -1 ){
-        let igString = singleItem.substring(singleItem.indexOf("IG:\""),singleItem.indexOf("\",EventID"));
-        ig = igString.substring(igString.indexOf("\"") + 1,igString.length);
-      }
-      if(singleItem.indexOf("skey=") != -1){
-        let skeyEqu = singleItem.substring(singleItem.indexOf("skey="),singleItem.indexOf("&safeSearch="));
-        skey = skeyEqu.substring(skeyEqu.indexOf("=")+1,skeyEqu.length);
-      }
-      if(ig && skey){
-        break;
-      }
-    }
-    if(ig && skey){
-      let halfAnd = "&"
-      let baseURL = "https://www.bing.com/images/api/custom/details?";
-      let modules = "modules=brq,objectdetection,objectrecognition,imagebasedrelatedsearches,relatedsearches,image,caption,similarimages,similarproducts";
-      let imageurl = "imgurl=" + imageLink;
-      let rshighlight = "rshighlight=true";
-      let textDecorations = "textDecorations=true";
-      let internalFeatures = "internalFeatures=share";
-      let skeyString = "skey=" + skey;
-      let safeSearch = "safeSearch=Strict";
-      let IGString = "IG=" + ig;
-      let IID = "IID=idpins";
-      let SFX = "SFX=1";
-      let comboLink = baseURL + halfAnd + 
-                      modules + halfAnd + 
-                      imageurl + halfAnd + 
-                      rshighlight + halfAnd + 
-                      textDecorations + halfAnd + 
-                      internalFeatures + halfAnd + 
-                      skeyString + halfAnd + 
-                      safeSearch + halfAnd +
-                      IGString + halfAnd +
-                      IID + halfAnd +
-                      SFX;
-      console.log(comboLink);
-      const {data} = await ajax(comboLink,{method: "GET"});
-      console.log(data);
-    }
-  },
-  processBingData: (page)=>{
-   
+    return results;
   },
   fetchYandexLink: async (link,cursor) =>{
     let searchImage = {
