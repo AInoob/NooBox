@@ -416,6 +416,7 @@ export const reverseImageSearch = {
         break;
       }
     }
+    //magic sh*t stuff LOL
     if(ig && skey){
       let halfAnd = "&"
       let baseURL = "https://www.bing.com/images/api/custom/details?";
@@ -442,7 +443,7 @@ export const reverseImageSearch = {
                       SFX;
       const {data} = await ajax(magicLink,{method: "GET",credentials:"same-origin"});
 
-      console.log(data);
+      // console.log(data);
       let  {bestRepresentativeQuery,image} = data;
       searchImage.keyword = bestRepresentativeQuery.displayText || bestRepresentativeQuery.text || "";
       searchImage.keywordLink = bestRepresentativeQuery.webSearchUrl || "";
@@ -554,7 +555,7 @@ export const reverseImageSearch = {
     }
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     let results = reverseImageSearch.processYandexData(page);
-    console.log(results);
+    // console.log(results);
     reverseImageSearch.updateResultImage(results,cursor);
     reverseImageSearch.engineDone("yandex",cursor);
   },
