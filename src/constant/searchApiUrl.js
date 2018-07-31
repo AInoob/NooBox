@@ -3,7 +3,7 @@ export const apiUrls = {
   // baidu: 'https://image.baidu.com/n/pc_search?queryImageUrl=',
   baidu: 'https://image.baidu.com/pcdutu?queryImageUrl=',
   tineye: 'http://www.tineye.com/search/?url=',
-  bing: 'http://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:',
+  bing: 'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:',
   yandex: 'https://www.yandex.com/images/search?rpt=imageview&img_url=',
   saucenao: 'http://saucenao.com/search.php?db=999&url=',
   iqdb: 'http://iqdb.org/?url=',
