@@ -442,13 +442,17 @@ export const reverseImageSearch = {
                       IID + halfAnd +
                       SFX;
       const {data} = await ajax(magicLink,{method: "GET",credentials:"same-origin"});
-
+      console.log(data);
       // console.log(data);
       let  {bestRepresentativeQuery,image} = data;
-      searchImage.keyword = bestRepresentativeQuery.displayText || bestRepresentativeQuery.text || "";
-      searchImage.keywordLink = bestRepresentativeQuery.webSearchUrl || "";
-      searchImage.imageInfo.width = image.width || "";
-      searchImage.imageInfo.height = image.height || "";
+      if(bestRepresentativeQuery){
+        searchImage.keyword = bestRepresentativeQuery.displayText || bestRepresentativeQuery.text || "";
+        searchImage.keywordLink = bestRepresentativeQuery.webSearchUrl || "";
+      }
+      if(image){
+        searchImage.imageInfo.width = image.width || "";
+        searchImage.imageInfo.height = image.height || "";
+      } 
       reverseImageSearch.updateSearchImage(searchImage,cursor);
       let results =reverseImageSearch.processBingData(data);
       reverseImageSearch.updateResultImage(results,cursor);
@@ -458,7 +462,7 @@ export const reverseImageSearch = {
   processBingData: (data)=>{
     let results = [];
     let {imageBasedRelatedSearches,relatedSearches,visuallySimilarImages} =  data;
-    if(imageBasedRelatedSearches.value.length > 0){
+    if(imageBasedRelatedSearches && imageBasedRelatedSearches.value.length > 0){
       let content = imageBasedRelatedSearches.value;
       for(let i = 0; i< content.length; i++){
         let singleResult = {
@@ -480,7 +484,7 @@ export const reverseImageSearch = {
       }
     }
 
-    if(relatedSearches.value.length > 0){
+    if(relatedSearches && relatedSearches.value.length > 0){
       let content = relatedSearches.value;
       for(let i = 0; i< content.length; i++){
         let singleResult = {
@@ -502,7 +506,7 @@ export const reverseImageSearch = {
       }
     }
 
-    if(visuallySimilarImages.value.length > 0){
+    if(visuallySimilarImages && visuallySimilarImages.value.length > 0){
       let content = visuallySimilarImages.value;
       for(let i = 0; i< content.length; i++){
         let singleResult = {
