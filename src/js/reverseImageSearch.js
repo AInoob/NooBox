@@ -630,11 +630,56 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchSauceNaoLink: async(link) =>{
-   
+  fetchSauceNaoLink: async(link,cursor) =>{
+    //sausnao doesn't have search Image Info
+    const {data} = await ajax(link,{method:"GET",credentials:"same-origin"});
+    const page = HTML.parseFromString(data,"text/html");
+    let results = reverseImageSearch.processSauceNaoData(page);
+    console.log(results);
+    reverseImageSearch.updateResultImage(results,cursor);
+    reverseImageSearch.engineDone("saucenao",cursor);
   },
-  fetchSauceNaoData: async () =>{
-
+  processSauceNaoData:(page) =>{
+    let results = [];
+    let list = page.getElementsByClassName("result");
+    if(list.length > 0){
+      for(let i = 0; i< list.length; i++){
+        let singleResult ={
+          title:"",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"saucenao",
+          description:"",
+        };
+        let singleItem = list[i];
+        let resultImage = singleItem.getElementsByClassName("resultimage")[0];
+        if(resultImage){
+          let soureUrl = resultImage.getElementsByTagName("a")[0];
+          if(soureUrl){
+            singleResult.sourceUrl = soureUrl.getAttribute("href") || "";
+          }
+          let thumbUrl = resultImage.getElementsByTagName("img")[0];
+          console.log(thumbUrl);
+          if(thumbUrl){
+            singleResult.thumbUrl = thumbUrl.getAttribute("src") || "";
+            singleResult.imageUrl = thumbUrl.getAttribute("src") || "";
+          }
+        }
+        let resultContent = singleItem.getElementsByClassName("resultcontent")[0];
+        if(resultContent){
+          let title = resultContent.getElementsByTagName("strong")[0];
+          if(title){
+            singleResult.title = title.innerHTML;
+          }
+        }
+        singleResult.imageInfo.height = 0;
+        singleResult.imageInfo.width = 0;
+        results[results.length] = singleResult;
+      }
+    }
+    return results;
   },
   fetchIQDBLink: async (link) =>{
   
