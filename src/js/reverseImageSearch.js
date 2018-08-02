@@ -635,7 +635,6 @@ export const reverseImageSearch = {
     const {data} = await ajax(link,{method:"GET",credentials:"same-origin"});
     const page = HTML.parseFromString(data,"text/html");
     let results = reverseImageSearch.processSauceNaoData(page);
-    console.log(results);
     reverseImageSearch.updateResultImage(results,cursor);
     reverseImageSearch.engineDone("saucenao",cursor);
   },
@@ -661,7 +660,6 @@ export const reverseImageSearch = {
             singleResult.sourceUrl = soureUrl.getAttribute("href") || "";
           }
           let thumbUrl = resultImage.getElementsByTagName("img")[0];
-          console.log(thumbUrl);
           if(thumbUrl){
             singleResult.thumbUrl = thumbUrl.getAttribute("src") || "";
             singleResult.imageUrl = thumbUrl.getAttribute("src") || "";
@@ -681,11 +679,83 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchIQDBLink: async (link) =>{
-  
+  fetchIQDBLink: async (link,cursor) =>{
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"iqdb",
+      imageInfo:{
+      }
+    }
+    console.log(link);
+    const{data} = await ajax(link,{method:"GET"});
+    const page = HTML.parseFromString(data,"text/html");
+    let results = reverseImageSearch.processIQDBData(page);
+    console.log(results);
+    // reverseImageSearch.updateResultImage(results,cursor);
+    // reverseImageSearch.engineDone("iqdb",cursor);
   },
-  fetchIQDBData: async () =>{
- 
+  processIQDBData: (page) =>{
+    let results = [];
+    //contain possibly match and more
+    const containers = page.getElementsByClassName("pages");
+    if(containers.length > 0){
+      for(let i = 0; i< list.containers; i ++){
+        let singleContainer = containers[i];
+        let list = singleContainer.getElementsByTagName("div");
+        for(let j= 0; j< list.length; j ++){
+          let singleItem = list[i];
+          let header = singleItem.getElementsByTagName("th")[0];
+          if(header == "Possible match"){
+            let singleResult ={
+              title:"Possible Match",
+              thumbUrl:"",
+              imageUrl:"",
+              sourceUrl:"",
+              imageInfo:{},
+              searchEngine:"iqdb",
+              description:"",
+            };
+            let data = singleItem.getElementsByTagName("td");
+            //# 0 image
+            let imageData = data[0].getElementsByTagName("a")[0];
+            if(imageData){
+              singleResult.sourceUrl = imageData.getAttribute("href") || "";
+              thumbUrl = imageData.getElementsByTagName("img")[0]
+              if(thumbUrl){
+                let link  = thumbUrl.getAttribute("src") || "";
+                singleResult.thumbUrl = link == "" ?"":"http://http://iqdb.org/" + link;
+                singleResult.imageUrl = link == "" ?"":"http://http://iqdb.org/" + link;
+              }
+            }
+            //# 1 uploader info: pass
+            //# 2 size info
+            let sizeInfo = data[2].innerHTML;
+            if(sizeInfo){
+              let size = sizeInfo.split(" ")[0].split("×");
+              singleResult.imageInfo.width = size[0];
+              singleResult.imageInfo.height = size[1];
+            }
+            //# 3 description
+            let description = data[3].innerHTML;
+            if(description){
+              singleResult.description = description;
+            }
+            results[results.length] = singleResult;
+          }else{
+            continue;
+          }
+        }
+      }
+    }
+    // if(list){
+    //   let items = list.getElementsByTagName("div");
+    //   if(items.length > 0){
+    //     for(let i = 0; i< items.length; i++){
+    //     }
+    //   }
+    // }
+    return results;
   },
   fetchAscii2dLink: async (link) =>{
    
