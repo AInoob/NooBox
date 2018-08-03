@@ -3,6 +3,23 @@ appName:
   message: NooBox
 appDesc:
   message: Tool Box
+#engine Name:
+google:
+  message: Google
+baidu:
+  message: Baidu
+yandex:
+  message: Yandex
+bing:
+  message: Bing
+tineye:
+  message: Tin Eye
+saucenao:
+  message: SauceNAO
+iqdb:
+  message: IQDB
+ascii2d:
+  message: ASCII 2D
 #Overview
 choose_tools_from_here:
   message: Choose Tools From Here
@@ -43,6 +60,10 @@ avaiable_engine:
 experience:
     message: Experience Setting
 #Image Search
+download:
+  message: Download
+search_again:
+  message: Search Again
 display_mode:
   message: Display Mode
 list:
@@ -59,6 +80,8 @@ increase:
   message: Ascending
 decrease:
   message: Descending
+sort_by:
+  message: Sort By
 save:
   message: SAVE
 clear:

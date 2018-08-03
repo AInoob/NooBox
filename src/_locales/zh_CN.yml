@@ -2,6 +2,23 @@ appName:
     message: 二箱
 appDesc:
     message: 一个实用的工具箱！多引擎以图搜图+提取图片+截图搜索+HTML5视频控制
+#engine Name:
+google:
+  message: 谷歌
+baidu:
+  message: 百度
+yandex:
+  message: Yandex
+bing:
+  message: 必应
+tineye:
+  message: Tin Eye
+saucenao:
+  message: SauceNAO
+iqdb:
+  message: IQDB
+ascii2d:
+  message: 二次元画像
 #overview:
 choose_tools_from_here:
   message: 选择一种工具？
@@ -39,10 +56,16 @@ experience:
 #Image Search
 display_mode:
   message: 显示模式
+download:
+  message: 下载图片
+search_again:
+  message: 重新搜索
 list:
   message: 图片列表
 image_wall:
   message: 图片墙
+sort_by:
+  message: 排序依据
 area:
   message: 面积
 width:

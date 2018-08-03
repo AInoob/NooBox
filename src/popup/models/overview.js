@@ -27,6 +27,7 @@ export default {
       
         //Init Auto Refresh
         const tabData   = yield call(getCurrentTab);
+        // console.log(tabData);
         initState.tabId = tabData.id;
         //Auto Refresh Status
         const refreshStatus =  yield call(sendMessage,{ job: 'getCurrentTabAutoRefreshStatus', tabId: tabData.id });

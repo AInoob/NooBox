@@ -637,10 +637,18 @@ export const reverseImageSearch = {
     return results;
   },
   fetchSauceNaoLink: async(link,cursor) =>{
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"iqdb",
+      imageInfo:{
+      }
+    }
     //sausnao doesn't have search Image Info
     const {data} = await ajax(link,{method:"GET",credentials:"same-origin"});
     const page = HTML.parseFromString(data,"text/html");
     let results = reverseImageSearch.processSauceNaoData(page);
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
     reverseImageSearch.updateResultImage(results,cursor);
     reverseImageSearch.engineDone("saucenao",cursor);
   },
@@ -648,7 +656,7 @@ export const reverseImageSearch = {
     let results = [];
     let list = page.getElementsByClassName("result");
     if(list.length > 0){
-      for(let i = 0; i< list.length; i++){
+      for(let i = 1; i< list.length; i++){
         let singleResult ={
           title:"",
           thumbUrl:"",
@@ -667,8 +675,8 @@ export const reverseImageSearch = {
           }
           let thumbUrl = resultImage.getElementsByTagName("img")[0];
           if(thumbUrl){
-            singleResult.thumbUrl = thumbUrl.getAttribute("src") || "";
-            singleResult.imageUrl = thumbUrl.getAttribute("src") || "";
+            singleResult.thumbUrl = thumbUrl.getAttribute("data-src") || thumbUrl.getAttribute("src") || "";
+            singleResult.imageUrl = thumbUrl.getAttribute("data-src") || thumbUrl.getAttribute("src") || "";
           }
         }
         let resultContent = singleItem.getElementsByClassName("resultcontent")[0];
@@ -696,6 +704,7 @@ export const reverseImageSearch = {
     const{data} = await ajax(link,{method:"GET"});
     const page = HTML.parseFromString(data,"text/html");
     let results = reverseImageSearch.processIQDBData(page);
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
     reverseImageSearch.updateResultImage(results,cursor);
     reverseImageSearch.engineDone("iqdb",cursor);
   },
