@@ -5,7 +5,7 @@ import {connect} from 'dva';
 import reduxActions from "SRC/popup/reduxActions.js";
 import reselector   from "SRC/popup/reselector.js";
 
-import {Tree,Card, Col, Row,Spin} from 'antd';
+import {Tree,Card, Col, Row,Tooltip} from 'antd';
 import styled from "styled-components";
 import {engineMap} from 'SRC/constant/settingMap.js';
 import Loader      from "SRC/common/component/Loader.jsx";
@@ -57,12 +57,14 @@ class Options extends React.Component{
   generateIcon(actions,currentEngine){
     return engineMap.map((element,index) => (
     <Col span ={6} key ={index}>
-      <Card bordered={false}>
-        <img 
-          src ={element.icon}
-          onClick ={() => actions.optionsCheckEngine(element.dbName)} 
-          className ={currentEngine[element.dbName] ?"engineOpen":"engineClose"} />
-      </Card>
+      <Tooltip title = {i18n(element.name)}>
+        <Card bordered={false}>
+          <img 
+            src ={element.icon}
+            onClick ={() => actions.optionsCheckEngine(element.dbName)} 
+            className ={currentEngine[element.dbName] ?"engineOpen":"engineClose"} />
+        </Card>
+      </Tooltip>
     </Col>
     ))
   }

@@ -14,7 +14,7 @@ export default {
       let imageCursor = yield getDB("imageCursor");
       let dbData = [];
       if(imageCursor != null){
-        for(let i = 0; i<= imageCursor; i++){
+        for(let i = imageCursor; i>= 0; i--){
           let data = yield getDB(i);
           // console.log(data);
           if(data){

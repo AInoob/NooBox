@@ -2,6 +2,23 @@ appName:
     message: 二箱
 appDesc:
     message: 一個實用的工具箱！多搜尋引擎以圖搜圖+提取圖片+擷圖搜尋+HTML5影片控制
+#engine Name:
+google:
+  message: Google
+baidu:
+  message: 百度
+yandex:
+  message: Yandex
+bing:
+  message: Bing
+tineye:
+  message: Tin Eye
+saucenao:
+  message: SauceNAO
+iqdb:
+  message: IQDB
+ascii2d:
+  message: 二次元畫像
 # overview:
 choose_tools_from_here:
   message: 選擇一種工具？
@@ -39,8 +56,14 @@ experience:
 #Image Search
 display_mode:
   message: 顯示模式
+download:
+  message: 下載圖片
+search_again:
+  message: 重新搜索
 list:
   message: 圖片列表
+sort_by:
+  message: 排序依據
 image_wall:
   message: 圖片墻
 area:
@@ -56,7 +79,7 @@ decrease:
 save:
   message: 保存
 clear:
-  message: 清除  
+  message: 清除
 #About  
 about_what:
   message: Noobox 是什麽?

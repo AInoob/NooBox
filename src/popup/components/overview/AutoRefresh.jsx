@@ -17,6 +17,9 @@ const AutoRefreshContainer = styled.div`
     top: -30px;
     left: 0;
   }
+  .ant-input-number{
+    border-radius: 0;
+  }
 `;
 const Dragger = Upload.Dragger;
 export default class AutoRefresh extends React.Component {

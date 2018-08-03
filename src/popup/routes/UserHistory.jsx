@@ -48,18 +48,7 @@ const HistoryContainer = styled.div`
     cursor: pointer
   }
 `;
-// style = {{
-//   width: "256px",
-//   margin:0,
-// }}
 class UserHistory extends React.Component{
-
-  delete(e){
-    console.log(e);
-  }
-  deleteAll(){
-    console.log("delete All")
-  }
 
   componentDidMount(){
     const {userHistory,actions} = this.props;

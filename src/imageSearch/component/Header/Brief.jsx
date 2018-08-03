@@ -22,7 +22,11 @@ const BriefContainer = styled.div`
 export default class Brief extends React.Component{
   generateImageInfo(imageInfo){
     return imageInfo.map((item,index) =>{
-      return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
+      if(item.keyword != ""){
+        return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
+      }else{
+        return <span></span>
+      }
     })
   }
   render(){
@@ -43,10 +47,10 @@ export default class Brief extends React.Component{
             <Card
               style={{ width: "100%" }}
               cover={<img alt="example" src={base64} />}
-              actions={[<Tooltip placement = "top" title="Download">
+              actions={[<Tooltip placement = "top" title={i18n("download")}>
                          <FAIcon icon ={faSolid.faDownload}/>
                         </Tooltip>,
-                        <Tooltip placement = "top" title="Search Again">
+                        <Tooltip placement = "top" title={i18n("search_again")}>
                           <FAIcon icon ={faSolid.faUpload}/>
                         </Tooltip>
                        ]}
