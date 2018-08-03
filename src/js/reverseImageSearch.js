@@ -687,26 +687,28 @@ export const reverseImageSearch = {
       imageInfo:{
       }
     }
-    console.log(link);
     const{data} = await ajax(link,{method:"GET"});
     const page = HTML.parseFromString(data,"text/html");
     let results = reverseImageSearch.processIQDBData(page);
     console.log(results);
-    // reverseImageSearch.updateResultImage(results,cursor);
-    // reverseImageSearch.engineDone("iqdb",cursor);
+    reverseImageSearch.updateResultImage(results,cursor);
+    reverseImageSearch.engineDone("iqdb",cursor);
   },
   processIQDBData: (page) =>{
     let results = [];
     //contain possibly match and more
     const containers = page.getElementsByClassName("pages");
+    console.log(containers.length);
     if(containers.length > 0){
-      for(let i = 0; i< list.containers; i ++){
+      for(let i = 0; i< containers.length; i ++){
         let singleContainer = containers[i];
         let list = singleContainer.getElementsByTagName("div");
+        console.log(list);
         for(let j= 0; j< list.length; j ++){
-          let singleItem = list[i];
+          let singleItem = list[j];
           let header = singleItem.getElementsByTagName("th")[0];
-          if(header == "Possible match"){
+
+          if(header == undefined || header.innerHTML == "Possible match" ){
             let singleResult ={
               title:"Possible Match",
               thumbUrl:"",
@@ -720,12 +722,13 @@ export const reverseImageSearch = {
             //# 0 image
             let imageData = data[0].getElementsByTagName("a")[0];
             if(imageData){
-              singleResult.sourceUrl = imageData.getAttribute("href") || "";
-              thumbUrl = imageData.getElementsByTagName("img")[0]
+              let sourceUrl = imageData.getAttribute("href") || ""
+              singleResult.sourceUrl = sourceUrl == "" ? "" : "https" + sourceUrl;
+              let thumbUrl = imageData.getElementsByTagName("img")[0]
               if(thumbUrl){
                 let link  = thumbUrl.getAttribute("src") || "";
-                singleResult.thumbUrl = link == "" ?"":"http://http://iqdb.org/" + link;
-                singleResult.imageUrl = link == "" ?"":"http://http://iqdb.org/" + link;
+                singleResult.thumbUrl = link == "" ?"":"http://iqdb.org/" + link;
+                singleResult.imageUrl = link == "" ?"":"http://iqdb.org/" + link;
               }
             }
             //# 1 uploader info: pass
