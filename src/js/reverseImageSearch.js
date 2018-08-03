@@ -379,9 +379,15 @@ export const reverseImageSearch = {
           let singleTagP = urlPart[i];
           let type = singleTagP.getAttribute("class");
           if(!type && singleResult.sourceUrl === ""){
-            singleResult.sourceUrl = singleTagP.getElementsByTagName("a")[0].getAttribute("href");
+            let sourceUrl = singleTagP.getElementsByTagName("a")[0];
+            if(sourceUrl){
+              singleResult.sourceUrl = sourceUrl.getAttribute("href");
+            }
           }else if(type && type.indexOf("image-link") !== -1 &&  singleResult.imageUrl === ""){
-            singleResult.imageUrl = singleTagP.getElementsByTagName("a")[0].getAttribute("href");
+            let imageUrl = singleTagP.getElementsByTagName("a")[0];
+            if(imageUrl){
+              singleResult.imageUrl = imageUrl.getAttribute("href");
+            }
           }
         }
       }
@@ -690,7 +696,6 @@ export const reverseImageSearch = {
     const{data} = await ajax(link,{method:"GET"});
     const page = HTML.parseFromString(data,"text/html");
     let results = reverseImageSearch.processIQDBData(page);
-    console.log(results);
     reverseImageSearch.updateResultImage(results,cursor);
     reverseImageSearch.engineDone("iqdb",cursor);
   },
@@ -698,16 +703,13 @@ export const reverseImageSearch = {
     let results = [];
     //contain possibly match and more
     const containers = page.getElementsByClassName("pages");
-    console.log(containers.length);
     if(containers.length > 0){
       for(let i = 0; i< containers.length; i ++){
         let singleContainer = containers[i];
         let list = singleContainer.getElementsByTagName("div");
-        console.log(list);
         for(let j= 0; j< list.length; j ++){
           let singleItem = list[j];
           let header = singleItem.getElementsByTagName("th")[0];
-
           if(header == undefined || header.innerHTML == "Possible match" ){
             let singleResult ={
               title:"Possible Match",
@@ -727,8 +729,8 @@ export const reverseImageSearch = {
               let thumbUrl = imageData.getElementsByTagName("img")[0]
               if(thumbUrl){
                 let link  = thumbUrl.getAttribute("src") || "";
-                singleResult.thumbUrl = link == "" ?"":"http://iqdb.org/" + link;
-                singleResult.imageUrl = link == "" ?"":"http://iqdb.org/" + link;
+                singleResult.thumbUrl = link == "" ? "":"http://iqdb.org/" + link;
+                singleResult.imageUrl = link == "" ? "":"http://iqdb.org/" + link;
               }
             }
             //# 1 uploader info: pass
@@ -751,13 +753,6 @@ export const reverseImageSearch = {
         }
       }
     }
-    // if(list){
-    //   let items = list.getElementsByTagName("div");
-    //   if(items.length > 0){
-    //     for(let i = 0; i< items.length; i++){
-    //     }
-    //   }
-    // }
     return results;
   },
   fetchAscii2dLink: async (link) =>{
