@@ -6,7 +6,10 @@ appDesc:
 #Context Menu
 search_this_image:
   message: Search This Image
-
+extract_this_images:
+  message: Extract This Image
+take_screenshot:
+  message: Screenshot Search
 #engine Name:
 google:
   message: Google
@@ -90,6 +93,8 @@ save:
   message: SAVE
 clear:
   message: CLEAR
+no_size_info:
+  message: No Size Info
 #About
 about_what:
   message: What is Noobox ?
