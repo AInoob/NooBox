@@ -56,7 +56,6 @@ export default class ImageWall extends React.Component{
     })
   }
   generateCardList(imageDataList){
-    console.log(imageDataList);
     const eachRowNumber = 6;
     //span = 24/eachRow
     let count = 0;
@@ -66,7 +65,6 @@ export default class ImageWall extends React.Component{
       while(count < imageDataList.length && eachRowCount < eachRowNumber){
         let item = imageDataList[count];
         let thatCol = container[eachRowCount];
-        console.log(count);
         thatCol[thatCol.length]=(
           <div  key = {count} >
             <Popover  content ={<div style ={popoverContent}>

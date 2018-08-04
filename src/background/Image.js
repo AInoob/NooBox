@@ -295,7 +295,7 @@ export default class Image {
     let url = await generateNewTabUrl("searchResult.html");
     await createNewTab(url+"#/"+cursor);
     reverseImageSearch.updateImage64(base64,cursor);
-    //Get Opened Engine
+    //Get Opened Engine and send request
     for(let i = 0; i< engineMap.length; i++){
       let dbName = engineMap[i].dbName;
       let name   = engineMap[i].name;
@@ -306,10 +306,11 @@ export default class Image {
          }
          if(name === "bing"){
           this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
+         }else if(name == "ascii2d"){
+          this.fetchFunction[name+"Link"](apiUrls[name],imageLink,cursor)
          }else{
           this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
          }
-        
       }
     }
   }

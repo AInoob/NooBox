@@ -484,8 +484,8 @@ export const reverseImageSearch = {
         singleResult.title = content[i].text || content[i].displayText || "";
         singleResult.sourceUrl = content[i].webSearchUrl;
         singleResult.imageUrl = content[i].thumbnail.url;
-        singleResult.imageInfo.width = "";
-        singleResult.imageInfo.height = "";
+        singleResult.imageInfo.width = 0;
+        singleResult.imageInfo.height = 0;
         results[results.length] = singleResult;
       }
     }
@@ -506,8 +506,8 @@ export const reverseImageSearch = {
         singleResult.title = content[i].text || content[i].displayText || "";
         singleResult.sourceUrl = content[i].webSearchUrl;
         singleResult.imageUrl = content[i].thumbnail.url;
-        singleResult.imageInfo.width = "";
-        singleResult.imageInfo.height = "";
+        singleResult.imageInfo.width = 0;
+        singleResult.imageInfo.height = 0;
         results[results.length] = singleResult;
       }
     }
@@ -764,10 +764,73 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchAscii2dLink: async (link) =>{
-   
+  fetchAscii2dLink: async (api,link,cursor) =>{
+    let searchImage = {
+      keyword:"",
+      keywordLink:"",
+      engine:"ascii2d",
+      imageInfo:{
+      }
+    }
+    var formData = new FormData();
+    formData.append("uri",link)
+    const{data} = await ajax(api,{method:"POST",
+                                   body:formData,
+                                   credentials:"same-origin",
+                                 });
+    const page = HTML.parseFromString(data,"text/html");
+    let results =  reverseImageSearch.fetchAscii2dData(page);
+    console.log(results);
+    reverseImageSearch.updateSearchImage(searchImage,cursor);
+    reverseImageSearch.updateResultImage(results,cursor);
+    reverseImageSearch.engineDone("ascii2d",cursor);
   },
-  fetchAscii2dData: async () =>{
-   
+  fetchAscii2dData:(page) =>{
+    let results =[];
+    let list = page.getElementsByClassName("item-box");
+    if(list.length > 0){
+      for(let i= 0; i< list.length; i++){
+        let singleResult ={
+          title:"Possible Match",
+          thumbUrl:"",
+          imageUrl:"",
+          sourceUrl:"",
+          imageInfo:{},
+          searchEngine:"iqdb",
+          description:"",
+        };
+        let item = list[i];
+        let imageTag = item.getElementsByClassName("image-box")[0];
+        if(imageTag){
+          let image = imageTag.getElementsByTagName("img")[0];
+          if(image){
+            let thumbUrl = image.getAttribute("src") || "";
+            console.log(thumbUrl);
+            singleResult.thumbUrl = thumbUrl == "" ? "":"https://ascii2d.net"+thumbUrl ;
+            singleResult.imageUrl = thumbUrl == "" ? "":"https://ascii2d.net"+thumbUrl ;
+          }
+
+        }
+        let infoTag = item.getElementsByClassName("info-box")[0];
+        if(infoTag){
+          let sizeInfo = infoTag.getElementsByTagName("small")[0];
+          if(sizeInfo){
+            let size = sizeInfo.innerHTML.split(" ")[0].split("x");
+            singleResult.imageInfo.width = size[0];
+            singleResult.imageInfo.height = size[1];
+          }
+          let title = infoTag.getElementsByTagName("a");
+          if(title[0]){
+            singleResult.title = title[0].innerHTML;
+            singleResult.sourceUrl = title[0].getAttribute("href");
+          }  
+          if(title[1]){
+            singleResult.description ="Author: " + title[1].innerHTML;
+          }
+        }
+        results[results.length] = singleResult;
+      }
+    }
+    return results;
   }
 }
