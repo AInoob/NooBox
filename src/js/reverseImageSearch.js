@@ -37,7 +37,7 @@ export const reverseImageSearch = {
       result:result,
       cursor:cursor
     },()=>{
-      console.log("Send Search Result");
+      // console.log("Send Search Result");
     })
   },
   engineDone:(engine,cursor) =>{
@@ -46,7 +46,7 @@ export const reverseImageSearch = {
       engine:engine,
       cursor:cursor,
     },()=>{
-      console.log("Send Done Message");
+      // console.log("Send Done Message");
     })
   },
   updateSearchImage:(result,cursor) =>{
@@ -62,7 +62,7 @@ export const reverseImageSearch = {
       result:base64,
       cursor:cursor,
     },()=>{
-      console.log("Send base 64 Message");
+      // console.log("Send base 64 Message");
     })
   },
   waitForSandBox:(parseObj) =>{
@@ -448,7 +448,7 @@ export const reverseImageSearch = {
                       IID + halfAnd +
                       SFX;
       const {data} = await ajax(magicLink,{method: "GET",credentials:"same-origin"});
-      console.log(data);
+      // console.log(data);
       // console.log(data);
       let  {bestRepresentativeQuery,image} = data;
       if(bestRepresentativeQuery){
@@ -780,7 +780,7 @@ export const reverseImageSearch = {
                                  });
     const page = HTML.parseFromString(data,"text/html");
     let results =  reverseImageSearch.fetchAscii2dData(page);
-    console.log(results);
+    // console.log(results);
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     reverseImageSearch.updateResultImage(results,cursor);
     reverseImageSearch.engineDone("ascii2d",cursor);
@@ -805,7 +805,7 @@ export const reverseImageSearch = {
           let image = imageTag.getElementsByTagName("img")[0];
           if(image){
             let thumbUrl = image.getAttribute("src") || "";
-            console.log(thumbUrl);
+            // console.log(thumbUrl);
             singleResult.thumbUrl = thumbUrl == "" ? "":"https://ascii2d.net"+thumbUrl ;
             singleResult.imageUrl = thumbUrl == "" ? "":"https://ascii2d.net"+thumbUrl ;
           }
