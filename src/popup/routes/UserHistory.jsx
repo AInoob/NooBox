@@ -95,6 +95,7 @@ class UserHistory extends React.Component{
                 })
                 return(
                   <Card
+                    key = {record.dbKey}
                     style = {{width: "164px", margin: "auto",}}
                     cover = {<img className ="historyImage" src = {record.data.base64}  onClick = {()=>actions.userHistoryLoadHisotry(record.dbKey)}/>}
                     actions ={[
@@ -113,7 +114,7 @@ class UserHistory extends React.Component{
               key  ="action"
               dataIndex = "action"
               render ={(text,record) =>(
-                <Button onClick = {() =>actions.userHistoryDeleteSingle(record.dbKey)} type ="danger" ><FAIcon  icon ={faSolid.faTrash}/></Button>
+                <Button key = {record.dbKey} onClick = {() =>actions.userHistoryDeleteSingle(record.dbKey)} type ="danger" ><FAIcon  icon ={faSolid.faTrash}/></Button>
               )}
               />
           </Table>
