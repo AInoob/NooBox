@@ -3,6 +3,10 @@ appName:
   message: NooBox
 appDesc:
   message: Tool Box
+#Context Menu
+search_this_image:
+  message: Search This Image
+
 #engine Name:
 google:
   message: Google
