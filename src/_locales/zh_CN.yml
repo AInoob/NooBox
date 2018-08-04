@@ -2,6 +2,13 @@ appName:
     message: 二箱
 appDesc:
     message: 一个实用的工具箱！多引擎以图搜图+提取图片+截图搜索+HTML5视频控制
+#Context Menu
+search_this_image:
+  message: 搜索这张图片
+extract_this_images:
+  message: 提取这张图片
+take_screenshot:
+  message: 截图搜索
 #engine Name:
 google:
   message: 谷歌
@@ -80,6 +87,8 @@ save:
   message: 保存
 clear:
   message: 清除
+no_size_info:
+  message: 无图片尺寸信息
 #About
 about_what:
   message: Noobox 是什么?

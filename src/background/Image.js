@@ -7,6 +7,7 @@ import {engineMap} from 'SRC/constant/settingMap.js';
 import {apiUrls} from 'SRC/constant/searchApiUrl.js';
 import {get,set,getDB,setDB} from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
+import {checkUrlOrBase64} from "SRC/utils/imageUtils";
 import {createNewTab,sendMessage,generateNewTabUrl,createSandbox} from 'SRC/utils/browserUtils'
 export default class Image {
   constructor() {
@@ -111,9 +112,11 @@ export default class Image {
         "id": "imageSearch",
         "title": GL("search_this_image"),
         "contexts": ["image"],
-        "onclick": this.imageSearch
+        "onclick": (image)=>{
+          this.beginImageSearch(image.srcUrl);
+        }
       });
-    }else {
+    }else{
       if (data.Image.imageSearchHandle) {
         browser.contextMenus.remove(data.Image.imageSearchHandle);
         data.Image.imageSearchHandle = null;
@@ -272,47 +275,62 @@ export default class Image {
     let url = await generateNewTabUrl("searchResult.html");
     await createNewTab(url+"#/"+cursor);
   }
-  async beginImageSearch(base64){
+  async beginImageSearch(base64orUrl){
+    let flag = false;
+    let imageLink;
+    //Check base64 or Url
+    switch(checkUrlOrBase64(base64orUrl)){
+      case"base64":
+      const requestBody   = {
+        method: 'POST',  
+        headers: {
+          //'User-Agent': 'Mozilla/4.0 MDN Example',
+          'Content-Type': 'application/json'
+        },
+        mode:"cors",
+        body: JSON.stringify({data:base64orUrl}),
+      }
+      imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+      break;
+      case"url":
+      imageLink = base64orUrl
+      break;
+      default:
+      break;
+    }
     //Generate Image Link
-    const requestBody   = {
-      method: 'POST',  
-      headers: {
-        //'User-Agent': 'Mozilla/4.0 MDN Example',
-        'Content-Type': 'application/json'
-      },
-      mode:"cors",
-      body: JSON.stringify({data:base64}),
-    }
-    const imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
-    console.log(imageLink);
-    let cursor = await getDB('imageCursor');
-    // console.log(cursor);
-    if (typeof (cursor) === 'number') {
-      cursor++;
-    }else{
-      cursor = 0;
-    }
-    let url = await generateNewTabUrl("searchResult.html");
-    await createNewTab(url+"#/"+cursor);
-    reverseImageSearch.updateImage64(base64,cursor);
-    //Get Opened Engine and send request
-    for(let i = 0; i< engineMap.length; i++){
-      let dbName = engineMap[i].dbName;
-      let name   = engineMap[i].name;
-      let check  = await get(dbName);
-      if(check && this.fetchFunction[name+"Link"]){ 
-         if(name === "baidu"){
-           await createSandbox();
-         }
-         if(name === "bing"){
-          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
-         }else if(name == "ascii2d"){
-          this.fetchFunction[name+"Link"](apiUrls[name],imageLink,cursor)
-         }else{
-          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
-         }
+    //console.log(imageLink);
+    if(imageLink){
+      let cursor = await getDB('imageCursor');
+      // console.log(cursor);
+      if (typeof (cursor) === 'number') {
+        cursor++;
+      }else{
+        cursor = 0;
+      }
+      let url = await generateNewTabUrl("searchResult.html");
+      await createNewTab(url+"#/"+cursor);
+      reverseImageSearch.updateImage64(base64orUrl,cursor);
+      //Get Opened Engine and send request
+      for(let i = 0; i< engineMap.length; i++){
+        let dbName = engineMap[i].dbName;
+        let name   = engineMap[i].name;
+        let check  = await get(dbName);
+        if(check && this.fetchFunction[name+"Link"]){ 
+          if(name === "baidu"){
+            await createSandbox();
+          }
+          if(name === "bing"){
+            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
+          }else if(name == "ascii2d"){
+            this.fetchFunction[name+"Link"](apiUrls[name],imageLink,cursor)
+          }else{
+            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
+          }
+        }
       }
     }
+    
   }
 
 }
