@@ -50,20 +50,10 @@ function moveCover(parent) {
   var width = Math.abs(left1 - left2);
   var height = Math.abs(top1 - top2);
   parent.find('.NooBox-screenshot-coverTop').css({
-    width: '100%',
-    height: (top + halfBall) + 'px'
-  });
-  parent.find('.NooBox-screenshot-coverRight').css({
-    width: (canvasWidth - right - halfBall) + 'px',
-    height: '100%'
-  });
-  parent.find('.NooBox-screenshot-coverBottom').css({
-    width: '100%',
-    height: (canvasHeight - bottom - halfBall) + 'px'
-  });
-  parent.find('.NooBox-screenshot-coverLeft').css({
-    width: (left + halfBall) + 'px',
-    height: '100%'
+    top: (top + halfBall) + 'px',
+    left: (left + halfBall) + 'px',
+    width: (right - left) + 'px',
+    height: (bottom - top) + 'px',
   });
   var buttonLeft = right + 2 * halfBall,
       buttonTop = bottom + 2 * halfBall,
@@ -110,10 +100,7 @@ chrome.runtime.onMessage.addListener(
           div.append('<div class="NooBox-screenshot-close" style="' + defautlCSS + 'position:absolute;z-index:3;cursor:pointer;user-select: none;width: 29px;height: 29px;font-size: 30px;text-align: center;line-height:0px;background: rgba(193, 22, 59, 0);"><svg viewBox="0 0 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg"> <g> <line stroke-linecap="null" stroke="#2c93e3" stroke-linejoin="null" id="svg_3" y2="250" x2="250" y1="50" x1="50" stroke-opacity="null" stroke-width="30" fill="none"/> <line stroke="#2c93e3" transform="rotate(-90 142.00000000000003,148.5) " stroke-linecap="null" stroke-linejoin="null" id="svg_5" y2="250" x2="250" y1="50" x1="50" stroke-opacity="null" stroke-width="30" fill="none"/> </g></svg></div>');
           div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="' + defautlCSS + 'z-index:3;cursor:crosshair;left:0;top:0;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
           div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="' + defautlCSS + 'z-index:3;cursor:crosshair;left:0;top:0;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
-          div.append('<div class="NooBox-screenshot-coverTop" style="' + defautlCSS + 'pointer-events: none;position:absolute;top:0;left:0;background-color:rgba(0,0,0,0.418)"></div>');
-          div.append('<div class="NooBox-screenshot-coverRight" style="' + defautlCSS + 'left:initial;pointer-events:none;position:absolute;top:0;right:0;background-color:rgba(0,0,0,0.418)"></div>');
-          div.append('<div class="NooBox-screenshot-coverBottom" style="' + defautlCSS + 'pointer-events: none;position:absolute;bottom:0;left:0;background-color:rgba(0,0,0,0.418)"></div>');
-          div.append('<div class="NooBox-screenshot-coverLeft" style="' + defautlCSS + 'pointer-events:none;position:absolute;left:0;top:0;background-color:rgba(0,0,0,0.418)"></div>');
+          div.append('<div class="NooBox-screenshot-cover" style="' + defautlCSS + 'pointer-events:none;position:absolute;left:0;top:0;background-color:rgba(0,0,0,0.418)"></div>');
           $('body').append(div);
           $('body').append('<style>#NooBox-screenshot svg{width: 100%;height: 100%;}@keyframes shiny{0%{background-color:#2c93e3}50%{background-color:black}100%{background-color:#2c93e3}} .NooBox-shiny{animation: shiny 3s infinite}</style>');
           $('.NooBox-screenshot-close').on('click', function(e) {
