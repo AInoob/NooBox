@@ -39,3 +39,14 @@ export const sortImageByArea = function(data,order){
   }
 }
 
+export const checkUrlOrBase64 = function(item){
+  let isBase64 = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
+  let isUrl = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+  if(item.match(isBase64)){
+    return "base64"
+  }else if(item.match(isUrl)){
+    return "url"
+  }else{
+    return "no"
+  }
+}

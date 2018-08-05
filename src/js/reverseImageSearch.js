@@ -3,33 +3,6 @@ import ajax from 'SRC/utils/ajax.js';
 
 const HTML = new DOMParser();
 // Data Format
-
-// searchImage ={
-//     keyWord:
-//     keyWordLink:
-//     engine:
-//     imageInfo:{
-//      height:""
-//      weight:""
-//     }
-// }
-
-// resultImage ={
-//  title:"",
-//  Image Display Url
-//  thumbUrl:"",
-//  Original Image Url
-//  imageUrl:"",
-//  Image Where url
-//  sourceUrl:"",
-//  Image Info
-//  imageInfo:{
-//    height:""
-//    weight:""
-//  }
-//  searchEngine:"",
-//  description:"",
-// }
 export const reverseImageSearch = {
   updateResultImage:(result,cursor)=>{
     browser.runtime.sendMessage({
@@ -114,7 +87,6 @@ export const reverseImageSearch = {
     const sizeInfo = childNode[0].childNodes[1].childNodes[0].innerHTML.replace(/<br>|&nbsp;|Image size|:|：|图片尺寸|圖片尺寸/g,"");
     if(sizeInfo){
       //"x" is special Character
-     
       let size = sizeInfo.split("×");
       searchImage.imageInfo.width = Number.parseInt(size[0],10);
       searchImage.imageInfo.height = Number.parseInt(size[1],10);
@@ -194,12 +166,17 @@ export const reverseImageSearch = {
         let description = "";
         for(let i = 0; i< tagSpan.length; i++){
           if(i == 0){
-            let size = tagSpan[i].innerHTML.split("-")[0];
-            size = size.replace(/ /g,"").split("×");
-            if(size){
-              singleResult.imageInfo.width = Number.parseInt(size[0],10);
-              singleResult.imageInfo.height =  Number.parseInt(size[1],10);
-            }
+            if(tagSpan[i].innerHTML){
+              let size = tagSpan[i].innerHTML.split("-")[0];
+              size = size.replace(/ /g,"").split("×");
+              if(size){
+                singleResult.imageInfo.width = Number.parseInt(size[0],10);
+                singleResult.imageInfo.height =  Number.parseInt(size[1],10);
+              }
+            }else{
+              singleResult.imageInfo.width = -1;
+              singleResult.imageInfo.height = -1;
+            }  
           }else{
             description += tagSpan[i].innerHTML || tagSpan[i].textContent;
           }
@@ -484,8 +461,8 @@ export const reverseImageSearch = {
         singleResult.title = content[i].text || content[i].displayText || "";
         singleResult.sourceUrl = content[i].webSearchUrl;
         singleResult.imageUrl = content[i].thumbnail.url;
-        singleResult.imageInfo.width = 0;
-        singleResult.imageInfo.height = 0;
+        singleResult.imageInfo.width = -1;
+        singleResult.imageInfo.height = -1;
         results[results.length] = singleResult;
       }
     }
@@ -506,8 +483,8 @@ export const reverseImageSearch = {
         singleResult.title = content[i].text || content[i].displayText || "";
         singleResult.sourceUrl = content[i].webSearchUrl;
         singleResult.imageUrl = content[i].thumbnail.url;
-        singleResult.imageInfo.width = 0;
-        singleResult.imageInfo.height = 0;
+        singleResult.imageInfo.width = -1;
+        singleResult.imageInfo.height = -1;
         results[results.length] = singleResult;
       }
     }
@@ -686,8 +663,8 @@ export const reverseImageSearch = {
             singleResult.title = title.innerHTML;
           }
         }
-        singleResult.imageInfo.height = 0;
-        singleResult.imageInfo.width = 0;
+        singleResult.imageInfo.height = -1;
+        singleResult.imageInfo.width = -1;
         results[results.length] = singleResult;
       }
     }
