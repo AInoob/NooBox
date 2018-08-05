@@ -33,7 +33,7 @@ function getDB(key) {
 }
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if ('job' in request) {
+    if (request.job) {
       if (request.job == 'videoConrolContentScriptSwitch') {
         enabled = request.enabled;
         if (enabled != false) {
