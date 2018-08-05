@@ -3,33 +3,6 @@ import ajax from 'SRC/utils/ajax.js';
 
 const HTML = new DOMParser();
 // Data Format
-
-// searchImage ={
-//     keyWord:
-//     keyWordLink:
-//     engine:
-//     imageInfo:{
-//      height:""
-//      weight:""
-//     }
-// }
-
-// resultImage ={
-//  title:"",
-//  Image Display Url
-//  thumbUrl:"",
-//  Original Image Url
-//  imageUrl:"",
-//  Image Where url
-//  sourceUrl:"",
-//  Image Info
-//  imageInfo:{
-//    height:""
-//    weight:""
-//  }
-//  searchEngine:"",
-//  description:"",
-// }
 export const reverseImageSearch = {
   updateResultImage:(result,cursor)=>{
     browser.runtime.sendMessage({
