@@ -23,14 +23,14 @@ function moveCursor(e) {
     });
     drag.x = e.pageX;
     drag.y = e.pageY;
-    moveCover($(e.target).parent());
+    moveCover(this);
   } else if (newSelection) {
     var parent = $(e.target).parent();
     parent.find('.NooBox-screenshot-cursorBottomRight').offset({
       top: e.pageY - 6,
       left: e.pageX - 6
     });
-    moveCover($(e.target).parent());
+    moveCover(this);
   }
 }
 
@@ -49,7 +49,7 @@ function moveCover(parent) {
   var right = Math.max(left1, left2);
   var width = Math.abs(left1 - left2);
   var height = Math.abs(top1 - top2);
-  parent.find('.NooBox-screenshot-coverTop').css({
+  parent.find('.NooBox-screenshot-cover').css({
     top: (top + halfBall) + 'px',
     left: (left + halfBall) + 'px',
     width: (right - left) + 'px',
@@ -69,12 +69,12 @@ function moveCover(parent) {
   parent.find('.NooBox-screenshot-search').css({
     top: buttonTop + 'px',
     left: buttonLeft + 'px',
-    opacity: buttonOpacity,
+    opacity: buttonOpacity === 1 ? 0.7 : 1,
   });
   parent.find('.NooBox-screenshot-close').css({
     top: buttonTop + 'px',
     left: (buttonLeft + 37) + 'px',
-    opacity: buttonOpacity,
+    opacity: buttonOpacity === 1 ? 0.7 : 1,
   });
 }
 chrome.runtime.onMessage.addListener(
@@ -159,14 +159,13 @@ chrome.runtime.onMessage.addListener(
               newSelection = false;
             }
           });
-          $(document).mousemove(moveCursor);
+          $(document).mousemove(moveCursor.bind(div));
           $(document).mouseup(function() {
             if (drag.state) {
               drag.state = false;
             }
           });
           $('.NooBox-screenshot-search').on('click', function(e) {
-            console.log('searching');
             var left1 = $(e.target).parent().find('.NooBox-screenshot-cursorTopLeft').offset().left;
             var top1 = $(e.target).parent().find('.NooBox-screenshot-cursorTopLeft').offset().top;
             var left2 = $(e.target).parent().find('.NooBox-screenshot-cursorBottomRight').offset().left;
@@ -185,7 +184,6 @@ chrome.runtime.onMessage.addListener(
             var ctx = canvas1.getContext('2d');
             ctx.putImageData(imgData, 0, 0);
             var dataURL = canvas1.toDataURL();
-            console.log(dataURL);
             chrome.extension.sendMessage({
               job: 'imageSearch_upload',
               data: dataURL
