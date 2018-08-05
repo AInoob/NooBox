@@ -28,6 +28,7 @@ function getImages() {
   const linkImage = $('#linkImage').prop('checked');
   let notification = false;
   const val = $('#NooBox-extractImages-selector-range').val();
+  console.log(val);
   const gallery = $('#NooBox-extractImages-gallery')[0];
   $(gallery).empty();
   imgSet = {};
@@ -129,7 +130,7 @@ const initExtractImage = function() {
               "background-color": "rgba(153,153,153,0.8)",
               "padding": "50px 100px 0 100px",
               "position": "fixed",
-              "width": "100%",
+              "width": "1000px",
               "top": 0,
             });
             let max = 1;
@@ -140,11 +141,25 @@ const initExtractImage = function() {
             }
             div.append(
               '<div style = "'+
-
+                'position: absolute;'+
+                'top: 10%;'+
+                'left: 120px;'+
+                'width: 25%;'+
               '">'+
-                '<h3>'+ "extract_range"+
+                '<h3 style ="margin-bottom: 10px;">'+ "提取范围 / 提取範圍 / Extract Range"+
                 '</h3>'+
                 '<input '+
+                  'style = "'+
+                    '-webkit-appearance: none;'+ 
+                    'appearance: none;'+
+                    'width: 100%;'+
+                    'height: 16px;'+
+                    'background: #d3d3d3;'+
+                    'outline: none;'+
+                    'opacity: 0.7;'+
+                    '-webkit-transition: .2s;'+
+                    'transition: opacity .2s;'+
+                  '"'+
                   'type= "range" '+
                   'id="NooBox-extractImages-selector-range"'+
                   'value="1"'+
@@ -159,9 +174,9 @@ const initExtractImage = function() {
                             'width="32px" '+
                             'height="32px"'+
                             'viewBox="0 0 352 512"'+
-                            'style ="position: fixed;'+
-                                    'top: 5%;'+
-                                    'right: 20%;'+
+                            'style ="position: absolute;'+
+                                    'top: 10%;'+
+                                    'right: 10%;'+
                                   '">'+
                             '<path fill="black" '+
                               'd="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">'+
@@ -178,7 +193,7 @@ const initExtractImage = function() {
                             'display: flex;'+
                             'flex-direction: row;'+
                             'flex-wrap: wrap;'+
-                            'margin-top:32px"></div>');
+                            'margin-top:15%"></div>');
             div.append(div2);
             $(document.body).append(div);
             getImages();

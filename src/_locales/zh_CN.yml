@@ -116,7 +116,9 @@ about_privacy_message_5:
   message: 不, 从不 !
 about_privacy_message_6:
   message: Noobox 仅仅知道有多少人在使用,仅此而已
-
+#extract image page
+extract_range:
+  message: 提取范围
 # history:
 #     message: 历史
 # options:
