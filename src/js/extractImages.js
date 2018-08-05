@@ -131,8 +131,10 @@ const initExtractImage = function() {
               "padding": "50px 100px 0 100px",
               "position": "fixed",
               "width": "1000px",
-              "margin":"auto",
+              "margin":" 0 auto",
               "top": 0,
+              "left": 0,
+              "right": 0,
             });
             let max = 1;
             let tempFocus = focus;
