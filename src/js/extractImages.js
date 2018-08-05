@@ -108,7 +108,7 @@ const initExtractImage = function() {
       function(request, sender, sendResponse) {
         if (request.job) {
           if (request.job == "extractImages") {
-            $(document.head).append('<style>#NooBox-extractImages,#NooBox-extractImages *{margin:0;padding:0;border-radius:0;background:none}input[type="checkbox"] ~ .inputLabel{cursor:pointer;position:absolute;margin-top: -18px !important;margin-left: 19px !important;width: 174px;height: 28px;border: 4px solid transparent;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(4deg);transform: rotate(4deg);}input[type="checkbox"]:checked ~ .inputLabel{margin-top:-12px;margin-left:163px;width: 18px;height: 38px;border: 4px solid transparent;border-right: 4px solid #5667bb;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(40deg);transform: rotate(40deg);}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}#NooBox-extractImages-download{width:20px;height:20px;float: left;cursor:pointer;background-size: 20px 20px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTIuNTE5IDUyLjUxOSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTIuNTE5IDUyLjUxOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIHN0eWxlPSJmaWxsOiMyNkI5OUE7IiBkPSJNMTYuMDQ5LDMxLjEzN0g0LjAwMWwyMC4wOCwxOS45NzFsMjAuMDgtMTkuOTcxSDMyLjExM2MwLDAtNC4yOTItMTcuNzM1LDE2LjA2NC0yOS44NDljMCwwLTE1LjUzNi0zLjAyLTI2Ljc5NCwxMC41MUMyMS4zODIsMTEuNzk3LDE1LjY1MSwxNy45MjcsMTYuMDQ5LDMxLjEzN3oiLz48cGF0aCBzdHlsZT0iZmlsbDojMjZCOTlBOyIgZD0iTTI0LjA4MSw1Mi41MTlMMS41NzcsMzAuMTM3SDE1LjAzYy0wLjA5Mi0xMi43NTksNS4zODMtMTguNzY3LDUuNjIyLTE5LjAyMkMyOC42OTEsMS40NSwzOC45MzMsMCw0NC4zMTgsMGMyLjQ0NiwwLDMuOTg1LDAuMjk0LDQuMDQ5LDAuMzA3bDIuNTc0LDAuNWwtMi4yNTMsMS4zNDFDMzEuMzcxLDEyLjQ1MywzMi4zOTQsMjYuNjYzLDMyLjk0LDMwLjEzN2gxMy42NDVMMjQuMDgxLDUyLjUxOXogTTYuNDI1LDMyLjEzN2wxNy42NTYsMTcuNTYybDE3LjY1Ni0xNy41NjJIMzEuMzI2bC0wLjE4NS0wLjc2NWMtMC4wNDMtMC4xNzctMy44ODEtMTcuMDgyLDE0LjA0MS0yOS4zNThjLTQuNzg0LTAuMTUtMTUuMDIsMC43OTUtMjMuMDMxLDEwLjQyM2MtMC4wOTEsMC4xLTUuNDgxLDYuMDg5LTUuMTAzLDE4LjY3bDAuMDMsMS4wM0g2LjQyNXoiLz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PGc+PC9nPjxnPjwvZz48Zz48L2c+PC9zdmc+);}#NooBox-extractImages-downloadRemaining{color:white;float:left}</style>');
+            $(document.head).append('<style>#NooBox-extractImages,#NooBox-extractImages *{margin:0;padding:0;border-radius:0;background:none}input[type="checkbox"] ~ .inputLabel{cursor:pointer;position:absolute;margin-top: -18px !important;margin-left: 19px !important;width: 174px;height: 28px;border: 4px solid transparent;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(4deg);transform: rotate(4deg);}input[type="checkbox"]:checked ~ .inputLabel{margin-top:-12px;margin-left:163px;width: 18px;height: 38px;border: 4px solid transparent;border-right: 4px solid #5667bb;border-bottom: 4px solid #5667bb;-webkit-transform: rotate(40deg);transform: rotate(40deg);}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none!important;background-color:#E9E9E9;border:1pxsolid#CECECE;height:15px;width:15px;}#NooBox-extractImages-downloadRemaining{color:white;float:left}</style>');
             if (!focus || focus.tagName == 'HTML') {
               focus = document.body;
             }
@@ -131,6 +131,7 @@ const initExtractImage = function() {
               "padding": "50px 100px 0 100px",
               "position": "fixed",
               "width": "1000px",
+              "margin":"auto",
               "top": 0,
             });
             let max = 1;
@@ -144,29 +145,49 @@ const initExtractImage = function() {
                 'position: absolute;'+
                 'top: 10%;'+
                 'left: 120px;'+
-                'width: 25%;'+
+                'width: 40%;'+
               '">'+
-                '<h3 style ="margin-bottom: 10px;">'+ "提取范围 / 提取範圍 / Extract Range"+
-                '</h3>'+
-                '<input '+
-                  'style = "'+
-                    '-webkit-appearance: none;'+ 
-                    'appearance: none;'+
-                    'width: 100%;'+
-                    'height: 16px;'+
-                    'background: #d3d3d3;'+
-                    'outline: none;'+
-                    'opacity: 0.7;'+
-                    '-webkit-transition: .2s;'+
-                    'transition: opacity .2s;'+
-                  '"'+
-                  'type= "range" '+
-                  'id="NooBox-extractImages-selector-range"'+
-                  'value="1"'+
-                  'min="1" '+
-                  'max="' + 
-                   max + 
-                  '" step="1">'+
+                '<div style = "width: 40%; display:inline-block; margin-right: 30px">'+
+                  '<h3 style ="'+
+                  'margin-bottom: 10px;'+
+                  'font-size: 18px;'+
+                 
+                  '">'+ chrome.i18n.getMessage('extract_range')+
+                  '</h3>'+
+                  '<input '+
+                    'style = "'+
+                      '-webkit-appearance: none;'+ 
+                      'appearance: none;'+
+                      'width: 100%;'+
+                      'height: 16px;'+
+                      'background: #d3d3d3;'+
+                      'outline: none;'+
+                      'opacity: 0.7;'+
+                      '-webkit-transition: .2s;'+
+                      'transition: opacity .2s;'+
+                    '"'+
+                    'type= "range" '+
+                    'id="NooBox-extractImages-selector-range"'+
+                    'value="1"'+
+                    'min="1" '+
+                    'max="' + 
+                    max + 
+                    '" step="1">'+
+                '</div>'+
+                '<div style = "width: 40%; display:inline-block; margin-right: 30px">'+
+                  '<svg '+
+                    'id = "NooBox-extractImages-download"'+
+                    'height= "24px" '+
+                    'width = "24px" '+
+                    'data-icon="download" '+
+                    'viewBox="0 0 512 512" '+
+                    'cursor = "pointer"'+
+                    '>'+
+                      '<path fill="currentColor" '+
+                        'd="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z" class="">'+
+                        '</path>'+
+                  '</svg>'+
+                '</div>'+
               '</div>');
             div.append(
                           '<svg '+
@@ -220,7 +241,6 @@ const initExtractImage = function() {
             });
             $('#NooBox-extractImages-switch').on('click', function(e) {
               $("#NooBox-extractImages").remove();
-             
             });
             $('#NooBox-extractImages-download').on('click', function(e) {
               const files = [];

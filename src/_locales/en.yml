@@ -131,7 +131,8 @@ no_size_info:
 #extract image page
 extract_range:
   message: Extract Range
-
+download_all_image:
+  message: Download All Image
 
 # #Old Language Pack
 # overview:
