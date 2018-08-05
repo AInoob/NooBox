@@ -66,35 +66,6 @@ avaiable_engine:
     message: Available Engines Setting
 experience:
     message: Experience Setting
-#Image Search
-download:
-  message: Download
-search_again:
-  message: Search Again
-display_mode:
-  message: Display Mode
-list:
-  message: List
-image_wall:
-  message: Image Wall
-area:
-  message: Area
-width:
-  message: Width
-height:
-  message: Height
-increase:
-  message: Ascending
-decrease:
-  message: Descending
-sort_by:
-  message: Sort By
-save:
-  message: SAVE
-clear:
-  message: CLEAR
-no_size_info:
-  message: No Size Info
 #About
 about_what:
   message: What is Noobox ?
@@ -128,7 +99,38 @@ about_development:
   message: Developing Status
 about_feedback:
   message: Feedback 
-#Image Search Page
+#Image Search
+download:
+  message: Download
+search_again:
+  message: Search Again
+display_mode:
+  message: Display Mode
+list:
+  message: List
+image_wall:
+  message: Image Wall
+area:
+  message: Area
+width:
+  message: Width
+height:
+  message: Height
+increase:
+  message: Ascending
+decrease:
+  message: Descending
+sort_by:
+  message: Sort By
+save:
+  message: SAVE
+clear:
+  message: CLEAR
+no_size_info:
+  message: No Size Info
+#extract image page
+extract_range:
+  message: Extract Range
 
 
 # #Old Language Pack
