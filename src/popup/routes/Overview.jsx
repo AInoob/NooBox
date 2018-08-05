@@ -8,10 +8,10 @@ import UploadImage from "SRC/popup/components/overview/UploadImage.jsx";
 import AutoRefresh from "SRC/popup/components/overview/AutoRefresh.jsx";
 import H5VideoControl from "SRC/popup/components/overview/H5VideoControl.jsx";
 import Loader      from "SRC/common/component/Loader.jsx";
-import FAIcon from '@fortawesome/react-fontawesome';
-import faSolid from '@fortawesome/fontawesome-free-solid';
-import styled from "styled-components";
-import emoji   from "SRC/assets/funSh*t/emoji.svg";
+import FAIcon     from '@fortawesome/react-fontawesome';
+import faSolid  from '@fortawesome/fontawesome-free-solid';
+import styled   from "styled-components";
+import emoji    from "SRC/assets/funSh*t/emoji.svg";
 const OverviewContainer = styled.div`
    margin-bottom:10px;
   .uploadImage{
@@ -111,7 +111,7 @@ class Overview extends React.Component{
             <FAIcon icon ={faSolid.faArrowUp}/>
           </div>
           <div className = "description">
-            <span>{i18n("Choose Tools From Here")}</span>
+            <span>{i18n("choose_tools_from_here") + " ?"}</span>
           </div>
           <div className = "emoji">
             <img src ={emoji}/>
