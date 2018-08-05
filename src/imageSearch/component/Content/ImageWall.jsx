@@ -68,7 +68,10 @@ export default class ImageWall extends React.Component{
         thatCol[thatCol.length]=(
           <div  key = {count} >
             <Popover  content ={<div style ={popoverContent}>
-                                            <p>{item.imageInfo.width +"x" +item.imageInfo.height}</p>
+                                            {
+                                              item.imageInfo.width == -1 ?<p>{i18n("no_size_info")}</p>:
+                                              <p>{item.imageInfo.width +"x" +item.imageInfo.height}</p>
+                                            }
                                             {item.description}
                                           </div>} 
                                  title ={<div style ={popoverContent}>
@@ -77,14 +80,11 @@ export default class ImageWall extends React.Component{
             <Card
               hoverable = {true}
               style ={{ width: "100%",minHeight:60 }}
-              // actions={[<FAIcon onClick={()=> this.showModal(item.imageUrl)}icon ={faSolid.faSearchPlus} />,
-              //           <FAIcon icon ={faSolid.faDownload}/>]}
               cover ={<img alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
             >
               <div className = "cardMetaWrapper">
                   <Card.Meta
                     avatar={<Avatar src={engineIcon[item["searchEngine"]]} />}
-                    // title={<p>{item.imageInfo.width +"x" +item.imageInfo.height}</p>}
                   />
               </div>  
             </Card>
