@@ -151,8 +151,8 @@ extract_range:
 #     message: 以圖搜圖
 # imageSearch:
 #     message: 以圖搜圖
-# extractImages:
-#     message: 擷取圖片
+extractImages:
+    message: 擷取圖片
 # screenshotSearch:
 #     message: 擷圖搜尋
 # search:
