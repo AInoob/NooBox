@@ -162,8 +162,8 @@ extract_range:
 #     message: Reverse Image Search
 # imageSearch:
 #     message: Reverse Image Search
-# extractImages:
-#     message: Extract images
+extractImages:
+    message: Extract images
 # screenshotSearch:
 #     message: 'Screenshot & Search'
 # search:

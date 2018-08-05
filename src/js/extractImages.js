@@ -146,7 +146,7 @@ const initExtractImage = function() {
                 'left: 120px;'+
                 'width: 25%;'+
               '">'+
-                '<h3 style ="margin-bottom: 10px;">'+ "提取范围 / 提取範圍 / Extract Range"+
+                '<h3 style ="margin-bottom: 10px;">'+ chrome.i18n.getMessage('extractImages') +
                 '</h3>'+
                 '<input '+
                   'style = "'+
