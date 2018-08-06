@@ -12,6 +12,11 @@ var delta = {
 };
 var newSelection = false;
 
+var left1,
+    left2,
+    top1,
+    top2;
+
 function moveCursor(e) {
   if (drag.state && !newSelection) {
     delta.x = e.pageX - drag.x;
@@ -35,10 +40,6 @@ function moveCursor(e) {
 }
 
 function moveCover(parent) {
-  var left1 = parent.find('.NooBox-screenshot-cursorTopLeft').offset().left;
-  var top1 = parent.find('.NooBox-screenshot-cursorTopLeft').offset().top;
-  var left2 = parent.find('.NooBox-screenshot-cursorBottomRight').offset().left;
-  var top2 = parent.find('.NooBox-screenshot-cursorBottomRight').offset().top;
   var canvasTop = parent.find('.NooBox-screenshot-canvas').offset().top;
   var canvasLeft = parent.find('.NooBox-screenshot-canvas').offset().left;
   var canvasWidth = parent.find('.NooBox-screenshot-canvas').width();
@@ -98,8 +99,6 @@ chrome.runtime.onMessage.addListener(
           div.append('<div class="NooBox-screenshot-search" style="' + defautlCSS + 'cursor:pointer;box-sizing:content-box;height:29px;width:29px;position:absolute;z-index:3;float:right;background-color:rgba(130, 186, 255, 0);"><svg viewBox="0 0 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg"> <g> <ellipse ry="87" rx="86" id="svg_1" cy="121.999997" cx="123.000003" stroke-width="25" stroke="#2c93e3" fill="#000000" fill-opacity="0"/> <line stroke-linecap="null" stroke-linejoin="null" id="svg_3" y2="267.499998" x2="251.500004" y1="193.5" x1="185.5" stroke-opacity="null" stroke-width="30" stroke="#2c93e3" fill="none"/> </g></svg></div>');
           div.append('<canvas width=' + img.width + ' height=' + img.height + ' style="' + defautlCSS + 'height:100%;width:100%;top:0;left:0;position:absolute" class="NooBox-screenshot-canvas"></canvas>');
           div.append('<div class="NooBox-screenshot-close" style="' + defautlCSS + 'position:absolute;z-index:3;cursor:pointer;user-select: none;width: 29px;height: 29px;font-size: 30px;text-align: center;line-height:0px;background: rgba(193, 22, 59, 0);"><svg viewBox="0 0 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg"> <g> <line stroke-linecap="null" stroke="#2c93e3" stroke-linejoin="null" id="svg_3" y2="250" x2="250" y1="50" x1="50" stroke-opacity="null" stroke-width="30" fill="none"/> <line stroke="#2c93e3" transform="rotate(-90 142.00000000000003,148.5) " stroke-linecap="null" stroke-linejoin="null" id="svg_5" y2="250" x2="250" y1="50" x1="50" stroke-opacity="null" stroke-width="30" fill="none"/> </g></svg></div>');
-          div.append('<div class="NooBox-screenshot-cursorTopLeft NooBox-shiny" style="' + defautlCSS + 'z-index:3;cursor:crosshair;left:0;top:0;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
-          div.append('<div class="NooBox-screenshot-cursorBottomRight NooBox-shiny" style="' + defautlCSS + 'z-index:3;cursor:crosshair;left:0;top:0;position:absolute;border-radius:50%;width:12px;height:12px"></div>');
           div.append('<div class="NooBox-screenshot-cover" style="' + defautlCSS + 'pointer-events:none;position:absolute;left:0;top:0;background-color:rgba(0,0,0,0.418)"></div>');
           $('body').append(div);
           $('body').append('<style>#NooBox-screenshot svg{width: 100%;height: 100%;}@keyframes shiny{0%{background-color:#2c93e3}50%{background-color:black}100%{background-color:#2c93e3}} .NooBox-shiny{animation: shiny 3s infinite}</style>');
@@ -113,63 +112,44 @@ chrome.runtime.onMessage.addListener(
               $(div).remove();
             }
           });
-          $(div).find('.NooBox-screenshot-cursorTopLeft').offset({
-            top: (canvasHeight / 3),
-            left:(canvasWidth / 3),
-          });
-          $(div).find('.NooBox-screenshot-cursorBottomRight').offset({
-            top: (2 * canvasHeight / 3),
-            left:(2 * canvasWidth / 3),
-          });
+          top1 = canvasHeight / 3;
+          left1 = canvasWidth / 3;
+          top2 = 2 * canvasHeight / 3;
+          left2 = 2 * canvasWidth / 3;
           moveCover(div);
-          $('.NooBox-screenshot-cursorTopLeft').on('mousedown', function(e) {
-            if (!drag.state) {
-              drag.elem = this;
-              drag.x = e.pageX;
-              drag.y = e.pageY;
-              drag.state = true;
-            }
-          });
-          $('.NooBox-screenshot-cursorBottomRight').on('mousedown', function(e) {
-            if (!drag.state) {
-              drag.elem = this;
-              drag.x = e.pageX;
-              drag.y = e.pageY;
-              drag.state = true;
-            }
-          });
           $('.NooBox-screenshot-canvas').on('mousedown', function(e) {
+            console.log('canvas down');
             if (!newSelection) {
               newSelection = true;
-              var parent = $(e.target).parent();
-              parent.find('.NooBox-screenshot-cursorTopLeft').offset({
-                top: e.pageY,
-                left: e.pageX
-              });
-              moveCover($(e.target).parent());
+              left1 = e.pageX;
+              top1 = e.pageY;
+              moveCover(div);
             }
           });
           $('.NooBox-screenshot-canvas').on('mouseup', function(e) {
+            console.log('canvas up');
             if (newSelection) {
+              left2 = e.pageX;
+              top2 = e.pageY;
               newSelection = false;
+              moveCover(div);
             }
           });
-          $('.NooBox-screenshot-cursorBottomRight').on('mouseup', function(e) {
+          $(document).mousemove(function (e) {
+            console.log('body move');
             if (newSelection) {
-              newSelection = false;
+              left2 = e.pageX;
+              top2 = e.pageY;
+              moveCover(div);
             }
           });
-          $(document).mousemove(moveCursor.bind(div));
           $(document).mouseup(function() {
-            if (drag.state) {
-              drag.state = false;
+            console.log('body up');
+            if (newSelection) {
+              newSelection = false;
             }
           });
           $('.NooBox-screenshot-search').on('click', function(e) {
-            var left1 = $(e.target).parent().find('.NooBox-screenshot-cursorTopLeft').offset().left;
-            var top1 = $(e.target).parent().find('.NooBox-screenshot-cursorTopLeft').offset().top;
-            var left2 = $(e.target).parent().find('.NooBox-screenshot-cursorBottomRight').offset().left;
-            var top2 = $(e.target).parent().find('.NooBox-screenshot-cursorBottomRight').offset().top;
             var left = Math.min(left1, left2) + halfBall;
             var top = Math.min(top1, top2) + halfBall;
             var width = Math.abs(left1 - left2);
