@@ -104,6 +104,7 @@ chrome.runtime.onMessage.addListener(
           $('body').append('<style>#NooBox-screenshot svg{width: 100%;height: 100%;}@keyframes shiny{0%{background-color:#2c93e3}50%{background-color:black}100%{background-color:#2c93e3}} .NooBox-shiny{animation: shiny 3s infinite}</style>');
           $('.NooBox-screenshot-close').on('click', function(e) {
             $(div).remove();
+              $(document).off('mousemove');
           });
           var canvasWidth = $(div).find('.NooBox-screenshot-canvas').width();
           var canvasHeight = $(div).find('.NooBox-screenshot-canvas').height();
@@ -118,7 +119,6 @@ chrome.runtime.onMessage.addListener(
           left2 = 2 * canvasWidth / 3;
           moveCover(div);
           $('.NooBox-screenshot-canvas').on('mousedown', function(e) {
-            console.log('canvas down');
             if (!newSelection) {
               newSelection = true;
               left1 = e.pageX;
@@ -127,7 +127,6 @@ chrome.runtime.onMessage.addListener(
             }
           });
           $('.NooBox-screenshot-canvas').on('mouseup', function(e) {
-            console.log('canvas up');
             if (newSelection) {
               left2 = e.pageX;
               top2 = e.pageY;
@@ -136,17 +135,10 @@ chrome.runtime.onMessage.addListener(
             }
           });
           $(document).mousemove(function (e) {
-            console.log('body move');
             if (newSelection) {
               left2 = e.pageX;
               top2 = e.pageY;
               moveCover(div);
-            }
-          });
-          $(document).mouseup(function() {
-            console.log('body up');
-            if (newSelection) {
-              newSelection = false;
             }
           });
           $('.NooBox-screenshot-search').on('click', function(e) {
@@ -154,10 +146,10 @@ chrome.runtime.onMessage.addListener(
             var top = Math.min(top1, top2) + halfBall;
             var width = Math.abs(left1 - left2);
             var height = Math.abs(top1 - top2);
-            var canvasTop = $(e.target).parent().find('.NooBox-screenshot-canvas').offset().top;
-            var canvasLeft = $(e.target).parent().find('.NooBox-screenshot-canvas').offset().left;
-            var ratio = img.height / $(e.target).parent().find('.NooBox-screenshot-canvas').height();
-            var imgData = $(e.target).parent().find('.NooBox-screenshot-canvas')[0].getContext('2d').getImageData((left - canvasLeft) * ratio, (top - canvasTop) * ratio, (width) * ratio, (height) * ratio);
+            var canvasTop = $(div).find('.NooBox-screenshot-canvas').offset().top;
+            var canvasLeft = $(div).find('.NooBox-screenshot-canvas').offset().left;
+            var ratio = img.height / $(div).find('.NooBox-screenshot-canvas').height();
+            var imgData = $(div).find('.NooBox-screenshot-canvas')[0].getContext('2d').getImageData((left - canvasLeft) * ratio, (top - canvasTop) * ratio, (width) * ratio, (height) * ratio);
             var canvas1 = document.createElement("canvas");
             canvas1.width = (width) * ratio;
             canvas1.height = (height) * ratio;
@@ -165,8 +157,8 @@ chrome.runtime.onMessage.addListener(
             ctx.putImageData(imgData, 0, 0);
             var dataURL = canvas1.toDataURL();
             chrome.extension.sendMessage({
-              job: 'imageSearch_upload',
-              data: dataURL
+              job: 'beginImageSearch',
+              base64: dataURL
             });
           });
           setTimeout(loadScreenshot, 300);
