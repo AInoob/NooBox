@@ -20,7 +20,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     return;
   }
   const job = request.job;
-  console.log(request);
+  // console.log(request);
   if (job === 'updateAutoRefresh') {
     const { tabId, interval, active, startAt } = request;
     const autoRefreshStatus = autoRefresh.update(tabId, active, interval, startAt, true);

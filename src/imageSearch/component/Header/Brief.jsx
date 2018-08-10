@@ -46,12 +46,12 @@ export default class Brief extends React.Component{
         <BriefContainer>
             <Card
               style={{ width: "100%" }}
-              cover={<img alt="example" src={base64} />}
+              cover={<img id = "searchImage" alt="example" src={base64} />}
               actions={[<Tooltip placement = "top" title={i18n("download")}>
                          <FAIcon icon ={faSolid.faDownload}/>
                         </Tooltip>,
                         <Tooltip placement = "top" title={i18n("search_again")}>
-                          <FAIcon icon ={faSolid.faUpload}/>
+                          <FAIcon onClick = {()=>this.props.searchAgain(document.getElementById("searchImage"))} icon ={faSolid.faUpload}/>
                         </Tooltip>
                        ]}
             >

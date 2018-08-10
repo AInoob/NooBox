@@ -50,7 +50,7 @@ export default class Image {
     serverUrls.forEach(async server => {
       let startTime = new Date().getTime();
       await ajax('https://' + server + pingPath);
-      console.log('fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server);
+      // console.log('fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server);
       if (!fastestServer) {
         fastestServer = server;
         this.updateImageUploadUrl(server);
@@ -275,6 +275,7 @@ export default class Image {
     let url = await generateNewTabUrl("searchResult.html");
     await createNewTab(url+"#/"+cursor);
   }
+
   async beginImageSearch(base64orUrl){
     let flag = false;
     let imageLink;
