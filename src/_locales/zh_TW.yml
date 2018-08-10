@@ -67,6 +67,8 @@ download:
   message: 下載圖片
 search_again:
   message: 重新搜索
+upload_search:
+  message: 如沒有結果，請嘗試點擊
 list:
   message: 圖片列表
 sort_by:

@@ -279,6 +279,7 @@ export default class Image {
   async beginImageSearch(base64orUrl){
     let flag = false;
     let imageLink;
+    let base64Flag = true;
     //Check base64 or Url
     switch(checkUrlOrBase64(base64orUrl)){
       case"base64":
@@ -294,7 +295,8 @@ export default class Image {
       imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
       break;
       case"url":
-      imageLink = base64orUrl
+      imageLink = base64orUrl;
+      base64Flag = false;
       break;
       default:
       break;
@@ -311,7 +313,13 @@ export default class Image {
       }
       let url = await generateNewTabUrl("searchResult.html");
       await createNewTab(url+"#/"+cursor);
-      reverseImageSearch.updateImage64(base64orUrl,cursor);
+
+      if(base64Flag){
+        reverseImageSearch.updateImage64(base64orUrl,cursor);
+      }else{
+        reverseImageSearch.updateImageUrl(base64orUrl,cursor);
+      }
+
       //Get Opened Engine and send request
       for(let i = 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;

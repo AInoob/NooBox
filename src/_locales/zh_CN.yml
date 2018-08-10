@@ -67,6 +67,8 @@ download:
   message: 下载图片
 search_again:
   message: 重新搜索
+upload_search:
+  message: 如没有结果，请尝试点击
 list:
   message: 图片列表
 image_wall:
