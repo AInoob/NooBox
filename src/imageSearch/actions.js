@@ -4,3 +4,4 @@ export const imageSearchInit = createAction("imageSearch/init");
 export const imageSearchUpdateDisplayMode = createAction("imageSearch/updateDisplayMode");
 export const imageSearchSortBy = createAction("imageSearch/updateSortBy");
 export const imageSearchSoryByOrder = createAction("imageSearch/updateSortByOrder");
+export const imageSearchUploadSearchAgain = createAction('imageSearch/uploadSearchAgain');

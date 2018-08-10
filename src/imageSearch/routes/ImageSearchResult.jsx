@@ -38,7 +38,9 @@ class ImageSearchResult extends React.Component{
             <Row  type="flex" align="bottom">
               <Col span ={11}>
                 <Brief base64 ={imageSearch.base64} 
-                       imageInfo = {imageSearch.searchImageInfo}/>
+                       imageInfo = {imageSearch.searchImageInfo}
+                       searchAgain ={actions.imageSearchUploadSearchAgain}
+                       />
               </Col>
               <Col span ={2}/>
               <Col span ={11}>

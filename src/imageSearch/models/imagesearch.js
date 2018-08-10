@@ -1,5 +1,6 @@
 import {engineMap} from 'SRC/constant/settingMap.js';
 import {get,set,getDB,setDB} from 'SRC/utils/db.js';
+import { sendMessage } from 'SRC/utils/browserUtils';
 export default {
   namespace:"imageSearch",
   state:{
@@ -90,12 +91,26 @@ export default {
       yield put({type:"updateState",payload:engineStatus})
     },
     *updateDisplayMode({payload},{call,put}){
-      console.log(payload);
+      // console.log(payload);
        yield call(set,"displayMode",payload);
        yield put({type:"updateState",payload:{displayMode:payload}})
     },
+    *uploadSearchAgain({payload},{call,put}){
+      const img = payload;
+      const workerCanvas = document.createElement('canvas');
+      const workerCtx = workerCanvas.getContext('2d');
+      workerCanvas.width = img.naturalWidth;
+      workerCanvas.height = img.naturalHeight;
+      workerCtx.drawImage(img, 0, 0);
+      const imgDataURI = workerCanvas.toDataURL();
+      let message ={
+        job: "beginImageSearch",
+        base64: imgDataURI,
+      }
+      yield call(sendMessage,message);
+    },
     *updateEngineDone({payload},{call,put,select}){
-      console.log(payload);
+      // console.log(payload);
       let{base64,searchImageInfo,searchResult,pageId} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
         let data ={
