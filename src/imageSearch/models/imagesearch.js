@@ -1,12 +1,14 @@
 import {engineMap} from 'SRC/constant/settingMap.js';
 import {get,set,getDB,setDB} from 'SRC/utils/db.js';
 import { sendMessage } from 'SRC/utils/browserUtils';
+import { imageSearchUploadSearchAgain } from '../actions';
 export default {
   namespace:"imageSearch",
   state:{
     pageId:"",
     inited:false,
     base64:"",
+    url:"",
     searchImageInfo:[],
     searchResult:[],
     displayMode:2,
@@ -57,6 +59,7 @@ export default {
         let hasDataBase = yield call(getDB,Number.parseInt(payload));
         if(hasDataBase){
           engineStatus.base64 = hasDataBase.base64;
+          engineStatus.url = hasDataBase.url;
           engineStatus.searchImageInfo = hasDataBase.searchImageInfo;
           engineStatus.searchResult = hasDataBase.searchResult;
           dataBaseFlag = true;
@@ -95,7 +98,7 @@ export default {
        yield call(set,"displayMode",payload);
        yield put({type:"updateState",payload:{displayMode:payload}})
     },
-    *uploadSearchAgain({payload},{call,put}){
+    *uploadSearch({payload},{call,put}){
       const img = payload;
       const workerCanvas = document.createElement('canvas');
       const workerCtx = workerCanvas.getContext('2d');
@@ -109,12 +112,22 @@ export default {
       }
       yield call(sendMessage,message);
     },
+    *searchAgain({payload},{call,put}){
+      let{base64,url} = yield select(state => state.imageSearch);
+      let message ={
+        job: "beginImageSearch",
+        base64: base64 == ""? url : base64,
+      }
+      yield call(sendMessage,message);
+    },
+    //Store DB after finish all
     *updateEngineDone({payload},{call,put,select}){
       // console.log(payload);
-      let{base64,searchImageInfo,searchResult,pageId} = yield select(state => state.imageSearch);
+      let{base64,url,searchImageInfo,searchResult,pageId} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
         let data ={
           base64,
+          url,
           searchImageInfo,
           searchResult,
         }
@@ -138,13 +151,21 @@ export default {
       return Object.assign({},state,{sortByOrder:payload})
     },
 
-    updateImageData(state,{payload}){
+    updateImageBase64(state,{payload}){
       let {pageId} = state;
       if(pageId == payload.cursor){
         return Object.assign({},state,{base64:payload.result});
       }else{
         return state;
       } 
+    },
+    updateImageUrl(state, {payload}){
+      let {pageId} = state;
+      if(pageId == payload.cursor){
+        return Object.assign({},state,{url:payload.result});
+      }else{
+        return state;
+      }
     },
     updateSearchResult(state,{payload}){
       let { pageId,searchResult } = state;
@@ -191,10 +212,16 @@ export default {
             result: message.result
           }
         }else if(message.job === "image_base64"){
-          type ="updateImageData"
+          type ="updateImageBase64"
           payload ={
             cursor:message.cursor,
             result:message.result,
+          }
+        }else if(message.job === "image_url"){
+          type = "updateImageUrl"
+          payload = {
+            cursor: message.cursor,
+            result: message.result
           }
         }
         if(type){

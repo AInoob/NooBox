@@ -28,7 +28,7 @@ class ImageSearchResult extends React.Component{
   }
   render(){
     const{actions,imageSearch,match} = this.props;
-    console.log(match);
+    // console.log(match);
     if(!imageSearch.inited){
       return(<Loader/>)
     }else{
@@ -38,8 +38,10 @@ class ImageSearchResult extends React.Component{
             <Row  type="flex" align="bottom">
               <Col span ={11}>
                 <Brief base64 ={imageSearch.base64} 
+                       url = {imageSearch.url}
                        imageInfo = {imageSearch.searchImageInfo}
-                       searchAgain ={actions.imageSearchUploadSearchAgain}
+                       uploadSearch ={actions.imageSearchUploadSearch}
+  
                        />
               </Col>
               <Col span ={2}/>

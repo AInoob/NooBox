@@ -38,6 +38,13 @@ export const reverseImageSearch = {
       // console.log("Send base 64 Message");
     })
   },
+  updateImageUrl:(url,cursor) =>{
+    browser.runtime.sendMessage({
+      job:'image_url',
+      result:url,
+      cursor:cursor,
+    },()=>{})
+  },
   waitForSandBox:(parseObj) =>{
     return new Promise(function(resolve,reject){
       //移除 listener

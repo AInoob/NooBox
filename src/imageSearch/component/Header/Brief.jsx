@@ -25,13 +25,13 @@ export default class Brief extends React.Component{
       if(item.keyword != ""){
         return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
       }else{
-        return <span></span>
+        return <span key ={index}></span>
       }
     })
   }
   render(){
-    const {base64,imageInfo} = this.props;
-    if(base64 ==""){
+    const {base64,url,imageInfo,uploadSearch} = this.props;
+    if(base64 =="" && url == ""){
       return(
         <BriefContainer>
          <Card
@@ -42,18 +42,30 @@ export default class Brief extends React.Component{
       );
     }else{
       let keyword = this.generateImageInfo(imageInfo);
+      let actions = base64 !== "" ?
+                              [<Tooltip placement = "top" title={i18n("download")} key = "action_1" >
+                                  <FAIcon icon ={faSolid.faDownload}/>
+                                </Tooltip>,
+                                <Tooltip placement = "top" title={i18n("search_again")} key = "action_2">
+                                  <FAIcon icon ={faSolid.faRetweet} />
+                                </Tooltip>
+                              ]:[
+                                <Tooltip placement = "top" title={i18n("download")} key = "action_1">
+                                  <FAIcon icon ={faSolid.faDownload} />
+                                </Tooltip>,
+                                <Tooltip placement = "top" title={i18n("search_again")}  key = "action_2" >
+                                  <FAIcon icon ={faSolid.faRetweet} />
+                                </Tooltip>,
+                                <Tooltip placement = "top" title={i18n("upload_search")} defaultVisible = {true} key = "action_3">
+                                 <FAIcon onClick = {()=>uploadSearch(document.getElementById("searchImage"))} icon ={faSolid.faUpload}  />
+                               </Tooltip>
+                              ];
       return(
         <BriefContainer>
             <Card
               style={{ width: "100%" }}
-              cover={<img id = "searchImage" alt="example" src={base64} />}
-              actions={[<Tooltip placement = "top" title={i18n("download")}>
-                         <FAIcon icon ={faSolid.faDownload}/>
-                        </Tooltip>,
-                        <Tooltip placement = "top" title={i18n("search_again")}>
-                          <FAIcon onClick = {()=>this.props.searchAgain(document.getElementById("searchImage"))} icon ={faSolid.faUpload}/>
-                        </Tooltip>
-                       ]}
+              cover={<img id = "searchImage" alt="example" src={ base64 == "" ? url: base64 } />}
+              actions={actions}
             >
               <Meta
                 title="Image Keyword"
