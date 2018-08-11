@@ -92,7 +92,10 @@ function initVideoControl() {
       const k = e.keyCode;
       if (k == '38' || k == '40' || k == '37' || k == '39' || k == '36' || k == '35') {
         chrome.runtime.sendMessage({
-          job: 'videoControl_use'
+          job: 'analytics',
+          category: 'videoControl',
+          action: 'run',
+          label: k
         });
       }
       placeIndicator();

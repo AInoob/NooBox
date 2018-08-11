@@ -4,6 +4,7 @@ import Image from './Image';
 import Options from './Options';
 import { getDB, set } from '../utils/db';
 import { wait } from '../utils';
+import { logEvent } from '../utils/bello';
 userBrowser();
 
 const autoRefresh = new AutoRefresh();
@@ -53,14 +54,21 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   } else if(job === "loadImageHistory"){
     const {cursor} = request;
     image.loadImageHistory(cursor);
-  }else if (request.job == 'urlDownloadZip') {
+  }else if (request.job === 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
-  } else if (request.job == 'getDB') {
+  } else if (request.job === 'getDB') {
     const value = await getDB(request.key);
     browser.tabs.sendMessage(sender.tab.id, {
       job: 'returnDB',
       key: request.key,
       data: value
+    });
+  } else if (request.job === 'analytics') {
+    logEvent({
+      category: request.category,
+      action: request.action,
+      label: request.label,
+      value: request.value,
     });
   }
 });

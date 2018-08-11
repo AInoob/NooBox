@@ -1,5 +1,9 @@
 const BASE64_MARKER = ';base64,';
 
+export const serialize = (obj) => {
+  return '?' + Object.keys(obj).reduce(function (a, k) { a.push(k + '=' + encodeURIComponent(obj[k])); return a }, []).join('&')
+};
+
 export const wait = duration => {
   return new Promise(resolve => {
     setTimeout(resolve, duration);

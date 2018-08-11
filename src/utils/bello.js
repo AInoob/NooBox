@@ -1,6 +1,7 @@
 import { get } from './db';
 import {BELLO_URL} from "../constant/constants";
 import ajax from './ajax';
+import { serialize } from '.';
 
 export const logPageView = async () => {
   if(typeof window != 'object')
@@ -15,12 +16,13 @@ export const logPageView = async () => {
     ul: navigator.language || navigator.userLanguage,
     ainoob: Math.random(),
   }
-  await ajax(BELLO_URL, params);
+  await ajax(BELLO_URL + serialize(params));
 };
 
 export const logEvent = async obj => {
-  if(typeof window != 'object')
+  if(typeof window !== 'object')
     return;
+  console.log(obj);
   const params = {
     type: 'event',
     category: obj.category,
@@ -33,5 +35,5 @@ export const logEvent = async obj => {
     ul: navigator.language || navigator.userLanguage,
     ainoob: Math.random(),
   }
-  await ajax(BELLO_URL, params);
+  await ajax(BELLO_URL + serialize(params));
 };

@@ -17,28 +17,6 @@ var left1,
     top1,
     top2;
 
-function moveCursor(e) {
-  if (drag.state && !newSelection) {
-    delta.x = e.pageX - drag.x;
-    delta.y = e.pageY - drag.y;
-    var cur_offset = $(drag.elem).offset();
-    $(drag.elem).offset({
-      left: (cur_offset.left + delta.x),
-      top: (cur_offset.top + delta.y)
-    });
-    drag.x = e.pageX;
-    drag.y = e.pageY;
-    moveCover(this);
-  } else if (newSelection) {
-    var parent = $(e.target).parent();
-    parent.find('.NooBox-screenshot-cursorBottomRight').offset({
-      top: e.pageY - 6,
-      left: e.pageX - 6
-    });
-    moveCover(this);
-  }
-}
-
 function moveCover(parent) {
   var canvasTop = parent.find('.NooBox-screenshot-canvas').offset().top;
   var canvasLeft = parent.find('.NooBox-screenshot-canvas').offset().left;
@@ -84,7 +62,7 @@ chrome.runtime.onMessage.addListener(
       sendResponse('yes');
     }
     if ('job' in request) {
-      if (request.job == 'screenshotSearch') {
+      if (request.job === 'screenshotSearch') {
         chrome.runtime.sendMessage({
           job: 'analytics',
           category: 'screenshotSearch',
@@ -121,23 +99,23 @@ chrome.runtime.onMessage.addListener(
           $('.NooBox-screenshot-canvas').on('mousedown', function(e) {
             if (!newSelection) {
               newSelection = true;
-              left1 = e.pageX;
-              top1 = e.pageY;
+              left1 = e.clientX;
+              top1 = e.clientY;
               moveCover(div);
             }
           });
           $('.NooBox-screenshot-canvas').on('mouseup', function(e) {
             if (newSelection) {
-              left2 = e.pageX;
-              top2 = e.pageY;
+              left2 = e.clientX;
+              top2 = e.clientY;
               newSelection = false;
               moveCover(div);
             }
           });
           $(document).mousemove(function (e) {
             if (newSelection) {
-              left2 = e.pageX;
-              top2 = e.pageY;
+              left2 = e.clientX;
+              top2 = e.clientY;
               moveCover(div);
             }
           });

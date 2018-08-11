@@ -16,7 +16,7 @@ export default class Image {
     this.updateImageUploadUrl('ainoob.com');
     this.updateImageDownloadUrl('ainoob.com');
     this.noobFetchImageServerUrls    = "https://ainoob.com/api/get/imageServers/";
-    this.fetchFunction ={
+    this.fetchFunction = {
       googleLink: reverseImageSearch.fetchGoogleLink,
       baiduLink: reverseImageSearch.fetchBaiduLink,
       tineyeLink: reverseImageSearch.fetchTineyeLink,
@@ -124,37 +124,6 @@ export default class Image {
     }
   }
 
-  extractImages(info, tab) {
-    try {
-      browser.tabs.sendMessage(tab.id, {
-        job: "extractImages"
-      }, {
-          frameId: info.frameId
-        }, (response) => {
-          if (!response) {
-            browser.notifications.create('extractImages', {
-              type: 'basic',
-              iconUrl: '/static/nooboxLogos/icon_128.png',
-              title: GL("extractImages"),
-              message: GL("ls_4")
-            }, () => {});
-          }
-        });
-    } catch (e) {
-      browser.tabs.sendMessage(tab.id, {
-        job: "extractImages"
-      }, (response) => {
-        if (!response) {
-          brwoser.notifications.create('extractImages', {
-            type: 'basic',
-            iconUrl: '/static/nooboxLogos/icon_128.png',
-            title: GL("extractImages"),
-            message: GL("ls_4")
-          }, () => {});
-        }
-      });
-    }
-  }
   async updateExtractImageContextMenu() {
     if (await get('extractImages')) {
       data.Image.extractImageHandle = browser.contextMenus.create({
@@ -173,6 +142,10 @@ export default class Image {
 
   extractImages(info, tab) {
     try {
+      logEvent({
+        category: 'extractImages',
+        action: 'run'
+      });
       browser.tabs.sendMessage(tab.id, {
         job: "extractImages"
       }, {
@@ -281,29 +254,37 @@ export default class Image {
     let imageLink;
     let base64Flag = true;
     //Check base64 or Url
-    switch(checkUrlOrBase64(base64orUrl)){
-      case"base64":
-      const requestBody   = {
-        method: 'POST',  
-        headers: {
-          //'User-Agent': 'Mozilla/4.0 MDN Example',
-          'Content-Type': 'application/json'
-        },
-        mode:"cors",
-        body: JSON.stringify({data:base64orUrl}),
-      }
-      imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
-      break;
-      case"url":
-      imageLink = base64orUrl;
-      base64Flag = false;
-      break;
+    switch (checkUrlOrBase64(base64orUrl)) {
+      case "base64":
+        logEvent({
+          category: 'imageSearch',
+          action: 'dataURI'
+        });
+        const requestBody = {
+          method: 'POST',
+          headers: {
+            //'User-Agent': 'Mozilla/4.0 MDN Example',
+            'Content-Type': 'application/json'
+          },
+          mode: "cors",
+          body: JSON.stringify({ data: base64orUrl }),
+        }
+        imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+        break;
+      case "url":
+        logEvent({
+          category: 'imageSearch',
+          action: 'url'
+        });
+        imageLink = base64orUrl;
+        base64Flag = false;
+        break;
       default:
-      break;
+        break;
     }
     //Generate Image Link
     //console.log(imageLink);
-    if(imageLink){
+    if(imageLink) {
       let cursor = await getDB('imageCursor');
       // console.log(cursor);
       if (typeof (cursor) === 'number') {
