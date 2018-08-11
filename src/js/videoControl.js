@@ -34,13 +34,13 @@ function getDB(key) {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.job) {
-      if (request.job == 'videoConrolContentScriptSwitch') {
+      if (request.job === 'videoControlContentScriptSwitch') {
         enabled = request.enabled;
-        if (enabled != false) {
+        if (enabled !== false) {
           enabled = true;
           initVideoControl();
         }
-      } else if (request.job == 'returnDB') {
+      } else if (request.job === 'returnDB') {
         if (request.key == enabledDBId) {
           enabled = request.data;
           if (enabled != false) {
