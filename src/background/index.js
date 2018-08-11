@@ -11,6 +11,8 @@ const autoRefresh = new AutoRefresh();
 const image = new Image();
 const options = new Options();
 
+let lastVideoControl = 0;
+
 browser.tabs.onRemoved.addListener(tabId => {
   autoRefresh.delete(tabId);
 });
@@ -70,6 +72,16 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       label: request.label,
       value: request.value,
     });
+  } else if (request.job == 'videoControlUse') {
+    const time = new Date().getTime();
+    if (lastVideoControl + 10 * 60 * 1000 < time) {
+      lastVideoControl = time;
+      analytics({
+        category: 'videoControl',
+        action: 'run',
+        label: ''
+      });
+    }
   }
 });
 
