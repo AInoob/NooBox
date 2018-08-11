@@ -249,8 +249,8 @@ extractImages:
 #     message: Cannot perform screenshot search on this tab
 # ls_3:
 #     message: Drop the image here
-# ls_4:
-#     message: 'Reload this page to load NooBox components, if fail again, this page is not supported'
+ls_4:
+  message: 'Reload this page to load NooBox components, if fail again, this page is not supported'
 # ls_5:
 #     message: No result? Click here to upload the image and search
 # ls_6:
