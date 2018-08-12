@@ -1,0 +1,303 @@
+appName:
+    message: 二箱
+appDesc:
+    message: 一个实用的工具箱！多引擎以图搜图+提取图片+截图搜索+HTML5视频控制
+#Context Menu
+search_this_image:
+  message: 搜索这张图片
+extract_this_images:
+  message: 提取这张图片
+take_screenshot:
+  message: 截图搜索
+#engine Name:
+google:
+  message: 谷歌
+baidu:
+  message: 百度
+yandex:
+  message: Yandex
+bing:
+  message: 必应
+tineye:
+  message: Tin Eye
+saucenao:
+  message: SauceNAO
+iqdb:
+  message: IQDB
+ascii2d:
+  message: 二次元画像
+#overview:
+choose_tools_from_here:
+  message: 选择一种工具？
+reverse_image_search:
+  message: 以图搜图
+support_for_a_single_upload:
+  message: 支持单个上传图片
+html_5_video_control:
+  message: HTML 5 视频控制 (预览版)
+auto_refresh:
+  message: 网页自动刷新
+s:
+  message: 秒
+#Option
+image:
+  message: 图片相关
+reverse_image_search:
+  message: 以图搜图
+result_page_tab_front:
+  message: 结果显示在新标签页
+extract_images:
+  message: 提取图片
+screenshot_search:
+  message: 截图搜索
+tools:
+    message: 工具设置
+avaiable_engine:
+    message: 搜索引擎设置
+experience:
+    message: 体验设置
+#Image Search
+display_mode:
+  message: 显示模式
+download:
+  message: 下载图片
+search_again:
+  message: 重新搜索
+upload_search:
+  message: 如没有结果，请尝试点击
+list:
+  message: 图片列表
+image_wall:
+  message: 图片墙
+sort_by:
+  message: 排序依据
+area:
+  message: 面积
+width:
+  message: 宽度
+height:
+  message: 高度
+increase:
+  message: 升序
+decrease:
+  message: 降序
+save:
+  message: 保存
+clear:
+  message: 清除
+no_size_info:
+  message: 无图片尺寸信息
+#About
+about_what:
+  message: 二箱是什么?
+about_what_message_0:
+  message: 二箱是一个工具箱，并且提供以下功能
+about_what_message_1:
+  message: 以图搜图
+about_what_message_2:
+  message: 网页自动刷新
+about_what_message_3:
+  message: HTML 5 视频控制
+about_privacy:
+  message: 隐私
+about_privacy_message_0:
+  message: 追踪和记录您的历史记录?
+about_privacy_message_1:
+  message: 不, 二箱不会的 !
+about_privacy_message_2:
+  message: 知道您是谁?
+about_privacy_message_3:
+  message: 不, 二箱不会的 !
+about_privacy_message_4:
+  message: 提供您的信息给其他人 ?
+about_privacy_message_5:
+  message: 不, 从不 !
+about_privacy_message_6:
+  message: 最后 ?
+about_privacy_message_7:
+  message: 二箱仅仅知道有多少人在使用特定功能，这些数据帮助我们了解我们的开发侧重点
+about_feedback:
+  message: 反馈
+about_feedback_message:
+  message: 如果你有什么建议或者发现了什么bug，请在Github上发一个issue
+#extract image page
+extract_range:
+  message: 提取范围
+history:
+  message: 历史
+# options:
+#     message: 选项
+# about:
+#     message: 关于
+# extract_images:
+#     message: 提取图片
+# search_this_image:
+#     message: 以图搜图
+# screenshot_search:
+#     message: 截图搜索
+# image:
+#     message: 图片
+# keywords:
+#     message: 关键字
+# more:
+#     message: 更多
+# relevance:
+#     message: 相关
+# area:
+#     message: 面积
+# width:
+#     message: 宽度
+# height:
+#     message: 高度
+# sortBy:
+#     message: '排序 '
+# reverse_image_search:
+#     message: 以图搜图
+# imageSearch:
+#     message: 以图搜图
+imageSearch:
+  message: 图片搜索
+extractImages:
+  message: 提取图片
+screenshotSearch:
+  message: 截图搜索
+videoControl:
+  message: HTML5视频控制(测试)
+autoRefresh:
+  message: 自动刷新
+about_data:
+  message: 实时数据
+about_data_reason:
+  message: 二箱不会收集你是谁或者你搜了什么图片，但是它会收集你的使用记录。两个原因：1. 这是我们开发的动力，看到很多人在用二箱，蛮有成就感的。2. 这能更好的让我们决定到底应该注重在什么功能上。下面是二箱的实时数据。
+about_contribution:
+  message: 特别感谢
+about_contribution_george:
+  message: George
+about_contribution_grorge_description:
+  message: 核心开发者
+about_contribution_ainoob:
+  message: AInoob
+about_contribution_ainoob_description:
+  message: 核心开发者
+about_contribution_zhtw2013:
+  message: zhtw2013
+about_contribution_zhtw2013_description:
+  message: 中文繁体贡献者
+# screenshotSearch:
+#     message: 截图搜索
+# search:
+#     message: 搜索
+# close:
+#     message: 关闭
+# notifier:
+#     message: 二通知
+# reader:
+#     message: 二阅读
+# clearAll:
+#     message: 全部清空
+# totalSearches:
+#     message: 搜索次数
+# when:
+#     message: 啥时候
+# event:
+#     message: 事件
+# detail:
+#     message: 详情
+# google:
+#     message: 谷歌
+# baidu:
+#     message: 百度
+# tineye:
+#     message: Tineye
+# yandex:
+#     message: Yandex
+# saucenao:
+#     message: SauceNao
+# iqdb:
+#     message: IQDB
+# sogou:
+#     message: 搜狗
+# bing:
+#     message: 必应
+# imageSearchUrl_google:
+#     message: 谷歌
+# imageSearchUrl_baidu:
+#     message: 百度
+# imageSearchUrl_tineye:
+#     message: Tineye
+# imageSearchUrl_yandex:
+#     message: Yandex
+# imageSearchUrl_saucenao:
+#     message: SauceNao
+# imageSearchUrl_iqdb:
+#     message: IQDB
+# imageSearchUrl_sogou:
+#     message: 搜狗
+# imageSearchUrl_bing:
+#     message: 必应
+# images:
+#     message: 图片
+# upload_image:
+#     message: 上传图片
+# videoControl:
+#     message: HTML5视频控制（不稳定，慎用）
+# checkUpdate:
+#     message: 检查更新
+# experience:
+#     message: 体验
+# record_history:
+#     message: 记录历史
+# autoRefresh:
+#     message: 自动刷新 （测试）
+# imageSearchNewTabFront:
+#     message: 在前台打开新的标签
+# tools:
+#     message: 工具
+# s:
+#     message: 秒
+# yes:
+#     message: 是
+# no:
+#     message: 否
+# j:
+#     message: j
+# ls_0:
+#     message: 不支持的文件类型
+ls_1:
+  message: 截图搜索失败，
+ls_2:
+  message: 无法在当前页面使用截图搜索
+# ls_3:
+#     message: 拖拽图片到这里
+ls_4:
+  message: 刷新这个页面以加载二箱组件，如果还是不行就说明当前页面不支持提取图片
+# ls_5:
+#     message: 没结果？点这里上传图片搜索
+# ls_6:
+#     message: 给二箱在Product Hunt上投票吧！
+# ls_7:
+#     message: 二箱已是最新版本
+# ls_8:
+#     message: '二箱有了新的版本： '
+# ls_9:
+#     message: 如果你是Chrome网上商店安装的二箱，那请稍等片刻，让Chrome自己更新二箱。
+# ls_10:
+#     message: 如果你是下载的CRX，请点击下面的链接下载最新版的二箱CRX。
+# ls_11:
+#     message: 上传图片并执行以图搜图.
+# ls_12:
+#     message: 你可以点击上传或者拖拽上传.
+# ls_13:
+#     message: 如果你是Mac或者Unix用户，可能在你点上传的时候弹出内容会自己关闭。解决方法是右键二箱，选择审查弹出内容，然后就可以啦～
+# ls_14:
+#     message: 'HTML5视频控制基本上就是给HTML5视频增加快捷键(→ 是快进, k 是暂停, 等等), 这个功能现在还是Alpha测试阶段，所以不一定所有网站的HTML5视频都有效'
+# ls_15:
+#     message: 你可以选择在一些网站关闭HTML5视频控制，点击小太阳变成小云朵就可以啦～
+# ls_16:
+#     message: "{'→':'前进5秒','←':'倒退5秒','↑':'增大音量','↓':'降低音量','m':'静音/取消静音','j':'后退10秒','l':'前进10秒','k':'暂停/播放',',':'后退一点点点','.':'前进一点点点','>':'增大音量','<':'降低音量', 'f': '全屏','d':'下载','r':'神奇的旋转!'}"
+# ls_17:
+#     message: 清空所有历史？
+# ls_18:
+#     message: 点击上传或者拖拽上传
+# ls_19:
+#     message: 就是自动刷新页面啦~
