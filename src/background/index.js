@@ -66,14 +66,14 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       key: request.key,
       data: value
     });
-  } else if (request.job === 'analytics') {
+  } else if (job === 'analytics') {
     logEvent({
       category: request.category,
       action: request.action,
       label: request.label,
       value: request.value,
     });
-  } else if (request.job == 'videoControlUse') {
+  } else if (job == 'videoControlUse') {
     const time = new Date().getTime();
     if (lastVideoControl + 10 * 60 * 1000 < time) {
       lastVideoControl = time;
