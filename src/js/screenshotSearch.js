@@ -127,13 +127,14 @@ chrome.runtime.onMessage.addListener(
             var canvasTop = $(div).find('.NooBox-screenshot-canvas').offset().top;
             var canvasLeft = $(div).find('.NooBox-screenshot-canvas').offset().left;
             var ratio = img.height / $(div).find('.NooBox-screenshot-canvas').height();
-            var imgData = $(div).find('.NooBox-screenshot-canvas')[0].getContext('2d').getImageData((left - canvasLeft) * ratio, (top - canvasTop) * ratio, (width) * ratio, (height) * ratio);
+            var imgData = $(div).find('.NooBox-screenshot-canvas')[0].getContext('2d').getImageData(left * ratio, top * ratio, width * ratio, height * ratio);
             var canvas1 = document.createElement("canvas");
             canvas1.width = (width) * ratio;
             canvas1.height = (height) * ratio;
             var ctx = canvas1.getContext('2d');
             ctx.putImageData(imgData, 0, 0);
             var dataURL = canvas1.toDataURL();
+            console.log(dataURL);
             chrome.extension.sendMessage({
               job: 'beginImageSearch',
               base64: dataURL
