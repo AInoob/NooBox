@@ -32,9 +32,9 @@ export const generateNewTabUrl = (path) =>{
   });
 }
 
-export const createNewTab = (url) =>{
+export const createNewTab = (options) =>{
   return new Promise(resolve =>{
-    browser.tabs.create({url,active:true}, async tab => {
+    browser.tabs.create(options, async tab => {
       browser.tabs.onUpdated.addListener(function listener (tabId, info) {
           if (info.status === 'complete' && tabId === tab.id) {
               chrome.tabs.onUpdated.removeListener(listener);
