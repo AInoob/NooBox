@@ -22,7 +22,7 @@ export const logPageView = async () => {
 export const logEvent = async obj => {
   if(typeof window !== 'object')
     return;
-  console.log(obj);
+  // console.log(obj);
   const params = {
     type: 'event',
     category: obj.category,
