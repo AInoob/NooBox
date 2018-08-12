@@ -80,7 +80,7 @@ about_what_message_3:
 about_privacy:
   message: Privacy
 about_privacy_message_0:
-  message: Track and Record your history ?
+  message: Track and Store your history ?
 about_privacy_message_1:
   message: No, Noobox Doesn't !
 about_privacy_message_2:
@@ -94,7 +94,7 @@ about_privacy_message_5:
 about_privacy_message_6:
   message: Finally ?
 about_privacy_message_7:
-  message: Noobox only know how many users is using it,
+  message: Noobox only know how many users is using specific function and it helps us figure out which function we should focus on
 about_development:
   message: Developing Status
 about_feedback:
