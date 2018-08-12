@@ -12,30 +12,39 @@ export default {
     searchImageInfo:[],
     searchResult:[],
     displayMode:2,
-     sortBy:"",
+
+    sortBy:"",
     sortByOrder:0,
-     google:false,
+
+    google:false,
     googleDone:false,
     googleMax:5,
-     baidu:false,
+
+    baidu:false,
     baiduDone:false,
     baiduMax:1,
-     yandex:false,
+
+    yandex:false,
     yandexDone:false,
     yandexMax:1,
-     bing:false,
+
+    bing:false,
     bingDone:false,
     bingMax:1,
-     tineye:false,
+
+    tineye:false,
     tineyeDone:false,
     tineyeMax:1,
-     sausao:false,
+
+    sausao:false,
     sausaoDone:false,
     sausaoMax:1,
-     iqdb:false,
+
+    iqdb:false,
     iqdbDone:false,
     iqdbMax:1,
-     ascii2d:false,
+
+    ascii2d:false,
     ascii2dDone:false,
     ascii2dMax:1,
   },
@@ -141,7 +150,8 @@ export default {
     updateSortByOrder(state,{payload}){
       return Object.assign({},state,{sortByOrder:payload})
     },
-     updateImageBase64(state,{payload}){
+
+    updateImageBase64(state,{payload}){
       let {pageId} = state;
       if(pageId == payload.cursor){
         return Object.assign({},state,{base64:payload.result});
@@ -220,4 +230,4 @@ export default {
       })
     }
   }
-} 
+}
