@@ -6,6 +6,13 @@ export const sendMessage = (content) => {
   })
 };
 
+export const sendTabMessage = (tabId,content) =>{
+  return new Promise((resolve) =>{
+    browser.tabs.sendMessage(tabId,{
+      ...content
+    },()=>{resolve()})
+  })
+};
 export const getCurrentTab = () => {
   return new Promise(resolve => {
     browser.tabs.query({ 'active': true, 'lastFocusedWindow': true }, tabs => {
