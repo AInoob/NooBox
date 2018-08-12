@@ -3,6 +3,8 @@ import {BELLO_URL} from "../constant/constants";
 import ajax from './ajax';
 import { serialize } from '.';
 
+let analyticsOnce = false;
+
 export const logPageView = async () => {
   if(typeof window != 'object')
     return;
@@ -20,8 +22,13 @@ export const logPageView = async () => {
 };
 
 export const logEvent = async obj => {
-  if(typeof window !== 'object')
+  if(typeof window !== 'object') {
     return;
+  }
+  if (!analyticsOnce) {
+    analyticsOnce = true;
+    logPageView();
+  }
   // console.log(obj);
   const params = {
     type: 'event',
