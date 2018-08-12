@@ -9,41 +9,33 @@ export default {
     inited:false,
     base64:"",
     url:"",
+    engineLink:{},
     searchImageInfo:[],
     searchResult:[],
     displayMode:2,
-
     sortBy:"",
     sortByOrder:0,
-
     google:false,
     googleDone:false,
     googleMax:5,
-
     baidu:false,
     baiduDone:false,
     baiduMax:1,
-
     yandex:false,
     yandexDone:false,
     yandexMax:1,
-
     bing:false,
     bingDone:false,
     bingMax:1,
-
     tineye:false,
     tineyeDone:false,
     tineyeMax:1,
-
     sausao:false,
     sausaoDone:false,
     sausaoMax:1,
-
     iqdb:false,
     iqdbDone:false,
     iqdbMax:1,
-
     ascii2d:false,
     ascii2dDone:false,
     ascii2dMax:1,
@@ -62,6 +54,7 @@ export default {
           engineStatus.url = hasDataBase.url;
           engineStatus.searchImageInfo = hasDataBase.searchImageInfo;
           engineStatus.searchResult = hasDataBase.searchResult;
+          engineStatus.engineLink = hasDataBase.engineLink;
           dataBaseFlag = true;
         }
       }
@@ -123,13 +116,14 @@ export default {
     //Store DB after finish all
     *updateEngineDone({payload},{call,put,select}){
       // console.log(payload);
-      let{base64,url,searchImageInfo,searchResult,pageId} = yield select(state => state.imageSearch);
+      let{base64,url,searchImageInfo,searchResult,pageId,engineLink} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
         let data ={
           base64,
           url,
           searchImageInfo,
           searchResult,
+          engineLink
         }
         yield call(setDB,"imageCursor",payload.cursor);
         yield call(setDB,payload.cursor,data);
@@ -150,7 +144,6 @@ export default {
     updateSortByOrder(state,{payload}){
       return Object.assign({},state,{sortByOrder:payload})
     },
-
     updateImageBase64(state,{payload}){
       let {pageId} = state;
       if(pageId == payload.cursor){
@@ -167,6 +160,14 @@ export default {
         return state;
       }
     },
+    updateEngineLink(state,{payload}){
+      let{pageId} = state;
+      if(pageId == payload.cursor){
+        return Object.assign({},state,{engineLink:payload.result});
+      }else{
+        return state;
+      }
+    },
     updateSearchResult(state,{payload}){
       let { pageId,searchResult } = state;
       if(pageId == payload.cursor){
@@ -175,7 +176,6 @@ export default {
       }else{
         return state;
       }
-   
     },
     updateImageInfo(state,{payload}){
       let{pageId,searchImageInfo} = state;
@@ -223,6 +223,12 @@ export default {
             cursor: message.cursor,
             result: message.result
           }
+        }else if(message.job === "engine_link"){
+          type = "updateEngineLink"
+          payload = {
+            cursor: message.cursor,
+            result: message.result
+          }
         }
         if(type){
           dispatch({type:type,payload:payload})
@@ -230,4 +236,4 @@ export default {
       })
     }
   }
-}
+} 

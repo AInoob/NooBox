@@ -151,7 +151,7 @@ const initExtractImage = function() {
                   '<h3 style ="'+
                   'margin-bottom: 10px;'+
                   'font-size: 18px;'+
-                 
+                  'font-family: courier, Monaco;'+
                   '">'+ chrome.i18n.getMessage('extract_range')+
                   '</h3>'+
                   '<input '+
@@ -165,6 +165,7 @@ const initExtractImage = function() {
                       'opacity: 0.7;'+
                       '-webkit-transition: .2s;'+
                       'transition: opacity .2s;'+
+                      'border: 1px solid black !important'+
                     '"'+
                     'type= "range" '+
                     'id="NooBox-extractImages-selector-range"'+

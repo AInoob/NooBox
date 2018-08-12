@@ -174,14 +174,14 @@ export default class Image {
     // console.log(file);
     const reader = new window.FileReader();
     reader.onloadend = () => {
-      console.log(remains);
+      // console.log(remains);
       addImage(reader.result);
     }
     function addImage(dataURI) {
       if (dataURI) {
         const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
         const binary = convertDataURIToBinary(dataURI);
-        console.log(binary);
+        // console.log(binary);
         zip.file(file.name + '.' + ext, binary, {
           base64: false
         });
@@ -286,13 +286,14 @@ export default class Image {
       }else{
         reverseImageSearch.updateImageUrl(base64orUrl,cursor);
       }
-
+      let engineLink={};
       //Get Opened Engine and send request
       for(let i = 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
         let check  = await get(dbName);
         if(check && this.fetchFunction[name+"Link"]){ 
+          engineLink[name] = apiUrls[name] + imageLink;
           if(name === "baidu"){
             await createSandbox();
           }
@@ -305,6 +306,7 @@ export default class Image {
           }
         }
       }
+      reverseImageSearch.updateEngineLink(engineLink,cursor)
     }
     
   }
