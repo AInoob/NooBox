@@ -77,24 +77,24 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     const time = new Date().getTime();
     if (lastVideoControl + 10 * 60 * 1000 < time) {
       lastVideoControl = time;
-      analytics({
+      logEvent({
         category: 'videoControl',
         action: 'run',
         label: ''
-      });
+      })
     }
   }else if(job == "videoControl_website_switch"){
     let {isEnable} = request;
     const tabData = await getCurrentTab();
     const tabId = tabData.id;
     if(isEnable){
-      analytics({
+      logEvent({
         category: 'videoControlWebsiteSwitch',
         action:"enable",
         label: ''
       });
     }else{
-      analytics({
+      logEvent({
         category: 'videoControlWebsiteSwitch',
         action:"disable",
         label: ''
