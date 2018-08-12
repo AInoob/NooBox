@@ -166,11 +166,11 @@ videoControl:
 autoRefresh:
   message: 自动刷新
 about_data:
-  message: 数据
+  message: 实时数据
 about_data_reason:
   message: 二箱不会收集你是谁或者你搜了什么图片，但是它会收集你的使用记录。两个原因：1. 这是我们开发的动力，看到很多人在用二箱，蛮有成就感的。2. 这能更好的让我们决定到底应该注重在什么功能上。下面是二箱的实时数据。
 about_contribution:
-  message: 贡献
+  message: 特别感谢
 about_contribution_george:
   message: George
 about_contribution_grorge_description:

@@ -188,14 +188,14 @@ export default class Image {
     // console.log(file);
     const reader = new window.FileReader();
     reader.onloadend = () => {
-      console.log(remains);
+      // console.log(remains);
       addImage(reader.result);
     }
     function addImage(dataURI) {
       if (dataURI) {
         const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
         const binary = convertDataURIToBinary(dataURI);
-        console.log(binary);
+        // console.log(binary);
         zip.file(file.name + '.' + ext, binary, {
           base64: false
         });
