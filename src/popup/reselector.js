@@ -9,6 +9,9 @@ export const overviewSelector    = (state) => {
     refreshInterval:overview.refreshInterval,
     refreshElapsed:overview.refreshElapsed,
   }
+  let h5video = {
+    websiteEnable: overview.websiteEnable,
+  }
   return{
     inited:overview.inited,
     tabId: overview.tabId,
@@ -16,6 +19,7 @@ export const overviewSelector    = (state) => {
     showAutoRefresh:overview.showAutoRefresh,
     showHtml5Video: overview.showHtml5Video,
     autoRefresh,
+    h5video
   }
 };
 export const optionsSelector     = (state) => state.options;
