@@ -43,7 +43,7 @@ export default class Setting extends React.Component{
             </RadioGroup>
           </div>
           <div className ="sortSelection">
-            <h3>{i18n("sort_by")}  
+            <h3>{i18n("sort_by")} &nbsp;&nbsp;&nbsp;&nbsp;
               <RadioGroup onChange ={(e) =>updateSortBy(e.target.value)} defaultValue = {sortBy}>  
                 <RadioButton value="height">{i18n("height")}</RadioButton>
                 <RadioButton value="width">{i18n("width")}</RadioButton>

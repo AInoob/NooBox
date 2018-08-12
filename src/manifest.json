@@ -31,7 +31,6 @@
     "pages":["sandbox.html"]
   },
   "default_locale": "en",
-  "options_page": "options.html",
   "permissions": [
     "tabs",
     "contextMenus",
