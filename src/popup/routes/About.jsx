@@ -95,7 +95,7 @@ export default class About extends React.Component{
     console.log(i18n("about_what"));
     return(
       <AboutContainer>
-        <Collapse>
+        <Collapse defaultActiveKey={['3']}>
           <Panel header = {i18n("about_what")} key="1">
             <h3>{i18n("about_what_message_0")}</h3>
             <ul>
