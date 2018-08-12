@@ -47,6 +47,8 @@ class ImageSearchResult extends React.Component{
               <Col span ={2}/>
               <Col span ={11}>
                 <Engine 
+                  engineLink = {imageSearch.engineLink}
+                  
                   google ={imageSearch["google"]}
                   googleDone = {imageSearch["googleDone"]}
 
