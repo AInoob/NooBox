@@ -151,12 +151,20 @@ extract_range:
 #     message: '排序 '
 # reverse_image_search:
 #     message: 以圖搜圖
-# imageSearch:
-#     message: 以圖搜圖
+imageSearch:
+  message: 以圖搜圖
 extractImages:
-    message: 擷取圖片
-# screenshotSearch:
-#     message: 擷圖搜尋
+  message: 擷取圖片
+screenshotSearch:
+  message: 擷圖搜尋
+autoRefresh:
+  message: 自動重新整理
+videoControl:
+  message: HTML5影片控制（測試）
+about_data:
+  message: 數據
+about_data_reason:
+  message: 二箱不會收集你是誰或者你搜了什麽圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麽功能上。下面是二箱的實時數據。
 # search:
 #     message: 搜尋
 # close:
