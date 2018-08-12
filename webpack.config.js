@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 const x = {
@@ -70,6 +71,9 @@ module.exports = env => {
         new UglifyJsPlugin()
       ]
     }
+  }
+  else if (env === 'preProd') {
+    x.plugins.push(new BundleAnalyzerPlugin());
   }
   else {
     x.devtool = "source-map";
