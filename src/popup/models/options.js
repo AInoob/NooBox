@@ -1,6 +1,7 @@
 import {engineMap,toolSettingMap,expSettingMap} from 'SRC/constant/settingMap.js';
 //get set meaning chrome sync
 import {get,set} from 'SRC/utils/db.js';
+import { sendMessage } from '../../utils/browserUtils';
 export default {
   namespace:"options",
   state:{
@@ -73,8 +74,7 @@ export default {
             if(name == "videoControl"){
               yield put({type:"overview/hideHtml5Video"});
             }
-
-            yield call(set,name,false);
+            yield call(sendMessage, { job: 'set', key: name, value: false });
           }
         }
         currentTool = newSetting;
@@ -92,7 +92,7 @@ export default {
             if(name == "videoControl"){
               yield put({type:"overview/showHtml5Video"});
             }
-            yield call(set,name,true);
+            yield call(sendMessage, { job: 'set', key: name, value: true });
           }
         }
         currentTool = newSetting;
