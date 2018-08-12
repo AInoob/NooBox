@@ -232,7 +232,10 @@ export default class Image {
   }
   async loadImageHistory(cursor){
     let url = await generateNewTabUrl("searchResult.html");
-    await createNewTab(url+"#/"+cursor);
+    await createNewTab({
+      url: url+"#/"+cursor,
+      active: await get('imageSearchNewTabFront')
+    });
   }
 
   async beginImageSearch(base64orUrl){
@@ -279,8 +282,10 @@ export default class Image {
         cursor = 0;
       }
       let url = await generateNewTabUrl("searchResult.html");
-      await createNewTab(url+"#/"+cursor);
-
+      await createNewTab({
+        url: url+"#/" + cursor,
+        active: await get('imageSearchNewTabFront')
+      });
       if(base64Flag){
         reverseImageSearch.updateImage64(base64orUrl,cursor);
       }else{
