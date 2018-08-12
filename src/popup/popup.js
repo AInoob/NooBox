@@ -13,6 +13,7 @@ popup.model(require('./models/noobox.js').default);
 popup.model(require('./models/options.js').default);
 popup.model(require('./models/overview.js').default);
 popup.model(require('./models/userHistory.js').default);
+popup.model(require('./models/about.js').default);
 // 4. Router
 popup.router(require('./popupRouter').default);
 

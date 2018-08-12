@@ -6,9 +6,6 @@ export default {
 
   },
   effects:{
-    *test({payload},{put,select}){
-      console.log(payload);
-    },
     *pushToOverview({payload},{put}){
       yield put(routerRedux.push(OVERVIEW_URL));
       yield put({type:"overview/init"})

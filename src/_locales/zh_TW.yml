@@ -164,11 +164,11 @@ autoRefresh:
 videoControl:
   message: HTML5影片控制（測試）
 about_data:
-  message: 數據
+  message: 实时数据
 about_data_reason:
   message: 二箱不會收集你是誰或者你搜了什麽圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麽功能上。下面是二箱的實時數據。
 about_contribution:
-  message: 貢獻
+  message: 特別感謝
 about_contribution_george:
   message: George
 about_contribution_grorge_description:

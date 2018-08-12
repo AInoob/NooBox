@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import {connect} from 'dva';
+import reduxActions from "SRC/popup/reduxActions.js";
+import reselector   from "SRC/popup/reselector.js";
 import { Collapse, Alert, List, Avatar,Icon  } from 'antd';
 import io from 'socket.io-client';
+import Loader from "SRC/common/component/Loader.jsx";
 
 const Panel = Collapse.Panel;
 
@@ -24,6 +28,22 @@ const AboutContainer = styled.div`
       padding-left:20px; 
     }
   }
+  #realTimeDataList{
+    list-style: none;
+    padding-left: 10px;
+    .data{
+      font-size: 20px;
+      font-weight: 1000;
+    }
+  }
+  #developer{
+    border-bottom: 1px solid #e8e8e8;
+    .ant-list-item{
+      display:inline-block;
+      border:0;
+    }
+  }
+
 `;
 const customPanelStyle = {
   background: '#f7f7f7',
@@ -55,125 +75,119 @@ const privacyData = [
   },
 ];
 
-const contributionData = [{
+const specialThanks = [{
   title: i18n('about_contribution_zhtw2013'),
   description: i18n('about_contribution_zhtw2013_description'),
   icon: 'https://avatars1.githubusercontent.com/u/9501406?s=100&v=4',
   link: 'https://github.com/zhtw2013'
-}, {
+}];
+const mainContributor =[{
   title: i18n('about_contribution_george'),
   description: i18n('about_contribution_grorge_description'),
   icon: 'https://avatars0.githubusercontent.com/u/12090689?s=100&v=4',
   link: 'https://github.com/RageCoke1466'
-}, {
+},{
   title: i18n('about_contribution_ainoob'),
   description: i18n('about_contribution_ainoob_description'),
   icon: 'https://ainoob.com/favicon/apple-icon-120x120.png',
   link: 'https://github.com/AInoob',
-}];
-
+}]
 const sideContributor =[];
-export default class About extends React.Component {
-  constructor(props) {
-    super(props);
-    this.socket = io('https://ainoob.com:443/');
-    this.setupSocket();
-    this.state = {
-      imageSearch: 0,
-      extractImage: 0,
-      screenshotSearch: 0,
-      videoControl: 0,
-      autoRefresh: 0,
-    };
+class About extends React.Component {
+  componentDidMount(){
+    const{about,actions} = this.props;
+    if(!about.inited){
+      actions.aboutInit();
+    }
   }
-  setupSocket() {
-    this.socket.on('connect', () => {
-      this.getData();
-    });
-    this.socket.on('imageSearch', type => {
-      this.setState({ imageSearch: this.state.imageSearch + 1 });
-    });
-    this.socket.on('extractImage', type => {
-      this.setState({ extractImage: this.state.extractImage + 1 });
-    });
-    this.socket.on('screenshotSearch', type => {
-      this.setState({ screenshotSearch: this.state.screenshotSearch + 1 });
-    });
-    this.socket.on('videoControl', type => {
-      this.setState({ videoControl: this.state.videoControl + 1 });
-    });
-    this.socket.on('autoRefresh', type => {
-      this.setState({ autoRefresh: this.state.autoRefresh + 1 });
-    });
-  }
-  getData() {
-    let request = new XMLHttpRequest();
-    request.open('GET', 'https://ainoob.com/api/public/data/?x=' + Math.random(), true);
-    request.onload = () => {
-      if (request.status >= 200 && request.status < 400) {
-        let { imageSearch, extractImage, screenshotSearch, videoControl, autoRefresh } = JSON.parse(request.responseText);
-        this.setState({ imageSearch, extractImage, screenshotSearch, videoControl, autoRefresh });
-      }
-    };
-    request.send();
+  setupSocket(actions) {
+    window.socket.on('imageSearch', type =>
+      actions("imageSearch"));
+    window.socket.on('extractImage', type => 
+      actions("extractImage"));
+    window.socket.on('screenshotSearch', type => 
+      actions("screenshotSearch"));
+    window.socket.on('videoControl', type => 
+      actions("videoControl"));
+    window.socket.on('autoRefresh', type => 
+      actions("autoRefresh"));
   }
   render(){
-    return(
-      <AboutContainer>
-        <Collapse defaultActiveKey={['3']}>
-          <Panel header = {i18n("about_what")} key="1">
-            <h3>{i18n("about_what_message_0")}</h3>
-            <ul>
-              <li>{i18n("about_what_message_1")}</li>
-              <li>{i18n("about_what_message_2")}</li>
-              <li>{i18n("about_what_message_3")}</li>
-            </ul>
-          </Panel>
-          <Panel header = {i18n("about_privacy")} key="2">
-            <List
-              itemLayout="horizontal"
-              dataSource={privacyData}
-              renderItem={item => (
-              <List.Item>
-                  {item.type == "1"  ? <Alert message = {item.title} description={item.description} type="error"  /> :
-                 <Alert message = {item.title} description={item.description} type="success" />
-                }
-                {/* <List.Item.Meta
-                  avatar={item.type == "1" ? <Avatar ><Icon type="exclamation" /></Avatar> :<Avatar><Icon type="check" /></Avatar>}
-                  title={item.title}
-                  description={item.description}
-                /> */}
-                </List.Item>
-              )}
-            />
-          </Panel>
-          <Panel header = {i18n("about_data")} key="3">
-              <p>{i18n("about_data_reason")}</p>
+    const{about,actions} = this.props;
+    if(!about.inited){
+      return(
+        <Loader style ={{marginTop: "20%"}}/>
+      )
+    }else{
+      this.setupSocket(actions.plusOne)
+      return(
+        <AboutContainer>
+          <Collapse defaultActiveKey={['3']}>
+            <Panel header = {i18n("about_what")} key="1">
+              <h3>{i18n("about_what_message_0")}</h3>
               <ul>
-                <li>{i18n('imageSearch')} : {this.state.imageSearch}</li>
-                <li>{i18n('extractImages')} : {this.state.extractImage}</li>
-                <li>{i18n('screenshotSearch')} : {this.state.screenshotSearch}</li>
-                <li>{i18n('videoControl')} : {this.state.videoControl}</li>
-                <li>{i18n('autoRefresh')} : {this.state.autoRefresh}</li>
+                <li>{i18n("about_what_message_1")}</li>
+                <li>{i18n("about_what_message_2")}</li>
+                <li>{i18n("about_what_message_3")}</li>
               </ul>
-          </Panel>
-          <Panel header = {i18n("about_contribution")} key="4">
-            <List
-              itemLayout="horizontal"
-              dataSource={contributionData}
-              renderItem={item => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar src={item.icon} />}
-                  title={<a href={item.link}>{item.title}</a>}
-                  description={item.description}
-                />
+            </Panel>
+            <Panel header = {i18n("about_privacy")} key="2">
+              <List
+                itemLayout="horizontal"
+                dataSource={privacyData}
+                renderItem={item => (
+                <List.Item>
+                    {item.type == "1"  ? <Alert message = {item.title} description={item.description} type="error"  /> :
+                   <Alert message = {item.title} description={item.description} type="success" />
+                  }
+                  </List.Item>
+                )}
+              />
+            </Panel>
+            <Panel header = {i18n("about_data")} key="3">
+              <div id = "developer">
+                <List
+                    itemLayout="horizontal"
+                    dataSource={mainContributor}
+                    renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta
+                          avatar={<Avatar src={item.icon} />}
+                          title={<a href={item.link}>{item.title}</a>}
+                          description={item.description}
+                      />
+                     </List.Item>
+                      )}
+                    />
+                </div>
+                <ul id = "realTimeDataList">
+                  <li>{i18n('imageSearch')} : <span className ="data">{about.imageSearch}</span></li>
+                  <li>{i18n('extractImages')} : <span className ="data">{about.extractImage}</span></li>
+                  <li>{i18n('screenshotSearch')} : <span className ="data">{about.screenshotSearch}</span></li>
+                  <li>{i18n('videoControl')} : <span className ="data">{about.videoControl}</span></li>
+                  <li>{i18n('autoRefresh')} : <span className ="data">{about.autoRefresh}</span></li>
+                </ul>
+            </Panel>
+            <Panel header = {i18n("about_contribution")} key="4">
+              <List
+                itemLayout="horizontal"
+                dataSource={specialThanks}
+                renderItem={item => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.icon} />}
+                    title={<a href={item.link}>{item.title}</a>}
+                    description={item.description}
+                  />
                 </List.Item>
-              )}
-            />
-          </Panel>
-        </Collapse>
-      </AboutContainer>
-    )
+                      )}
+              />      
+            </Panel>
+          </Collapse>
+        </AboutContainer>
+      )
+    }
   }
 }
+
+export default connect(reselector, reduxActions)(About);
