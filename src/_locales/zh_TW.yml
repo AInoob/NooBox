@@ -165,6 +165,20 @@ about_data:
   message: 數據
 about_data_reason:
   message: 二箱不會收集你是誰或者你搜了什麽圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麽功能上。下面是二箱的實時數據。
+about_contribution:
+  message: 貢獻
+about_contribution_george:
+  message: George
+about_contribution_grorge_description:
+  message: 核心開發者
+about_contribution_ainoob:
+  message: AInoob
+about_contribution_ainoob_description:
+  message: 核心開發者
+about_contribution_zhtw2013:
+  message: zhtw2013
+about_contribution_zhtw2013_description:
+  message: 中文繁體貢獻者
 # search:
 #     message: 搜尋
 # close:

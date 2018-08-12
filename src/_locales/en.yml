@@ -166,17 +166,31 @@ download_all_image:
 imageSearch:
   message: Image Search
 extractImages:
-  message: Extract images
+  message: Extract Images
 screenshotSearch:
   message: 'Screenshot & Search'
 videoControl:
-  message: HTML5 video control (alpha)
+  message: HTML5 Video Control (alpha)
 autoRefresh:
-  message: Auto refresh
+  message: Auto Refresh
 about_data:
   message: Data
 about_data_reason:
   message: NooBox does not track who you are or what image you searched, but it does log your use of the it. We do so because it feels good knowing that users are using NooBox and the data also helps us figureing out which component should we focus on. Below is the realtime data about NooBox.
+about_contribution:
+  message: Contribution
+about_contribution_george:
+  message: George
+about_contribution_grorge_description:
+  message: Core developer
+about_contribution_ainoob:
+  message: AInoob
+about_contribution_ainoob_description:
+  message: Core developer
+about_contribution_zhtw2013:
+  message: zhtw2013
+about_contribution_zhtw2013_description:
+  message: zh-TW translation provider
 # search:
 #     message: Search
 # close:
