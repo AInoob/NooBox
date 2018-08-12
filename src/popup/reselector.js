@@ -24,13 +24,15 @@ export const overviewSelector    = (state) => {
 };
 export const optionsSelector     = (state) => state.options;
 export const userHistorySelector = (state) => state.userHistory;
+export const aboutSelector       = (state) => state.about;
 export default createSelector(
-  [nooboxSelector,overviewSelector,userHistorySelector,optionsSelector],
-  (noobox,overview,userHistory,options)=>{
+  [nooboxSelector,overviewSelector,userHistorySelector,optionsSelector,aboutSelector],
+  (noobox,overview,userHistory,options,about)=>{
   return{
     noobox,
     overview,
     userHistory,
     options,
+    about
   }
 })

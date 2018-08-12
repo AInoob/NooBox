@@ -55,7 +55,7 @@ class Noobox extends React.Component{
               <FAIcon icon ={faSolid.faCog}/>
             </Link>
           </Menu.Item>
-          <Menu.Item key={ABOUT_URL}>
+          <Menu.Item key={ABOUT_URL} onOpenChange ={()=>{console.log("test")}}>
             <Link to={ABOUT_URL}>
             <FAIcon icon ={faSolid.faQuestion}/>
             </Link>

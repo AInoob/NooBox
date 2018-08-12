@@ -74,6 +74,8 @@ const EngineContainer = styled.div`
 export default class Engine extends React.Component{
   render(){
     // console.log(faSolid)
+    const{engineLink} = this.props;
+    console.log(engineLink)
       return(
         <EngineContainer>
              <Card >
@@ -81,9 +83,9 @@ export default class Engine extends React.Component{
                   <div className ="box">
                     <div className = "engineContainer">
                       {
-                        !this.props.google || this.props.googleDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.google || this.props.googleDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                      <img className = {this.props.google ?"engineImage" :"engineImageHide"} src = {google}/>
+                     <a href = {engineLink["google"]}>  <img className = {this.props.google ?"engineImage" :"engineImageHide"} src = {google}/></a>
                     </div>
                     {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -100,9 +102,9 @@ export default class Engine extends React.Component{
                     <div className = "engineContainer">
                       <div className = "engineContainer">
                       {
-                        !this.props.baidu || this.props.baiduDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.baidu || this.props.baiduDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                        <img  className = {this.props.baidu ? "engineImage":"engineImageHide"} src = {baidu}/>
+                       <a href = {engineLink["baidu"]}>  <img  className = {this.props.baidu ? "engineImage":"engineImageHide"} src = {baidu}/></a>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -120,9 +122,9 @@ export default class Engine extends React.Component{
                   <div className = "engineContainer">
                       <div className = "engineContainer">
                       {
-                        !this.props.yandex || this.props.yandexDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.yandex || this.props.yandexDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                        <img  className = {this.props.yandex ? "engineImage":"engineImageHide"} src = {yandex}/>
+                      <a href = {engineLink["yandex"]}>   <img  className = {this.props.yandex ? "engineImage":"engineImageHide"} src = {yandex}/></a>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -140,9 +142,9 @@ export default class Engine extends React.Component{
                   <div className = "engineContainer">
                     <div className = "engineContainer">
                     {
-                        !this.props.bing || this.props.bingDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.bing || this.props.bingDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                        <img  className = {this.props.bing ? "engineImage":"engineImageHide"} src = {bing}/>
+                      <a href = {engineLink["bing"]}>   <img  className = {this.props.bing ? "engineImage":"engineImageHide"} src = {bing}/></a>
                       </div>
                     {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -160,9 +162,9 @@ export default class Engine extends React.Component{
                   <div className = "engineContainer">
                      <div className = "engineContainer">
                      {
-                        !this.props.tineye || this.props.tineyeDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.tineye || this.props.tineyeDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                        <img  className = {this.props.tineye ?"engineImage":"engineImageHide"} src = {tineye}/>
+                        <a href = {engineLink["tineye"]}> <img  className = {this.props.tineye ?"engineImage":"engineImageHide"} src = {tineye}/></a>
                     </div>
                     {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -179,9 +181,9 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                   {
-                        !this.props.saucenao || this.props.saucenaoDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.saucenao || this.props.saucenaoDone ? null :<Icon  className = "engineLoading" type="loading" />
                       }
-                    <img  className = {this.props.saucenao ?"engineImage":"engineImageHide"} src = {saucenao}/>
+                 <a href = {engineLink["saucenao"]}>    <img  className = {this.props.saucenao ?"engineImage":"engineImageHide"} src = {saucenao}/></a>
                   </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -197,9 +199,9 @@ export default class Engine extends React.Component{
                   <div className ="box">
                   <div className = "engineContainer">
                   {
-                        !this.props.iqdb || this.props.iqdbDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.iqdb || this.props.iqdbDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                        <img  className = {this.props.iqdb ?"engineImage":"engineImageHide"} src = {iqdb}/>
+                       <a href = {engineLink["iqdb"]}>  <img  className = {this.props.iqdb ?"engineImage":"engineImageHide"} src = {iqdb}/></a>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>
@@ -216,9 +218,9 @@ export default class Engine extends React.Component{
  
                   <div className = "engineContainer">
                   {
-                        !this.props.ascii2d || this.props.ascii2dDone ? null :  <Icon  className = "engineLoading" type="loading" />
+                        !this.props.ascii2d || this.props.ascii2dDone ? null : <Icon  className = "engineLoading" type="loading" />
                       }
-                        <img  className = {this.props.ascii2d ? "engineImage":"engineImageHide"} src = {ascii2d}/>
+                       <a href = {engineLink["ascii2d"]}>  <img  className = {this.props.ascii2d ? "engineImage":"engineImageHide"} src = {ascii2d}/></a>
                       </div>
                       {/* <div className ="engineSetting">
                       <Popover title = "Max Search Number" content = {<div>

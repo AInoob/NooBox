@@ -45,6 +45,13 @@ export const reverseImageSearch = {
       cursor:cursor,
     },()=>{})
   },
+  updateEngineLink:(obj,cursor) =>{
+    browser.runtime.sendMessage({
+      job:'engine_link',
+      result:obj,
+      cursor:cursor,
+    },()=>{})
+  },
   waitForSandBox:(parseObj) =>{
     return new Promise(function(resolve,reject){
       //移除 listener

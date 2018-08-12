@@ -17,4 +17,7 @@ export const optionsCheckEngine =  createAction('options/onCheckEngine');
 export const optionsCheckTool   =  createAction('options/onCheckTool');
 export const optionsCheckExp    =  createAction('options/onCheckExp');
 
+export const aboutInit =  createAction('about/init');
+export const plusOne   =  createAction('about/plusOne');
+
 
