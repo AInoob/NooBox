@@ -120,6 +120,10 @@ about_privacy_message_6:
   message: 最後 ?
 about_privacy_message_6:
   message: Noobox 僅僅知道有多少人在使用特定功能，這些數據幫助我們了解我們的開發側重點
+about_feedback:
+  message: 反饋
+about_feedback_message:
+  message: 如果你有什麽建議或者發現了什麽bug，請在Github上發一個issue
 #extract image page
 extract_range:
   message: 提取範圍
