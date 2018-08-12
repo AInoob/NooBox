@@ -89,7 +89,7 @@ no_size_info:
   message: 无图片尺寸信息
 #About
 about_what:
-  message: Noobox 是什么?
+  message: 二箱是什么?
 about_what_message_0:
   message: 二箱是一个工具箱，并且提供以下功能
 about_what_message_1:
