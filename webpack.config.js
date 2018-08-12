@@ -1,8 +1,10 @@
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-module.exports = {
+
+const x = {
   plugins: [
     new CopyWebpackPlugin([
       { from: './src/assets', to: 'static' },
@@ -59,5 +61,18 @@ module.exports = {
     path: path.resolve('dist'),
     filename: 'js/[name].js'
   },
-  devtool: "source-map",
+};
+
+module.exports = env => {
+  if (env === 'prod') {
+    x.optimization = {
+      minimizer: [
+        new UglifyJsPlugin()
+      ]
+    }
+  }
+  else {
+    x.devtool = "source-map";
+  }
+  return x;
 };

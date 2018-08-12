@@ -3,8 +3,7 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack -w --mode development",
-    "dev2": "webpack --mode development",
-    "prod": "webpack --mode production",
+    "prod": "npm run buildLocale && webpack --mode production --env prod",
     "buildLocale": "node ./scripts/buildLocale.js",
     "lint": "eslint --ext .js src test"
   },
