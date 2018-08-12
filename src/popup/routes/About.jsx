@@ -120,7 +120,7 @@ export default class About extends React.Component {
   render(){
     return(
       <AboutContainer>
-        <Collapse defaultActiveKey={['3']}>
+        <Collapse defaultActiveKey={['3', '5']}>
           <Panel header = {i18n("about_what")} key="1">
             <h3>{i18n("about_what_message_0")}</h3>
             <ul>
@@ -171,6 +171,9 @@ export default class About extends React.Component {
                 </List.Item>
               )}
             />
+          </Panel>
+          <Panel header = {i18n("about_feedback")} key="5">
+            <p><a href="https://github.com/AInoob/NooBox/issues">{i18n("about_feedback_message")}</a></p>
           </Panel>
         </Collapse>
       </AboutContainer>

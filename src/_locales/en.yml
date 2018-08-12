@@ -98,7 +98,9 @@ about_privacy_message_7:
 about_development:
   message: Developing Status
 about_feedback:
-  message: Feedback 
+  message: Feedback
+about_feedback_message:
+  message: If you have any suggestion or faced any issues, please create a Github issue
 #Image Search
 download:
   message: Download
