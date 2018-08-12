@@ -129,9 +129,9 @@ export default class About extends React.Component{
                 <li>{i18n('autoRefresh')} : {this.state.autoRefresh}</li>
               </ul>
           </Panel>
-          <Panel header = {i18n("about_feedback")} key="4">
+          {/* <Panel header = {i18n("about_feedback")} key="4">
             test4
-          </Panel>
+          </Panel> */}
         </Collapse>
       </AboutContainer>
     )
