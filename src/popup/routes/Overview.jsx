@@ -32,7 +32,7 @@ const OverviewContainer = styled.div`
     margin:10px 10px 0 10px;
     border: 1px dashed #d9d9d9;
     text-align: center;
-    padding: 16px 0;
+    padding-bottom: 16px;
     background: #fafafa;
     position:relative;
   }
@@ -102,7 +102,10 @@ class Overview extends React.Component{
                             />
                           </div>):undefined;
       let html5Video = overview.showHtml5Video ?(<div className ="h5Video">
-                          <H5VideoControl/>
+                          <H5VideoControl
+                            currentState      = {overview.h5video}
+                            websiteSwitch     = {actions.h5WebsiteSwitch}
+                          />
                         </div>):undefined;
       let funStuff;
       if(!imageSearch && !autoRefresh && !html5Video){

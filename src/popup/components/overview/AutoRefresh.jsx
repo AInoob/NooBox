@@ -14,7 +14,7 @@ const AutoRefreshContainer = styled.div`
   .ant-progress-bg{
     height: 2px !important;
     position: absolute;
-    top: -30px;
+    top: -13px;
     left: 0;
   }
   .ant-input-number{
