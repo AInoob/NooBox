@@ -16,6 +16,14 @@ const AboutContainer = styled.div`
     border-radius: 0;
     border: 0;
   }
+  .ant-alert{
+    width:100%;
+    padding:5px;
+    span{
+      text-align:left;
+      padding-left:20px; 
+    }
+  }
 `;
 const customPanelStyle = {
   background: '#f7f7f7',
@@ -26,22 +34,22 @@ const customPanelStyle = {
 };
 const privacyData = [
   {
-    title: i18n("about_privacy_message_0"),
+    title: "1." + i18n("about_privacy_message_0"),
     description: i18n("about_privacy_message_1"),
     type: "1"
   },
   {
-    title: i18n("about_privacy_message_2"),
+    title: "2." + i18n("about_privacy_message_2"),
     description: i18n("about_privacy_message_3"),
     type: "1"
   },
   {
-    title: i18n("about_privacy_message_4"),
+    title: "3." +i18n("about_privacy_message_4"),
     description: i18n("about_privacy_message_5"),
     type: "1"
   },
   {
-    title: i18n("about_privacy_message_6"),
+    title: "4." +i18n("about_privacy_message_6"),
     description: i18n("about_privacy_message_7"),
     type: "2"
   },
@@ -64,6 +72,7 @@ const contributionData = [{
   link: 'https://github.com/AInoob',
 }];
 
+const sideContributor =[];
 export default class About extends React.Component {
   constructor(props) {
     super(props);
@@ -79,7 +88,6 @@ export default class About extends React.Component {
   }
   setupSocket() {
     this.socket.on('connect', () => {
-      console.log('wut');
       this.getData();
     });
     this.socket.on('imageSearch', type => {
@@ -110,7 +118,6 @@ export default class About extends React.Component {
     request.send();
   }
   render(){
-    console.log(i18n("about_what"));
     return(
       <AboutContainer>
         <Collapse defaultActiveKey={['3']}>
@@ -128,11 +135,14 @@ export default class About extends React.Component {
               dataSource={privacyData}
               renderItem={item => (
               <List.Item>
-                <List.Item.Meta
+                  {item.type == "1"  ? <Alert message = {item.title} description={item.description} type="error"  /> :
+                 <Alert message = {item.title} description={item.description} type="success" />
+                }
+                {/* <List.Item.Meta
                   avatar={item.type == "1" ? <Avatar ><Icon type="exclamation" /></Avatar> :<Avatar><Icon type="check" /></Avatar>}
                   title={item.title}
                   description={item.description}
-                />
+                /> */}
                 </List.Item>
               )}
             />
