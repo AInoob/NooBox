@@ -3,6 +3,7 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack -w --mode development",
+    "preProd": "webpack -w --mode production --env preProd",
     "prod": "npm run buildLocale && webpack --mode production --env prod",
     "buildLocale": "node ./scripts/buildLocale.js",
     "lint": "eslint --ext .js src test"
@@ -48,6 +49,7 @@
     "redbox-react": "^1.4.3",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.0.8",
     "yamljs": "^0.3.0"
   }
