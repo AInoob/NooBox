@@ -300,13 +300,14 @@ export default class Image {
       }else{
         reverseImageSearch.updateImageUrl(base64orUrl,cursor);
       }
-
+      let engineLink={};
       //Get Opened Engine and send request
       for(let i = 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
         let check  = await get(dbName);
         if(check && this.fetchFunction[name+"Link"]){ 
+          engineLink[name] = apiUrls[name] + imageLink;
           if(name === "baidu"){
             await createSandbox();
           }
@@ -319,6 +320,7 @@ export default class Image {
           }
         }
       }
+      reverseImageSearch.updateEngineLink(engineLink,cursor)
     }
     
   }

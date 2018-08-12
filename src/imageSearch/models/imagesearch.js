@@ -9,33 +9,34 @@ export default {
     inited:false,
     base64:"",
     url:"",
+    engineLink:{},
     searchImageInfo:[],
     searchResult:[],
     displayMode:2,
-     sortBy:"",
+    sortBy:"",
     sortByOrder:0,
-     google:false,
+    google:false,
     googleDone:false,
     googleMax:5,
-     baidu:false,
+    baidu:false,
     baiduDone:false,
     baiduMax:1,
-     yandex:false,
+    yandex:false,
     yandexDone:false,
     yandexMax:1,
-     bing:false,
+    bing:false,
     bingDone:false,
     bingMax:1,
-     tineye:false,
+    tineye:false,
     tineyeDone:false,
     tineyeMax:1,
-     sausao:false,
+    sausao:false,
     sausaoDone:false,
     sausaoMax:1,
-     iqdb:false,
+    iqdb:false,
     iqdbDone:false,
     iqdbMax:1,
-     ascii2d:false,
+    ascii2d:false,
     ascii2dDone:false,
     ascii2dMax:1,
   },
@@ -141,7 +142,7 @@ export default {
     updateSortByOrder(state,{payload}){
       return Object.assign({},state,{sortByOrder:payload})
     },
-     updateImageBase64(state,{payload}){
+    updateImageBase64(state,{payload}){
       let {pageId} = state;
       if(pageId == payload.cursor){
         return Object.assign({},state,{base64:payload.result});
@@ -157,6 +158,14 @@ export default {
         return state;
       }
     },
+    updateEngineLink(state,{payload}){
+      let{pageId} = state;
+      if(pageId == payload.cursor){
+        return Object.assign({},state,{engineLink:payload.result});
+      }else{
+        return state;
+      }
+    },
     updateSearchResult(state,{payload}){
       let { pageId,searchResult } = state;
       if(pageId == payload.cursor){
@@ -165,7 +174,6 @@ export default {
       }else{
         return state;
       }
-   
     },
     updateImageInfo(state,{payload}){
       let{pageId,searchImageInfo} = state;
@@ -209,6 +217,12 @@ export default {
           }
         }else if(message.job === "image_url"){
           type = "updateImageUrl"
+          payload = {
+            cursor: message.cursor,
+            result: message.result
+          }
+        }else if(message.job === "engine_link"){
+          type = "updateEngineLink"
           payload = {
             cursor: message.cursor,
             result: message.result
