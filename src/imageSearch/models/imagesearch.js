@@ -54,6 +54,7 @@ export default {
           engineStatus.url = hasDataBase.url;
           engineStatus.searchImageInfo = hasDataBase.searchImageInfo;
           engineStatus.searchResult = hasDataBase.searchResult;
+          engineStatus.engineLink = hasDataBase.engineLink;
           dataBaseFlag = true;
         }
       }
@@ -115,13 +116,14 @@ export default {
     //Store DB after finish all
     *updateEngineDone({payload},{call,put,select}){
       // console.log(payload);
-      let{base64,url,searchImageInfo,searchResult,pageId} = yield select(state => state.imageSearch);
+      let{base64,url,searchImageInfo,searchResult,pageId,engineLink} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
         let data ={
           base64,
           url,
           searchImageInfo,
           searchResult,
+          engineLink
         }
         yield call(setDB,"imageCursor",payload.cursor);
         yield call(setDB,payload.cursor,data);
