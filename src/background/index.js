@@ -2,6 +2,7 @@ import userBrowser from '../utils/useBrowser';
 import AutoRefresh from './AutoRefresh';
 import Image from './Image';
 import Options from './Options';
+import { getCurrentTab, sendMessage,sendTabMessage } from 'SRC/utils/browserUtils';
 import { getDB, set } from '../utils/db';
 import { wait } from '../utils';
 import { logEvent } from '../utils/bello';
@@ -56,9 +57,9 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   } else if(job === "loadImageHistory"){
     const {cursor} = request;
     image.loadImageHistory(cursor);
-  }else if (request.job === 'urlDownloadZip') {
+  }else if (job == 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
-  } else if (request.job === 'getDB') {
+  } else if (job == 'getDB') {
     const value = await getDB(request.key);
     browser.tabs.sendMessage(sender.tab.id, {
       job: 'returnDB',
@@ -82,6 +83,27 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         label: ''
       });
     }
+  }else if(job == "videoControl_website_switch"){
+    let {isEnable} = request;
+    const tabData = await getCurrentTab();
+    const tabId = tabData.id;
+    if(isEnable){
+      analytics({
+        category: 'videoControlWebsiteSwitch',
+        action:"enable",
+        label: ''
+      });
+    }else{
+      analytics({
+        category: 'videoControlWebsiteSwitch',
+        action:"disable",
+        label: ''
+      });
+    }
+    await sendTabMessage(tabId,{
+      job:'videoControlContentScriptSwitch',
+      enabled: isEnable,
+    })
   }
 });
 
