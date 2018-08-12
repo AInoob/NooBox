@@ -73,7 +73,7 @@ class UserHistory extends React.Component{
           <Table dataSource={userHistory.dbData} bordered = {true}>
             <Column
               className ="tableHeader"
-              title="History"
+              title={i18n('history')}
               key  = "dbKey"
               dataIndex ="dbKey"
               render = {(text,record) =>{

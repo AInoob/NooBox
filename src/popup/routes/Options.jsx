@@ -81,8 +81,8 @@ class Options extends React.Component{
             checkable
             onCheck={(e)=>actions.optionsCheckExp(e)}
             defaultCheckedKeys = {options.currentExp}>
-            <TreeNode title ="History"      key = "history"/>
-            <TreeNode title ="Check Update" key = "checkUpdate"/>
+            <TreeNode title = {i18n('history')}      key = "history"/>
+            {/* <TreeNode title = {i18n('checkUpdate')} key = "checkUpdate"/> */}
           </Tree>
         </div>
         <div id = "tool">
@@ -91,10 +91,11 @@ class Options extends React.Component{
             checkable
             onCheck={(e)=>actions.optionsCheckTool(e)}
             defaultCheckedKeys = {options.currentTool}
+            defaultExpandedKeys={['imageSearch']}
           >
             <TreeNode   title = {i18n("auto_refresh")}              key = "autoRefresh"/>
             <TreeNode   title = {i18n("video_control")}             key = "videoControl"/>
-            <TreeNode   title = {i18n("image")}                     key = "image">
+            <TreeNode expanded={true} title = {i18n("image")}       key = "image">
               <TreeNode title = {i18n("reverse_image_search")}      key = "imageSearch"/>
               <TreeNode title = {i18n("result_page_tab_front")}     key = "imageSearchNewTabFront"/>
               <TreeNode title = {i18n("extract_images")}            key = "extractImages"/>

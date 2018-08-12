@@ -93,9 +93,9 @@ no_size_info:
   message: 無圖片尺寸信息
 #About  
 about_what:
-  message: Noobox 是什麽?
+  message: 二箱是什麽?
 about_what_message_0:
-  message: NooBox 是壹個工具箱，並且提供以下功能
+  message: 二箱是壹個工具箱，並且提供以下功能
 about_what_message_1:
   message: 以圖搜圖
 about_what_message_2:
@@ -107,11 +107,11 @@ about_privacy:
 about_privacy_message_0:
   message: 追蹤和記錄您的歷史記錄?
 about_privacy_message_1:
-  message: 不, Noobox 不會的 !
+  message: 不, 二箱不會的 !
 about_privacy_message_2:
   message: 知道您是誰?
 about_privacy_message_3:
-  message: 不, Noobox 不會的 !
+  message: 不, 二箱不會的 !
 about_privacy_message_4:
   message: 提供您的信息給其他人 ?
 about_privacy_message_5:
@@ -119,7 +119,7 @@ about_privacy_message_5:
 about_privacy_message_6:
   message: 最後 ?
 about_privacy_message_6:
-  message: Noobox 僅僅知道有多少人在使用特定功能，這些數據幫助我們了解我們的開發側重點
+  message: 二箱僅僅知道有多少人在使用特定功能，這些數據幫助我們了解我們的開發側重點
 about_feedback:
   message: 反饋
 about_feedback_message:
@@ -127,8 +127,8 @@ about_feedback_message:
 #extract image page
 extract_range:
   message: 提取範圍
-# history:
-#     message: 歷程
+history:
+  message: 歷程
 # options:
 #     message: 選項
 # about:
@@ -263,10 +263,10 @@ about_contribution_zhtw2013_description:
 #     message: j
 # ls_0:
 #     message: 不支援的檔案類型
-# ls_1:
-#     message: 擷圖搜尋失敗，
-# ls_2:
-#     message: 無法在目前頁面使用擷圖搜尋
+ls_1:
+  message: 擷圖搜尋失敗，
+ls_2:
+  message: 無法在目前頁面使用擷圖搜尋
 # ls_3:
 #     message: 拖曳圖片到這裡
 ls_4:

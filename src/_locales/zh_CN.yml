@@ -36,14 +36,10 @@ support_for_a_single_upload:
 html_5_video_control:
   message: HTML 5 视频控制 (预览版)
 auto_refresh:
-  message: 网页自动刷新 (测试版)
+  message: 网页自动刷新
 s:
   message: 秒
 #Option
-auto_refresh:
-  message: 自动页面刷新 (测试版)
-video_control:
-  message: HTML5 视频控制 (预览版) 
 image:
   message: 图片相关
 reverse_image_search:
@@ -95,7 +91,7 @@ no_size_info:
 about_what:
   message: Noobox 是什么?
 about_what_message_0:
-  message: NooBox 是一个工具箱，并且提供以下功能
+  message: 二箱是一个工具箱，并且提供以下功能
 about_what_message_1:
   message: 以图搜图
 about_what_message_2:
@@ -107,11 +103,11 @@ about_privacy:
 about_privacy_message_0:
   message: 追踪和记录您的历史记录?
 about_privacy_message_1:
-  message: 不, Noobox 不会的 !
+  message: 不, 二箱不会的 !
 about_privacy_message_2:
   message: 知道您是谁?
 about_privacy_message_3:
-  message: 不, Noobox 不会的 !
+  message: 不, 二箱不会的 !
 about_privacy_message_4:
   message: 提供您的信息给其他人 ?
 about_privacy_message_5:
@@ -119,7 +115,7 @@ about_privacy_message_5:
 about_privacy_message_6:
   message: 最后 ?
 about_privacy_message_7:
-  message: Noobox 仅仅知道有多少人在使用特定功能，这些数据帮助我们了解我们的开发侧重点
+  message: 二箱仅仅知道有多少人在使用特定功能，这些数据帮助我们了解我们的开发侧重点
 about_feedback:
   message: 反馈
 about_feedback_message:
@@ -127,8 +123,8 @@ about_feedback_message:
 #extract image page
 extract_range:
   message: 提取范围
-# history:
-#     message: 历史
+history:
+  message: 历史
 # options:
 #     message: 选项
 # about:
@@ -267,10 +263,10 @@ about_contribution_zhtw2013_description:
 #     message: j
 # ls_0:
 #     message: 不支持的文件类型
-# ls_1:
-#     message: 截图搜索失败，
-# ls_2:
-#     message: 无法在当前页面使用截图搜索
+ls_1:
+  message: 截图搜索失败，
+ls_2:
+  message: 无法在当前页面使用截图搜索
 # ls_3:
 #     message: 拖拽图片到这里
 ls_4:

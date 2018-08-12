@@ -141,39 +141,25 @@ export default class Image {
   }
 
   extractImages(info, tab) {
-    try {
-      logEvent({
-        category: 'extractImages',
-        action: 'run'
-      });
-      browser.tabs.sendMessage(tab.id, {
-        job: "extractImages"
-      }, {
-          frameId: info.frameId
-        }, (response) => {
-          if (!response) {
-            browser.notifications.create('extractImages', {
-              type: 'basic',
-              iconUrl: '/static/nooboxLogos/icon_128.png',
-              title: GL("extractImages"),
-              message: GL("ls_4")
-            }, () => {});
-          }
-        });
-    } catch (e) {
-      browser.tabs.sendMessage(tab.id, {
-        job: "extractImages"
-      }, (response) => {
-        if (!response) {
-          brwoser.notifications.create('extractImages', {
-            type: 'basic',
-            iconUrl: '/static/nooboxLogos/icon_128.png',
-            title: GL("extractImages"),
-            message: GL("ls_4")
-          }, () => {});
-        }
-      });
-    }
+    logEvent({
+      category: 'extractImages',
+      action: 'run'
+    });
+    browser.tabs.sendMessage(tab.id, {
+      job: "extractImages"
+    }, {
+      frameId: info.frameId
+    }, (response) => {
+      if (!response) {
+        browser.notifications.create('extractImages', {
+          type: 'basic',
+          iconUrl: '/static/nooboxLogos/icon_128.png',
+          title: GL("extractImages"),
+          message: GL("ls_4")
+        }, () => {});
+      }
+      console.log("Last error:", browser.runtime.lastError);
+    });
   }
   downloadExtractImages(sender, files) {
     logEvent({

@@ -141,8 +141,8 @@ download_all_image:
 # #Old Language Pack
 # overview:
 #   message: Overview
-# history:
-#     message: History
+history:
+  message: History
 # options:
 #     message: Options
 # about:
@@ -267,10 +267,10 @@ about_contribution_zhtw2013_description:
 #     message: j
 # ls_0:
 #     message: Not supported file type
-# ls_1:
-#     message: Screenshot search failed
-# ls_2:
-#     message: Cannot perform screenshot search on this tab
+ls_1:
+  message: Screenshot search failed
+ls_2:
+  message: Cannot perform screenshot search on this tab
 # ls_3:
 #     message: Drop the image here
 ls_4:
