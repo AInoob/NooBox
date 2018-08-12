@@ -163,12 +163,20 @@ download_all_image:
 #     message: 'Sort by '
 # reverse_image_search:
 #     message: Reverse Image Search
-# imageSearch:
-#     message: Reverse Image Search
+imageSearch:
+  message: Image Search
 extractImages:
-    message: Extract images
-# screenshotSearch:
-#     message: 'Screenshot & Search'
+  message: Extract images
+screenshotSearch:
+  message: 'Screenshot & Search'
+videoControl:
+  message: HTML5 video control (alpha)
+autoRefresh:
+  message: Auto refresh
+about_data:
+  message: Data
+about_data_reason:
+  message: NooBox does not track who you are or what image you searched, but it does log your use of the it. We do so because it feels good knowing that users are using NooBox and the data also helps us figureing out which component should we focus on. Below is the realtime data about NooBox.
 # search:
 #     message: Search
 # close:

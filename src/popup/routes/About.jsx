@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Collapse,Alert, List, Avatar,Icon  } from 'antd';
+import { Collapse, Alert, List, Avatar,Icon  } from 'antd';
+import io from 'socket.io-client';
 
 const Panel = Collapse.Panel;
 
@@ -46,6 +47,50 @@ const privacyData =[
   },
 ];
 export default class About extends React.Component{
+  constructor(props) {
+    super(props);
+    this.socket = io('https://ainoob.com:443/');
+    this.setupSocket();
+    this.state = {
+      imageSearch: 0,
+      extractImage: 0,
+      screenshotSearch: 0,
+      videoControl: 0,
+      autoRefresh: 0,
+    };
+  }
+  setupSocket() {
+    this.socket.on('connect', () => {
+      console.log('wut');
+      this.getData();
+    });
+    this.socket.on('imageSearch', type => {
+      this.setState({ imageSearch: this.state.imageSearch + 1 });
+    });
+    this.socket.on('extractImage', type => {
+      this.setState({ extractImage: this.state.extractImage + 1 });
+    });
+    this.socket.on('screenshotSearch', type => {
+      this.setState({ screenshotSearch: this.state.screenshotSearch + 1 });
+    });
+    this.socket.on('videoControl', type => {
+      this.setState({ videoControl: this.state.videoControl + 1 });
+    });
+    this.socket.on('autoRefresh', type => {
+      this.setState({ autoRefresh: this.state.autoRefresh + 1 });
+    });
+  }
+  getData() {
+    let request = new XMLHttpRequest();
+    request.open('GET', 'https://ainoob.com/api/public/data/?x=' + Math.random(), true);
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 400) {
+        let { imageSearch, extractImage, screenshotSearch, videoControl, autoRefresh } = JSON.parse(request.responseText);
+        this.setState({ imageSearch, extractImage, screenshotSearch, videoControl, autoRefresh });
+      }
+    };
+    request.send();
+  }
   render(){
     console.log(i18n("about_what"));
     return(
@@ -74,8 +119,15 @@ export default class About extends React.Component{
               )}
             />
           </Panel>
-          <Panel header = {i18n("about_development")} key="3">
-            test3
+          <Panel header = {i18n("about_data")} key="3">
+              <p>{i18n("about_data_reason")}</p>
+              <ul>
+                <li>{i18n('imageSearch')} : {this.state.imageSearch}</li>
+                <li>{i18n('extractImages')} : {this.state.extractImage}</li>
+                <li>{i18n('screenshotSearch')} : {this.state.screenshotSearch}</li>
+                <li>{i18n('videoControl')} : {this.state.videoControl}</li>
+                <li>{i18n('autoRefresh')} : {this.state.autoRefresh}</li>
+              </ul>
           </Panel>
           <Panel header = {i18n("about_feedback")} key="4">
             test4
