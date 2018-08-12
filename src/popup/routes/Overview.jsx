@@ -102,7 +102,10 @@ class Overview extends React.Component{
                             />
                           </div>):undefined;
       let html5Video = overview.showHtml5Video ?(<div className ="h5Video">
-                          <H5VideoControl/>
+                          <H5VideoControl
+                            currentState      = {overview.h5video}
+                            websiteSwitch     = {actions.h5WebsiteSwitch}
+                          />
                         </div>):undefined;
       let funStuff;
       if(!imageSearch && !autoRefresh && !html5Video){

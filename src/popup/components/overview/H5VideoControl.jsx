@@ -12,31 +12,18 @@ const H5VideoControlContainer = styled.div`
 `;
 const Dragger = Upload.Dragger;
 export default class H5VideoControl extends React.Component{
-  constructor(props){
-    super(props);
-    this.state  = {
-       start    : false,
-       startClass : "toolStart",
-       stopClass  : "toolStop",
-    }
-  }
-  onChangeRefreshRate(e){
 
-  }
-  startOrStop(){
-    if(this.state.start){
-      this.setState({active:false})
-    }else{
-      this.setState({active:true})
-    }
-  }
   render(){
+    const{currentState,websiteSwitch} = this.props;
+    console.log(this.props.currentState);
       return(
         <H5VideoControlContainer>
-            <span  onClick = {()=> this.startOrStop()}>
+            <span>
               <FAIcon
-              className = {this.state.start ? this.state.startClass :this.state.stopClass}
-              icon ={faSolid.faVideo}/>
+              className = {currentState.websiteEnable ? "toolStart" :"toolStop"}
+              icon ={faSolid.faVideo}
+              onClick = {() => websiteSwitch()}
+              />
             </span>
            <p className="ant-upload-text">{i18n("html_5_video_control")}</p>
         </H5VideoControlContainer>

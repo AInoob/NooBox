@@ -1,7 +1,7 @@
 import AutoRefresh from "../components/overview/AutoRefresh";
 import Overview from "../routes/Overview";
 import { getCurrentTab, sendMessage } from 'SRC/utils/browserUtils';
-import { get } from 'SRC/utils/db.js';
+import { get,set } from 'SRC/utils/db.js';
 export default {
   namespace:"overview",
   state:{
@@ -15,16 +15,18 @@ export default {
     ifRefresh: false,
     refreshInterval: 3,
     refreshElapsed: 0,
+    //H5 Video Control
+    websiteEnable:false,
+    hostName:"",
   },
   effects:{
     *init({payload},{put,call,select}){
         // Get All Tool Situation
         let initState   = {};
-        let {showImageSearch,showAutoRefresh,showHtml5Video} = yield select(state => state.overview);
+        // let {showImageSearch,showAutoRefresh,showHtml5Video} = yield select(state => state.overview);
         initState.showImageSearch = (yield call(get,"imageSearch"));
         initState.showAutoRefresh = (yield call(get,"autoRefresh"));
         initState.showHtml5Video  = (yield call(get,"videoControl"));
-      
         //Init Auto Refresh
         const tabData   = yield call(getCurrentTab);
         // console.log(tabData);
@@ -36,12 +38,29 @@ export default {
         initState.refreshInterval = refreshStatus.interval;
         //Init Image Search
         //Init H5 Video Control
+        const url = tabData.url;
+        const tagA = document.createElement('a');
+        tagA.href = url;
+        initState.hostName = tagA.hostname;
+        let websiteEnable = yield call(get,tagA.hostname);
+        if(websiteEnable == null){
+          websiteEnable = false;
+          yield call(set,tagA.hostname,websiteEnable);
+        }
+        let message ={
+          job: 'videoControl_website_switch',
+          host: tagA.hostname,
+          isEnable: websiteEnable,
+        };
+        yield call(sendMessage,message);
+        initState.websiteEnable = websiteEnable;
+        //Get Host Name
+        //const h5videoControl  = yield call(sendMessage,{ job :})
         //Set Inited
         initState.inited = true;
         yield put({type:"updateState",payload:initState});
         // console.log(ifAutoRefresh);
     },
-
     *autoRefreshUpdate({payload},{call,put,select}){
       const { tabId, active, interval, startAt } = payload;
       yield call(sendMessage, {
@@ -51,6 +70,24 @@ export default {
         interval,
         startAt,
       });
+    },
+    *html5VideoWebsiteSwitch({payload},{call,put,select}){
+      const {websiteEnable,hostName} =  yield select(state => state.overview);
+      let newStatus ={}
+      if(websiteEnable){
+        newStatus.websiteEnable = !websiteEnable;
+      }else{
+        newStatus.websiteEnable = !websiteEnable;
+      }
+      let message ={
+        job: 'videoControl_website_switch',
+        host: hostName,
+        isEnable: websiteEnable,
+      };
+      yield call(sendMessage,message);
+      //console.log(!websiteEnable)
+      yield call(set,hostName,!websiteEnable);
+      yield put({type:"updateState",payload:newStatus});
     },
     *autoRefreshShutDown({},{call,select}){
       let {tabId} = yield select(state => state.overview);
