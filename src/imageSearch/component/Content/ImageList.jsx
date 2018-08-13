@@ -21,11 +21,17 @@ const ResultContainer = styled.div`
     height:20px;
   }
   .searchImage{
-    max-width:150px;
-    max-height:150px;
+    width:250px;
   }
   .sizeInfo{
     margin:0;
+  }
+  .ant-list-item-main{
+    order:2
+    padding-left: 10%;
+  }
+  .ant-list-item-extra{
+    order:1
   }
 `;
 export default class ImageList extends React.Component{

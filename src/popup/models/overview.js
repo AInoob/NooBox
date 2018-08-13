@@ -47,12 +47,6 @@ export default {
           websiteEnable = false;
           yield call(set,tagA.hostname,websiteEnable);
         }
-        let message ={
-          job: 'videoControl_website_switch',
-          host: tagA.hostname,
-          isEnable: websiteEnable,
-        };
-        yield call(sendMessage,message);
         initState.websiteEnable = websiteEnable;
         //Get Host Name
         //const h5videoControl  = yield call(sendMessage,{ job :})
