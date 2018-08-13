@@ -4,11 +4,11 @@ appDesc:
     message: 一個實用的工具箱！多搜尋引擎以圖搜圖+提取圖片+擷圖搜尋+HTML5影片控制
 #Context Menu
 search_this_image:
-  message: 搜索這張圖片
+  message: 搜尋這張圖片
 extract_this_images:
   message: 提取這張圖片
 take_screenshot:
-  message: 截圖搜索
+  message: 擷圖搜尋
 #engine Name:
 google:
   message: Google
@@ -32,49 +32,49 @@ choose_tools_from_here:
 reverse_image_search:
   message: 以圖搜圖
 support_for_a_single_upload:
-  message: 支持單個上傳圖片
+  message: 支援單個上傳圖片
 html_5_video_control:
-  message: HTML 5 視頻控制 (預覽版)
+  message: HTML 5 影片控制 (預覽版)
 auto_refresh:
-  message: 網頁自動刷新 (測試版)
+  message: 網頁自動重新整理 (測試版)
 s:
   message: 秒
 #Option
 auto_refresh:
-  message: 自動頁面刷新 (測試版)
+  message: 自動頁面重新整理 (測試版)
 video_control:
-  message: HTML5 視頻控制 (預覽版)
+  message: HTML5 影片控制 (預覽版)
 image:
     message: 圖片相關
 reverse_image_search:
     message: 以圖搜圖
 result_page_tab_front:
-    message: 結果顯示在新標簽頁
+    message: 結果顯示在新分頁
 extract_images:
     message: 提取圖片
 screenshot_search:
-    message: 截圖搜索
+    message: 擷圖搜尋
 tools:
-    message: 工具設置
+    message: 工具設定
 avaiable_engine:
-    message: 搜索引擎設置
+    message: 搜尋引擎設定
 experience:
-    message: 體驗設置
+    message: 體驗設定
 #Image Search
 display_mode:
   message: 顯示模式
 download:
   message: 下載圖片
 search_again:
-  message: 重新搜索
+  message: 重新搜尋
 upload_search:
-  message: 如沒有結果，請嘗試點擊
+  message: 如沒有結果，請嘗試點選
 list:
-  message: 圖片列表
+  message: 圖片清單
 sort_by:
   message: 排序依據
 image_wall:
-  message: 圖片墻
+  message: 圖片牆
 area:
   message: 面積
 width:
@@ -82,26 +82,26 @@ width:
 height:
   message: 高度
 increase:
-  message: 升序
+  message: 升冪
 decrease:
-  message: 降序
+  message: 降冪
 save:
-  message: 保存
+  message: 儲存
 clear:
   message: 清除
 no_size_info:
-  message: 無圖片尺寸信息
+  message: 無圖片大小資訊
 #About  
 about_what:
-  message: 二箱是什麽?
+  message: 二箱是什麼?
 about_what_message_0:
-  message: 二箱是壹個工具箱，並且提供以下功能
+  message: 二箱是一個工具箱，並且提供以下功能
 about_what_message_1:
   message: 以圖搜圖
 about_what_message_2:
-  message: 網頁自動刷新
+  message: 網頁自動重新整理
 about_what_message_3:
-  message: HTML 5 視頻控制
+  message: HTML 5 影片控制
 about_privacy:
   message: 隱私
 about_privacy_message_0:
@@ -113,17 +113,17 @@ about_privacy_message_2:
 about_privacy_message_3:
   message: 不, 二箱不會的 !
 about_privacy_message_4:
-  message: 提供您的信息給其他人 ?
+  message: 提供您的資訊給其他人 ?
 about_privacy_message_5:
   message: 不, 從不 !
 about_privacy_message_6:
   message: 最後 ?
 about_privacy_message_6:
-  message: 二箱僅僅知道有多少人在使用特定功能，這些數據幫助我們了解我們的開發側重點
+  message: 二箱僅僅知道有多少人在使用特定功能，這些資料幫助我們了解我們的開發的重點
 about_feedback:
-  message: 反饋
+  message: 意見回饋
 about_feedback_message:
-  message: 如果你有什麽建議或者發現了什麽bug，請在Github上發一個issue
+  message: 如果你有什麽建議或者發現了bug，請在Github上發issue通知我們。
 #extract image page
 extract_range:
   message: 提取範圍
@@ -168,9 +168,9 @@ autoRefresh:
 videoControl:
   message: HTML5影片控制（測試）
 about_data:
-  message: 实时数据
+  message: 即時資料
 about_data_reason:
-  message: 二箱不會收集你是誰或者你搜了什麽圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麽功能上。下面是二箱的實時數據。
+  message: 二箱不會收集你是誰或者你搜了什麼圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麽功能上。下面是二箱的即時資料。
 about_contribution:
   message: 特別感謝
 about_contribution_george:
@@ -184,7 +184,7 @@ about_contribution_ainoob_description:
 about_contribution_zhtw2013:
   message: zhtw2013
 about_contribution_zhtw2013_description:
-  message: 中文繁體貢獻者
+  message: 繁體中文貢獻者
 # search:
 #     message: 搜尋
 # close:
@@ -270,7 +270,7 @@ ls_2:
 # ls_3:
 #     message: 拖曳圖片到這裡
 ls_4:
-  message: 重新整理這個頁面以載入二箱元件，如果還是不行就說明目前頁面不支援擷取圖片
+  message: 重新整理這個頁面以載入二箱擴充套件，如果還是不行就說明目前頁面不支援擷取圖片
 # ls_5:
 #     message: 沒結果？點這裡上傳圖片搜尋
 # ls_6:
