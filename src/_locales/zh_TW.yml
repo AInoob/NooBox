@@ -123,7 +123,7 @@ about_privacy_message_6:
 about_feedback:
   message: 意見回饋
 about_feedback_message:
-  message: 如果你有什麽建議或者發現了bug，請在Github上發issue通知我們。
+  message: 如果你有什麼建議或者發現了bug，請在Github上發issue通知我們。
 #extract image page
 extract_range:
   message: 提取範圍
@@ -170,7 +170,7 @@ videoControl:
 about_data:
   message: 即時資料
 about_data_reason:
-  message: 二箱不會收集你是誰或者你搜了什麼圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麽功能上。下面是二箱的即時資料。
+  message: 二箱不會收集你是誰或者你搜了什麼圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麼功能上。下面是二箱的即時資料。
 about_contribution:
   message: 特別感謝
 about_contribution_george:
