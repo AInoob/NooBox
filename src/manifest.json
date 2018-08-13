@@ -3,7 +3,7 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "short_name": "NB",
-  "version": "1.0.0.2",
+  "version": "1.0.0.3",
   "browser_action": {
     "default_icon": "static/nooboxLogos/icon_128.png",
     "default_title": "NooBox~",
