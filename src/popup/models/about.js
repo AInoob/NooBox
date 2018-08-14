@@ -24,12 +24,14 @@ export default {
           screenshotSearch:screenshotSearch,
           videoControl:videoControl,
           autoRefresh:autoRefresh,
+          socketListener: false,
         }});
       }
     }
   },
   reducers:{
     updateState(state,{payload}){
+      console.log(payload);
       return Object.assign({},state,payload);
     },
     plusOne(state,{payload}){
