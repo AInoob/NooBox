@@ -310,8 +310,11 @@ export const reverseImageSearch = {
         //   searchNumber = totalSearchResult >= 20 ? 20: totalSearchResult;
         // }
         let firstPage = reverseImageSearch.processTineyeData(page);
-        const followingPage = page.getElementsByClassName("pagination-bottom")[0].getElementsByTagName("a");
-        if(followingPage){
+        const followingPageExist = page.getElementsByClassName("pagination-bottom")[0]
+        
+       
+        if(followingPageExist){
+          let followingPage = followingPageExist.getElementsByTagName("a");
           let tempFunciton = function(url){
             return new Promise((resolve)=>{
               ajax(url,{method:"GET"}).then(({data}) =>{
