@@ -76,7 +76,7 @@ export default class Setting extends React.Component{
                 <RadioButton value="area">{i18n("area")}</RadioButton>
               </RadioGroup>
             </h3>
-            <RadioGroup onChange ={(e) => updateSortByOrder(e.target.value)} defaultValue = {sortByOrder}>
+            <RadioGroup onChange ={(e) => updateSortByOrder(e.target.value)} value = {sortByOrder}>
               <Radio value={1}>{i18n("increase")}</Radio>
               <Radio value={2}>{i18n("decrease")}</Radio>
             </RadioGroup>
