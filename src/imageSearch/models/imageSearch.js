@@ -45,11 +45,11 @@ export default {
       yield put({type:"updateState",payload:{pageId:payload}})
       let engineStatus = {};
       let cursor = yield call(getDB,"imageCursor");
-      console.log(cursor);
+      // console.log(cursor);
       let dataBaseFlag = false;
       if(cursor != null && payload <= cursor){
         let hasDataBase = yield call(getDB,Number.parseInt(payload));
-        console.log(hasDataBase);
+        // console.log(hasDataBase);
         if(hasDataBase){
           engineStatus.base64 = hasDataBase.base64;
           engineStatus.url = hasDataBase.url;
@@ -142,7 +142,7 @@ export default {
     *updateInnerState({payload},{call,put,select}){
       const {pageId} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
-        console.log(payload);
+        // console.log(payload);
         let {type} = payload;
         yield put({type:type,payload:{
           result: payload.result,
