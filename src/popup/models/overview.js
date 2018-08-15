@@ -104,6 +104,7 @@ export default {
         base64: payload,
       }
       yield call(sendMessage,message);
+      yield call(sendMessage, { job: 'analytics', category: 'uploadSearch', action: 'run' });
     },
   },
   reducers:{
