@@ -61,6 +61,8 @@ avaiable_engine:
 experience:
     message: 體驗設置
 #Image Search
+guessing_keyword:
+  message: 關鍵詞
 display_mode:
   message: 顯示模式
 download:
@@ -130,33 +132,6 @@ extract_range:
 history:
   message: 歷程
 # options:
-#     message: 選項
-# about:
-#     message: 關於
-# extract_images:
-#     message: 擷取圖片
-# search_this_image:
-#     message: 以圖搜圖
-# screenshot_search:
-#     message: 擷圖搜尋
-# image:
-#     message: 圖片
-# keywords:
-#     message: 關鍵字
-# more:
-#     message: 更多
-# relevance:
-#     message: 相關
-# area:
-#     message: 面積
-# width:
-#     message: 寬度
-# height:
-#     message: 高度
-# sortBy:
-#     message: '排序 '
-# reverse_image_search:
-#     message: 以圖搜圖
 imageSearch:
   message: 以圖搜圖
 extractImages:
@@ -186,118 +161,9 @@ about_contribution_zhtw2013:
 about_contribution_zhtw2013_description:
   message: 中文繁體貢獻者
 # search:
-#     message: 搜尋
-# close:
-#     message: 關閉
-# notifier:
-#     message: 二通知
-# reader:
-#     message: 二閱讀
-# clearAll:
-#     message: 全部清除
-# totalSearches:
-#     message: 搜尋次數
-# when:
-#     message: 什麼時候
-# event:
-#     message: 事件
-# detail:
-#     message: 詳細資料
-# google:
-#     message: Google
-# baidu:
-#     message: 百度
-# tineye:
-#     message: Tineye
-# yandex:
-#     message: Yandex
-# saucenao:
-#     message: SauceNAO
-# iqdb:
-#     message: IQDB
-# sogou:
-#     message: 搜狗
-# bing:
-#     message: Bing
-# imageSearchUrl_google:
-#     message: Google
-# imageSearchUrl_baidu:
-#     message: 百度
-# imageSearchUrl_tineye:
-#     message: Tineye
-# imageSearchUrl_yandex:
-#     message: Yandex
-# imageSearchUrl_saucenao:
-#     message: SauceNAO
-# imageSearchUrl_iqdb:
-#     message: IQDB
-# imageSearchUrl_sogou:
-#     message: 搜狗
-# imageSearchUrl_bing:
-#     message: Bing
-# images:
-#     message: 圖片
-# upload_image:
-#     message: 上傳圖片
-# videoControl:
-#     message: HTML5影片控制（不穩定，慎用）
-# checkUpdate:
-#     message: 檢查更新
-# experience:
-#     message: 體驗
-# record_history:
-#     message: 記錄歷程
-# autoRefresh:
-#     message: 自動重新整理（測試）
-# imageSearchNewTabFront:
-#     message: 在前臺打開新的標簽
-# tools:
-#     message: 工具
-# s:
-#     message: 秒
-# yes:
-#     message: 是
-# no:
-#     message: 否
-# j:
-#     message: j
-# ls_0:
-#     message: 不支援的檔案類型
 ls_1:
   message: 擷圖搜尋失敗，
 ls_2:
   message: 無法在目前頁面使用擷圖搜尋
-# ls_3:
-#     message: 拖曳圖片到這裡
 ls_4:
   message: 重新整理這個頁面以載入二箱元件，如果還是不行就說明目前頁面不支援擷取圖片
-# ls_5:
-#     message: 沒結果？點這裡上傳圖片搜尋
-# ls_6:
-#     message: 在Product Hunt上幫二箱投票吧！
-# ls_7:
-#     message: 二箱已是最新版本
-# ls_8:
-#     message: '二箱有了新的版本： '
-# ls_9:
-#     message: 如果你是在Chrome線上應用程式商店安裝二箱的，那麼請稍等片刻，讓Chrome自行更新二箱。
-# ls_10:
-#     message: 如果你是下載CRX檔案安裝的，請點選下面的連結下載最新版的二箱CRX檔案。
-# ls_11:
-#     message: 上傳圖片並執行以圖搜圖.
-# ls_12:
-#     message: 你可以點選上傳或是拖曳上傳.
-# ls_13:
-#     message: 如果你是Mac或是Unix使用者，可能在你點上傳的時候彈出內容會自己關閉。解決方法是右鍵二箱，選擇檢查彈出內容，然後就可以啦～
-# ls_14:
-#     message: 'HTML5影片控制基本上就是給HTML5影片增加快速鍵(→ 是快轉, k 是暫停, 等等), 這個功能現在還是Alpha測試階段，所以不一定所有網站的HTML5影片都有效'
-# ls_15:
-#     message: 你可以選擇在一些網站關閉HTML5影片控制，點選小太陽將它變成小雲朵就可以啦～
-# ls_16:
-#     message: "{'→':'快轉5秒','←':'倒轉5秒','↑':'提升音量','↓':'降低音量','m':'靜音/取消靜音','j':'倒轉10秒','l':'快轉10秒','k':'暫停/播放',',':'倒轉一點點點','.':'快轉一點點點','>':'提升音量','<':'降低音量', 'f': '全螢幕','d':'下載','r':'神奇的旋轉!'}"
-# ls_17:
-#     message: 清空所有歷史？
-# ls_18:
-#     message: 點選上傳或是拖曳上傳
-# ls_19:
-#     message: 就是自動刷新頁面啦~

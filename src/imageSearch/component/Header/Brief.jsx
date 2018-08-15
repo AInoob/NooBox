@@ -21,6 +21,7 @@ const BriefContainer = styled.div`
   .ant-card-body{
     padding:12px;
   }
+  
 `;
 export default class Brief extends React.Component{
   generateImageInfo(imageInfo){

@@ -15,7 +15,7 @@ import Loader      from "SRC/common/component/Loader.jsx";
 import yandex from "SRC/assets/engineLogos/yandex.png";
 const { Meta } = Card;
 const gridStyle = {
-    width:"25%",
+    width:"12.5%",
     padding:0,
     textAlign: 'center',
 }
@@ -61,6 +61,7 @@ const EngineContainer = styled.div`
     .settingIcon{
       color: rgba(0, 0, 0, 0.45)
     }
+
     .engineLoading{
       position: absolute;
       left: 4px;
@@ -69,13 +70,14 @@ const EngineContainer = styled.div`
       bottom: 0;
       z-index:10;
     }
+   
 `;
 
 export default class Engine extends React.Component{
   render(){
     // console.log(faSolid)
     const{engineLink} = this.props;
-    console.log(engineLink)
+    // console.log(engineLink)
       return(
         <EngineContainer>
              <Card >
