@@ -18,6 +18,9 @@ const BriefContainer = styled.div`
       padding-right: 10px;
     }
   }
+  .ant-card-body{
+    padding:12px;
+  }
 `;
 export default class Brief extends React.Component{
   generateImageInfo(imageInfo){
