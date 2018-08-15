@@ -242,6 +242,19 @@ export default class Image {
     let flag = false;
     let imageLink;
     let base64Flag = true;
+    let cursor = await getDB('imageCursor');
+    // console.log(cursor);
+    if (typeof (cursor) === 'number') {
+      cursor++;
+    }else{
+      cursor = 0;
+    }
+    let url = await generateNewTabUrl("searchResult.html");
+    await createNewTab({
+      url: url+"#/" + cursor,
+      active: await get('imageSearchNewTabFront')
+    });
+
     //Check base64 or Url
     switch (checkUrlOrBase64(base64orUrl)) {
       case "base64":
@@ -280,46 +293,33 @@ export default class Image {
     }
     //Generate Image Link
     //console.log(imageLink);
-    if(imageLink) {
-      let cursor = await getDB('imageCursor');
-      // console.log(cursor);
-      if (typeof (cursor) === 'number') {
-        cursor++;
-      }else{
-        cursor = 0;
-      }
-      let url = await generateNewTabUrl("searchResult.html");
-      await createNewTab({
-        url: url+"#/" + cursor,
-        active: await get('imageSearchNewTabFront')
-      });
-      if(base64Flag){
-        reverseImageSearch.updateImage64(base64orUrl,cursor);
-      }else{
-        reverseImageSearch.updateImageUrl(base64orUrl,cursor);
-      }
-      let engineLink={};
-      //Get Opened Engine and send request
-      for(let i = 0; i< engineMap.length; i++){
-        let dbName = engineMap[i].dbName;
-        let name   = engineMap[i].name;
-        let check  = await get(dbName);
-        if(check && this.fetchFunction[name+"Link"]){ 
-          engineLink[name] = apiUrls[name] + imageLink;
-          if(name === "baidu"){
-            await createSandbox();
-          }
-          if(name === "bing"){
-            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
-          }else if(name == "ascii2d"){
-            this.fetchFunction[name+"Link"](apiUrls[name],imageLink,cursor)
-          }else{
-            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
-          }
+    
+    if(base64Flag){
+      reverseImageSearch.updateImage64(base64orUrl,cursor);
+    }else{
+      reverseImageSearch.updateImageUrl(base64orUrl,cursor);
+    }
+    let engineLink={};
+    //Get Opened Engine and send request
+    for(let i = 0; i< engineMap.length; i++){
+      let dbName = engineMap[i].dbName;
+      let name   = engineMap[i].name;
+      let check  = await get(dbName);
+      if(check && this.fetchFunction[name+"Link"]){ 
+        engineLink[name] = apiUrls[name] + imageLink;
+        if(name === "baidu"){
+          await createSandbox();
+        }
+        if(name === "bing"){
+          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
+        }else if(name == "ascii2d"){
+          this.fetchFunction[name+"Link"](apiUrls[name],imageLink,cursor)
+        }else{
+          this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
         }
       }
-      reverseImageSearch.updateEngineLink(engineLink,cursor)
     }
+    reverseImageSearch.updateEngineLink(engineLink,cursor)
     
   }
 
