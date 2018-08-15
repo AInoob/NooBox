@@ -237,14 +237,27 @@ export default class Image {
       active: await get('imageSearchNewTabFront')
     });
   }
-
   async beginImageSearch(base64orUrl){
-    let flag = false;
+    let cursor = await getDB('imageCursor');
+    // console.log(cursor);
+    if (typeof (cursor) === 'number') {
+        cursor++;
+    }else{
+        cursor = 0;
+    }
+
     let imageLink;
-    let base64Flag = true;
+    let url;
     //Check base64 or Url
     switch (checkUrlOrBase64(base64orUrl)) {
       case "base64":
+      console.log("here");
+      await setDB(cursor,{base64:base64orUrl});
+      url = await generateNewTabUrl("searchResult.html");
+      await createNewTab({
+        url: url+"#/" + cursor,
+        active: await get('imageSearchNewTabFront')
+      });
         logEvent({
           category: 'imageSearch',
           action: 'dataURI'
@@ -261,6 +274,13 @@ export default class Image {
         imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
         break;
       case "url":
+      await setDB(cursor,{url:base64orUrl});
+
+      url = await generateNewTabUrl("searchResult.html");
+      await createNewTab({
+        url: url+"#/" + cursor,
+        active: await get('imageSearchNewTabFront')
+      });
         logEvent({
           category: 'imageSearch',
           action: 'url'
@@ -274,23 +294,6 @@ export default class Image {
     //Generate Image Link
     //console.log(imageLink);
     if(imageLink) {
-      let cursor = await getDB('imageCursor');
-      // console.log(cursor);
-      if (typeof (cursor) === 'number') {
-        cursor++;
-      }else{
-        cursor = 0;
-      }
-      let url = await generateNewTabUrl("searchResult.html");
-      await createNewTab({
-        url: url+"#/" + cursor,
-        active: await get('imageSearchNewTabFront')
-      });
-      if(base64Flag){
-        reverseImageSearch.updateImage64(base64orUrl,cursor);
-      }else{
-        reverseImageSearch.updateImageUrl(base64orUrl,cursor);
-      }
       let engineLink={};
       //Get Opened Engine and send request
       for(let i = 0; i< engineMap.length; i++){

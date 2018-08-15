@@ -45,10 +45,11 @@ export default {
       yield put({type:"updateState",payload:{pageId:payload}})
       let engineStatus = {};
       let cursor = yield call(getDB,"imageCursor");
+      console.log(cursor);
       let dataBaseFlag = false;
-      
       if(cursor != null && payload <= cursor){
         let hasDataBase = yield call(getDB,Number.parseInt(payload));
+        console.log(hasDataBase);
         if(hasDataBase){
           engineStatus.base64 = hasDataBase.base64;
           engineStatus.url = hasDataBase.url;
@@ -56,6 +57,12 @@ export default {
           engineStatus.searchResult = hasDataBase.searchResult;
           engineStatus.engineLink = hasDataBase.engineLink;
           dataBaseFlag = true;
+        }
+      }else{
+        let hasDataBase = yield call(getDB,Number.parseInt(payload));
+        if(hasDataBase){
+          engineStatus.base64 = hasDataBase.base64 || "";
+          engineStatus.url = hasDataBase.url || "";
         }
       }
       for(let i = 0; i< engineMap.length; i++){
@@ -131,7 +138,16 @@ export default {
         doneState[payload.engine+"Done"] = true;
         yield put({type:"updateState",payload:doneState})
       }
-     
+    },
+    *updateInnerState({payload},{call,put,select}){
+      const {pageId} = yield select(state => state.imageSearch);
+      if(pageId == payload.cursor){
+        console.log(payload);
+        let {type} = payload;
+        yield put({type:type,payload:{
+          result: payload.result,
+        }})
+      }
     }
   },
   reducers:{
@@ -145,94 +161,68 @@ export default {
       return Object.assign({},state,{sortByOrder:payload})
     },
     updateImageBase64(state,{payload}){
-      let {pageId} = state;
-      if(pageId == payload.cursor){
         return Object.assign({},state,{base64:payload.result});
-      }else{
-        return state;
-      } 
     },
     updateImageUrl(state, {payload}){
-      let {pageId} = state;
-      if(pageId == payload.cursor){
         return Object.assign({},state,{url:payload.result});
-      }else{
-        return state;
-      }
     },
     updateEngineLink(state,{payload}){
-      let{pageId} = state;
-      if(pageId == payload.cursor){
-        return Object.assign({},state,{engineLink:payload.result});
-      }else{
-        return state;
-      }
+      return Object.assign({},state,{engineLink:payload.result});
     },
     updateSearchResult(state,{payload}){
-      let { pageId,searchResult } = state;
-      if(pageId == payload.cursor){
-        let newSearchResult = searchResult.concat(payload.result);
-        return Object.assign({},state,{searchResult:newSearchResult});
-      }else{
-        return state;
-      }
+      let {searchResult} = state;
+      let newSearchResult = searchResult.concat(payload.result);
+      return Object.assign({},state,{searchResult:newSearchResult});
     },
     updateImageInfo(state,{payload}){
-      let{pageId,searchImageInfo} = state;
-      if(pageId == payload.cursor){
-        let newSearchImageInfo = searchImageInfo.concat(payload.result);
-        return Object.assign({},state,{searchImageInfo:newSearchImageInfo});
-      }else{
-        return state;
-      }
+      let{searchImageInfo} = state;
+      let newSearchImageInfo = searchImageInfo.concat(payload.result);
+      return Object.assign({},state,{searchImageInfo:newSearchImageInfo});
     }
   },
   subscriptions:{
     setupListener({dispatch,history}){
       browser.runtime.onMessage.addListener((message,sender,response) =>{
-        let type;
         let payload;
-      
         if(message.job === "image_result_update"){
-          type = "updateSearchResult";
           payload ={
+            type : "updateSearchResult",
             cursor : message.cursor,
-            result : message.result
+            result : message.result,
           };
         }else if(message.job === "engine_done"){
-          type = "updateEngineDone";
+       
           payload ={
+            type : "updateEngineDone",
             engine : message.engine,
             cursor : message.cursor,
           };
         }else if(message.job === "image_info_update"){
-          type = "updateImageInfo";
           payload = {
+            type : "updateImageInfo",
             cursor: message.cursor,
             result: message.result
           }
         }else if(message.job === "image_base64"){
-          type ="updateImageBase64"
           payload ={
+            type :"updateImageBase64",
             cursor:message.cursor,
             result:message.result,
           }
         }else if(message.job === "image_url"){
-          type = "updateImageUrl"
           payload = {
+            type :"updateImageUrl",
             cursor: message.cursor,
             result: message.result
           }
         }else if(message.job === "engine_link"){
-          type = "updateEngineLink"
           payload = {
+            type : "updateEngineLink",
             cursor: message.cursor,
             result: message.result
           }
         }
-        if(type){
-          dispatch({type:type,payload:payload})
-        }
+        dispatch({type:"updateInnerState",payload:payload})
       })
     }
   }
