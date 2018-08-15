@@ -16,8 +16,8 @@ const ResultContainer = styled.div`
   width:100%;
   background:#f0f2f5;
   padding-top:5%;
-  padding-left:10%;
-  padding-right:10%;
+  padding-left:5%;
+  padding-right:5%;
 `;
 class ImageSearchResult extends React.Component{
   componentDidMount(){
@@ -35,8 +35,9 @@ class ImageSearchResult extends React.Component{
       return(
         <ResultContainer>
           <div className ="header">
-            <Row  type="flex" align="bottom">
-              <Col span ={11}>
+            <Row  type="flex" align="top">
+              <Col span ={4}></Col>
+              <Col span ={5}>
                 <Brief base64 ={imageSearch.base64} 
                        url = {imageSearch.url}
                        imageInfo = {imageSearch.searchImageInfo}
@@ -45,7 +46,7 @@ class ImageSearchResult extends React.Component{
                        />
               </Col>
               <Col span ={2}/>
-              <Col span ={11}>
+              <Col span ={5}>
                 <Engine 
                   engineLink = {imageSearch.engineLink}
                   
