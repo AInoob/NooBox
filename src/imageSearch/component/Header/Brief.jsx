@@ -6,6 +6,7 @@ import faSolid from '@fortawesome/fontawesome-free-solid';
 import Loader      from "SRC/common/component/Loader.jsx";
 const { Meta } = Card;
 const BriefContainer = styled.div`
+  height: 100%;
   .keyword{
     list-style-type: none;
     padding:0;
@@ -21,18 +22,31 @@ const BriefContainer = styled.div`
   .ant-card-body{
     padding:12px;
   }
+  .ant-card-body{
+    display:none;
+  }
+  .ant-card{
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .ant-card-actions{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
   
 `;
 export default class Brief extends React.Component{
-  generateImageInfo(imageInfo){
-    return imageInfo.map((item,index) =>{
-      if(item.keyword != ""){
-        return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
-      }else{
-        return <span key ={index}></span>
-      }
-    })
-  }
+  // generateImageInfo(imageInfo){
+  //   return imageInfo.map((item,index) =>{
+  //     if(item.keyword != ""){
+  //       return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
+  //     }else{
+  //       return <span key ={index}></span>
+  //     }
+  //   })
+  // }
   render(){
     const {base64,url,imageInfo,uploadSearch} = this.props;
     if(base64 =="" && url == ""){
@@ -45,7 +59,6 @@ export default class Brief extends React.Component{
         </BriefContainer>
       );
     }else{
-      let keyword = this.generateImageInfo(imageInfo);
       let actions = base64 !== "" ?
                               [<Tooltip placement = "top" title={i18n("download")} key = "action_1" >
                                   <FAIcon icon ={faSolid.faDownload}/>
@@ -71,10 +84,6 @@ export default class Brief extends React.Component{
               cover={<img id = "searchImage" alt="example" src={ base64 == "" ? url: base64 } />}
               actions={actions}
             >
-              <Meta
-                title="Image Keyword"
-                description= {(<ul className ="keyword">{keyword}</ul>)}
-              />
             </Card>
         </BriefContainer>
       )

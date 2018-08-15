@@ -43,7 +43,7 @@ class ImageSearchResult extends React.Component{
         <ResultContainer>
           <div className ="header">
             <Row  type="flex">
-              <Col span ={5}></Col>
+              <Col span ={4}></Col>
               <Col span ={5}>
                 <Brief base64 ={imageSearch.base64} 
                        url = {imageSearch.url}
