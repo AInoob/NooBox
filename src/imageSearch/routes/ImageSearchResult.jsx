@@ -15,9 +15,9 @@ const ResultContainer = styled.div`
   min-height:100%;
   width:100%;
   background:#f0f2f5;
-  padding-top:5%;
-  padding-left:5%;
-  padding-right:5%;
+  padding-top:1%;
+  padding-left:2%;
+  padding-right:2%;
   .ant-row-flex{
     align-items: stretch;
   }

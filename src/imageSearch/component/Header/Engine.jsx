@@ -80,7 +80,7 @@ export default class Engine extends React.Component{
     // console.log(engineLink)
       return(
         <EngineContainer>
-             <Card >
+             <Card bordered ={false}>
                 <Card.Grid  style ={gridStyle}>
                   <div className ="box">
                     <div className = "engineContainer">
