@@ -18,6 +18,13 @@ const ResultContainer = styled.div`
   padding-top:5%;
   padding-left:5%;
   padding-right:5%;
+  .ant-row-flex{
+    align-items: stretch;
+  }
+  .ant-col-10{
+    padding: 24px;
+    background:white;
+  }
 `;
 class ImageSearchResult extends React.Component{
   componentDidMount(){
@@ -35,8 +42,8 @@ class ImageSearchResult extends React.Component{
       return(
         <ResultContainer>
           <div className ="header">
-            <Row  type="flex" align="top">
-              <Col span ={4}></Col>
+            <Row  type="flex">
+              <Col span ={5}></Col>
               <Col span ={5}>
                 <Brief base64 ={imageSearch.base64} 
                        url = {imageSearch.url}
@@ -45,8 +52,7 @@ class ImageSearchResult extends React.Component{
   
                        />
               </Col>
-              <Col span ={2}/>
-              <Col span ={5}>
+              <Col span ={10}>
                 <Engine 
                   engineLink = {imageSearch.engineLink}
                   
@@ -74,11 +80,13 @@ class ImageSearchResult extends React.Component{
                   ascii2d  ={imageSearch["ascii2d"]}
                   ascii2dDone = {imageSearch["ascii2dDone"]}
                   />
-                <Setting updateDisplayMode = {actions.imageSearchUpdateDisplayMode} 
+                <Setting 
+                         updateDisplayMode = {actions.imageSearchUpdateDisplayMode} 
                          updateSortBy = {actions.imageSearchSortBy}
                          updateSortByOrder ={actions.imageSearchSoryByOrder}
                          displayMode = {imageSearch.displayMode}
                          sortBy = {imageSearch.sortBy}
+                         imageInfo = {imageSearch.searchImageInfo}
                          sortByOrder = {imageSearch.sortByOrder}
                          />
                          
