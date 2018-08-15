@@ -251,7 +251,7 @@ export default class Image {
     //Check base64 or Url
     switch (checkUrlOrBase64(base64orUrl)) {
       case "base64":
-      console.log("here");
+      // console.log("here");
       await setDB(cursor,{base64:base64orUrl});
       url = await generateNewTabUrl("searchResult.html");
       await createNewTab({
