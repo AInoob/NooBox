@@ -728,7 +728,7 @@ export const reverseImageSearch = {
             let imageData = data[0].getElementsByTagName("a")[0];
             if(imageData){
               let sourceUrl = imageData.getAttribute("href") || ""
-              singleResult.sourceUrl = sourceUrl == "" ? "" : "https" + sourceUrl;
+              singleResult.sourceUrl = sourceUrl == "" ? "" :  sourceUrl;
               let thumbUrl = imageData.getElementsByTagName("img")[0]
               if(thumbUrl){
                 let link  = thumbUrl.getAttribute("src") || "";

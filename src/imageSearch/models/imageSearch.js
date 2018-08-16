@@ -116,7 +116,11 @@ export default {
     },
     //Store DB after finish all
     *updateEngineDone({payload},{call,put,select}){
+<<<<<<< HEAD
       //console.log(payload);
+=======
+      // console.log(payload);
+>>>>>>> RgeorgeDev
       let{result,cursor} = payload;
       let{base64,url,searchImageInfo,searchResult,pageId,engineLink} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
