@@ -9,12 +9,16 @@ const { Meta } = Card;
   // border: 1px solid #e8e8e8;
 const SettingContainer = styled.div`
   background:white;
-  padding:24px 12px 22px 12px;
+  padding:12px 0 0 0;
 
   .displayMode{
     margin-bottom: 15px;
+    display:  inline-block;
+    width: 40%;
+
   }
   .sortSelection{
+    display:  inline-block;
     margin-bottom: 15px;
   }
   .settingAction{
@@ -69,7 +73,7 @@ export default class Setting extends React.Component{
             </RadioGroup>
           </div>
           <div className ="sortSelection">
-            <h3>{i18n("sort_by")} &nbsp;&nbsp;&nbsp;&nbsp;
+            <h3>{i18n("sort_by")} &nbsp;&nbsp;
               <RadioGroup onChange ={(e) =>updateSortBy(e.target.value)} defaultValue = {sortBy}>  
                 <RadioButton value="height">{i18n("height")}</RadioButton>
                 <RadioButton value="width">{i18n("width")}</RadioButton>

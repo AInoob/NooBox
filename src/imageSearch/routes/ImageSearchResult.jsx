@@ -21,8 +21,8 @@ const ResultContainer = styled.div`
   .ant-row-flex{
     align-items: stretch;
   }
-  .ant-col-10{
-    padding: 24px;
+  .ant-col-12{
+    padding: 12px 12px 0 12px;
     background:white;
   }
 `;
@@ -44,15 +44,15 @@ class ImageSearchResult extends React.Component{
           <div className ="header">
             <Row  type="flex">
               <Col span ={4}></Col>
-              <Col span ={5}>
+              <Col span ={4}>
                 <Brief base64 ={imageSearch.base64} 
                        url = {imageSearch.url}
-                       imageInfo = {imageSearch.searchImageInfo}
+                       imagInfo = {imageSearch.searchImageInfo}
                        uploadSearch ={actions.imageSearchUploadSearch}
   
                        />
               </Col>
-              <Col span ={10}>
+              <Col span ={12}>
                 <Engine 
                   engineLink = {imageSearch.engineLink}
                   
