@@ -16,7 +16,7 @@ export const reverseImageSearch = {
   engineDone:(engine,cursor) =>{
     browser.runtime.sendMessage({
       job:'engine_done',
-      engine:engine,
+      result:engine,
       cursor:cursor,
     },()=>{
       // console.log("Send Done Message");
@@ -144,7 +144,7 @@ export const reverseImageSearch = {
     }
       reverseImageSearch.updateResultImage(firstPage,cursor);
       //pass done message Directly
-      reverseImageSearch.engineDone("google",cursor);
+      reverseImageSearch.engineDone("googleDone",cursor);
    
     // console.log(searchImage);
   },
@@ -274,7 +274,7 @@ export const reverseImageSearch = {
     }
     reverseImageSearch.updateResultImage(result,cursor);
     //pass done message Directly
-    reverseImageSearch.engineDone("baidu",cursor);
+    reverseImageSearch.engineDone("baiduDone",cursor);
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
   processBaiduData: async () =>{
@@ -338,7 +338,7 @@ export const reverseImageSearch = {
         reverseImageSearch.updateResultImage(firstPage,cursor);
         }
     }
-    reverseImageSearch.engineDone("tineye",cursor);
+    reverseImageSearch.engineDone("tineyeDone",cursor);
   },
   processTineyeData:  (page)=>{
     const list = page.getElementsByClassName("match-row") || [];
@@ -457,7 +457,7 @@ export const reverseImageSearch = {
       let results =reverseImageSearch.processBingData(data);
       reverseImageSearch.updateResultImage(results,cursor);
     }
-    reverseImageSearch.engineDone("bing",cursor);
+    reverseImageSearch.engineDone("bingDone",cursor);
   },
   processBingData: (data)=>{
     let results = [];
@@ -561,7 +561,7 @@ export const reverseImageSearch = {
     let results = reverseImageSearch.processYandexData(page);
     // console.log(results);
     reverseImageSearch.updateResultImage(results,cursor);
-    reverseImageSearch.engineDone("yandex",cursor);
+    reverseImageSearch.engineDone("yandexDone",cursor);
   },
   processYandexData:(page) =>{
     let results = [];
@@ -644,7 +644,7 @@ export const reverseImageSearch = {
     let results = reverseImageSearch.processSauceNaoData(page);
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     reverseImageSearch.updateResultImage(results,cursor);
-    reverseImageSearch.engineDone("saucenao",cursor);
+    reverseImageSearch.engineDone("saucenaoDone",cursor);
   },
   processSauceNaoData:(page) =>{
     let results = [];
@@ -700,7 +700,7 @@ export const reverseImageSearch = {
     let results = reverseImageSearch.processIQDBData(page);
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     reverseImageSearch.updateResultImage(results,cursor);
-    reverseImageSearch.engineDone("iqdb",cursor);
+    reverseImageSearch.engineDone("iqdbDone",cursor);
   },
   processIQDBData: (page) =>{
     let results = [];
@@ -777,7 +777,7 @@ export const reverseImageSearch = {
     // console.log(results);
     reverseImageSearch.updateSearchImage(searchImage,cursor);
     reverseImageSearch.updateResultImage(results,cursor);
-    reverseImageSearch.engineDone("ascii2d",cursor);
+    reverseImageSearch.engineDone("ascii2dDone",cursor);
   },
   fetchAscii2dData:(page) =>{
     let results =[];
