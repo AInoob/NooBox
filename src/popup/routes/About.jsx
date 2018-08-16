@@ -120,7 +120,10 @@ class About extends React.Component {
         <Loader style ={{marginTop: "20%"}}/>
       )
     }else{
-      this.setupSocket(actions.plusOne)
+      if (!about.socketListener) {
+        actions.updateState({ socketListener: true });
+        this.setupSocket(actions.plusOne)
+      }
       return(
         <AboutContainer>
           <Collapse defaultActiveKey={['3']}>

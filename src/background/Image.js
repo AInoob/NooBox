@@ -37,8 +37,8 @@ export default class Image {
   }
 
   async init() {
-    await this.updateExtractImageContextMenu();
     await this.updateImageSearchContextMenu();
+    await this.updateExtractImageContextMenu();
     await this.updateScreenshotSearchContextMenu();
     await this.getUploadServer();
   }
@@ -272,7 +272,14 @@ export default class Image {
           mode: "cors",
           body: JSON.stringify({ data: base64orUrl }),
         }
-        imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
+        let a = await ajax(this.noobUploadUrl, requestBody);
+        if (a.err) {
+          console.log('having error, switch to default server');
+          this.updateImageUploadUrl('ainoob.com');
+          this.updateImageDownloadUrl('ainoob.com');
+          a = await ajax(this.noobUploadUrl, requestBody);
+        }
+        imageLink = this.noobDownLoadUrl + a.data;
         break;
       case "url":
       await setDB(cursor,{url:base64orUrl});
@@ -314,8 +321,8 @@ export default class Image {
           }
         }
       }
-      reverseImageSearch.updateEngineLink(engineLink,cursor)
     }
+    reverseImageSearch.updateEngineLink(engineLink,cursor)
     
   }
 
