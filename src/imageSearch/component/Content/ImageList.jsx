@@ -7,9 +7,7 @@ import {dogeLoading} from "ASSET/funSh*t/dogeLoading.gif";
 import {Row,Col,Icon,List,Avatar,Modal} from 'antd';
 const ResultContainer = styled.div`
   background:white;
-  padding:36px;
   border: 1px solid #e8e8e8;
-  margin-top:20px;
   #dogeLoading{
     display: block;
     margin-left: auto;
@@ -17,8 +15,8 @@ const ResultContainer = styled.div`
     width: 50%;
   }
   .searchEngine{
-    width:20px;
-    height:20px;
+    width:40px;
+    height:40px;
   }
   .searchImage{
     width:250px;
@@ -29,6 +27,9 @@ const ResultContainer = styled.div`
   .ant-list-item-main{
     order:2
     padding-left: 10%;
+    li{
+      font-size: 18px;
+    }
   }
   .ant-list-item-extra{
     order:1

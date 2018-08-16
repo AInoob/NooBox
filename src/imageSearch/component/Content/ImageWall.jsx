@@ -8,7 +8,6 @@ import {dogeLoading} from "ASSET/funSh*t/dogeLoading.gif";
 const ResultContainer = styled.div`
   background:white;
   border: 1px solid #e8e8e8;
-  margin-top:20px;
   #dogeLoading{
     display: block;
     margin-left: auto;
