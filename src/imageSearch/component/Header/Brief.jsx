@@ -17,6 +17,7 @@ const BriefContainer = styled.div`
       margin: 12px 0;
       margin-right:10px;
       padding-right: 10px;
+      
     }
   }
   .ant-card-body{
@@ -34,6 +35,7 @@ const BriefContainer = styled.div`
     position: absolute;
     bottom: 0;
     width: 100%;
+    background: rgba(232, 232, 232,0.5);
   }
   
 `;
