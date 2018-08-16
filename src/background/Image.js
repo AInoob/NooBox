@@ -50,7 +50,7 @@ export default class Image {
     serverUrls.forEach(async server => {
       let startTime = new Date().getTime();
       await ajax('https://' + server + pingPath);
-      // console.log('fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server);
+      console.log('fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server);
       if (!fastestServer) {
         fastestServer = server;
         this.updateImageUploadUrl(server);
@@ -239,13 +239,14 @@ export default class Image {
   }
   async beginImageSearch(base64orUrl){
     let cursor = await getDB('imageCursor');
-    // console.log(cursor);
+  
     if (typeof (cursor) === 'number') {
-        cursor++;
+      cursor ++;
+      await setDB('imageCursor', cursor);
     }else{
-        cursor = 0;
+      cursor = 0;
+      await setDB('imageCursor', cursor);
     }
-
     let imageLink;
     let url;
     //Check base64 or Url
@@ -275,7 +276,6 @@ export default class Image {
         break;
       case "url":
       await setDB(cursor,{url:base64orUrl});
-
       url = await generateNewTabUrl("searchResult.html");
       await createNewTab({
         url: url+"#/" + cursor,

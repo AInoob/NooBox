@@ -30,8 +30,8 @@ export default {
     tineye:false,
     tineyeDone:false,
     tineyeMax:1,
-    sausao:false,
-    sausaoDone:false,
+    saucenao:false,
+    saucenaoDone:false,
     sausaoMax:1,
     iqdb:false,
     iqdbDone:false,
@@ -46,41 +46,35 @@ export default {
       let engineStatus = {};
       let cursor = yield call(getDB,"imageCursor");
       // console.log(cursor);
+      // console.log(payload);
       let dataBaseFlag = false;
       if(cursor != null && payload <= cursor){
         let hasDataBase = yield call(getDB,Number.parseInt(payload));
         // console.log(hasDataBase);
         if(hasDataBase){
-          engineStatus.base64 = hasDataBase.base64;
-          engineStatus.url = hasDataBase.url;
-          engineStatus.searchImageInfo = hasDataBase.searchImageInfo;
-          engineStatus.searchResult = hasDataBase.searchResult;
-          engineStatus.engineLink = hasDataBase.engineLink;
-          dataBaseFlag = true;
-        }
-      }else{
-        let hasDataBase = yield call(getDB,Number.parseInt(payload));
-        if(hasDataBase){
-          engineStatus.base64 = hasDataBase.base64 || "";
-          engineStatus.url = hasDataBase.url || "";
+          engineStatus.base64 = hasDataBase.base64||"";
+          engineStatus.url = hasDataBase.url||"";
+          engineStatus.searchImageInfo = hasDataBase.searchImageInfo||[];
+          engineStatus.searchResult = hasDataBase.searchResult||[];
+          engineStatus.engineLink = hasDataBase.engineLink||undefined;
         }
       }
-      for(let i = 0; i< engineMap.length; i++){
+      if(engineStatus.engineLink){
+        for(let name in engineStatus.engineLink){
+          engineStatus[name] = true;
+          engineStatus[name +"Done"] = true;
+        }
+      }else{
+        engineStatus.engineLink = {};
+        for(let i = 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
         let dbNameMax = engineMap[i].dbNameMaxSearch;
         let openCheck  = yield call(get,dbName);
-        let maxSearch  = yield call(get,dbNameMax);
-        if(openCheck){
-          engineStatus[name] = true;
-          if(dataBaseFlag){
-            engineStatus[name +"Done"] = true;
+        // let maxSearch  = yield call(get,dbNameMax);
+          if(openCheck){
+            engineStatus[name] = true
           }
-        }
-        if(maxSearch){
-          engineStatus[name+"Max"] = maxSearch;
-        }else if(maxSearch == undefined || maxSearch == null){
-          yield call(set,dbName+"_max")
         }
       }
       let displayMode = yield call(get,"displayMode");
@@ -122,7 +116,8 @@ export default {
     },
     //Store DB after finish all
     *updateEngineDone({payload},{call,put,select}){
-      // console.log(payload);
+      //console.log(payload);
+      let{result,cursor} = payload;
       let{base64,url,searchImageInfo,searchResult,pageId,engineLink} = yield select(state => state.imageSearch);
       if(pageId == payload.cursor){
         let data ={
@@ -131,11 +126,10 @@ export default {
           searchImageInfo,
           searchResult,
           engineLink
-        }
-        yield call(setDB,"imageCursor",payload.cursor);
-        yield call(setDB,payload.cursor,data);
+        };
+        yield call(setDB,cursor,data);
         let doneState = {};
-        doneState[payload.engine+"Done"] = true;
+        doneState[result] = true;
         yield put({type:"updateState",payload:doneState})
       }
     },
@@ -145,6 +139,7 @@ export default {
         // console.log(payload);
         let {type} = payload;
         yield put({type:type,payload:{
+          cursor: payload.cursor,
           result: payload.result,
         }})
       }
@@ -191,10 +186,9 @@ export default {
             result : message.result,
           };
         }else if(message.job === "engine_done"){
-       
           payload ={
             type : "updateEngineDone",
-            engine : message.engine,
+            result : message.result,
             cursor : message.cursor,
           };
         }else if(message.job === "image_info_update"){
@@ -222,7 +216,9 @@ export default {
             result: message.result
           }
         }
-        dispatch({type:"updateInnerState",payload:payload})
+        if(payload){
+          dispatch({type:"updateInnerState",payload:payload})
+        }
       })
     }
   }
