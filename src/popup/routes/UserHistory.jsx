@@ -108,7 +108,7 @@ class UserHistory extends React.Component {
                     cover={
                       <img
                         className="historyImage"
-                        src={record.data.base64 || record.data.url}
+                        src={record.data.base64 || record.data.url || ""}
                         onClick={() =>
                           actions.userHistoryLoadHisotry(record.dbKey)
                         }
