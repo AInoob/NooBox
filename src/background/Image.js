@@ -37,8 +37,8 @@ export default class Image {
   }
 
   async init() {
-    await this.updateExtractImageContextMenu();
     await this.updateImageSearchContextMenu();
+    await this.updateExtractImageContextMenu();
     await this.updateScreenshotSearchContextMenu();
     await this.getUploadServer();
   }
