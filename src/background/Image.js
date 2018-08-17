@@ -286,7 +286,6 @@ export default class Image {
           action: 'url'
         });
         imageLink = base64orUrl;
-        base64Flag = false;
         break;
       default:
         break;
