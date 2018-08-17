@@ -239,7 +239,6 @@ export default class Image {
   }
   async beginImageSearch(base64orUrl){
     let cursor = await getDB('imageCursor');
-  
     if (typeof (cursor) === 'number') {
       cursor ++;
       await setDB('imageCursor', cursor);
@@ -275,6 +274,7 @@ export default class Image {
         imageLink = this.noobDownLoadUrl + (await ajax(this.noobUploadUrl, requestBody)).data;
         break;
       case "url":
+      console.log(base64orUrl);
       await setDB(cursor,{url:base64orUrl});
       url = await generateNewTabUrl("searchResult.html");
       await createNewTab({
