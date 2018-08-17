@@ -83,24 +83,26 @@ class UserHistory extends React.Component {
                 let usedEngine = [];
                 let firstKeyword = "";
                 let sizeInfo;
-                record.data.searchImageInfo.forEach((e, index) => {
-                  if (firstKeyword == "" && e.keyword !== "") {
-                    firstKeyword = e.keyword;
-                  }
-                  if (e.engine) {
-                    usedEngine[usedEngine.length] = (
-                      <img
-                        key={index}
-                        style={{ width: 14, marginRight: 2 }}
-                        src={engineIcon[e.engine]}
-                      />
-                    );
-                  }
-                  if (sizeInfo == undefined && e.imageInfo["height"]) {
-                    sizeInfo =
-                      e.imageInfo["width"] + "x" + e.imageInfo["height"];
-                  }
-                });
+                if(!record.data.searchImageInfo){
+                  record.data.searchImageInfo.forEach((e, index) => {
+                    if (firstKeyword == "" && e.keyword !== "") {
+                      firstKeyword = e.keyword;
+                    }
+                    if (e.engine) {
+                      usedEngine[usedEngine.length] = (
+                        <img
+                          key={index}
+                          style={{ width: 14, marginRight: 2 }}
+                          src={engineIcon[e.engine]}
+                        />
+                      );
+                    }
+                    if (sizeInfo == undefined && e.imageInfo["height"]) {
+                      sizeInfo =
+                        e.imageInfo["width"] + "x" + e.imageInfo["height"];
+                    }
+                  });
+                }
                 return (
                   <Card
                     key={record.dbKey}
