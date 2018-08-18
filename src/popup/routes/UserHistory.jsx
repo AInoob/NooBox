@@ -83,7 +83,7 @@ class UserHistory extends React.Component {
                 let usedEngine = [];
                 let firstKeyword = "";
                 let sizeInfo;
-                if(!record.data.searchImageInfo){
+                if(record.data.searchImageInfo){
                   record.data.searchImageInfo.forEach((e, index) => {
                     if (firstKeyword == "" && e.keyword !== "") {
                       firstKeyword = e.keyword;

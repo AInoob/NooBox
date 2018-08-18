@@ -1,8 +1,10 @@
 import {
   get,
-  set
+  set,
+  setDB
 } from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
+import { callbackify } from 'util';
 
 const HTML = new DOMParser();
 // Data Format
@@ -14,22 +16,6 @@ export const reverseImageSearch = {
       cursor: cursor
     }, () => {
       // console.log("Send Search Result");
-    })
-  },
-  engineDone: (engine, cursor) => {
-    browser.runtime.sendMessage({
-      job: 'engine_done',
-      result: engine,
-      cursor: cursor,
-    }, () => {
-      // console.log("Send Done Message");
-    })
-  },
-  updateSearchImage: (result, cursor) => {
-    browser.runtime.sendMessage({
-      job: 'image_info_update',
-      result: result,
-      cursor: cursor,
     })
   },
   updateImage64: (base64, cursor) => {
@@ -45,13 +31,6 @@ export const reverseImageSearch = {
     browser.runtime.sendMessage({
       job: 'image_url',
       result: url,
-      cursor: cursor,
-    }, () => {})
-  },
-  updateEngineLink: (obj, cursor) => {
-    browser.runtime.sendMessage({
-      job: 'engine_link',
-      result: obj,
       cursor: cursor,
     }, () => {})
   },
@@ -75,12 +54,12 @@ export const reverseImageSearch = {
     })
   },
   /*Fetch Available Page Link On Goolge*/
-  fetchGoogleLink: async (link, cursor) => {
+  fetchGoogleLink: async (link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
       engine: "google",
-      imageInfo: {}
+      imageInfo: {},
     }
     // console.log(123+"reachf");
     // console.log(link);
@@ -119,7 +98,7 @@ export const reverseImageSearch = {
       searchImage.keywordLink = "https://www.google.com" + keyword.getAttribute("href");
     }
     // Send message of search image info to front page
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
     // Process first page source
     let firstPage = reverseImageSearch.processGoogleData(page);
     //  google
@@ -152,11 +131,11 @@ export const reverseImageSearch = {
         firstPage = firstPage.concat(results[i]);
       }
     }
-    reverseImageSearch.updateResultImage(firstPage, cursor);
-    //pass done message Directly
-    reverseImageSearch.engineDone("googleDone", cursor);
 
-    // console.log(searchImage);
+    resultObj.searchResult = resultObj.searchResult.concat(firstPage);
+    resultObj["googleDone"] = true;
+    await setDB(cursor,resultObj);
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   /*process Data*/
   processGoogleData: function(page) {
@@ -211,7 +190,7 @@ export const reverseImageSearch = {
     return results;
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
-  fetchBaiduLink: async (link, cursor) => {
+  fetchBaiduLink: async (link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
@@ -243,7 +222,7 @@ export const reverseImageSearch = {
     // console.log("success");
     searchImage.keyword = guessWord == "" ? multitags || "" : guessWord;
     // Send message of search image info to front page
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
     //Raynor Version
     //Pick 5 from sameSizeList
     let count = 25;
@@ -290,22 +269,23 @@ export const reverseImageSearch = {
         result[result.length] = singleResult;
       }
     }
-    reverseImageSearch.updateResultImage(result, cursor);
-    //pass done message Directly
-    reverseImageSearch.engineDone("baiduDone", cursor);
+    resultObj.searchResult = resultObj.searchResult.concat(result);
+    resultObj["baiduDone"] = true;
+    await setDB(cursor,resultObj);
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
   processBaiduData: async () => {
     /* Dummy Code To Maintain File Shape*/
   },
-  fetchTineyeLink: async (link, cursor) => {
+  fetchTineyeLink: async (link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
       engine: "tineye",
       imageInfo: {}
     }
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
     //Tineye doesn't have image Info
     const {
       data
@@ -332,8 +312,6 @@ export const reverseImageSearch = {
         // }
         let firstPage = reverseImageSearch.processTineyeData(page);
         const followingPageExist = page.getElementsByClassName("pagination-bottom")[0]
-
-
         if (followingPageExist) {
           let followingPage = followingPageExist.getElementsByTagName("a");
           let tempFunciton = function(url) {
@@ -355,15 +333,16 @@ export const reverseImageSearch = {
             taskSeq[taskSeq.length] = tempFunciton(link);
           }
           let result = await Promise.all(taskSeq);
-
           for (let i = 0; i < result.length; i++) {
             firstPage = firstPage.concat(result[i]);
           }
         }
-        reverseImageSearch.updateResultImage(firstPage, cursor);
+        resultObj.searchResult = resultObj.searchResult.concat(firstPage);
+        await setDB(cursor,resultObj);
       }
     }
-    reverseImageSearch.engineDone("tineyeDone", cursor);
+    resultObj["tineyeDone"] = true;
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processTineyeData: (page) => {
     const list = page.getElementsByClassName("match-row") || [];
@@ -414,7 +393,7 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchBingLink: async (link, imageLink, cursor) => {
+  fetchBingLink: async (link, imageLink, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
@@ -490,11 +469,13 @@ export const reverseImageSearch = {
         searchImage.imageInfo.width = image.width || "";
         searchImage.imageInfo.height = image.height || "";
       }
-      reverseImageSearch.updateSearchImage(searchImage, cursor);
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
       let results = reverseImageSearch.processBingData(data);
-      reverseImageSearch.updateResultImage(results, cursor);
+      resultObj.searchResult = resultObj.searchResult.concat(results);
+      await setDB(cursor,resultObj);
     }
-    reverseImageSearch.engineDone("bingDone", cursor);
+    resultObj["bingDone"] = true;
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processBingData: (data) => {
     let results = [];
@@ -570,7 +551,7 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchYandexLink: async (link, cursor) => {
+  fetchYandexLink: async (link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
@@ -591,7 +572,6 @@ export const reverseImageSearch = {
       searchImage.imageInfo.height = size[1];
     }
     let keywordWrapper = page.getElementsByClassName("tags__content");
-    let keyword
     if (keywordWrapper.length != 0) {
       keywords = keywordWrapper[0].getElementsByTagName("a");
       if (keywords.length > 0) {
@@ -601,11 +581,13 @@ export const reverseImageSearch = {
     } else {
       searchImage.keyword = "";
     }
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
     let results = reverseImageSearch.processYandexData(page);
     // console.log(results);
-    reverseImageSearch.updateResultImage(results, cursor);
-    reverseImageSearch.engineDone("yandexDone", cursor);
+    resultObj.searchResult = resultObj.searchResult.concat(results);
+    resultObj["yandexDone"] = true;
+    await setDB(cursor,resultObj);
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processYandexData: (page) => {
     let results = [];
@@ -674,7 +656,7 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchSauceNaoLink: async (link, cursor) => {
+  fetchSauceNaoLink: async (link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
@@ -690,9 +672,11 @@ export const reverseImageSearch = {
     });
     const page = HTML.parseFromString(data, "text/html");
     let results = reverseImageSearch.processSauceNaoData(page);
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
-    reverseImageSearch.updateResultImage(results, cursor);
-    reverseImageSearch.engineDone("saucenaoDone", cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+    resultObj.searchResult = resultObj.searchResult.concat(results);
+    resultObj["saucenaoDone"] = true;
+    await setDB(cursor,resultObj);
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processSauceNaoData: (page) => {
     let results = [];
@@ -735,7 +719,7 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchIQDBLink: async (link, cursor) => {
+  fetchIQDBLink: async (link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
@@ -749,9 +733,11 @@ export const reverseImageSearch = {
     });
     const page = HTML.parseFromString(data, "text/html");
     let results = reverseImageSearch.processIQDBData(page);
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
-    reverseImageSearch.updateResultImage(results, cursor);
-    reverseImageSearch.engineDone("iqdbDone", cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+    resultObj.searchResult = resultObj.searchResult.concat(results);
+    resultObj["iqdbDone"] = true;
+    await setDB(cursor,resultObj);
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processIQDBData: (page) => {
     let results = [];
@@ -809,7 +795,7 @@ export const reverseImageSearch = {
     }
     return results;
   },
-  fetchAscii2dLink: async (api, link, cursor) => {
+  fetchAscii2dLink: async (api, link, cursor,resultObj) => {
     let searchImage = {
       keyword: "",
       keywordLink: "",
@@ -828,9 +814,11 @@ export const reverseImageSearch = {
     const page = HTML.parseFromString(data, "text/html");
     let results = reverseImageSearch.fetchAscii2dData(page);
     // console.log(results);
-    reverseImageSearch.updateSearchImage(searchImage, cursor);
-    reverseImageSearch.updateResultImage(results, cursor);
-    reverseImageSearch.engineDone("ascii2dDone", cursor);
+    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+    resultObj.searchResult = resultObj.searchResult.concat(results);
+    resultObj["ascii2dDone"] = true;
+    await setDB(cursor,resultObj);
+    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   fetchAscii2dData: (page) => {
     let results = [];
