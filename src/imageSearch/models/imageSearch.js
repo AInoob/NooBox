@@ -114,32 +114,6 @@ export default {
       };
       yield call(sendMessage, message);
     },
-    //Store DB after finish all
-    *updateEngineDone({ payload }, { call, put, select }) {
-      // console.log(payload);
-      let { result, cursor } = payload;
-      let {
-        base64,
-        url,
-        searchImageInfo,
-        searchResult,
-        pageId,
-        engineLink
-      } = yield select(state => state.imageSearch);
-      if (pageId == payload.cursor) {
-        let data = {
-          base64,
-          url,
-          searchImageInfo,
-          searchResult,
-          engineLink
-        };
-        yield call(setDB, cursor, data);
-        let doneState = {};
-        doneState[result] = true;
-        yield put({ type: "updateState", payload: doneState });
-      }
-    },
     *updateInnerState({ payload }, { call, put, select }) {
       const { pageId } = yield select(state => state.imageSearch);
       if (pageId == payload.cursor) {
@@ -171,19 +145,9 @@ export default {
     updateImageUrl(state, { payload }) {
       return Object.assign({}, state, { url: payload.result });
     },
-    updateEngineLink(state, { payload }) {
-      return Object.assign({}, state, { engineLink: payload.result });
-    },
     updateSearchResult(state, { payload }) {
-      let { searchResult } = state;
-      let newSearchResult = searchResult.concat(payload.result);
-      return Object.assign({}, state, { searchResult: newSearchResult });
+      return Object.assign({}, state, payload.result);
     },
-    updateImageInfo(state, { payload }) {
-      let { searchImageInfo } = state;
-      let newSearchImageInfo = searchImageInfo.concat(payload.result);
-      return Object.assign({}, state, { searchImageInfo: newSearchImageInfo });
-    }
   },
   subscriptions: {
     setupListener({ dispatch, history }) {
@@ -195,19 +159,7 @@ export default {
             cursor: message.cursor,
             result: message.result
           };
-        } else if (message.job === "engine_done") {
-          payload = {
-            type: "updateEngineDone",
-            result: message.result,
-            cursor: message.cursor
-          };
-        } else if (message.job === "image_info_update") {
-          payload = {
-            type: "updateImageInfo",
-            cursor: message.cursor,
-            result: message.result
-          };
-        } else if (message.job === "image_base64") {
+        }else if (message.job === "image_base64") {
           payload = {
             type: "updateImageBase64",
             cursor: message.cursor,
@@ -219,13 +171,7 @@ export default {
             cursor: message.cursor,
             result: message.result
           };
-        } else if (message.job === "engine_link") {
-          payload = {
-            type: "updateEngineLink",
-            cursor: message.cursor,
-            result: message.result
-          };
-        }
+        } 
         if (payload) {
           dispatch({ type: "updateInnerState", payload: payload });
         }
