@@ -7,19 +7,7 @@ import Loader      from "SRC/common/component/Loader.jsx";
 const { Meta } = Card;
 const BriefContainer = styled.div`
   height: 100%;
-  .keyword{
-    list-style-type: none;
-    padding:0;
-    li{
-      display:inline;
-      border-right: 1px solid #e8e8e8;
-      text-align: center;
-      margin: 12px 0;
-      margin-right:10px;
-      padding-right: 10px;
-      
-    }
-  }
+
   .ant-card-body{
     padding:12px;
   }
@@ -33,24 +21,20 @@ const BriefContainer = styled.div`
   }
   .ant-card-actions{
     position: absolute;
+    border:0;
     bottom: 0;
     width: 100%;
     background: rgba(232, 232, 232,0.5);
+    li{
+      margin:0;
+      color: rgba(0, 0, 0, 20);
+    }
   }
   
 `;
 export default class Brief extends React.Component{
-  // generateImageInfo(imageInfo){
-  //   return imageInfo.map((item,index) =>{
-  //     if(item.keyword != ""){
-  //       return <li key ={index}><a href ={item.keywordLink}><Tooltip placement="top" title={item.engine}>{item.keyword}</Tooltip></a></li>
-  //     }else{
-  //       return <span key ={index}></span>
-  //     }
-  //   })
-  // }
   render(){
-    const {base64,url,imageInfo,uploadSearch} = this.props;
+    const {base64,url,uploadSearch,searchAgain} = this.props;
     if(base64 =="" && url == ""){
       return(
         <BriefContainer>
@@ -62,18 +46,14 @@ export default class Brief extends React.Component{
       );
     }else{
       let actions = base64 !== "" ?
-                              [<Tooltip placement = "top" title={i18n("download")} key = "action_1" >
-                                  <FAIcon icon ={faSolid.faDownload}/>
-                                </Tooltip>,
+                              [
                                 <Tooltip placement = "top" title={i18n("search_again")} key = "action_2">
-                                  <FAIcon icon ={faSolid.faRetweet} />
+                                  <FAIcon icon ={faSolid.faRetweet} onClick = {() => searchAgain()}/>
                                 </Tooltip>
                               ]:[
-                                <Tooltip placement = "top" title={i18n("download")} key = "action_1">
-                                  <FAIcon icon ={faSolid.faDownload} />
-                                </Tooltip>,
+                              
                                 <Tooltip placement = "top" title={i18n("search_again")}  key = "action_2" >
-                                  <FAIcon icon ={faSolid.faRetweet} />
+                                  <FAIcon icon ={faSolid.faRetweet} onClick = {() => searchAgain()}/>
                                 </Tooltip>,
                                 <Tooltip placement = "top" title={i18n("upload_search")} defaultVisible = {true} key = "action_3">
                                  <FAIcon onClick = {()=>uploadSearch(document.getElementById("searchImage"))} icon ={faSolid.faUpload}  />
