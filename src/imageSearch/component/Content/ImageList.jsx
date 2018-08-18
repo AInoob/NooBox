@@ -119,7 +119,7 @@ export default class ImageList extends React.Component {
     } else {
       return (
         <ResultContainer>
-          <Loader style={{ marginTop: "20%" }} />
+          <Loader style={{ marginTop: "5%" }} />
         </ResultContainer>
       );
     }
