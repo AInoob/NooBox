@@ -3,8 +3,8 @@ import styled from "styled-components";
 import FAIcon from "@fortawesome/react-fontawesome";
 import faSolid from "@fortawesome/fontawesome-free-solid";
 import { engineIcon } from "SRC/constant/settingMap.js";
-import { dogeLoading } from "ASSET/funSh*t/dogeLoading.gif";
 import { Row, Col, Icon, List, Avatar, Modal } from "antd";
+import Loader from "SRC/common/component/Loader.jsx";
 const ResultContainer = styled.div`
   background:white;
   border: 1px solid #e8e8e8;
@@ -119,7 +119,7 @@ export default class ImageList extends React.Component {
     } else {
       return (
         <ResultContainer>
-          <img id="dogeLoading" src="./static/funSh*t/dogeLoading.gif" />
+          <Loader style={{ marginTop: "20%" }} />
         </ResultContainer>
       );
     }
