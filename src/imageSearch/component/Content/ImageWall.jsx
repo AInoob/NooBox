@@ -126,7 +126,7 @@ export default class ImageWall extends React.Component {
     } else {
       return (
         <ResultContainer>
-          <Loader style={{ marginTop: "20%" }} />
+          <Loader style={{ marginTop: "5%" }} />
         </ResultContainer>
       );
     }
