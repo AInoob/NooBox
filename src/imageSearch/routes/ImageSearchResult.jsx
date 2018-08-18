@@ -90,7 +90,6 @@ class ImageSearchResult extends React.Component {
             ) : (
               <ImageWall imageDataList={imageSearch.searchResult} />
             )}
-            {/* <ImageList imageDataList ={imageSearch.searchResult}/> */}
           </div>
         </ResultContainer>
       );
