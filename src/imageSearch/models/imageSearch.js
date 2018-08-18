@@ -106,7 +106,7 @@ export default {
       };
       yield call(sendMessage, message);
     },
-    *searchAgain({ payload }, { call, put }) {
+    *searchAgain({ payload }, { call, put,select }) {
       let { base64, url } = yield select(state => state.imageSearch);
       let message = {
         job: "beginImageSearch",

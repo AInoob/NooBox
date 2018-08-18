@@ -53,6 +53,7 @@ class ImageSearchResult extends React.Component {
                   url={imageSearch.url}
                   imagInfo={imageSearch.searchImageInfo}
                   uploadSearch={actions.imageSearchUploadSearch}
+                  searchAgain ={actions.imageSearchSearchAgain}
                 />
               </Col>
               <Col span={12}>
