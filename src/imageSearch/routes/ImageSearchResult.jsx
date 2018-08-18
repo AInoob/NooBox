@@ -15,15 +15,18 @@ const ResultContainer = styled.div`
   min-height: 100%;
   width: 100%;
   background: #f0f2f5;
-  padding-top: 1%;
   padding-left: 2%;
   padding-right: 2%;
+  padding-top:15px;
   .ant-row-flex {
     align-items: stretch;
   }
   .ant-col-12 {
     padding: 12px 12px 0 12px;
     background: white;
+  }
+  .header{
+    margin-bottom:15px;
   }
 `;
 class ImageSearchResult extends React.Component {
