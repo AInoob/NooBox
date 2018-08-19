@@ -88,7 +88,8 @@ export default class ImageList extends React.Component {
                   <img
                     className="searchImage"
                     alt="Image Is Dead, Sorry"
-                    src={item.thumbUrl}
+                    onClick={() => this.showModal(item.imageUrl)}
+                    src={item.imageUrl}
                   />
                 }
               >

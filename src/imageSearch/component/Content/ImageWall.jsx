@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import FAIcon from "@fortawesome/react-fontawesome";
 import faSolid from "@fortawesome/fontawesome-free-solid";
-import { Row, Col, Card, Icon, Popover, Avatar } from "antd";
+import { Row, Col, Card, Icon, Popover, Avatar, Modal } from "antd";
 import { engineIcon } from "SRC/constant/settingMap.js";
 import Loader from "SRC/common/component/Loader.jsx";
 const ResultContainer = styled.div`
@@ -88,7 +88,7 @@ export default class ImageWall extends React.Component {
               <Card
                 hoverable={true}
                 style={{ width: "100%", minHeight: 60 }}
-                cover={<img alt="Image Is Dead, Sorry" src={item.thumbUrl} />}
+                cover={<img alt="Image Is Dead, Sorry" src={item.imageUrl} onClick={() => this.showModal(item.imageUrl)} />}
               >
                 <div className="cardMetaWrapper">
                   <Card.Meta
@@ -121,6 +121,17 @@ export default class ImageWall extends React.Component {
               );
             })}
           </Row>
+          <Modal
+            visible={this.state.showModal}
+            footer={null}
+            onCancel={() => this.hideModal()}
+          >
+            <img
+              alt="Image Down Sorry"
+              style={{ width: "100%" }}
+              src={this.state.imageUrl}
+            />
+          </Modal>
         </ResultContainer>
       );
     } else {

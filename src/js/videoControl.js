@@ -94,11 +94,6 @@ function initVideoControl() {
         chrome.runtime.sendMessage({
           job: 'videoControlUse',
         });
-        chrome.runtime.sendMessage({
-          job: 'analytics',
-          category: 'videoControlKeys',
-          action: k,
-        });
       }
       placeIndicator();
       if (e.keyCode == '38') {

@@ -54,7 +54,7 @@ export const checkUrlOrBase64 = function(item){
 export const sortImageByRelevance = function(data){
   data.sort(function(a,b){
     if(a.weight && b.weight){
-      return  a.weight - b.weight;
+      return  b.weight - a.weight;
     } 
   })
 }
