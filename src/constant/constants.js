@@ -13,4 +13,5 @@ export const ENGINE_DONE = {
   IQDB_DONE : "iqdb",
 }
 export const ENGINE_WEIGHT ={
+
 }
