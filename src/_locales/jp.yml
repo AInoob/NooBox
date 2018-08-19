@@ -77,6 +77,8 @@ width:
   message: 幅
 height:
   message: 高さ
+relevance:
+  message: 関連性
 increase:
   message: 昇順
 decrease:

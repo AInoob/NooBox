@@ -296,12 +296,11 @@ export default class Image {
     //Generate Image Link
     //console.log(imageLink);
     if(imageLink) {
-      let engineLink={};
       let resultObj ={
         base64:base64orUrl,
         searchImageInfo:[],
         searchResult:[],
-        engineLink:[],
+        engineLink:{},
         base64: base64Flag ? base64orUrl :"",
         url: !base64Flag ? base64orUrl: "",
       };

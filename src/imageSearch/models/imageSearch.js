@@ -13,7 +13,7 @@ export default {
     searchImageInfo: [],
     searchResult: [],
     displayMode: 2,
-    sortBy: "",
+    sortBy: "relevance",
     sortByOrder: 0,
     google: false,
     googleDone: false,

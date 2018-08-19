@@ -83,6 +83,8 @@ width:
   message: 寬度
 height:
   message: 高度
+relevance:
+  message: 相關性
 increase:
   message: 升序
 decrease:

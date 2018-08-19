@@ -4,8 +4,7 @@ import {
   setDB
 } from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
-import { callbackify } from 'util';
-
+import ENGINE_DONE from  'SRC/constant/constants.js';
 const HTML = new DOMParser();
 // Data Format
 export const reverseImageSearch = {
@@ -142,6 +141,7 @@ export const reverseImageSearch = {
     let websiteList = page.getElementsByClassName('srg');
     let list = websiteList[websiteList.length - 1].getElementsByClassName("g");
     let results = [];
+    let weightCount = 0;
     for (let i = 0; i < list.length; i++) {
       let singleResult = {
         title: "",
@@ -151,7 +151,9 @@ export const reverseImageSearch = {
         imageInfo: {},
         searchEngine: "google",
         description: "",
+        weight: weightCount < 10 ? 1: 3,
       }
+      weightCount ++;
       const singleItem = list[i];
       //process title,imageUrl,sourceUrl and thumbUrl
       //first <a> contain title and imageUrl
@@ -244,6 +246,7 @@ export const reverseImageSearch = {
           },
           searchEngine: "baidu",
           description: sameSizeList[i].textHost || "",
+          weight:1,
         }
         result[result.length] = singleResult;
       }
@@ -265,6 +268,7 @@ export const reverseImageSearch = {
           },
           searchEngine: "baidu",
           description: simiList[i].FromPageSummary || "",
+          weight: 3,
         }
         result[result.length] = singleResult;
       }
@@ -347,6 +351,7 @@ export const reverseImageSearch = {
   processTineyeData: (page) => {
     const list = page.getElementsByClassName("match-row") || [];
     let results = [];
+    let weightCount = 0;
     for (let i = 0; i < list.length; i++) {
       let singleResult = {
         title: "",
@@ -356,6 +361,7 @@ export const reverseImageSearch = {
         imageInfo: {},
         searchEngine: "tineye",
         description: "",
+        weight: weightCount < 10 ? 2 : 3,
       }
       let singleItem = list[i];
       //match thum contain thumbUrl and Size
@@ -495,6 +501,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "bing",
           description: "",
+          weight: 3,
         }
         singleResult.thumbUrl = content[i].thumbnail.url;
         singleResult.title = content[i].text || content[i].displayText || "";
@@ -517,6 +524,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "bing",
           description: "",
+          weight: 3,
         }
         singleResult.thumbUrl = content[i].thumbnail.url;
         singleResult.title = content[i].text || content[i].displayText || "";
@@ -539,6 +547,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "bing",
           description: "",
+          weight : 4,
         }
         singleResult.thumbUrl = content[i].thumbnailUrl;
         singleResult.title = content[i].name || "";
@@ -594,6 +603,7 @@ export const reverseImageSearch = {
     let similar = page.getElementsByClassName("similar__thumbs");
     if (similar.length > 0) {
       const similarList = similar[0].getElementsByTagName("li");
+      let weightCount = 0;
       for (let i = 0; i < similarList.length; i++) {
         let singleResult = {
           title: "",
@@ -603,6 +613,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "yandex",
           description: "",
+          weight : weightCount < 5 ? 1: 3,
         }
         singleResult.title = "Yandex";
         let singleItem = similarList[i];
@@ -691,6 +702,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "saucenao",
           description: "",
+          weight: 5,
         };
         let singleItem = list[i];
         let resultImage = singleItem.getElementsByClassName("resultimage")[0];
@@ -759,6 +771,7 @@ export const reverseImageSearch = {
               imageInfo: {},
               searchEngine: "iqdb",
               description: "",
+              weight:5,
             };
             let data = singleItem.getElementsByTagName("td");
             //# 0 image
@@ -833,6 +846,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "iqdb",
           description: "",
+          weight:5,
         };
         let item = list[i];
         let imageTag = item.getElementsByClassName("image-box")[0];
