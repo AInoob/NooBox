@@ -122,6 +122,8 @@ width:
   message: Width
 height:
   message: Height
+relevance:
+  message: Relevance
 increase:
   message: Ascending
 decrease:
