@@ -12,6 +12,13 @@ export const ENGINE_DONE = {
   ASCII2D_DONE : "ascii2dDone",
   IQDB_DONE : "iqdb",
 }
-export const ENGINE_WEIGHT ={
-
+export const ENGINE_WEIGHTS = {
+  google: 30,
+  baidu: 28,
+  yandex: 25,
+  tineye: 28,
+  saucenao: 10,
+  iqdb: -100,
+  ascii2d: -69,
+  bing: 28
 }

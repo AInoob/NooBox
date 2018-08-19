@@ -5,6 +5,7 @@ import {
 } from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
 import ENGINE_DONE from  'SRC/constant/constants.js';
+import { ENGINE_WEIGHTS } from '../constant/constants';
 const HTML = new DOMParser();
 // Data Format
 export const reverseImageSearch = {
@@ -141,7 +142,6 @@ export const reverseImageSearch = {
     let websiteList = page.getElementsByClassName('srg');
     let list = websiteList[websiteList.length - 1].getElementsByClassName("g");
     let results = [];
-    let weightCount = 0;
     for (let i = 0; i < list.length; i++) {
       let singleResult = {
         title: "",
@@ -151,9 +151,8 @@ export const reverseImageSearch = {
         imageInfo: {},
         searchEngine: "google",
         description: "",
-        weight: weightCount < 10 ? 1: 3,
+        weight: ENGINE_WEIGHTS.google - i + Math.random(),
       }
-      weightCount ++;
       const singleItem = list[i];
       //process title,imageUrl,sourceUrl and thumbUrl
       //first <a> contain title and imageUrl
@@ -246,7 +245,7 @@ export const reverseImageSearch = {
           },
           searchEngine: "baidu",
           description: sameSizeList[i].textHost || "",
-          weight:1,
+          weight: ENGINE_WEIGHTS.baidu - i + Math.random() - 4,
         }
         result[result.length] = singleResult;
       }
@@ -268,7 +267,7 @@ export const reverseImageSearch = {
           },
           searchEngine: "baidu",
           description: simiList[i].FromPageSummary || "",
-          weight: 3,
+          weight: ENGINE_WEIGHTS.baidu - i + Math.random(),
         }
         result[result.length] = singleResult;
       }
@@ -361,7 +360,7 @@ export const reverseImageSearch = {
         imageInfo: {},
         searchEngine: "tineye",
         description: "",
-        weight: weightCount < 10 ? 2 : 3,
+        weight: ENGINE_WEIGHTS.tineye - i + Math.random(),
       }
       let singleItem = list[i];
       //match thum contain thumbUrl and Size
@@ -501,7 +500,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "bing",
           description: "",
-          weight: 3,
+          weight: ENGINE_WEIGHTS.bing - i + Math.random() - 2,
         }
         singleResult.thumbUrl = content[i].thumbnail.url;
         singleResult.title = content[i].text || content[i].displayText || "";
@@ -524,7 +523,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "bing",
           description: "",
-          weight: 3,
+          weight: ENGINE_WEIGHTS.bing - i + Math.random() - 2,
         }
         singleResult.thumbUrl = content[i].thumbnail.url;
         singleResult.title = content[i].text || content[i].displayText || "";
@@ -547,7 +546,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "bing",
           description: "",
-          weight : 4,
+          weight: ENGINE_WEIGHTS.bing - i + Math.random(),
         }
         singleResult.thumbUrl = content[i].thumbnailUrl;
         singleResult.title = content[i].name || "";
@@ -603,7 +602,6 @@ export const reverseImageSearch = {
     let similar = page.getElementsByClassName("similar__thumbs");
     if (similar.length > 0) {
       const similarList = similar[0].getElementsByTagName("li");
-      let weightCount = 0;
       for (let i = 0; i < similarList.length; i++) {
         let singleResult = {
           title: "",
@@ -613,7 +611,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "yandex",
           description: "",
-          weight : weightCount < 5 ? 1: 3,
+          weight : ENGINE_WEIGHTS.yandex - i + Math.random(),
         }
         singleResult.title = "Yandex";
         let singleItem = similarList[i];
@@ -646,6 +644,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "yandex",
           description: "",
+          weight : ENGINE_WEIGHTS.yandex - i + Math.random() - 10,
         }
         let singleItem = otherSiteList[i];
         let thumbUrl = singleItem.getElementsByClassName("other-sites__preview-link")[0].getAttribute("href");
@@ -702,7 +701,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "saucenao",
           description: "",
-          weight: 5,
+          weight: ENGINE_WEIGHTS.saucenao - i + Math.random(),
         };
         let singleItem = list[i];
         let resultImage = singleItem.getElementsByClassName("resultimage")[0];
@@ -771,7 +770,7 @@ export const reverseImageSearch = {
               imageInfo: {},
               searchEngine: "iqdb",
               description: "",
-              weight:5,
+              weight: ENGINE_WEIGHTS.iqdb - i + Math.random(),
             };
             let data = singleItem.getElementsByTagName("td");
             //# 0 image
@@ -846,7 +845,7 @@ export const reverseImageSearch = {
           imageInfo: {},
           searchEngine: "iqdb",
           description: "",
-          weight:5,
+          weight: ENGINE_WEIGHTS.ascii2d - i + Math.random(),
         };
         let item = list[i];
         let imageTag = item.getElementsByClassName("image-box")[0];
