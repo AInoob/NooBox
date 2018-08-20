@@ -112,20 +112,6 @@ class About extends React.Component {
     window.socket.on("autoRefresh", type => actions("autoRefresh"));
   }
 
-<<<<<<< HEAD
-  render(){
-    const{about,actions} = this.props;
-    if(!about.inited){
-      return(
-        <Loader style ={{marginTop: "20%"}}/>
-      )
-    }else{
-      if (!about.socketListener) {
-        actions.updateState({ socketListener: true });
-        this.setupSocket(actions.plusOne)
-      }
-      return(
-=======
   render() {
     const { about, actions } = this.props;
     if (!about.inited) {
@@ -133,7 +119,6 @@ class About extends React.Component {
     } else {
       this.setupSocket(actions.plusOne);
       return (
->>>>>>> Raynor
         <AboutContainer>
           <Collapse defaultActiveKey={["3"]}>
             <Panel header={i18n("about_what")} key="1">

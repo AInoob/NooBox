@@ -14,24 +14,13 @@ export const userHistoryDeleteSingle = createAction("userHistory/deleteSingle");
 export const userHistoryDeleteAll = createAction("userHistory/deleteAll");
 export const userHistoryLoadHisotry = createAction("userHistory/loadImageHistory");
 
-<<<<<<< HEAD
-export const optionsInit        =  createAction('options/init');
-export const optionsCheckEngine =  createAction('options/onCheckEngine');
-export const optionsCheckTool   =  createAction('options/onCheckTool');
-export const optionsCheckExp    =  createAction('options/onCheckExp');
-
-export const aboutInit =  createAction('about/init');
-export const plusOne   =  createAction('about/plusOne');
-export const updateState =  createAction('about/updateState');
-
-=======
 //options
 export const optionsInit = createAction('options/init');
 export const optionsCheckEngine = createAction('options/onCheckEngine');
 export const optionsCheckTool = createAction('options/onCheckTool');
 export const optionsCheckExp = createAction('options/onCheckExp');
->>>>>>> Raynor
 
 //about
 export const aboutInit = createAction('about/init');
 export const plusOne = createAction('about/plusOne');
+export const updateState =  createAction('about/updateState');
