@@ -103,7 +103,7 @@ about_feedback_message:
   message: If you have any suggestion or faced any issues, please create a Github issue
 #Image Search
 guessing_keyword:
-  message: Guessing Keyword
+  message: Keyword
 download:
   message: Download
 search_again:
@@ -111,7 +111,7 @@ search_again:
 upload_search:
   message: No Result ? Try Here
 display_mode:
-  message: Display Mode
+  message: Display
 list:
   message: List
 image_wall:
@@ -122,6 +122,8 @@ width:
   message: Width
 height:
   message: Height
+relevance:
+  message: Relevance
 increase:
   message: Ascending
 decrease:
