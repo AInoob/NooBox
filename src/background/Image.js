@@ -239,7 +239,6 @@ export default class Image {
   }
   async beginImageSearch(base64orUrl){
     let cursor = await getDB('imageCursor');
-  
     if (typeof (cursor) === 'number') {
       cursor ++;
       await setDB('imageCursor', cursor);
@@ -249,10 +248,12 @@ export default class Image {
     }
     let imageLink;
     let url;
+    let base64Flag;
     //Check base64 or Url
     switch (checkUrlOrBase64(base64orUrl)) {
       case "base64":
       // console.log("here");
+      base64Flag = true;
       await setDB(cursor,{base64:base64orUrl});
       url = await generateNewTabUrl("searchResult.html");
       await createNewTab({
@@ -282,6 +283,8 @@ export default class Image {
         imageLink = this.noobDownLoadUrl + a.data;
         break;
       case "url":
+      // console.log(base64orUrl);
+      base64Flag = false;
       await setDB(cursor,{url:base64orUrl});
       url = await generateNewTabUrl("searchResult.html");
       await createNewTab({
@@ -293,7 +296,6 @@ export default class Image {
           action: 'url'
         });
         imageLink = base64orUrl;
-        base64Flag = false;
         break;
       default:
         break;
@@ -301,23 +303,30 @@ export default class Image {
     //Generate Image Link
     //console.log(imageLink);
     if(imageLink) {
-      let engineLink={};
+      let resultObj ={
+        base64:base64orUrl,
+        searchImageInfo:[],
+        searchResult:[],
+        engineLink:{},
+        base64: base64Flag ? base64orUrl :"",
+        url: !base64Flag ? base64orUrl: "",
+      };
       //Get Opened Engine and send request
       for(let i = 0; i< engineMap.length; i++){
         let dbName = engineMap[i].dbName;
         let name   = engineMap[i].name;
         let check  = await get(dbName);
         if(check && this.fetchFunction[name+"Link"]){ 
-          engineLink[name] = apiUrls[name] + imageLink;
+          resultObj.engineLink[name] = apiUrls[name] + imageLink;
           if(name === "baidu"){
             await createSandbox();
           }
           if(name === "bing"){
-            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,imageLink,cursor);
+            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink, imageLink,cursor,resultObj);
           }else if(name == "ascii2d"){
-            this.fetchFunction[name+"Link"](apiUrls[name],imageLink,cursor)
+            this.fetchFunction[name+"Link"](apiUrls[name], imageLink,cursor,resultObj)
           }else{
-            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor);
+            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor,resultObj);
           }
         }
       }

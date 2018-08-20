@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {sortImageByHeight,sortImageByWidth,sortImageByArea} from "SRC/utils/imageUtils";
+import {sortImageByHeight,sortImageByWidth,sortImageByArea,sortImageByRelevance} from "SRC/utils/imageUtils";
 export const imageSearchSelector     = (state) => {
   let {sortBy,sortByOrder,searchResult} = state.imageSearch;
   if(sortBy === "area"){
@@ -26,6 +26,8 @@ export const imageSearchSelector     = (state) => {
       sortByOrder = 2;
       sortImageByArea(searchResult,sortByOrder);
     }
+  }else if(sortBy === "relevance"){
+    sortImageByRelevance(searchResult);
   }
   return {
     ...state.imageSearch,
