@@ -11,7 +11,7 @@ import Loader from "SRC/common/component/Loader.jsx";
 import FAIcon from "@fortawesome/react-fontawesome";
 import faSolid from "@fortawesome/fontawesome-free-solid";
 import styled from "styled-components";
-import emoji from "SRC/assets/funSh*t/emoji.svg";
+import emoji from "SRC/assets/fun/emoji.svg";
 const OverviewContainer = styled.div`
   margin-bottom: 10px;
   .uploadImage {
