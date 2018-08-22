@@ -23,3 +23,4 @@ export const optionsCheckExp = createAction('options/onCheckExp');
 //about
 export const aboutInit = createAction('about/init');
 export const plusOne = createAction('about/plusOne');
+export const updateState =  createAction('about/updateState');
