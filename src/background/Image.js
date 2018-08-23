@@ -331,8 +331,6 @@ export default class Image {
         }
       }
     }
-    reverseImageSearch.updateEngineLink(engineLink,cursor)
-    
   }
 
 }

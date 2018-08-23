@@ -219,6 +219,7 @@ export const reverseImageSearch = {
       guessWord,
       multitags
     } = await reverseImageSearch.waitForSandBox(baiduObj);
+    // console.log(simiList);
     //Get result from sandbox
     // console.log("success");
     searchImage.keyword = guessWord == "" ? multitags || "" : guessWord;
@@ -259,7 +260,7 @@ export const reverseImageSearch = {
         let singleResult = {
           title: simiList[i].fromPageTitle || simiList[i].FromPageSummary || simiList[i].FromPageSummaryOrig || "",
           thumbUrl: simiList[i].MiddleThumbnailImageUrl || "",
-          imageUrl: simiList[i].ObjURL || "",
+          imageUrl: simiList[i].ObjURL.indexOf("timgsa.baidu.com") != -1 ? simiList[i].ObjURL.substring(simiList[i].ObjURL.indexOf("src=")+4,simiList[i].ObjURL.length): simiList[i].ObjURL|| "",
           sourceUrl: simiList[i].FromURL || "",
           imageInfo: {
             height: simiList[i].ImageHeight,
@@ -719,6 +720,7 @@ export const reverseImageSearch = {
         let resultContent = singleItem.getElementsByClassName("resultcontent")[0];
         if (resultContent) {
           let title = resultContent.getElementsByTagName("strong")[0];
+
           if (title) {
             singleResult.title = title.innerHTML;
           }

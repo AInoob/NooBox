@@ -5,6 +5,7 @@ import faSolid from "@fortawesome/fontawesome-free-solid";
 import { engineIcon } from "SRC/constant/settingMap.js";
 import { Row, Col, Icon, List, Avatar, Modal } from "antd";
 import Loader from "SRC/common/component/Loader.jsx";
+import ImageLost from  "SRC/assets/fun/ImageLost.png"
 const ResultContainer = styled.div`
   background:white;
   border: 1px solid #e8e8e8;
@@ -26,7 +27,8 @@ const ResultContainer = styled.div`
   }
   .ant-list-item-main{
     order:2
-    padding-left: 10%;
+    padding-left: 5%;
+    padding-right: 10%;
     li{
       font-size: 18px;
     }
@@ -53,6 +55,9 @@ export default class ImageList extends React.Component {
     this.setState({
       showModal: false
     });
+  }
+  imgError(e){
+    e.target.src = ImageLost;
   }
   render() {
     let { imageDataList } = this.props;
@@ -90,6 +95,7 @@ export default class ImageList extends React.Component {
                     alt="Image Is Dead, Sorry"
                     onClick={() => this.showModal(item.imageUrl)}
                     src={item.imageUrl}
+                    onError={(e)=>this.imgError(e)}
                   />
                 }
               >
@@ -113,6 +119,7 @@ export default class ImageList extends React.Component {
               alt="Image Down Sorry"
               style={{ width: "100%" }}
               src={this.state.imageUrl}
+              onError={(e)=>this.imgError(e)}
             />
           </Modal>
         </ResultContainer>
