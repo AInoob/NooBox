@@ -5,6 +5,7 @@ import faSolid from "@fortawesome/fontawesome-free-solid";
 import { Row, Col, Card, Icon, Popover, Avatar, Modal } from "antd";
 import { engineIcon } from "SRC/constant/settingMap.js";
 import Loader from "SRC/common/component/Loader.jsx";
+import ImageLost from  "SRC/assets/fun/ImageLost.png";
 const ResultContainer = styled.div`
   background:white;
   border: 1px solid #e8e8e8;
@@ -54,6 +55,9 @@ export default class ImageWall extends React.Component {
       showModal: false
     });
   }
+  imgError(e){
+    e.target.src = ImageLost;
+  }
   generateCardList(imageDataList) {
     const eachRowNumber = 6;
     //span = 24/eachRow
@@ -88,9 +92,9 @@ export default class ImageWall extends React.Component {
               <Card
                 hoverable={true}
                 style={{ width: "100%", minHeight: 60 }}
-                cover={<img alt="Image Is Dead, Sorry" src={item.imageUrl} onClick={() => this.showModal(item.imageUrl)} />}
+                cover={<img alt="Image Is Dead, Sorry" src={item.imageUrl} onError={(e)=>this.imgError(e)} onClick={() => this.showModal(item.imageUrl)} />}
               >
-                <div className="cardMetaWrapper">
+                <div className="cardMetaWrapper"> 
                   <Card.Meta
                     avatar={<Avatar src={engineIcon[item["searchEngine"]]} />}
                   />
@@ -130,6 +134,7 @@ export default class ImageWall extends React.Component {
               alt="Image Down Sorry"
               style={{ width: "100%" }}
               src={this.state.imageUrl}
+              onError={(e)=>this.imgError(e)}
             />
           </Modal>
         </ResultContainer>
