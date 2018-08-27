@@ -114,7 +114,7 @@ export default {
       };
       yield call(sendMessage, message);
     },
-    *updateInnerState({ payload }, { call, put, select }) {
+    *updateInnerState({ payload }, { call, put, select,take }) {
       const { pageId } = yield select(state => state.imageSearch);
       if (pageId == payload.cursor) {
         // console.log(payload);
@@ -126,6 +126,7 @@ export default {
             result: payload.result
           }
         });
+        // yield take(type+"/@@end");
       }
     }
   },

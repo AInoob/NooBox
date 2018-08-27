@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Card, Tooltip, Popover, InputNumber, Button, Icon } from "antd";
+import { Card, Tooltip, Popover, InputNumber, Button, Icon,Spin } from "antd";
 import FAIcon from "@fortawesome/react-fontawesome";
 import faSolid from "@fortawesome/fontawesome-free-solid";
 import google from "SRC/assets/engineLogos/google.png";
@@ -94,7 +94,7 @@ export default class Engine extends React.Component {
           <Card.Grid style={gridStyle}>
             <div className="box">
               <div className="engineContainer">
-                <Icon
+                <Spin
                   className={
                     !this.props.google || this.props.googleDone
                       ? "engineLoadingDone"
@@ -118,13 +118,12 @@ export default class Engine extends React.Component {
             <div className="box">
               <div className="engineContainer">
                 <div className="engineContainer">
-                  <Icon
+                  <Spin
                     className={
                       !this.props.baidu || this.props.baiduDone
                         ? "engineLoadingDone"
                         : "engineLoading"
                     }
-                    type="loading"
                   />
                   <a href={engineLink["baidu"]} target="_blank">
                     {" "}
@@ -143,7 +142,7 @@ export default class Engine extends React.Component {
             <div className="box">
               <div className="engineContainer">
                 <div className="engineContainer">
-                  <Icon
+                  <Spin
                     className={
                       !this.props.yandex || this.props.yandexDone
                         ? "engineLoadingDone"
@@ -168,7 +167,7 @@ export default class Engine extends React.Component {
             <div className="box">
               <div className="engineContainer">
                 <div className="engineContainer">
-                  <Icon
+                  <Spin
                     className={
                       !this.props.bing || this.props.bingDone
                         ? "engineLoadingDone"
@@ -193,7 +192,7 @@ export default class Engine extends React.Component {
             <div className="box">
               <div className="engineContainer">
                 <div className="engineContainer">
-                  <Icon
+                  <Spin
                     className={
                       !this.props.tineye || this.props.tineyeDone
                         ? "engineLoadingDone"
@@ -217,7 +216,7 @@ export default class Engine extends React.Component {
           <Card.Grid style={gridStyle}>
             <div className="box">
               <div className="engineContainer">
-                <Icon
+                <Spin
                   className= {
                     !this.props.saucenao || this.props.saucenaoDone
                       ? "engineLoadingDone"
@@ -239,7 +238,7 @@ export default class Engine extends React.Component {
           <Card.Grid style={gridStyle}>
             <div className="box">
               <div className="engineContainer">
-                  <Icon 
+                  <Spin 
                     className={
                     !this.props.iqdb || this.props.iqdbDone 
                       ? "engineLoadingDone"
@@ -260,7 +259,7 @@ export default class Engine extends React.Component {
           <Card.Grid style={gridStyle}>
             <div className="box">
               <div className="engineContainer">
-                  <Icon 
+                  <Spin 
                     className={
                       !this.props.ascii2d || this.props.ascii2dDone 
                       ? "engineLoadingDone" 
