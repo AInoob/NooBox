@@ -20,7 +20,7 @@ const ResultContainer = styled.div`
     height:40px;
   }
   .searchImage{
-    width:250px;
+    width:200px;
   }
   .sizeInfo{
     margin:0;
