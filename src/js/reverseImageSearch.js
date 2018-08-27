@@ -34,6 +34,9 @@ export const reverseImageSearch = {
       cursor: cursor,
     }, () => {})
   },
+  reportError: (cursor) => {
+
+  },
   waitForSandBox: (parseObj) => {
     return new Promise(function(resolve, reject) {
       //移除 listener
@@ -55,87 +58,98 @@ export const reverseImageSearch = {
   },
   /*Fetch Available Page Link On Goolge*/
   fetchGoogleLink: async (link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "google",
-      imageInfo: {},
-    }
-    // console.log(123+"reachf");
-    // console.log(link);
-    const {
-      data
-    } = await ajax(link, {
-      method: 'GET'
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    const followingPageSrouce = page.getElementsByTagName('tbody')[0].getElementsByTagName('a');
-    let followingPageUrl = [];
-    for (let i = 0; i < followingPageSrouce.length; i++) {
-      //fl stand for following page in google
-      if (followingPageSrouce[i] && followingPageSrouce[i].getAttribute("class") === "fl") {
-        followingPageUrl[followingPageUrl.length] = "https://www.google.com" + followingPageSrouce[i].getAttribute("href");
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "google",
+        imageInfo: {},
       }
-    }
-    //get Search Imge Info
-    const topstuff = page.getElementById("topstuff").getElementsByClassName("card-section")[0];
-    //console.log(topstuff);
-    //first child contain size info
-    //second child contain keyword info
-    const childNode = topstuff.childNodes;
-    const sizeInfo = childNode[0].childNodes[1].childNodes[0].innerHTML.replace(/<br>|&nbsp;|Image size|:|：|图片尺寸|圖片尺寸/g, "");
-    if (sizeInfo) {
-      //"x" is special Character
-      let size = sizeInfo.split("×");
-      searchImage.imageInfo.width = Number.parseInt(size[0], 10);
-      searchImage.imageInfo.height = Number.parseInt(size[1], 10);
-    }
-    const keyword = childNode[1].getElementsByTagName("a")[0];
-    if (keyword) {
-      // console.log(childNode[1]);
-      // console.log(keyword.innerHTML);
-      searchImage.keyword = keyword.innerHTML;
-      searchImage.keywordLink = "https://www.google.com" + keyword.getAttribute("href");
-    }
-    // Send message of search image info to front page
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    // Process first page source
-    let firstPage = reverseImageSearch.processGoogleData(page);
-    //  google
-    //  maximum
-    if (followingPageUrl.length > 0) {
-      let tempFunciton = function(url) {
-        return new Promise((resolve) => {
-          ajax(url, {
-            method: "GET"
-          }).then(({
-            data
-          }) => {
-            const page = HTML.parseFromString(data, "text/html");
-            let singleResult = reverseImageSearch.processGoogleData(page);
-            resolve(singleResult);
+      // console.log(123+"reachf");
+      // console.log(link);
+      const {
+        data,
+        err
+      } = await ajax(link, {
+        method: 'GET'
+      });
+      if(err){
+        throw err
+      }
+      const page = HTML.parseFromString(data, "text/html");
+      const followingPageSrouce = page.getElementsByTagName('tbody')[0].getElementsByTagName('a');
+      let followingPageUrl = [];
+      for (let i = 0; i < followingPageSrouce.length; i++) {
+        //fl stand for following page in google
+        if (followingPageSrouce[i] && followingPageSrouce[i].getAttribute("class") === "fl") {
+          followingPageUrl[followingPageUrl.length] = "https://www.google.com" + followingPageSrouce[i].getAttribute("href");
+        }
+      }
+      //get Search Imge Info
+      const topstuff = page.getElementById("topstuff").getElementsByClassName("card-section")[0];
+      //console.log(topstuff);
+      //first child contain size info
+      //second child contain keyword info
+      const childNode = topstuff.childNodes;
+      const sizeInfo = childNode[0].childNodes[1].childNodes[0].innerHTML.replace(/<br>|&nbsp;|Image size|:|：|图片尺寸|圖片尺寸/g, "");
+      if (sizeInfo) {
+        //"x" is special Character
+        let size = sizeInfo.split("×");
+        searchImage.imageInfo.width = Number.parseInt(size[0], 10);
+        searchImage.imageInfo.height = Number.parseInt(size[1], 10);
+      }
+      const keyword = childNode[1].getElementsByTagName("a")[0];
+      if (keyword) {
+        // console.log(childNode[1]);
+        // console.log(keyword.innerHTML);
+        searchImage.keyword = keyword.innerHTML;
+        searchImage.keywordLink = "https://www.google.com" + keyword.getAttribute("href");
+      }
+      // Send message of search image info to front page
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      // Process first page source
+      let firstPage = reverseImageSearch.processGoogleData(page);
+      //  google
+      //  maximum
+      if (followingPageUrl.length > 0) {
+        let tempFunciton = function(url) {
+          return new Promise((resolve) => {
+            ajax(url, {
+              method: "GET"
+            }).then(({
+              data
+            }) => {
+              const page = HTML.parseFromString(data, "text/html");
+              let singleResult = reverseImageSearch.processGoogleData(page);
+              resolve(singleResult);
+            }).catch(err => resolve(err))
           })
-        })
+        }
+        let taskSeq = [];
+        //Raynor First Version, cut the search Number to 25
+        if (followingPageUrl.length > 2) {
+          followingPageUrl.length = 2;
+        }
+        for (let i = 0; i < followingPageUrl.length; i++) {
+          taskSeq[taskSeq.length] = tempFunciton(followingPageUrl[i]);
+        }
+        let results = await Promise.all(taskSeq);
+        //merge results to first page
+        for (let i = 0; i < results.length; i++) {
+          if(results[i] instanceof Error){
+            throw results[i];
+          }
+          firstPage = firstPage.concat(results[i]);
+        }
       }
-      let taskSeq = [];
-      //Raynor First Version, cut the search Number to 25
-      if (followingPageUrl.length > 2) {
-        followingPageUrl.length = 2;
-      }
-      for (let i = 0; i < followingPageUrl.length; i++) {
-        taskSeq[taskSeq.length] = tempFunciton(followingPageUrl[i]);
-      }
-      let results = await Promise.all(taskSeq);
-      //merge results to first page
-      for (let i = 0; i < results.length; i++) {
-        firstPage = firstPage.concat(results[i]);
-      }
+      resultObj.searchResult = resultObj.searchResult.concat(firstPage);
+      resultObj["googleDone"] = true;
+      await setDB(cursor,resultObj);
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["googleDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-
-    resultObj.searchResult = resultObj.searchResult.concat(firstPage);
-    resultObj["googleDone"] = true;
-    await setDB(cursor,resultObj);
-    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   /*process Data*/
   processGoogleData: function(page) {
@@ -192,161 +206,184 @@ export const reverseImageSearch = {
   },
   /*Fetch Available Page Link On Baidu Return Obj*/
   fetchBaiduLink: async (link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "baidu",
-      imageInfo: {}
-    }
-    // console.log(link)
-    const {
-      data
-    } = await ajax(link, {
-      method: 'GET'
-    });
-    // console.log(data);
-    let baiduObj = {};
-    //Parse Db
-    const page = HTML.parseFromString(data, "text/html");
-    let node = page.getElementsByTagName('script')[1].innerHTML;
-    // console.log(page.getElementsByTagName('script'));
-    node = node.substring(17, node.indexOf("bd.queryImageUrl") - 1);
-    baiduObj.dbString = "bd = " + node;
-    // console.log(baiduObj.dbString);
-    let {
-      simiList,
-      sameSizeList,
-      guessWord,
-      multitags
-    } = await reverseImageSearch.waitForSandBox(baiduObj);
-    // console.log(simiList);
-    //Get result from sandbox
-    // console.log("success");
-    searchImage.keyword = guessWord == "" ? multitags || "" : guessWord;
-    // Send message of search image info to front page
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    //Raynor Version
-    //Pick 5 from sameSizeList
-    let count = 25;
-    let result = [];
-    if (sameSizeList) {
-      if (sameSizeList.length > 5) {
-        sameSizeList.length = 5;
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "baidu",
+        imageInfo: {}
       }
-      count -= sameSizeList.length;
-      for (let i = 0; i < sameSizeList.length; i++) {
-        let singleResult = {
-          title: sameSizeList[i].fromPageTitle || "",
-          thumbUrl: sameSizeList[i].thumbURL || "",
-          imageUrl: sameSizeList[i].objURL || "",
-          sourceUrl: sameSizeList[i].fromURL || "",
-          imageInfo: {
-            height: sameSizeList[i].height,
-            width: sameSizeList[i].width,
-          },
-          searchEngine: "baidu",
-          description: sameSizeList[i].textHost || "",
-          weight: ENGINE_WEIGHTS.baidu - i + Math.random() - 4,
+      // console.log(link)
+      const {
+        data,
+        err,
+      } = await ajax(link, {
+        method: 'GET'
+      });
+      if(err){
+        throw err;
+      }
+      // console.log(data);
+      let baiduObj = {};
+      //Parse Db
+      const page = HTML.parseFromString(data, "text/html");
+      let node = page.getElementsByTagName('script')[1].innerHTML;
+      // console.log(page.getElementsByTagName('script'));
+      node = node.substring(17, node.indexOf("bd.queryImageUrl") - 1);
+      baiduObj.dbString = "bd = " + node;
+      // console.log(baiduObj.dbString);
+      let {
+        simiList,
+        sameSizeList,
+        guessWord,
+        multitags
+      } = await reverseImageSearch.waitForSandBox(baiduObj);
+      // console.log(simiList);
+      //Get result from sandbox
+      // console.log("success");
+      searchImage.keyword = guessWord == "" ? multitags || "" : guessWord;
+      // Send message of search image info to front page
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      //Raynor Version
+      //Pick 5 from sameSizeList
+      let count = 25;
+      let result = [];
+      if (sameSizeList) {
+        if (sameSizeList.length > 5) {
+          sameSizeList.length = 5;
         }
-        result[result.length] = singleResult;
-      }
-    }
-
-    if (simiList) {
-      if (simiList > count) {
-        simiList.length = count;
-      }
-      for (let i = 0; i < simiList.length; i++) {
-        let singleResult = {
-          title: simiList[i].fromPageTitle || simiList[i].FromPageSummary || simiList[i].FromPageSummaryOrig || "",
-          thumbUrl: simiList[i].MiddleThumbnailImageUrl || "",
-          imageUrl: simiList[i].ObjURL.indexOf("timgsa.baidu.com") != -1 ? simiList[i].ObjURL.substring(simiList[i].ObjURL.indexOf("src=")+4,simiList[i].ObjURL.length): simiList[i].ObjURL|| "",
-          sourceUrl: simiList[i].FromURL || "",
-          imageInfo: {
-            height: simiList[i].ImageHeight,
-            width: simiList[i].ImageWidth,
-          },
-          searchEngine: "baidu",
-          description: simiList[i].FromPageSummary || "",
-          weight: ENGINE_WEIGHTS.baidu - i + Math.random(),
+        count -= sameSizeList.length;
+        for (let i = 0; i < sameSizeList.length; i++) {
+          let singleResult = {
+            title: sameSizeList[i].fromPageTitle || "",
+            thumbUrl: sameSizeList[i].thumbURL || "",
+            imageUrl: sameSizeList[i].objURL || "",
+            sourceUrl: sameSizeList[i].fromURL || "",
+            imageInfo: {
+              height: sameSizeList[i].height,
+              width: sameSizeList[i].width,
+            },
+            searchEngine: "baidu",
+            description: sameSizeList[i].textHost || "",
+            weight: ENGINE_WEIGHTS.baidu - i + Math.random() - 4,
+          }
+          result[result.length] = singleResult;
         }
-        result[result.length] = singleResult;
       }
+  
+      if (simiList) {
+        if (simiList > count) {
+          simiList.length = count;
+        }
+        for (let i = 0; i < simiList.length; i++) {
+          let singleResult = {
+            title: simiList[i].fromPageTitle || simiList[i].FromPageSummary || simiList[i].FromPageSummaryOrig || "",
+            thumbUrl: simiList[i].MiddleThumbnailImageUrl || "",
+            imageUrl: simiList[i].ObjURL.indexOf("timgsa.baidu.com") != -1 ? simiList[i].ObjURL.substring(simiList[i].ObjURL.indexOf("src=")+4,simiList[i].ObjURL.length): simiList[i].ObjURL|| "",
+            sourceUrl: simiList[i].FromURL || "",
+            imageInfo: {
+              height: simiList[i].ImageHeight,
+              width: simiList[i].ImageWidth,
+            },
+            searchEngine: "baidu",
+            description: simiList[i].FromPageSummary || "",
+            weight: ENGINE_WEIGHTS.baidu - i + Math.random(),
+          }
+          result[result.length] = singleResult;
+        }
+      }
+      resultObj.searchResult = resultObj.searchResult.concat(result);
+      resultObj["baiduDone"] = true;
+      await setDB(cursor,resultObj);
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["baiduDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    resultObj.searchResult = resultObj.searchResult.concat(result);
-    resultObj["baiduDone"] = true;
-    await setDB(cursor,resultObj);
-    reverseImageSearch.updateResultImage(resultObj, cursor);
+ 
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
   processBaiduData: async () => {
     /* Dummy Code To Maintain File Shape*/
   },
   fetchTineyeLink: async (link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "tineye",
-      imageInfo: {}
-    }
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    //Tineye doesn't have image Info
-    const {
-      data
-    } = await ajax(link, {
-      method: 'GET'
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    //Get Total Search Result
-    const totalSearchResult = Number.parseInt(page.getElementsByClassName("search-details")[0].getElementsByTagName("h2")[0].innerHTML.split(" ")[0]);
-    //Get Curreent Search Link
-    const links = page.getElementsByTagName("link");
-    let pageLink;
-    for (let i = 0; i < links.length; i++) {
-      if (links[i].getAttribute("href").indexOf("https") != -1 && links[i].getAttribute("rel") == "shortcut icon") {
-        pageLink = links[i].getAttribute("href").replace("query", "search");
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "tineye",
+        imageInfo: {}
       }
-    }
-    //if pageLink exist
-    if (pageLink) {
-      if (totalSearchResult && totalSearchResult !== 0) {
-        // let searchNumber = 20;
-        // if(totalSearchResult){
-        //   searchNumber = totalSearchResult >= 20 ? 20: totalSearchResult;
-        // }
-        let firstPage = reverseImageSearch.processTineyeData(page);
-        const followingPageExist = page.getElementsByClassName("pagination-bottom")[0]
-        if (followingPageExist) {
-          let followingPage = followingPageExist.getElementsByTagName("a");
-          let tempFunciton = function(url) {
-            return new Promise((resolve) => {
-              ajax(url, {
-                method: "GET"
-              }).then(({
-                data
-              }) => {
-                const page = HTML.parseFromString(data, "text/html");
-                let singleResult = reverseImageSearch.processTineyeData(page);
-                resolve(singleResult);
-              })
-            })
-          }
-          let taskSeq = [];
-          for (let i = 0; i < followingPage.length - 1 && i < 2; i++) {
-            let link = pageLink + followingPage[i].getAttribute("href");
-            taskSeq[taskSeq.length] = tempFunciton(link);
-          }
-          let result = await Promise.all(taskSeq);
-          for (let i = 0; i < result.length; i++) {
-            firstPage = firstPage.concat(result[i]);
-          }
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      //Tineye doesn't have image Info
+      const {
+        data,
+        err,
+      } = await ajax(link, {
+        method: 'GET'
+      });
+      if(err){
+        throw err;
+      }
+      const page = HTML.parseFromString(data, "text/html");
+      //Get Total Search Result
+      const totalSearchResult = Number.parseInt(page.getElementsByClassName("search-details")[0].getElementsByTagName("h2")[0].innerHTML.split(" ")[0]);
+      //Get Curreent Search Link
+      const links = page.getElementsByTagName("link");
+      let pageLink;
+      for (let i = 0; i < links.length; i++) {
+        if (links[i].getAttribute("href").indexOf("https") != -1 && links[i].getAttribute("rel") == "shortcut icon") {
+          pageLink = links[i].getAttribute("href").replace("query", "search");
         }
-        resultObj.searchResult = resultObj.searchResult.concat(firstPage);
-        await setDB(cursor,resultObj);
       }
+      //if pageLink exist
+      if (pageLink) {
+        if (totalSearchResult && totalSearchResult !== 0) {
+          // let searchNumber = 20;
+          // if(totalSearchResult){
+          //   searchNumber = totalSearchResult >= 20 ? 20: totalSearchResult;
+          // }
+          let firstPage = reverseImageSearch.processTineyeData(page);
+          const followingPageExist = page.getElementsByClassName("pagination-bottom")[0]
+          if (followingPageExist) {
+            let followingPage = followingPageExist.getElementsByTagName("a");
+            let tempFunciton = function(url) {
+              return new Promise((resolve) => {
+                ajax(url, {
+                  method: "GET"
+                }).then(({
+                  data
+                }) => {
+                  const page = HTML.parseFromString(data, "text/html");
+                  let singleResult = reverseImageSearch.processTineyeData(page);
+                  resolve(singleResult);
+                }).catch(err => resolve(err))
+              })
+            }
+            let taskSeq = [];
+            for (let i = 0; i < followingPage.length - 1 && i < 2; i++) {
+              let link = pageLink + followingPage[i].getAttribute("href");
+              taskSeq[taskSeq.length] = tempFunciton(link);
+            }
+            let result = await Promise.all(taskSeq);
+            for (let i = 0; i < result.length; i++) {
+              if(result[i] instanceof Error){
+                throw result[i];
+              }
+              firstPage = firstPage.concat(result[i]);
+            }
+          }
+          resultObj.searchResult = resultObj.searchResult.concat(firstPage);
+          await setDB(cursor,resultObj);
+        }
+      }
+      resultObj["tineyeDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["tineyeDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    resultObj["tineyeDone"] = true;
-    reverseImageSearch.updateResultImage(resultObj, cursor);
+ 
   },
   processTineyeData: (page) => {
     const list = page.getElementsByClassName("match-row") || [];
@@ -400,88 +437,101 @@ export const reverseImageSearch = {
     return results;
   },
   fetchBingLink: async (link, imageLink, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "bing",
-      imageInfo: {}
-    }
-    const {
-      data
-    } = await ajax(link, {
-      method: "GET",
-      credentials: "same-origin"
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    let allScript = page.getElementsByTagName("script");
-    let ig;
-    let skey;
-    for (let i = 0; i < allScript.length; i++) {
-      let singleItem = allScript[i].innerHTML;
-      if (singleItem.indexOf("IG:\"") != -1) {
-        let igString = singleItem.substring(singleItem.indexOf("IG:\""), singleItem.indexOf("\",EventID"));
-        ig = igString.substring(igString.indexOf("\"") + 1, igString.length);
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "bing",
+        imageInfo: {}
       }
-      if (singleItem.indexOf("skey=") != -1) {
-        let skeyEqu = singleItem.substring(singleItem.indexOf("skey="), singleItem.indexOf("&safeSearch="));
-        skey = skeyEqu.substring(skeyEqu.indexOf("=") + 1, skeyEqu.length);
-      }
-      if (ig && skey) {
-        break;
-      }
-    }
-    //magic sh*t stuff LOL
-    if (ig && skey) {
-      let halfAnd = "&"
-      let baseURL = "https://www.bing.com/images/api/custom/details?";
-      let modules = "modules=brq,objectdetection,objectrecognition,imagebasedrelatedsearches,relatedsearches,image,caption,similarimages,similarproducts";
-      let imageurl = "imgurl=" + imageLink;
-      let rshighlight = "rshighlight=true";
-      let textDecorations = "textDecorations=true";
-      let internalFeatures = "internalFeatures=share";
-      let skeyString = "skey=" + skey;
-      let safeSearch = "safeSearch=Strict";
-      let IGString = "IG=" + ig;
-      let IID = "IID=idpins";
-      let SFX = "SFX=1";
-      let magicLink = baseURL + halfAnd +
-        modules + halfAnd +
-        imageurl + halfAnd +
-        rshighlight + halfAnd +
-        textDecorations + halfAnd +
-        internalFeatures + halfAnd +
-        skeyString + halfAnd +
-        safeSearch + halfAnd +
-        IGString + halfAnd +
-        IID + halfAnd +
-        SFX;
       const {
-        data
-      } = await ajax(magicLink, {
+        data,
+        err,
+      } = await ajax(link, {
         method: "GET",
         credentials: "same-origin"
       });
-      // console.log(data);
-      // console.log(data);
-      let {
-        bestRepresentativeQuery,
-        image
-      } = data;
-      if (bestRepresentativeQuery) {
-        searchImage.keyword = bestRepresentativeQuery.displayText || bestRepresentativeQuery.text || "";
-        searchImage.keywordLink = bestRepresentativeQuery.webSearchUrl || "";
+      if(err){
+        throw err;
       }
-      if (image) {
-        searchImage.imageInfo.width = image.width || "";
-        searchImage.imageInfo.height = image.height || "";
+      const page = HTML.parseFromString(data, "text/html");
+      let allScript = page.getElementsByTagName("script");
+      let ig;
+      let skey;
+      for (let i = 0; i < allScript.length; i++) {
+        let singleItem = allScript[i].innerHTML;
+        if (singleItem.indexOf("IG:\"") != -1) {
+          let igString = singleItem.substring(singleItem.indexOf("IG:\""), singleItem.indexOf("\",EventID"));
+          ig = igString.substring(igString.indexOf("\"") + 1, igString.length);
+        }
+        if (singleItem.indexOf("skey=") != -1) {
+          let skeyEqu = singleItem.substring(singleItem.indexOf("skey="), singleItem.indexOf("&safeSearch="));
+          skey = skeyEqu.substring(skeyEqu.indexOf("=") + 1, skeyEqu.length);
+        }
+        if (ig && skey) {
+          break;
+        }
       }
-      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-      let results = reverseImageSearch.processBingData(data);
-      resultObj.searchResult = resultObj.searchResult.concat(results);
-      await setDB(cursor,resultObj);
+      //magic sh*t stuff LOL
+      if (ig && skey) {
+        let halfAnd = "&"
+        let baseURL = "https://www.bing.com/images/api/custom/details?";
+        let modules = "modules=brq,objectdetection,objectrecognition,imagebasedrelatedsearches,relatedsearches,image,caption,similarimages,similarproducts";
+        let imageurl = "imgurl=" + imageLink;
+        let rshighlight = "rshighlight=true";
+        let textDecorations = "textDecorations=true";
+        let internalFeatures = "internalFeatures=share";
+        let skeyString = "skey=" + skey;
+        let safeSearch = "safeSearch=Strict";
+        let IGString = "IG=" + ig;
+        let IID = "IID=idpins";
+        let SFX = "SFX=1";
+        let magicLink = baseURL + halfAnd +
+          modules + halfAnd +
+          imageurl + halfAnd +
+          rshighlight + halfAnd +
+          textDecorations + halfAnd +
+          internalFeatures + halfAnd +
+          skeyString + halfAnd +
+          safeSearch + halfAnd +
+          IGString + halfAnd +
+          IID + halfAnd +
+          SFX;
+        const {
+          data,
+          err,
+        } = await ajax(magicLink, {
+          method: "GET",
+          credentials: "same-origin"
+        });
+        // console.log(data);
+        // console.log(data);
+        if(err){
+          throw err;
+        }
+        let {
+          bestRepresentativeQuery,
+          image
+        } = data;
+        if (bestRepresentativeQuery) {
+          searchImage.keyword = bestRepresentativeQuery.displayText || bestRepresentativeQuery.text || "";
+          searchImage.keywordLink = bestRepresentativeQuery.webSearchUrl || "";
+        }
+        if (image) {
+          searchImage.imageInfo.width = image.width || "";
+          searchImage.imageInfo.height = image.height || "";
+        }
+        resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+        let results = reverseImageSearch.processBingData(data);
+        resultObj.searchResult = resultObj.searchResult.concat(results);
+        await setDB(cursor,resultObj);
+      }
+      resultObj["bingDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["bingDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    resultObj["bingDone"] = true;
-    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processBingData: (data) => {
     let results = [];
@@ -561,42 +611,51 @@ export const reverseImageSearch = {
     return results;
   },
   fetchYandexLink: async (link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "yandex",
-      imageInfo: {}
-    }
-    const {
-      data
-    } = await ajax(link, {
-      method: 'GET'
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    window.x = page;
-    let sizeInfo = page.getElementsByClassName("original-image__thumb-info")[0];
-    if (sizeInfo) {
-      let size = sizeInfo.innerHTML.split("×");
-      searchImage.imageInfo.width = size[0];
-      searchImage.imageInfo.height = size[1];
-    }
-    let keywordWrapper = page.getElementsByClassName("tags__content");
-    if (keywordWrapper.length != 0) {
-      keywords = keywordWrapper[0].getElementsByTagName("a");
-      if (keywords.length > 0) {
-        searchImage.keyword = keywords[0].innerHTML;
-        searchImage.keywordLink = keywords[0].getAttribute("href");
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "yandex",
+        imageInfo: {}
       }
-    } else {
-      searchImage.keyword = "";
+      const {
+        data,
+        err
+      } = await ajax(link, {
+        method: 'GET'
+      });
+      if(err){
+        throw err;
+      }
+      const page = HTML.parseFromString(data, "text/html");
+      window.x = page;
+      let sizeInfo = page.getElementsByClassName("original-image__thumb-info")[0];
+      if (sizeInfo) {
+        let size = sizeInfo.innerHTML.split("×");
+        searchImage.imageInfo.width = size[0];
+        searchImage.imageInfo.height = size[1];
+      }
+      let keywordWrapper = page.getElementsByClassName("tags__content");
+      if (keywordWrapper.length != 0) {
+        keywords = keywordWrapper[0].getElementsByTagName("a");
+        if (keywords.length > 0) {
+          searchImage.keyword = keywords[0].innerHTML;
+          searchImage.keywordLink = keywords[0].getAttribute("href");
+        }
+      } else {
+        searchImage.keyword = "";
+      }
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      let results = reverseImageSearch.processYandexData(page);
+      // console.log(results);
+      resultObj.searchResult = resultObj.searchResult.concat(results);
+      resultObj["yandexDone"] = true;
+      await setDB(cursor,resultObj);
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["yandexDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    let results = reverseImageSearch.processYandexData(page);
-    // console.log(results);
-    resultObj.searchResult = resultObj.searchResult.concat(results);
-    resultObj["yandexDone"] = true;
-    await setDB(cursor,resultObj);
-    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processYandexData: (page) => {
     let results = [];
@@ -668,26 +727,36 @@ export const reverseImageSearch = {
     return results;
   },
   fetchSauceNaoLink: async (link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "saucenao",
-      imageInfo: {}
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "saucenao",
+        imageInfo: {}
+      }
+      //sausnao doesn't have search Image Info
+      const {
+        data,
+        err
+      } = await ajax(link, {
+        method: "GET",
+        credentials: "same-origin"
+      });
+      if(err){
+        throw err;
+      }
+      const page = HTML.parseFromString(data, "text/html");
+      let results = reverseImageSearch.processSauceNaoData(page);
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      resultObj.searchResult = resultObj.searchResult.concat(results);
+      resultObj["saucenaoDone"] = true;
+      await setDB(cursor,resultObj);
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["saucenaoDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    //sausnao doesn't have search Image Info
-    const {
-      data
-    } = await ajax(link, {
-      method: "GET",
-      credentials: "same-origin"
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    let results = reverseImageSearch.processSauceNaoData(page);
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    resultObj.searchResult = resultObj.searchResult.concat(results);
-    resultObj["saucenaoDone"] = true;
-    await setDB(cursor,resultObj);
-    reverseImageSearch.updateResultImage(resultObj, cursor);
+    
   },
   processSauceNaoData: (page) => {
     let results = [];
@@ -733,24 +802,33 @@ export const reverseImageSearch = {
     return results;
   },
   fetchIQDBLink: async (link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "iqdb",
-      imageInfo: {}
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "iqdb",
+        imageInfo: {}
+      }
+      const {
+        data,
+        err
+      } = await ajax(link, {
+        method: "GET"
+      });
+      if(err){
+        throw err;
+      }
+      const page = HTML.parseFromString(data, "text/html");
+      let results = reverseImageSearch.processIQDBData(page);
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      resultObj.searchResult = resultObj.searchResult.concat(results);
+      resultObj["iqdbDone"] = true;
+      await setDB(cursor,resultObj);
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["iqdbDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    const {
-      data
-    } = await ajax(link, {
-      method: "GET"
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    let results = reverseImageSearch.processIQDBData(page);
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    resultObj.searchResult = resultObj.searchResult.concat(results);
-    resultObj["iqdbDone"] = true;
-    await setDB(cursor,resultObj);
-    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   processIQDBData: (page) => {
     let results = [];
@@ -810,29 +888,35 @@ export const reverseImageSearch = {
     return results;
   },
   fetchAscii2dLink: async (api, link, cursor,resultObj) => {
-    let searchImage = {
-      keyword: "",
-      keywordLink: "",
-      engine: "ascii2d",
-      imageInfo: {}
+    try{
+      let searchImage = {
+        keyword: "",
+        keywordLink: "",
+        engine: "ascii2d",
+        imageInfo: {}
+      }
+      var formData = new FormData();
+      formData.append("uri", link)
+      const {
+        data,
+        err
+      } = await ajax(api, {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin",
+      });
+      const page = HTML.parseFromString(data, "text/html");
+      let results = reverseImageSearch.fetchAscii2dData(page);
+      // console.log(results);
+      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
+      resultObj.searchResult = resultObj.searchResult.concat(results);
+      resultObj["ascii2dDone"] = true;
+      await setDB(cursor,resultObj);
+      reverseImageSearch.updateResultImage(resultObj, cursor);
+    }catch(e){
+      resultObj["ascii2dDone"] = true;
+      reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    var formData = new FormData();
-    formData.append("uri", link)
-    const {
-      data
-    } = await ajax(api, {
-      method: "POST",
-      body: formData,
-      credentials: "same-origin",
-    });
-    const page = HTML.parseFromString(data, "text/html");
-    let results = reverseImageSearch.fetchAscii2dData(page);
-    // console.log(results);
-    resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-    resultObj.searchResult = resultObj.searchResult.concat(results);
-    resultObj["ascii2dDone"] = true;
-    await setDB(cursor,resultObj);
-    reverseImageSearch.updateResultImage(resultObj, cursor);
   },
   fetchAscii2dData: (page) => {
     let results = [];
