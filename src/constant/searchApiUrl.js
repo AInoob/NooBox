@@ -10,3 +10,15 @@ export const apiUrls = {
   sogou: 'http://pic.sogou.com/ris?query=',
   ascii2d: 'https://ascii2d.net/search/uri',
 };
+// export const apiUrls = {
+//   google: 'error',
+//   // baidu: 'https://image.baidu.com/n/pc_search?queryImageUrl=',
+//   baidu: 'error',
+//   tineye: 'error',
+//   bing: 'error',
+//   yandex: 'error',
+//   saucenao: 'error',
+//   iqdb: 'error',
+//   sogou: 'error',
+//   ascii2d: 'error',
+// };
