@@ -44,6 +44,17 @@ const EngineContainer = styled.div`
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    opacity:1;
+    filer:blur(0px);
+    transition: opacity 2s;
+  }
+  .engineImageLoading{
+    width: 50px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    filter:blur(2px);
+    opacity: 0.3;
   }
   .engineImageHide {
     width: 50px;
@@ -61,24 +72,23 @@ const EngineContainer = styled.div`
   .settingIcon {
     color: rgba(0, 0, 0, 0.45);
   }
-
   .engineLoading {
     position: absolute;
-    left: 4px;
-    top: 4px;
-    font-size: 15px;
-    bottom: 0;
-    z-index: 10;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    z-index:10;
     opacity: 1;
   }
   .engineLoadingDone {
     position: absolute;
-    left: 4px;
-    top: 4px;
-    font-size: 15px;
-    bottom: 0;
-    z-index: 10;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
     opacity: 0;
+    z-index:10;
     transition: opacity 2s;
   }
 `;
@@ -95,22 +105,29 @@ export default class Engine extends React.Component {
             <div className="box">
               <div className="engineContainer">
                 <Spin
+                  // spinning={!this.props.google || !this.props.googleDone}
+                  // spinning = {true}
                   className={
                     !this.props.google || this.props.googleDone
                       ? "engineLoadingDone"
                       : "engineLoading"
                   }
                   type="loading"
-                />
+                >
+                </Spin>
                 <a href={engineLink["google"]} target="_blank">
-                  {" "}
-                  <img
-                    className={
-                      this.props.google ? "engineImage" : "engineImageHide"
-                    }
-                    src={google}
-                  />
-                </a>
+                    {" "}
+                    <img
+                      className={
+                        this.props.google ? 
+                        this.props.googleDone ?
+                        "engineImage":
+                        "engineImageLoading" :
+                        "engineImageHide"
+                      }
+                      src={google}
+                    />
+                  </a>
               </div>
             </div>
           </Card.Grid>
@@ -129,7 +146,11 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.baidu ? "engineImage" : "engineImageHide"
+                        this.props.baidu ?  
+                        this.props.baiduDone ?
+                        "engineImage":
+                        "engineImageLoading" :
+                        "engineImageHide"
                       }
                       src={baidu}
                     />
@@ -154,7 +175,11 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.yandex ? "engineImage" : "engineImageHide"
+                        this.props.yandex ? 
+                        this.props.yandexDone ?
+                        "engineImage":
+                        "engineImageLoading" :
+                        "engineImageHide"
                       }
                       src={yandex}
                     />
@@ -179,7 +204,11 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.bing ? "engineImage" : "engineImageHide"
+                        this.props.bing ? 
+                        this.props.bingDone ?
+                        "engineImage":
+                        "engineImageLoading" :
+                        "engineImageHide"
                       }
                       src={bing}
                     />
@@ -204,7 +233,11 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.tineye ? "engineImage" : "engineImageHide"
+                        this.props.tineye ? 
+                        this.props.tineyeDone ?
+                        "engineImage":
+                        "engineImageLoading" :
+                        "engineImageHide"
                       }
                       src={tineye}
                     />
@@ -227,7 +260,10 @@ export default class Engine extends React.Component {
                 <a href={engineLink["saucenao"]} target="_blank">
                   <img
                     className={
-                      this.props.saucenao ? "engineImage" : "engineImageHide"
+                      this.props.saucenao ? this.props.saucenaoDone ?
+                      "engineImage":
+                      "engineImageLoading" :
+                      "engineImageHide"
                     }
                     src={saucenao}
                   />
@@ -248,7 +284,10 @@ export default class Engine extends React.Component {
                 <a href={engineLink["iqdb"]} target="_blank">
                   <img
                     className={
-                      this.props.iqdb ? "engineImage" : "engineImageHide"
+                      this.props.iqdb ? this.props.iqdbDone ?
+                      "engineImage":
+                      "engineImageLoading" :
+                      "engineImageHide"
                     }
                     src={iqdb}
                   />
@@ -269,7 +308,10 @@ export default class Engine extends React.Component {
                 <a href={engineLink["ascii2d"]} target="_blank">
                   <img
                     className={
-                      this.props.ascii2d ? "engineImage" : "engineImageHide"
+                      this.props.ascii2d ? this.props.ascii2dDone ?
+                      "engineImage":
+                      "engineImageLoading" :
+                      "engineImageHide"
                     }
                     src={ascii2d}
                   />

@@ -232,16 +232,21 @@ export const reverseImageSearch = {
       node = node.substring(17, node.indexOf("bd.queryImageUrl") - 1);
       baiduObj.dbString = "bd = " + node;
       // console.log(baiduObj.dbString);
+      let obj = await reverseImageSearch.waitForSandBox(baiduObj);
+      // console.log(obj);
       let {
         simiList,
         sameSizeList,
         guessWord,
         multitags
-      } = await reverseImageSearch.waitForSandBox(baiduObj);
+      } = obj;
       // console.log(simiList);
       //Get result from sandbox
       // console.log("success");
       searchImage.keyword = guessWord == "" ? multitags || "" : guessWord;
+      if(searchImage.keyword != ""){
+        searchImage.keywordLink = "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baiduerr&bar=&wd=" + searchImage.keyword
+      }
       // Send message of search image info to front page
       resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
       //Raynor Version
@@ -856,11 +861,15 @@ export const reverseImageSearch = {
             //# 0 image
             let imageData = data[0].getElementsByTagName("a")[0];
             if (imageData) {
-              let sourceUrl = imageData.getAttribute("href") || ""
+              let sourceUrl = imageData.getAttribute("href") || "";
+              if(sourceUrl.indexOf("https") == -1){
+                sourceUrl = "https:"+ sourceUrl;
+              }
               singleResult.sourceUrl = sourceUrl == "" ? "" : sourceUrl;
               let thumbUrl = imageData.getElementsByTagName("img")[0]
               if (thumbUrl) {
                 let link = thumbUrl.getAttribute("src") || "";
+               
                 singleResult.thumbUrl = link == "" ? "" : "http://iqdb.org/" + link;
                 singleResult.imageUrl = link == "" ? "" : "http://iqdb.org/" + link;
               }
