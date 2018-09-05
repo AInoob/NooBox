@@ -99,7 +99,7 @@ class Options extends React.Component {
           >
             <TreeNode title={i18n("auto_refresh")} key="autoRefresh" />
             <TreeNode title={i18n("video_control")} key="videoControl" />
-            <TreeNode expanded={true} title={i18n("image")} key="image">
+            <TreeNode expanded={true} title={i18n("image")} key="image" onExpand = {()=>optionsExpandTree()}>
               <TreeNode
                 title={i18n("reverse_image_search")}
                 key="imageSearch"
