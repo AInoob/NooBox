@@ -9,6 +9,7 @@ export default {
     showExps:true,
     showTools:true,
     showEngines:true,
+    expandImage: true,
   },
   effects:{
     *init({payload},{call,put,select}){
@@ -99,12 +100,15 @@ export default {
       }
       yield put({type:"updateState",payload:{currentTool:newSetting,showEngines}})
     },
+    *onExpandTree({payload},{call,put,select}){
+      
+    },
     *onCheckExp({payload},{call,put,select}){
       // if the setting has parent
       // let newSetting = payload.fliter(name => name !== "image");
       let newSetting = payload;
       let {currentExp} = yield select(state => state.options);
-      console.log(currentExp);
+      // console.log(currentExp);
       if(currentExp.length > newSetting.length){
         for(let name of currentExp){
           if(!newSetting.includes(name)){
@@ -120,7 +124,7 @@ export default {
         }
         currentExp = newSetting;
       }
-      console.log(currentExp);
+      // console.log(currentExp);
       yield put({type:"updateState",payload:{currentExp:currentExp}})
     },
   },

@@ -862,7 +862,9 @@ export const reverseImageSearch = {
             let imageData = data[0].getElementsByTagName("a")[0];
             if (imageData) {
               let sourceUrl = imageData.getAttribute("href") || "";
-              if(sourceUrl.indexOf("https") == -1){
+              if(sourceUrl.indexOf("http") != -1){
+                sourceUrl = "http" + sourceUrl.substring(sourceUrl.indexOf("//"),sourceUrl.length);
+              }else if(sourceUrl.indexOf("https") == -1){
                 sourceUrl = "https:"+ sourceUrl;
               }
               singleResult.sourceUrl = sourceUrl == "" ? "" : sourceUrl;
