@@ -81,3 +81,7 @@ export const toolSettingMap = [
 export const expSettingMap = [
 {name:"history",value:false},
 {name:"checkUpdate",value:false},];
+
+export const expandTreeMap =[
+  {name:"image",value: true}
+]
