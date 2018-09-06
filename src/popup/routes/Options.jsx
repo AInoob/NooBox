@@ -94,12 +94,13 @@ class Options extends React.Component {
           <Tree
             checkable
             onCheck={e => actions.optionsCheckTool(e)}
+            onExpand = {(keys)=>actions.optionsExpandTree(keys)}
             defaultCheckedKeys={options.currentTool}
-            defaultExpandedKeys={["imageSearch"]}
+            expandedKeys ={options.expandImage}
           >
             <TreeNode title={i18n("auto_refresh")} key="autoRefresh" />
             <TreeNode title={i18n("video_control")} key="videoControl" />
-            <TreeNode expanded={true} title={i18n("image")} key="image" onExpand = {()=>optionsExpandTree()}>
+            <TreeNode title={i18n("image")} key="image" >
               <TreeNode
                 title={i18n("reverse_image_search")}
                 key="imageSearch"

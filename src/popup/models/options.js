@@ -1,4 +1,4 @@
-import {engineMap,toolSettingMap,expSettingMap} from 'SRC/constant/settingMap.js';
+import {engineMap,toolSettingMap,expSettingMap,expandTreeMap} from 'SRC/constant/settingMap.js';
 //get set meaning chrome sync
 import {get,set} from 'SRC/utils/db.js';
 import { sendMessage } from '../../utils/browserUtils';
@@ -9,7 +9,7 @@ export default {
     showExps:true,
     showTools:true,
     showEngines:true,
-    expandImage: true,
+    expandImage: [],
   },
   effects:{
     *init({payload},{call,put,select}){
@@ -42,7 +42,16 @@ export default {
           currentEngine[engineMap[i].dbName] = false;
         }
       }
-      yield put({type:"updateState",payload:{currentTool,currentExp,currentEngine,inited:true,showEngines:showEngines}})
+
+      let expandImage = yield call(get,"expandImage");
+      if(expandImage == null || expandImage == undefined){
+        expandImage = ["image"];
+      }else if(expandImage == true){
+        expandImage = ["image"];
+      }else{
+        expandImage = [];
+      }
+      yield put({type:"updateState",payload:{currentTool,currentExp,currentEngine,inited:true,showEngines,expandImage}})
     },
 
     *onCheckEngine({payload},{call,put,select}){
@@ -101,7 +110,12 @@ export default {
       yield put({type:"updateState",payload:{currentTool:newSetting,showEngines}})
     },
     *onExpandTree({payload},{call,put,select}){
-      
+      if(payload.includes("image")){
+        yield call(set,"expandImage", true );
+      }else{
+        yield call(set, "expandImage", false );
+      }
+      yield put({type:"updateState",payload:{expandImage:payload}})
     },
     *onCheckExp({payload},{call,put,select}){
       // if the setting has parent
