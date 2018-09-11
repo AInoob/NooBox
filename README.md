@@ -19,6 +19,13 @@
 -  [Language](#Available)
 
 ### Installation
+
+| Winodws | Version | MacOS | Version |
+| --- | --- | --- | --- |
+| test | test | <a href = "https://www.google.com/chrome/" target = "_blank">Chrome</a> | Version 69.0.3497.81 |
+| test | test | <a href = "https://browser.qq.com/mac/en/index.html" target= "_blank">QQ Browser</a> | Version 4.4.116.400 (64-bit) |
+| test | test | <a href = "https://vivaldi.com/" target= "_blank">Vivaldi</a> |Version 1.15.1147.64 (Stable channel) (64-bit) |
+
 ### License
 ### Available Language
  🇨🇳 🇹🇼 :us: :jp:
