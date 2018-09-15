@@ -40,14 +40,10 @@ auto_refresh:
 s:
   message: 秒
 #Option
-auto_refresh:
-  message: 自動頁面重新整理 (測試版)
 video_control:
   message: HTML5 影片控制 (預覽版)
 image:
     message: 圖片相關
-reverse_image_search:
-    message: 以圖搜圖
 result_page_tab_front:
     message: 結果顯示在新分頁
 extract_images:
