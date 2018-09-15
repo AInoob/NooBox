@@ -940,7 +940,7 @@ export const reverseImageSearch = {
           imageUrl: "",
           sourceUrl: "",
           imageInfo: {},
-          searchEngine: "iqdb",
+          searchEngine: "ascii2d",
           description: "",
           weight: ENGINE_WEIGHTS.ascii2d - i + Math.random(),
         };
