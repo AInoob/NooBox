@@ -35,11 +35,18 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.job) {
       if (request.job === 'videoControlContentScriptSwitch') {
+        console.log(request);
         enabled = request.enabled;
         if (enabled !== false) {
           enabled = true;
           initVideoControl();
         }
+      } else if (request.job === 'videoControlContentScriptSelfCheck') {
+        isOn('videoControl', function() {
+          const host = window.location.hostname;
+          enabledDBId = 'videoControl_website_' + host;
+          getDB(enabledDBId);
+        }, function() {enabled = false})
       } else if (request.job === 'returnDB') {
         if (request.key == enabledDBId) {
           enabled = request.data;
