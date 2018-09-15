@@ -4,23 +4,23 @@ import {get,set} from 'SRC/utils/db.js';
 import { sendMessage } from '../../utils/browserUtils';
 export default {
   namespace:"options",
-  state:{
+  state: {
     inited:false,
     showExps:true,
     showTools:true,
     showEngines:true,
     expandImage: [],
   },
-  effects:{
-    *init({payload},{call,put,select}){
+  effects: {
+    *init({payload},{call,put,select}) {
       let currentTool   = [];
       let currentExp    = [];
       let currentEngine = {};
       let {showEngines,showExps,showTools}   = yield select(state => state.options);
-      for(let i = 0; i< toolSettingMap.length; i++){
+      for (let i = 0; i< toolSettingMap.length; i++) {
         let checked = yield call(get,toolSettingMap[i].name);
 
-        if(toolSettingMap[i].name == "imageSearch" && !checked){
+        if(toolSettingMap[i].name == "imageSearch" && !checked) {
           showEngines = false;
         }
 
@@ -57,8 +57,8 @@ export default {
     *onCheckEngine({payload},{call,put,select}){
       let {currentEngine} = yield select(state => state.options);
       if(currentEngine[payload]){
-         yield call(set,payload,false);
-         currentEngine[payload] = false;
+        yield call(set,payload,false);
+        currentEngine[payload] = false;
       }else{
         yield call(set,payload,true);
         currentEngine[payload] = true;
