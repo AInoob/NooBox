@@ -37,7 +37,7 @@ support_for_a_single_upload:
 html_5_video_control:
   message: HTML 5 Video Control (Alpha)
 auto_refresh:
-  message: Auto Refresh (Beta)
+  message: Auto Refresh
 s:
   message: S
 #History

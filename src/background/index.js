@@ -43,6 +43,15 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       case 'imageSearch':
         await image.updateImageSearchContextMenu();
         break;
+      case 'videoControl':
+        browser.tabs.query({}, (tabs) => {
+          for (let i = 0; i < tabs.length; i++) {
+            browser.tabs.sendMessage(tabs[i].id, {
+              job: 'videoControlContentScriptSelfCheck',
+            }, () => {});
+          }
+        });
+        break;
       default:
     }
   }
@@ -83,27 +92,23 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         label: ''
       })
     }
-  }else if(job == "videoControl_website_switch"){
-    let {isEnable} = request;
-    const tabData = await getCurrentTab();
-    const tabId = tabData.id;
-    if(isEnable){
-      logEvent({
-        category: 'videoControlWebsiteSwitch',
-        action:"enable",
-        label: ''
-      });
-    }else{
-      logEvent({
-        category: 'videoControlWebsiteSwitch',
-        action:"disable",
-        label: ''
-      });
-    }
-    await sendTabMessage(tabId,{
-      job:'videoControlContentScriptSwitch',
-      enabled: isEnable,
-    })
+  } else if(job === "videoControl_website_switch"){
+    logEvent({
+      category: 'videoControlWebsiteSwitch',
+      action: request.isEnable ? 'enable' : 'disable',
+      label: ''
+    });
+    console.log(request);
+    browser.tabs.query({}, (tabs) => {
+      for (let i = 0; i < tabs.length; i++) {
+        if (tabs[i].url.indexOf(request.host)) {
+          browser.tabs.sendMessage(tabs[i].id, {
+            job: 'videoControlContentScriptSwitch',
+            enabled: request.isEnable
+          }, () => {});
+        }
+      }
+    });
   }
 });
 

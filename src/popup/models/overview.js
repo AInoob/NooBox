@@ -42,10 +42,12 @@ export default {
         const tagA = document.createElement('a');
         tagA.href = url;
         initState.hostName = tagA.hostname;
-        let websiteEnable = yield call(get,tagA.hostname);
-        if(websiteEnable == null){
+        let websiteEnable = yield call(get, 'videoControl_website_' + tagA.hostname);
+        if(websiteEnable === false){
           websiteEnable = false;
-          yield call(set,tagA.hostname,websiteEnable);
+        }
+        else {
+          websiteEnable = true;
         }
         initState.websiteEnable = websiteEnable;
         //Get Host Name
@@ -68,19 +70,15 @@ export default {
     *html5VideoWebsiteSwitch({payload},{call,put,select}){
       const {websiteEnable,hostName} =  yield select(state => state.overview);
       let newStatus ={}
-      if(websiteEnable){
-        newStatus.websiteEnable = !websiteEnable;
-      }else{
-        newStatus.websiteEnable = !websiteEnable;
-      }
+      newStatus.websiteEnable = !websiteEnable;
+      yield call(set,'videoControl_website_' + hostName,!websiteEnable);
       let message ={
         job: 'videoControl_website_switch',
         host: hostName,
-        isEnable: websiteEnable,
+        isEnable: !websiteEnable,
       };
       yield call(sendMessage,message);
       //console.log(!websiteEnable)
-      yield call(set,hostName,!websiteEnable);
       yield put({type:"updateState",payload:newStatus});
     },
     *autoRefreshShutDown({},{call,select}){
