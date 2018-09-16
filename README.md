@@ -35,8 +35,14 @@ Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 | <a href = "https://browser.qq.com/" target= "_blank">QQ Browser</a> | Version 10.2.1 | <a href = "https://browser.qq.com/mac/en/index.html" target= "_blank">QQ Browser</a> | Version 4.4.116.400 (64-bit) |
 |  <a href = "http://browser.360.cn/ee/" target= "_blank">360 Browser</a> | Version 9.5 | <a href = "https://vivaldi.com/" target= "_blank">Vivaldi</a> |Version 1.15.1147.64 (Stable channel) (64-bit) |
 | --- | --- | --- | --- |
+### Search By Image
+#### Upload
+#### Drag Drop
+#### Right Click
+#### Screen Shot 
+### Extract Image
 ### License
-<a href = "https://opensource.org/licenses/MIT>"MIT</a>
+<a href = "https://opensource.org/licenses/MIT">MIT</a>
 ### Available Language
  🇨🇳 🇹🇼 :us: :jp:
 
