@@ -22,9 +22,12 @@
 | Chrome Web Stroe | CRX DownLoad |
 | --- | --- |
 | <a href= "https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a> | <a href = "http://github.com/AInoob/NooBox/releases/download/1.0.1.5/NooBox.v1.0.1.5.crx">V 1.0.1.5</a> |
-#### How to Install CRX ?
 
+#### How to Install CRX ?
+Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 ![crx install](https://user-images.githubusercontent.com/12090689/45597429-49db2180-b99a-11e8-916c-fba450c5cfe1.gif)
+
+#### Brower Support
 
 | Winodws | Version | MacOS | Version |
 | --- | --- | --- | --- |
@@ -33,6 +36,7 @@
 |  <a href = "http://browser.360.cn/ee/" target= "_blank">360 Browser</a> | Version 9.5 | <a href = "https://vivaldi.com/" target= "_blank">Vivaldi</a> |Version 1.15.1147.64 (Stable channel) (64-bit) |
 | --- | --- | --- | --- |
 ### License
+<a href = "https://opensource.org/licenses/MIT>"MIT</a>
 ### Available Language
  🇨🇳 🇹🇼 :us: :jp:
 
