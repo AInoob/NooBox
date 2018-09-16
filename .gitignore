@@ -3,5 +3,6 @@
 yarn.lock
 package-lock.json
 /dist/
-/idea/
+/.idea/
+/.vscode/
 *.iml
