@@ -38,11 +38,11 @@ Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 ### Search By Image, How ?
 
 #### 1.Upload
-##### Click and upload the Local Image
+##### Click to upload the local image
 ![upload image](https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif)
 
 #### 2.Drag Drop
-##### Drag and drop to upload the Local Image
+##### Drag and drop to upload the local image
 ![drag drop](https://user-images.githubusercontent.com/12090689/45771200-78fbc800-bc12-11e8-8fd9-55c5f4a1c04e.gif)
 
 #### 3.Right Click
@@ -51,7 +51,7 @@ Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 
 
 #### 4.Screen Shot 
-##### Screen shot the image you like, then Search
+##### Screen shot the image you like, then search
 ![screen shot](https://user-images.githubusercontent.com/12090689/45772446-bf9ef180-bc15-11e8-8ca7-79951983a964.gif)
 ### Extract Image
 
