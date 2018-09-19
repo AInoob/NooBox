@@ -37,8 +37,11 @@ Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 | --- | --- | --- | --- |
 ### Search By Image
 #### Upload
+![upload image](https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif)
 #### Drag Drop
+![drag drop](https://user-images.githubusercontent.com/12090689/45771200-78fbc800-bc12-11e8-8fd9-55c5f4a1c04e.gif)
 #### Right Click
+![right click](https://user-images.githubusercontent.com/12090689/45771196-75684100-bc12-11e8-858b-76dcf7aad277.gif)
 #### Screen Shot 
 ### Extract Image
 ### License
