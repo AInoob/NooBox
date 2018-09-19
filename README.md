@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src="https://user-images.githubusercontent.com/12090689/45327137-5daeff80-b524-11e8-8398-36ee837c54e7.png" alt="Markdownify" width="100"></a>
+  <a href="https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src="https://user-images.githubusercontent.com/12090689/45327137-5daeff80-b524-11e8-8398-36ee837c54e7.png" alt="NooBox" width="100"></a>
   <br>
   Noobox
   <br>
@@ -27,7 +27,7 @@
 Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 ![crx install](https://user-images.githubusercontent.com/12090689/45597429-49db2180-b99a-11e8-916c-fba450c5cfe1.gif)
 
-#### Brower Support
+#### Broswer Support
 
 | Winodws | Version | MacOS | Version |
 | --- | --- | --- | --- |
@@ -35,15 +35,26 @@ Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 | <a href = "https://browser.qq.com/" target= "_blank">QQ Browser</a> | Version 10.2.1 | <a href = "https://browser.qq.com/mac/en/index.html" target= "_blank">QQ Browser</a> | Version 4.4.116.400 (64-bit) |
 |  <a href = "http://browser.360.cn/ee/" target= "_blank">360 Browser</a> | Version 9.5 | <a href = "https://vivaldi.com/" target= "_blank">Vivaldi</a> |Version 1.15.1147.64 (Stable channel) (64-bit) |
 | --- | --- | --- | --- |
-### Search By Image
-#### Upload
+### Search By Image, How ?
+
+#### 1.Upload
+##### Click and upload the Local Image
 ![upload image](https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif)
-#### Drag Drop
+
+#### 2.Drag Drop
+##### Drag and drop to upload the Local Image
 ![drag drop](https://user-images.githubusercontent.com/12090689/45771200-78fbc800-bc12-11e8-8fd9-55c5f4a1c04e.gif)
-#### Right Click
+
+#### 3.Right Click
+##### Right click any image in the webpage
 ![right click](https://user-images.githubusercontent.com/12090689/45771196-75684100-bc12-11e8-858b-76dcf7aad277.gif)
-#### Screen Shot 
+
+
+#### 4.Screen Shot 
+##### Screen shot the image you like, then Search
+![screen shot](https://user-images.githubusercontent.com/12090689/45772446-bf9ef180-bc15-11e8-8ca7-79951983a964.gif)
 ### Extract Image
+
 ### License
 <a href = "https://opensource.org/licenses/MIT">MIT</a>
 ### Available Language
