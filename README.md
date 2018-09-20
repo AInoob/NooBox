@@ -19,12 +19,21 @@
 -  [Language](#Available)
 
 ## Installation
-| Chrome Web Stroe | CRX DownLoad |
-| --- | --- |
-| <a href= "https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a> | <a href = "http://github.com/AInoob/NooBox/releases/download/1.0.1.5/NooBox.v1.0.1.5.crx">V 1.0.1.5</a> |
+<div align = "center">
+  <table  align = "center">
+    <tr>
+      <th>Chrome Web Stroe</th>
+      <th>CRX Download</th>
+    </tr>
+    <tr>
+      <td><a href= "https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a></td>
+      <td><a href = "http://github.com/AInoob/NooBox/releases/download/1.0.1.5/NooBox.v1.0.1.5.crx">V 1.0.1.5</a></td>
+    </tr>
+  </table>
+</div>
 
 ## How to Install CRX ?
-Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
+<h3 align = "center"> Setting -> More Tools -> Extension -> Open Developer Mode -> Drag CRX File</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45597429-49db2180-b99a-11e8-916c-fba450c5cfe1.gif"/>
 </p>
@@ -38,27 +47,28 @@ Setting -> More Tools -> Extension -> Open Developer -> Drag CRX File
 | --- | --- | --- | --- |
 
 ## Search By Image, How ?
-<h3 align = "center"> 1.Upload, Click to upload the local image</h3>
+<h3 align = "center"> 1."Upload" : Click to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif"/>
 </p>
 
 
-<h3 align = "center">2.Drag to upload, Drag to upload the local image</h3>
+<h3 align = "center">2."Drag to upload" : Drag to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771200-78fbc800-bc12-11e8-8fd9-55c5f4a1c04e.gif"/>
 </p>
 
-<h3 align = "center"></h3>3.Right Click, Right click any image in the webpage
+<h3 align = "center">3."Right Click" : Right click any image in the webpage</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771196-75684100-bc12-11e8-858b-76dcf7aad277.gif"/>
 </p>
 
 
-<h3 align = "center">4.Screen Shot, Screen shot the image you like, then search</h3>
+<h3 align = "center">4."Screen Shot" : Screen shot the image you like, then search</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45772446-bf9ef180-bc15-11e8-8ca7-79951983a964.gif"/>
 </p>
+
 ## Extract Image
 
 ## License
