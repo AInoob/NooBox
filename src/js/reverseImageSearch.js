@@ -50,7 +50,7 @@ export const reverseImageSearch = {
         remove();
         resolve(event.data);
       }
-      //添加Listener 
+      //添加Listener
       window.addEventListener("message", trigger);
       //把数据发送Sandbox
       document.getElementById('theFrame').contentWindow.postMessage(parseObj, '*');
@@ -275,7 +275,7 @@ export const reverseImageSearch = {
           result[result.length] = singleResult;
         }
       }
-  
+
       if (simiList) {
         if (simiList > count) {
           simiList.length = count;
@@ -305,7 +305,7 @@ export const reverseImageSearch = {
       resultObj["baiduDone"] = true;
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }
- 
+
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
   processBaiduData: async () => {
@@ -388,7 +388,7 @@ export const reverseImageSearch = {
       resultObj["tineyeDone"] = true;
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }
- 
+
   },
   processTineyeData: (page) => {
     const list = page.getElementsByClassName("match-row") || [];
@@ -761,7 +761,7 @@ export const reverseImageSearch = {
       resultObj["saucenaoDone"] = true;
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }
-    
+
   },
   processSauceNaoData: (page) => {
     let results = [];
@@ -863,7 +863,7 @@ export const reverseImageSearch = {
             if (imageData) {
               let sourceUrl = imageData.getAttribute("href") || "";
               if(sourceUrl.indexOf("http") != -1){
-                sourceUrl = "http" + sourceUrl.substring(sourceUrl.indexOf("//"),sourceUrl.length);
+                sourceUrl = "http:" + sourceUrl.substring(sourceUrl.indexOf("//"),sourceUrl.length);
               }else if(sourceUrl.indexOf("https") == -1){
                 sourceUrl = "https:"+ sourceUrl;
               }
@@ -871,7 +871,7 @@ export const reverseImageSearch = {
               let thumbUrl = imageData.getElementsByTagName("img")[0]
               if (thumbUrl) {
                 let link = thumbUrl.getAttribute("src") || "";
-               
+
                 singleResult.thumbUrl = link == "" ? "" : "http://iqdb.org/" + link;
                 singleResult.imageUrl = link == "" ? "" : "http://iqdb.org/" + link;
               }
