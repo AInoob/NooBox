@@ -89,7 +89,8 @@ const EngineContainer = styled.div`
     transform: translateY(-50%);
     opacity: 0;
     z-index:10;
-    transition: opacity 2s;
+    visibility:hidden;
+    transition: opacity 2s,visibility 2s;
   }
 `;
 

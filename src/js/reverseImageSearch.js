@@ -916,9 +916,21 @@ export const reverseImageSearch = {
         body: formData,
         credentials: "same-origin",
       });
+      // console.log(data);
       const page = HTML.parseFromString(data, "text/html");
       let results = reverseImageSearch.fetchAscii2dData(page);
-      // console.log(results);
+      let engineLinks = page.getElementsByClassName("detail-link pull-xs-right hidden-sm-down gray-link")[0];
+      if(engineLinks){
+        let engineLink = engineLinks.getElementsByTagName("a")[0].href || "";
+        if(engineLink != ""){
+          engineLink = "https://ascii2d.net" + engineLink.substring(engineLink.indexOf("/search/"),engineLink.length);
+        }else{
+          engineLink =  "https://ascii2d.net";
+        }
+        resultObj.engineLink["ascii2d"] = engineLink;
+      }
+      
+      // window.x = page;
       resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
       resultObj.searchResult = resultObj.searchResult.concat(results);
       resultObj["ascii2dDone"] = true;
