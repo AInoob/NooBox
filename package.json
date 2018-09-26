@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "dev": "webpack -w --mode development",
+    "dev": "npm run buildLocale && webpack -w --mode development",
     "preProd": "webpack -w --mode production --env preProd",
     "prod": "npm run buildLocale && webpack --mode production --env prod",
     "buildLocale": "node ./scripts/buildLocale.js",
