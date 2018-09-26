@@ -173,9 +173,24 @@ export const reverseImageSearch = {
       //second <a> contain sourceUrl and thumbUrl
       const tagA = singleItem.getElementsByTagName("a");
       singleResult.sourceUrl = tagA[0].getAttribute("href");
-      singleResult.title = tagA[0].innerHTML;
+      singleResult.title = tagA[0].innerText;
       let link = tagA[1].getAttribute("href");
       singleResult.imageUrl = link.substring(link.indexOf("=") + 1, link.indexOf("&imgre"));
+      if (!singleResult.imageUrl) {
+        let tempImgLink = tagA[3].getAttribute("href");
+        tempImgLink = tempImgLink.substr(tempImgLink.indexOf("imgurl=") + "imgurl=".length);
+        tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("&"));
+        console.log(tempImgLink);
+        if (tempImgLink.match(/\:s$/)) {
+          tempImgLink = tempImgLink.substr(0, tempImgLink.length - 2);
+          console.log(tempImgLink);
+        }
+        else {
+          tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("%3"));
+          console.log(tempImgLink);
+        }
+        singleResult.imageUrl = tempImgLink;
+      }
       singleResult.thumbUrl = singleResult.imageUrl;
       //process description
       //class st span contain N child, first child is size info
@@ -929,7 +944,7 @@ export const reverseImageSearch = {
         }
         resultObj.engineLink["ascii2d"] = engineLink;
       }
-      
+
       // window.x = page;
       resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
       resultObj.searchResult = resultObj.searchResult.concat(results);
