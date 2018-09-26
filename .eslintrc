@@ -1,3 +1,7 @@
 {
-  "extends": "umi"
+  "extends": "umi",
+  "env": {
+    // ...
+    "webextensions": true
+  }
 }

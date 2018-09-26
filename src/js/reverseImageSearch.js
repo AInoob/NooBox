@@ -114,7 +114,7 @@ export const reverseImageSearch = {
       if (followingPageUrl.length > 0) {
         let tempFunciton = function(url) {
           return new Promise((resolve) => {
-            ajax(url, {
+            ajax(url,  {
               method: "GET"
             }).then(({
               data
@@ -929,7 +929,7 @@ export const reverseImageSearch = {
         }
         resultObj.engineLink["ascii2d"] = engineLink;
       }
-      
+
       // window.x = page;
       resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
       resultObj.searchResult = resultObj.searchResult.concat(results);
