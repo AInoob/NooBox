@@ -126,8 +126,8 @@ export default class AutoRefresh extends React.Component {
         <InputNumber
           defaultValue={interval / 1000}
           min={1}
-          formatter={value => `${value} ${i18n("s")}`}
-          parser={value => value.replace(i18n("s"), "")}
+          formatter={value => `${value}${i18n("s")}`}
+          parser={value => value.replace(i18n("s"),"")}
           onChange={v => this.onChangeInterval(v * 1000)}
         />
       </AutoRefreshContainer>
