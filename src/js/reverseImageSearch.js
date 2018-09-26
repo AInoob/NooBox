@@ -114,7 +114,7 @@ export const reverseImageSearch = {
       if (followingPageUrl.length > 0) {
         let tempFunciton = function(url) {
           return new Promise((resolve) => {
-            ajax(url, {
+            ajax(url,  {
               method: "GET"
             }).then(({
               data
@@ -657,7 +657,7 @@ export const reverseImageSearch = {
       }
       let keywordWrapper = page.getElementsByClassName("tags__content");
       if (keywordWrapper.length != 0) {
-        keywords = keywordWrapper[0].getElementsByTagName("a");
+        let keywords = keywordWrapper[0].getElementsByTagName("a");
         if (keywords.length > 0) {
           searchImage.keyword = keywords[0].innerHTML;
           searchImage.keywordLink = keywords[0].getAttribute("href");
