@@ -35,7 +35,7 @@
     </tr>
     <tr>
       <td><a href= "https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a></td>
-      <td><a href = "http://github.com/AInoob/NooBox/releases/download/1.0.1.5/NooBox.v1.0.1.5.crx">V 1.0.1.5</a></td>
+      <td><a href = "https://github.com/AInoob/NooBox/releases/download/1.0.1.7/Noobox.crx">V 1.0.1.7</a></td>
     </tr>
   </table>
 </div>
