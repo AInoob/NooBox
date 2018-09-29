@@ -20,6 +20,15 @@ export default class AutoRefresh {
     }
     setting.handler = null;
   }
+  setupBadge(){
+
+  }
+  resetBadge(){
+
+  }
+  updateBadge(){
+
+  }
   performAutoRefresh(tabId) {
     browser.tabs.reload(tabId, {}, () => {
       console.log('refresh');
