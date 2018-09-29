@@ -22,6 +22,9 @@ const ResultContainer = styled.div`
   .searchImage{
     width:200px;
   }
+  .searchImage:hover{
+    cursor: zoom-in;
+  }
   .sizeInfo{
     margin:0;
   }
