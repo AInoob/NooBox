@@ -99,7 +99,7 @@ class ImageSearchResult extends React.Component {
               <Col span={4}>
                 <div className="ads">
                   <div>Ads</div>
-                  <a target="_blank"  href="https://amzn.to/2N74Ubb">
+                  <a target="_blank"  href="https://ainoob.com/ads/first">
                     <img border="0" src="https://ainoob.com/ads.jpg" />
                   </a>
                 </div>
