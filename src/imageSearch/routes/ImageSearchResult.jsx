@@ -18,6 +18,16 @@ const ResultContainer = styled.div`
   padding-left: 2%;
   padding-right: 2%;
   padding-top:15px;
+  .ads{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    img {
+      margin-top: 10%;
+      max-width: 80%;
+      max-height: 80%;
+    }
+  }
   .ant-row-flex {
     align-items: stretch;
   }
@@ -85,6 +95,14 @@ class ImageSearchResult extends React.Component {
                   imageInfo={imageSearch.searchImageInfo}
                   sortByOrder={imageSearch.sortByOrder}
                 />
+              </Col>
+              <Col span={4}>
+                <div className="ads">
+                  <div>Ads</div>
+                  <a target="_blank"  href="https://amzn.to/2N74Ubb">
+                    <img border="0" src="https://ainoob.com/ads.jpg" />
+                  </a>
+                </div>
               </Col>
             </Row>
           </div>
