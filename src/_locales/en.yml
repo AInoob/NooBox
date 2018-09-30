@@ -102,7 +102,7 @@ about_feedback:
 about_feedback_message:
   message: If you have any suggestion or faced any issues, please create a Github issue
 #Image Search
-support_devloper:
+support_developers:
   message: Click Ads To Support Developer
 guessing_keyword:
   message: Keyword
