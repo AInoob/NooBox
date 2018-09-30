@@ -178,16 +178,18 @@ export const reverseImageSearch = {
       singleResult.imageUrl = link.substring(link.indexOf("=") + 1, link.indexOf("&imgre"));
       if (!singleResult.imageUrl) {
         let tempImgLink = tagA[3].getAttribute("href");
+        console.log('----------------');
+        console.log(tempImgLink);
         tempImgLink = tempImgLink.substr(tempImgLink.indexOf("imgurl=") + "imgurl=".length);
         tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("&"));
-        //console.log(tempImgLink);
+        console.log(tempImgLink);
         if (tempImgLink.match(/\:s$/)) {
           tempImgLink = tempImgLink.substr(0, tempImgLink.length - 2);
-          //console.log(tempImgLink);
+          console.log(tempImgLink);
         }
-        else {
+        else if(tempImgLink.indexOf("%3") !== -1) {
           tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("%3"));
-          //console.log(tempImgLink);
+          console.log(tempImgLink);
         }
         singleResult.imageUrl = tempImgLink;
       }
