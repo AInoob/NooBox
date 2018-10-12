@@ -6,6 +6,7 @@ import {
 import ajax from 'SRC/utils/ajax.js';
 import ENGINE_DONE from  'SRC/constant/constants.js';
 import { ENGINE_WEIGHTS } from '../constant/constants';
+import {parseGoogleImageLink} from 'SRC/utils/imageUtils';
 const HTML = new DOMParser();
 // Data Format
 export const reverseImageSearch = {
@@ -168,32 +169,57 @@ export const reverseImageSearch = {
         weight: ENGINE_WEIGHTS.google - i + Math.random(),
       }
       const singleItem = list[i];
+      //console.log(singleItem);
       //process title,imageUrl,sourceUrl and thumbUrl
       //first <a> contain title and imageUrl
       //second <a> contain sourceUrl and thumbUrl
       const tagA = singleItem.getElementsByTagName("a");
       singleResult.sourceUrl = tagA[0].getAttribute("href");
       singleResult.title = tagA[0].innerText;
-      let link = tagA[1].getAttribute("href");
-      singleResult.imageUrl = link.substring(link.indexOf("=") + 1, link.indexOf("&imgre"));
-      if (!singleResult.imageUrl) {
-        let tempImgLink = tagA[3].getAttribute("href");
-        console.log('----------------');
-        console.log(tempImgLink);
-        tempImgLink = tempImgLink.substr(tempImgLink.indexOf("imgurl=") + "imgurl=".length);
-        tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("&"));
-        console.log(tempImgLink);
-        if (tempImgLink.match(/\:s$/)) {
-          tempImgLink = tempImgLink.substr(0, tempImgLink.length - 2);
-          console.log(tempImgLink);
-        }
-        else if(tempImgLink.indexOf("%3") !== -1) {
-          tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("%3"));
-          console.log(tempImgLink);
-        }
-        singleResult.imageUrl = tempImgLink;
+      // console.log(tagA.length);
+      // console.log(tagA[0]);
+      // console.log(tagA[1]);
+      // console.log(tagA[2]);
+      // console.log(tagA[3]);
+      // console.log(tagA[4]);
+      // console.log("----------");
+      if(tagA[4]){
+        let link = tagA[4].getAttribute("href");
+        link = parseGoogleImageLink(link);
+        singleResult.imageUrl = link;
+        singleResult.thumbUrl = link;
       }
-      singleResult.thumbUrl = singleResult.imageUrl;
+      //console.log({a:tagA[1],b:tagA[2],c:tagA[3],d:tagA[0]});
+      //console.log(tagA[1]);
+      //console.log(tagA[2]);
+        //console.log(singleResult.sourceUrl );
+      //console.log(tagA.length);
+      // let test = tagA[2].getAttribute("href");
+      // console.log(test);
+      // console.log(parseGoogleImageLink(test));
+      //let link = tagA[1].getAttribute("href");
+
+      //singleResult.imageUrl = link.substring(link.indexOf("=") + 1, link.indexOf("&imgre"));
+      //console.log(singleResult.imageUrl);
+
+      // // if (!singleResult.imageUrl) {
+      // //   let tempImgLink = tagA[3].getAttribute("href");
+      // //   //console.log('----------------');
+      // //   //console.log(tempImgLink);
+      // //   tempImgLink = tempImgLink.substr(tempImgLink.indexOf("imgurl=") + "imgurl=".length);
+      // //   tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("&"));
+      // //   //console.log(tempImgLink);
+      // //   if (tempImgLink.match(/\:s$/)) {
+      // //     tempImgLink = tempImgLink.substr(0, tempImgLink.length - 2);
+      // //     console.log(tempImgLink);
+      // //   }
+      // //   else if(tempImgLink.indexOf("%3") !== -1) {
+      // //     tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("%3"));
+      // //     //console.log(tempImgLink);
+      // //   }
+      // //   singleResult.imageUrl = tempImgLink;
+      // // }
+      // singleResult.thumbUrl = singleResult.imageUrl;
       //process description
       //class st span contain N child, first child is size info
       //behind children are description,conbine them
