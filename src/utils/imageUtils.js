@@ -51,8 +51,15 @@ export const checkUrlOrBase64 = function(item){
   }
 }
 export const parseGoogleImageLink = function(link){
-  let pareseString = /(http|https).*(\.jpg|\.jpeg|\.png|\.gif|\.svg)/g;
-  return link.match(pareseString);
+  let parseReg = /(http|https).*(\.jpg&imgrefurl|\.jpeg&imgrefurl|\.png&imgrefurl|\.gif&imgrefurl|\.svg&imgrefurl|&imgrefurl)/g;
+  let parseResult = link.match(parseReg);
+  if(parseResult){
+    let resultLink = parseResult[0];
+    //console.log(resultLink.substring(0,resultLink.length-10));
+    return resultLink.substring(0,resultLink.length-10);
+  }else{
+    return null;
+  }
 }
 export const sortImageByRelevance = function(data){
   data.sort(function(a,b){
