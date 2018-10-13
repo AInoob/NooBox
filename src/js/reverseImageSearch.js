@@ -175,7 +175,9 @@ export const reverseImageSearch = {
       //second <a> contain sourceUrl and thumbUrl
       const tagA = singleItem.getElementsByTagName("a");
       singleResult.sourceUrl = tagA[0].getAttribute("href");
-      singleResult.title = tagA[0].innerText;
+      let title = tagA[0].childNodes;
+      //console.log(title[0]);
+      singleResult.title = title[0].innerText;
       //new method to dig the image Source
       for(let i = 2; i < tagA.length;i++){
         if(tagA[i]){
