@@ -185,7 +185,7 @@ export const reverseImageSearch = {
           //console.log(tagA[i]);
           link = parseGoogleImageLink(link);
           if(link) {
-            console.log(link);
+            //console.log(link);
             singleResult.imageUrl = link;
             singleResult.thumbUrl = link;
             break;
