@@ -57,6 +57,8 @@ avaiable_engine:
 experience:
     message: 體驗設定
 #Image Search
+support_devlopers:
+  message: 點擊廣告支持開發者們
 guessing_keyword:
   message: 關鍵詞
 display_mode:
@@ -91,7 +93,7 @@ clear:
   message: 清除
 no_size_info:
   message: 無圖片大小資訊
-#About  
+#About
 about_what:
   message: 二箱是什麼?
 about_what_message_0:

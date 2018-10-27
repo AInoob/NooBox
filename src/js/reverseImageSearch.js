@@ -6,6 +6,7 @@ import {
 import ajax from 'SRC/utils/ajax.js';
 import ENGINE_DONE from  'SRC/constant/constants.js';
 import { ENGINE_WEIGHTS } from '../constant/constants';
+import {parseGoogleImageLink} from 'SRC/utils/imageUtils';
 const HTML = new DOMParser();
 // Data Format
 export const reverseImageSearch = {
@@ -168,33 +169,29 @@ export const reverseImageSearch = {
         weight: ENGINE_WEIGHTS.google - i + Math.random(),
       }
       const singleItem = list[i];
+      //console.log(singleItem);
       //process title,imageUrl,sourceUrl and thumbUrl
       //first <a> contain title and imageUrl
       //second <a> contain sourceUrl and thumbUrl
       const tagA = singleItem.getElementsByTagName("a");
       singleResult.sourceUrl = tagA[0].getAttribute("href");
-      singleResult.title = tagA[0].innerText;
-      let link = tagA[1].getAttribute("href");
-      singleResult.imageUrl = link.substring(link.indexOf("=") + 1, link.indexOf("&imgre"));
-      if (!singleResult.imageUrl) {
-        let tempImgLink = tagA[3].getAttribute("href");
-        tempImgLink = tempImgLink.substr(tempImgLink.indexOf("imgurl=") + "imgurl=".length);
-        tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("&"));
-        //console.log(tempImgLink);
-        if (tempImgLink.match(/\:s$/)) {
-          tempImgLink = tempImgLink.substr(0, tempImgLink.length - 2);
-          //console.log(tempImgLink);
+      let title = tagA[0].childNodes;
+      //console.log(title[0]);
+      singleResult.title = title[0].innerText;
+      //new method to dig the image Source
+      for(let i = 2; i < tagA.length;i++){
+        if(tagA[i]){
+          let link = tagA[i].getAttribute("href");
+          //console.log(tagA[i]);
+          link = parseGoogleImageLink(link);
+          if(link) {
+            //console.log(link);
+            singleResult.imageUrl = link;
+            singleResult.thumbUrl = link;
+            break;
+          }
         }
-        else {
-          tempImgLink = tempImgLink.substr(0, tempImgLink.indexOf("%3"));
-          //console.log(tempImgLink);
-        }
-        singleResult.imageUrl = tempImgLink;
       }
-      singleResult.thumbUrl = singleResult.imageUrl;
-      //process description
-      //class st span contain N child, first child is size info
-      //behind children are description,conbine them
       const tagSpan = singleItem.getElementsByClassName("st")[0].childNodes;
       let description = "";
       for (let i = 0; i < tagSpan.length; i++) {
