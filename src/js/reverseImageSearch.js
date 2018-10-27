@@ -935,9 +935,9 @@ export const reverseImageSearch = {
       if(engineLinks){
         let engineLink = engineLinks.getElementsByTagName("a")[0].href || "";
         if(engineLink != ""){
-          engineLink = "https://ascii2d.net" + engineLink.substring(engineLink.indexOf("/search/"),engineLink.length);
+          engineLink = engineLink.substring(engineLink.indexOf("or/")+3,engineLink.length);
         }else{
-          engineLink =  "https://ascii2d.net";
+          engineLink =  undefined;
         }
         resultObj.engineLink["ascii2d"] = engineLink;
       }

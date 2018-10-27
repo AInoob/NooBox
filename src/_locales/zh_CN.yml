@@ -67,6 +67,12 @@ search_again:
   message: 重新搜索
 upload_search:
   message: 如没有结果，请尝试点击
+ascii2d_link_mode_color:
+  message: Ascii2d色彩搜索
+ascii2d_link_mode_bovw:
+  message: Ascii2d特征搜索
+ascii2d_link_mode_detail:
+  message: Ascii2d图片细节
 list:
   message: 图片列表
 image_wall:
