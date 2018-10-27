@@ -18,6 +18,53 @@ const ResultContainer = styled.div`
   padding-left: 2%;
   padding-right: 2%;
   padding-top:15px;
+  .ads{
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    .adsTag{
+       max-width: 90%;
+       position: absolute;
+       top: 20%;
+       left: 50%;
+       -webkit-transform: translateX(-50%);
+       transform: translateX(-50%);
+       visibility: hidden;
+      }
+      
+    img{
+      margin-top: 10%;
+      max-width: 90%;
+      max-height: 80%; 
+    }  
+  }
+  .ads:hover{
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    
+    .adsTag{
+      max-width: 90%;
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+      visibility: visible;
+      transition: visibility 2s;
+    }
+    
+    img{
+      margin-top: 10%;
+      max-width: 90%;
+      max-height: 80%; 
+      opacity: 0.2;
+      transition: opacity 2s
+    }  
+  }
+  
   .ant-row-flex {
     align-items: stretch;
   }
@@ -85,6 +132,14 @@ class ImageSearchResult extends React.Component {
                   imageInfo={imageSearch.searchImageInfo}
                   sortByOrder={imageSearch.sortByOrder}
                 />
+              </Col>
+              <Col span={4}>
+                <div className="ads">
+                  <a target="_blank"  href="https://ainoob.com/ads/first">
+                    <h2 className = "adsTag">{i18n("support_developers")}</h2>
+                    <img border="0" src="https://ainoob.com/ads.jpg" />
+                  </a>
+                </div>
               </Col>
             </Row>
           </div>

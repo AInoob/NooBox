@@ -55,6 +55,8 @@ avaiable_engine:
 experience:
     message: 体验设置
 #Image Search
+support_devlopers:
+  message: 点击广告支持开发者们
 guessing_keyword:
   message: 关键词
 display_mode:
