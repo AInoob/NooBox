@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Card, Tooltip, Popover, InputNumber, Button, Icon,Spin } from "antd";
+import { List,Card, Tooltip, Popover, InputNumber, Button, Icon,Spin } from "antd";
 import FAIcon from "@fortawesome/react-fontawesome";
 import faSolid from "@fortawesome/fontawesome-free-solid";
 import google from "SRC/assets/engineLogos/google.png";
@@ -120,7 +120,7 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.google ? 
+                        this.props.google ?
                         this.props.googleDone ?
                         "engineImage":
                         "engineImageLoading" :
@@ -147,7 +147,7 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.baidu ?  
+                        this.props.baidu ?
                         this.props.baiduDone ?
                         "engineImage":
                         "engineImageLoading" :
@@ -176,7 +176,7 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.yandex ? 
+                        this.props.yandex ?
                         this.props.yandexDone ?
                         "engineImage":
                         "engineImageLoading" :
@@ -205,7 +205,7 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.bing ? 
+                        this.props.bing ?
                         this.props.bingDone ?
                         "engineImage":
                         "engineImageLoading" :
@@ -234,7 +234,7 @@ export default class Engine extends React.Component {
                     {" "}
                     <img
                       className={
-                        this.props.tineye ? 
+                        this.props.tineye ?
                         this.props.tineyeDone ?
                         "engineImage":
                         "engineImageLoading" :
@@ -275,12 +275,12 @@ export default class Engine extends React.Component {
           <Card.Grid style={gridStyle}>
             <div className="box">
               <div className="engineContainer">
-                  <Spin 
+                  <Spin
                     className={
-                    !this.props.iqdb || this.props.iqdbDone 
+                    !this.props.iqdb || this.props.iqdbDone
                       ? "engineLoadingDone"
                       : "engineLoading"
-                    } 
+                    }
                     type="loading" />
                 <a href={engineLink["iqdb"]} target="_blank">
                   <img
@@ -297,28 +297,51 @@ export default class Engine extends React.Component {
             </div>
           </Card.Grid>
           <Card.Grid style={gridStyle}>
-            <div className="box">
-              <div className="engineContainer">
-                  <Spin 
+            <Popover content={
+              engineLink["ascii2d"] == undefined ? "":
+                <ul
+                  style ={{
+                    listStyleType:"none",
+                    paddingLeft:"5px",
+                  }}
+                >
+                  <li>
+                    <a href= {"https://ascii2d.net/search/color/" + engineLink["ascii2d"]} target="_blank" >{i18n("ascii2d_link_mode_color")}</a>
+                  </li>
+                  <li>
+                    <a href= {"https://ascii2d.net/search/bovw/" + engineLink["ascii2d"]} target="_blank" >{i18n("ascii2d_link_mode_bovw")}</a>
+                  </li>
+                  <li>
+                    <a href= {"https://ascii2d.net/details/" + engineLink["ascii2d"]+"/new"} target="_blank" >{i18n("ascii2d_link_mode_detail")}</a>
+                  </li>
+                </ul>
+            }
+            placement="right"
+            >
+              <div className="box">
+                <div className="engineContainer">
+                  <Spin
                     className={
-                      !this.props.ascii2d || this.props.ascii2dDone 
-                      ? "engineLoadingDone" 
-                      : "engineLoading" 
+                      !this.props.ascii2d || this.props.ascii2dDone
+                        ? "engineLoadingDone"
+                        : "engineLoading"
                     }
                     type="loading" />
-                <a href={engineLink["ascii2d"]} target="_blank">
-                  <img
-                    className={
-                      this.props.ascii2d ? this.props.ascii2dDone ?
-                      "engineImage":
-                      "engineImageLoading" :
-                      "engineImageHide"
-                    }
-                    src={ascii2d}
-                  />
-                </a>
+                  <a href={engineLink["ascii2d"]} target="_blank">
+                    <img
+                      className={
+                        this.props.ascii2d ? this.props.ascii2dDone ?
+                          "engineImage":
+                          "engineImageLoading" :
+                          "engineImageHide"
+                      }
+                      src={ascii2d}
+                    />
+                  </a>
+                </div>
               </div>
-            </div>
+            </Popover>
+
           </Card.Grid>
         </Card>
       </EngineContainer>
