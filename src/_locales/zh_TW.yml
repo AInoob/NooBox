@@ -67,6 +67,12 @@ download:
   message: 下載圖片
 search_again:
   message: 重新搜尋
+ascii2d_link_mode_color:
+  message: Ascii2d色合検索
+ascii2d_link_mode_bovw:
+  message: Ascii2d特徴検索
+ascii2d_link_mode_detail:
+  message: Ascii2d詳細登録
 upload_search:
   message: 如沒有結果，請嘗試點選
 list:

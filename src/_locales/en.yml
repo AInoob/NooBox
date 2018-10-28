@@ -110,6 +110,12 @@ download:
   message: Download
 search_again:
   message: Search Again
+ascii2d_link_mode_color:
+  message: Ascii2d Color Search
+ascii2d_link_mode_bovw:
+  message: Ascii2d Feature Search
+ascii2d_link_mode_detail:
+  message: Ascii2d Image Detail
 upload_search:
   message: No Result ? Try Here
 display_mode:
