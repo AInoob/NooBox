@@ -69,6 +69,12 @@ sort_by:
   message: 並び替え
 area:
   message: エリア
+ascii2d_link_mode_color:
+  message: Ascii2d色合検索
+ascii2d_link_mode_bovw:
+  message: Ascii2d特徴検索
+ascii2d_link_mode_detail:
+  message: Ascii2d詳細登録
 width:
   message: 幅
 height:
