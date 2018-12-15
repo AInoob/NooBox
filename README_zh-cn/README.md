@@ -5,7 +5,7 @@
   <br>
   <a href="https://github.com/AInoob/NooBox">Noobox |</a>
   <a href="https://github.com/AInoob/NooBox/tree/master/README_zh-cn">二箱(简) |</a>
-  <a href="https://github.com/AInoob/NooBox/tree/master/README_zh-tw">二箱(繁) |</a>
+  <a href="https://github.com/AInoob/NooBox/tree/master/README_zh-tw">二箱(繁)</a>
   <br>
   <br>
 </h1>
@@ -16,7 +16,7 @@
 ![dva_ 2 3 1](https://user-images.githubusercontent.com/12090689/45795297-079b3400-bc69-11e8-8f06-51d0a9c2d310.png)
 ![styledcomponent_ 3 3 2](https://user-images.githubusercontent.com/12090689/45795406-91e39800-bc69-11e8-98dd-b8fe205bfc75.png)
 ![webpack_ 4 12 0](https://user-images.githubusercontent.com/12090689/45795454-cb1c0800-bc69-11e8-8456-02ffe5c5ae13.png)
-## Table Of Content
+## 目录
 * [安装](#安装)
 * [功能](#功能)
   * [以图搜图](#以图搜图)
