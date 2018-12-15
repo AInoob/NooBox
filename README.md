@@ -14,17 +14,14 @@
 ![dva_ 2 3 1](https://user-images.githubusercontent.com/12090689/45795297-079b3400-bc69-11e8-8f06-51d0a9c2d310.png)
 ![styledcomponent_ 3 3 2](https://user-images.githubusercontent.com/12090689/45795406-91e39800-bc69-11e8-98dd-b8fe205bfc75.png)
 ![webpack_ 4 12 0](https://user-images.githubusercontent.com/12090689/45795454-cb1c0800-bc69-11e8-8456-02ffe5c5ae13.png)
-
-## Chrome Extension integrating
-1. Search By Image (Reverse Image Search)
-2. Extract Images
-3. Screen Shot Search
-4. Auto Refresh
-5. HTML 5 Video Control(Alaph)
 ## Table Of Content
--  [Installation](#Installation)
--  [License](#License)
--  [Language](#Available)
+* [Installation](#installation)
+* Functionalities
+  * [Search By Image](#search-by-image)
+  * [Extract Images](#extract-images)
+  * [Auto Refresh](#auto-refresh)
+* [License](#license)
+* [Language](#available-language)
 
 ## Installation
 <div align = "center">
@@ -54,12 +51,20 @@
 |  <a href = "http://browser.360.cn/ee/" target= "_blank">360 Browser</a> | Version 9.5 | <a href = "https://vivaldi.com/" target= "_blank">Vivaldi</a> |Version 2.0.1309.42 (Stable channel) (64-bit) |
 | --- | --- | --- | --- |
 
-## Search By Image, How ?
+## Search By Image
+"If you’ve stumbled across an image on the internet—perhaps on your favorite social media site—and you want to know more about it, you can always ask the person responsible for the post. Odds are good that they probably just cribbed the image from somewhere else, and don’t know any more about where it came from. But that’s fine. You can also take on the detective work yourself, and there are plenty of resources to help you out." --- Life Hacker
+
+## Problem
+The results from one search engine is limited
+
+## How Noobox Does ?
+Grab All results fron different engines 
+
+## Different Approcah
 <h3 align = "center"> 1."Upload" : Click to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif"/>
 </p>
-
 
 <h3 align = "center">2."Drag to upload" : Drag to upload the local image</h3>
 <p align="center">
@@ -71,14 +76,13 @@
 <img src="https://user-images.githubusercontent.com/12090689/45771196-75684100-bc12-11e8-858b-76dcf7aad277.gif"/>
 </p>
 
-
 <h3 align = "center">4."Screen Shot" : Screen shot the image you like, then search</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45772446-bf9ef180-bc15-11e8-8ca7-79951983a964.gif"/>
 </p>
 
-## Extract Image
-
+## Extract Images
+## Auto Refresh
 ## License
 <a href = "https://opensource.org/licenses/MIT">MIT</a>
 ## Available Language
