@@ -3,7 +3,7 @@
   <br>
   <a href="https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src="https://user-images.githubusercontent.com/12090689/45327137-5daeff80-b524-11e8-8398-36ee837c54e7.png" alt="NooBox" width="100"></a>
   <br>
-  Noobox
+  二箱
   <br>
   <br>
 </h1>
@@ -15,16 +15,16 @@
 ![styledcomponent_ 3 3 2](https://user-images.githubusercontent.com/12090689/45795406-91e39800-bc69-11e8-98dd-b8fe205bfc75.png)
 ![webpack_ 4 12 0](https://user-images.githubusercontent.com/12090689/45795454-cb1c0800-bc69-11e8-8456-02ffe5c5ae13.png)
 ## Table Of Content
-* [Installation](#installation)
-* [Functionalities](#search-by-image)
-  * [Search By Image](#search-by-image)
-  * [Extract Images](#extract-images)
-  * [Auto Refresh](#auto-refresh)
-  * [HTML5 Video Control (Abort)](#abort)
-* [License](#license)
-* [Language](#available-language)
+* [安装](#安装)
+* [功能](#search-by-image)
+  * [以图搜图](#search-by-image)
+  * [提取图片](#extract-images)
+  * [自动刷新](#auto-refresh)
+  * [HTML5视频控制(中断开发)](#abort)
+* [证书](#license)
+* [语言支持](#available-language)
 
-## Installation
+## 安装
 <div align = "center">
   <table  align = "center">
     <tr>
