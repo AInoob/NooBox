@@ -16,10 +16,11 @@
 ![webpack_ 4 12 0](https://user-images.githubusercontent.com/12090689/45795454-cb1c0800-bc69-11e8-8456-02ffe5c5ae13.png)
 ## Table Of Content
 * [Installation](#installation)
-* Functionalities
+* [Functionalities](#search-by-image)
   * [Search By Image](#search-by-image)
   * [Extract Images](#extract-images)
   * [Auto Refresh](#auto-refresh)
+  * [HTML5 Video Control (Abort)](#abort)
 * [License](#license)
 * [Language](#available-language)
 
@@ -61,28 +62,40 @@ The results from one search engine is limited
 Grab All results fron different engines 
 
 ## Different Approcah
-<h3 align = "center"> 1."Upload" : Click to upload the local image</h3>
+<h3 align = "center"> 1."Select to Search" : Click to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif"/>
 </p>
 
-<h3 align = "center">2."Drag to upload" : Drag to upload the local image</h3>
+<h3 align = "center">2."Drag to Search" : Drag to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771200-78fbc800-bc12-11e8-8fd9-55c5f4a1c04e.gif"/>
 </p>
 
-<h3 align = "center">3."Right Click" : Right click any image in the webpage</h3>
+<h3 align = "center">3."Right-Click Menu Search" : Right click any image in the webpage</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771196-75684100-bc12-11e8-858b-76dcf7aad277.gif"/>
 </p>
 
-<h3 align = "center">4."Screen Shot" : Screen shot the image you like, then search</h3>
+<h3 align = "center">4."Screen Shot Search" : Screen shot the image you like, then search</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45772446-bf9ef180-bc15-11e8-8ca7-79951983a964.gif"/>
 </p>
 
 ## Extract Images
+Noobox can extract all image in current webpage. Click "Download" button also can Zip all the image and download
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/12090689/50039170-56076700-fffb-11e8-9ee0-81a5ab02a1ca.png"/>
+</p>
+
 ## Auto Refresh
+Set Timer and click the refresh icon to start auto refresh for webpage
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/12090689/50039172-59025780-fffb-11e8-8aba-f5d41307e5d7.png"/>
+</p>
+
 ## License
 <a href = "https://opensource.org/licenses/MIT">MIT</a>
 ## Available Language
