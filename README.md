@@ -58,10 +58,10 @@
 "If you’ve stumbled across an image on the internet—perhaps on your favorite social media site—and you want to know more about it, you can always ask the person responsible for the post. Odds are good that they probably just cribbed the image from somewhere else, and don’t know any more about where it came from. But that’s fine. You can also take on the detective work yourself, and there are plenty of resources to help you out." --- Life Hacker
 
 ## Problem
-The results from one search engine is limited
+The results from one search engine are limited
 
 ## How Noobox Does ?
-Grab All results fron different engines 
+Grab All results from different engines 
 
 ## Different Approcah
 <h3 align = "center"> 1."Select to Search" : Click to upload the local image</h3>
@@ -85,7 +85,7 @@ Grab All results fron different engines
 </p>
 
 ## Extract Images
-Noobox can extract all image in current webpage. Click "Download" button also can Zip all the image and download
+Noobox can extract all image in current webpage. Click "Download" button to Zip all the images and to download
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/50039170-56076700-fffb-11e8-9ee0-81a5ab02a1ca.png"/>
