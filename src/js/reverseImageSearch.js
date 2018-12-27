@@ -339,6 +339,8 @@ export const reverseImageSearch = {
       } = await ajax(link, {
         method: 'GET'
       });
+      console.log(link);
+      console.log(data);
       if(err){
         throw err;
       }
@@ -361,6 +363,7 @@ export const reverseImageSearch = {
           //   searchNumber = totalSearchResult >= 20 ? 20: totalSearchResult;
           // }
           let firstPage = reverseImageSearch.processTineyeData(page);
+          console.log(firstPage);
           const followingPageExist = page.getElementsByClassName("pagination-bottom")[0]
           if (followingPageExist) {
             let followingPage = followingPageExist.getElementsByTagName("a");
@@ -398,6 +401,7 @@ export const reverseImageSearch = {
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }catch(e){
       resultObj["tineyeDone"] = true;
+      console.log(e);
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }
 
@@ -418,17 +422,24 @@ export const reverseImageSearch = {
         weight: ENGINE_WEIGHTS.tineye - i + Math.random(),
       }
       let singleItem = list[i];
-      //match thum contain thumbUrl and Size
-      let thumbAndSize = singleItem.getElementsByClassName("match-thumb")[0];
-      singleResult.thumbUrl = thumbAndSize.getElementsByTagName("img")[0].getAttribute("src") || "";
+      //hidden-xs image-link contain thumbUrl and Size
+      let sizeSpan = singleItem.getElementsByClassName("hidden-xs image-link")[0];
+      singleResult.thumbUrl = singleItem.getElementsByTagName("a")[0].getAttribute("href") || "";
       //get size info
-      let sizeInfo = thumbAndSize.getElementsByTagName("span")[1].innerHTML;
-      if (sizeInfo) {
+      if (sizeSpan && sizeSpan.getElementsByTagName("span")) {
+        let sizeInfo = sizeSpan.getElementsByTagName("span")[0].innerText;
+        // pick the mid content expcept the "(" ")"
+        sizeInfo = sizeInfo.substring(1,sizeInfo.length-1);
+        console.log(sizeInfo);
         sizeInfo = sizeInfo.substring(0, sizeInfo.indexOf(",")).split("x");
         singleResult.imageInfo.width = Number.parseInt(sizeInfo[0], 10);
         singleResult.imageInfo.height = Number.parseInt(sizeInfo[1], 10);
       }
-      singleResult.title = singleItem.getElementsByTagName("h4")[0].getElementsByTagName("a")[0].innerHTML.replace(/&nbsp;|\n/g, "") || "";
+      let titleContainer= singleItem.getElementsByClassName("match")[0];
+      if(titleContainer){
+       let title = titleContainer.getElementsByTagName("h4")[0].getElementsByTagName("a")[0].innerHTML.replace(/&nbsp;|\n/g, "") || "";
+       singleResult.title = title;
+      }
 
       //image Url Source Url
       const urlPart = singleItem.getElementsByClassName("match-details")[0].getElementsByTagName("p");
