@@ -13,6 +13,7 @@ export const overviewSelector = (state) => {
   }
   let h5video = {
     websiteEnable: overview.websiteEnable,
+    hostName: overview.hostName,
   }
   return {
     inited: overview.inited,
