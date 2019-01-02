@@ -430,7 +430,7 @@ export const reverseImageSearch = {
         let sizeInfo = sizeSpan.getElementsByTagName("span")[0].innerText;
         // pick the mid content expcept the "(" ")"
         sizeInfo = sizeInfo.substring(1,sizeInfo.length-1);
-        console.log(sizeInfo);
+        //console.log(sizeInfo);
         sizeInfo = sizeInfo.substring(0, sizeInfo.indexOf(",")).split("x");
         singleResult.imageInfo.width = Number.parseInt(sizeInfo[0], 10);
         singleResult.imageInfo.height = Number.parseInt(sizeInfo[1], 10);
