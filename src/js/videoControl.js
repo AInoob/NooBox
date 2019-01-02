@@ -25,18 +25,10 @@ function handleVisibilityChange() {
   }
 }
 
-function getDB(key) {
-  chrome.runtime.sendMessage({
-    job: 'getDB',
-    key: key
-  });
-}
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    console.log(request);
     if (request.job) {
       if (request.job === 'videoControlContentScriptSwitch') {
-        console.log(request);
         enabled = request.enabled;
         if (enabled !== false) {
           enabled = true;
@@ -46,23 +38,13 @@ chrome.runtime.onMessage.addListener(
         isOn('videoControl', function() {
           const host = window.location.hostname;
           enabledDBId = 'videoControl_website_' + host;
-          getDB(enabledDBId);
+          isOn(enabledDBId, initVideoControl);
         }, function() {enabled = false})
-      } else if (request.job === 'returnDB') {
-        if (request.key == enabledDBId) {
-          enabled = request.data;
-          if (enabled != false) {
-            enabled = true;
-            initVideoControl();
-          }
-        }
       }
     }
   });
 
 function initVideoControl() {
-  console.log('init video control');
-  console.log(new Error().stack);
   if (inited) {
     return;
   }
@@ -85,7 +67,6 @@ function initVideoControl() {
   detectVideoHandle = setInterval(detectVideo, 111);
   $('body').on('click', function(e) {
     vid = getVideo(e);
-    console.log(enabled + ' ' + vid);
     if (enabled && vid) {
       placeIndicator();
       detectConflictAndAct(playPause, vid, 'playPause', 'clickPlayPause', 111);
@@ -468,7 +449,12 @@ document.addEventListener("DOMContentLoaded", function() {
   isOn('videoControl', function() {
     const host = window.location.hostname;
     enabledDBId = 'videoControl_website_' + host;
-    getDB(enabledDBId);
+    isOn(enabledDBId, function() {
+      enabled = true;
+    }, function() {
+      enabled = false;
+    });
+    initVideoControl();
   });
 });
 
