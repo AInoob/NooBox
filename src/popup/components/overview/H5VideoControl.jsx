@@ -25,6 +25,7 @@ export default class H5VideoControl extends React.Component {
           />
         </span>
         <p className="ant-upload-text">{i18n("html_5_video_control")}</p>
+        <p className="ant-upload-text">{currentState.hostName}</p>
       </H5VideoControlContainer>
     );
   }

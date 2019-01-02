@@ -3,7 +3,7 @@ import AutoRefresh from './AutoRefresh';
 import Image from './Image';
 import Options from './Options';
 import { getCurrentTab, sendMessage,sendTabMessage } from 'SRC/utils/browserUtils';
-import { getDB, set } from '../utils/db';
+import {get, getDB, set} from '../utils/db';
 import { wait } from '../utils';
 import { logEvent } from '../utils/bello';
 userBrowser();
@@ -69,7 +69,7 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   }else if (job == 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
   } else if (job == 'getDB') {
-    const value = await getDB(request.key);
+    const value = await get(request.key);
     browser.tabs.sendMessage(sender.tab.id, {
       job: 'returnDB',
       key: request.key,
