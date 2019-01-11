@@ -1,13 +1,12 @@
 import { get } from './db';
-import {BELLO_URL} from "../constant/constants";
+import { BELLO_URL } from '../constant/constants';
 import ajax from './ajax';
 import { serialize } from '.';
 
 let analyticsOnce = false;
 
 export const logPageView = async () => {
-  if(typeof window != 'object')
-    return;
+  if (typeof window != 'object') return;
   const params = {
     type: 'pageview',
     path: await get('version'),
@@ -17,12 +16,12 @@ export const logPageView = async () => {
     sr: screen.width + 'x' + screen.height,
     ul: navigator.language || navigator.userLanguage,
     ainoob: Math.random(),
-  }
+  };
   await ajax(BELLO_URL + serialize(params));
 };
 
 export const logEvent = async obj => {
-  if(typeof window !== 'object') {
+  if (typeof window !== 'object') {
     return;
   }
   if (!analyticsOnce) {
@@ -41,6 +40,6 @@ export const logEvent = async obj => {
     path: await get('version'),
     ul: navigator.language || navigator.userLanguage,
     ainoob: Math.random(),
-  }
+  };
   await ajax(BELLO_URL + serialize(params));
 };

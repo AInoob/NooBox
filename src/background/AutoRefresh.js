@@ -1,6 +1,6 @@
 import data from './data';
 import { logEvent } from '../utils/bello';
-import {set} from "SRC/utils/db";
+import { set } from 'SRC/utils/db';
 
 window.x = data;
 
@@ -20,15 +20,9 @@ export default class AutoRefresh {
     }
     setting.handler = null;
   }
-  setupBadge(){
-
-  }
-  resetBadge(){
-
-  }
-  updateBadge(){
-
-  }
+  setupBadge() {}
+  resetBadge() {}
+  updateBadge() {}
   performAutoRefresh(tabId) {
     browser.tabs.reload(tabId, {}, () => {
       console.log('refresh');
@@ -45,7 +39,9 @@ export default class AutoRefresh {
     data.AutoRefresh.tabs[tabId] = setting;
   }
   getSetting(tabId) {
-    const setting = data.AutoRefresh.tabs[tabId] || JSON.parse(JSON.stringify(defaultSetting));
+    const setting =
+      data.AutoRefresh.tabs[tabId] ||
+      JSON.parse(JSON.stringify(defaultSetting));
     return setting;
   }
   getStatus(tabId) {
@@ -80,8 +76,7 @@ export default class AutoRefresh {
     if (active) {
       if (handler) {
         action = 'updateInterval';
-      }
-      else {
+      } else {
         action = 'start';
       }
       setting.lastIntervalAt = new Date().getTime();
@@ -100,7 +95,7 @@ export default class AutoRefresh {
     if (shouldLogEvent) {
       logEvent({
         category: 'AutoRefresh',
-        action
+        action,
       });
     }
     return this.getStatus(tabId);

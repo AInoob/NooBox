@@ -9,5 +9,5 @@ export default {
     extractImageHandle: null,
     screenShotSearchHandle: null,
     imageSearchHandle: null,
-  }
+  },
 };

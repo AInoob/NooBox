@@ -1,10 +1,10 @@
-import { isOptionOn, getDB, setDB, deleteDB } from "../utils/db";
-import { HISTORY_DB_KEY } from "../constant/constants";
+import { isOptionOn, getDB, setDB, deleteDB } from '../utils/db';
+import { HISTORY_DB_KEY } from '../constant/constants';
 
 export default class History {
   constructor() {}
-  async recordImageSearch (cursor, info) {
-    get('totalImageSearch', (data) => {
+  async recordImageSearch(cursor, info) {
+    get('totalImageSearch', data => {
       data = data || 0;
       set('totalImageSearch', parseInt(data) + 1);
     });
@@ -16,7 +16,7 @@ export default class History {
         date: new Date().getTime(),
         event: 'search',
         cursor,
-        info: source
+        info: source,
       });
       await setDB(HISTORY_DB_KEY, records);
     }
@@ -25,7 +25,7 @@ export default class History {
     switch (record.event) {
       case 'search':
         const id = record.cursor;
-        await deleteDB('NooBox.Image.result_'+id);
+        await deleteDB('NooBox.Image.result_' + id);
         break;
     }
   }
@@ -37,11 +37,11 @@ export default class History {
   }
   async clearHistory() {
     const recordList = await getDB(HISTORY_DB_KEY);
-    for(let i = 0; i < recordList.length; i++) {
+    for (let i = 0; i < recordList.length; i++) {
       History.cleanupRelatedDB(recordList[i]);
     }
     deleteDB(HISTORY_DB_KEY, () => {
       this.setState({ recordList: null });
     });
   }
-};
+}

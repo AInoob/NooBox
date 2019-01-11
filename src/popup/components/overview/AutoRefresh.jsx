@@ -1,9 +1,9 @@
-import React from "react";
-import { Upload, Icon, message, InputNumber, Progress } from "antd";
-import styled from "styled-components";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import { getCurrentTab, sendMessage } from "SRC/utils/browserUtils";
+import React from 'react';
+import { Upload, Icon, message, InputNumber, Progress } from 'antd';
+import styled from 'styled-components';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import { getCurrentTab, sendMessage } from 'SRC/utils/browserUtils';
 
 const AutoRefreshContainer = styled.div`
   .ant-upload-text {
@@ -28,7 +28,7 @@ export default class AutoRefresh extends React.Component {
     this.state = {
       active: false,
       interval: 3000,
-      elapsedTime: 0
+      elapsedTime: 0,
     };
   }
 
@@ -37,7 +37,7 @@ export default class AutoRefresh extends React.Component {
     let { active } = this.state;
     autoRefreshUpdate({ tabId, active: !active });
     let newState = {
-      active: !active
+      active: !active,
     };
     if (active) {
       newState.elapsedTime = 0;
@@ -59,11 +59,11 @@ export default class AutoRefresh extends React.Component {
           nextElapsedTime = 0;
         }
         this.setState({
-          elapsedTime: nextElapsedTime
+          elapsedTime: nextElapsedTime,
         });
       }, 1000);
       this.setState({
-        animationIntervalId: timeId
+        animationIntervalId: timeId,
       });
     }
   }
@@ -74,11 +74,11 @@ export default class AutoRefresh extends React.Component {
       {
         active: currentState.ifRefresh,
         interval: currentState.refreshInterval,
-        elapsedTime: currentState.refreshElapsed
+        elapsedTime: currentState.refreshElapsed,
       },
       () => {
         this.progressControl();
-      }
+      },
     );
   }
 
@@ -87,7 +87,7 @@ export default class AutoRefresh extends React.Component {
     this.setState({
       active: currentState.ifRefresh,
       interval: currentState.refreshInterval,
-      elapsedTime: currentState.refreshElapsed
+      elapsedTime: currentState.refreshElapsed,
     });
   }
   onChangeInterval(newInterval) {
@@ -95,16 +95,16 @@ export default class AutoRefresh extends React.Component {
     let { active } = this.state;
     autoRefreshUpdate({ tabId, active, interval: newInterval, startAt: 0 });
     this.setState({
-      interval: newInterval
+      interval: newInterval,
     });
     if (this.state.active) {
       this.setState(
         {
-          elapsedTime: 0
+          elapsedTime: 0,
         },
         () => {
           this.progressControl();
-        }
+        },
       );
     }
   }
@@ -118,16 +118,16 @@ export default class AutoRefresh extends React.Component {
         />
         <span onClick={() => this.autoRefreshSwitch()}>
           <FAIcon
-            className={active ? "toolStart" : "toolStop"}
+            className={active ? 'toolStart' : 'toolStop'}
             icon={faSolid.faSync}
           />
         </span>
-        <p className="ant-upload-text">{i18n("auto_refresh")}</p>
+        <p className="ant-upload-text">{i18n('auto_refresh')}</p>
         <InputNumber
           defaultValue={interval / 1000}
           min={1}
-          formatter={value => `${value}${i18n("s")}`}
-          parser={value => value.replace(i18n("s"),"")}
+          formatter={value => `${value}${i18n('s')}`}
+          parser={value => value.replace(i18n('s'), '')}
           onChange={v => this.onChangeInterval(v * 1000)}
         />
       </AutoRefreshContainer>

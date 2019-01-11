@@ -2,20 +2,25 @@ import data from './data';
 import { logEvent } from '../utils/bello';
 import GL from '../utils/getLocale';
 import { fetchBlob, convertDataURIToBinary } from '../utils';
-import {reverseImageSearch} from 'SRC/js/reverseImageSearch.js';
-import {engineMap} from 'SRC/constant/settingMap.js';
-import {apiUrls} from 'SRC/constant/searchApiUrl.js';
-import {get,set,getDB,setDB} from 'SRC/utils/db.js';
+import { reverseImageSearch } from 'SRC/js/reverseImageSearch.js';
+import { engineMap } from 'SRC/constant/settingMap.js';
+import { apiUrls } from 'SRC/constant/searchApiUrl.js';
+import { get, set, getDB, setDB } from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
-import {checkUrlOrBase64} from "SRC/utils/imageUtils";
-import {createNewTab,sendMessage,generateNewTabUrl,createSandbox} from 'SRC/utils/browserUtils'
+import { checkUrlOrBase64 } from 'SRC/utils/imageUtils';
+import {
+  createNewTab,
+  sendMessage,
+  generateNewTabUrl,
+  createSandbox,
+} from 'SRC/utils/browserUtils';
 export default class Image {
   constructor() {
     this.noobUploadUrl;
     this.noobDownLoadUrl;
     this.updateImageUploadUrl('ainoob.com');
     this.updateImageDownloadUrl('ainoob.com');
-    this.noobFetchImageServerUrls    = "https://ainoob.com/api/get/imageServers/";
+    this.noobFetchImageServerUrls = 'https://ainoob.com/api/get/imageServers/';
     this.fetchFunction = {
       googleLink: reverseImageSearch.fetchGoogleLink,
       baiduLink: reverseImageSearch.fetchBaiduLink,
@@ -25,7 +30,7 @@ export default class Image {
       saucenaoLink: reverseImageSearch.fetchSauceNaoLink,
       iqdbLink: reverseImageSearch.fetchIQDBLink,
       ascii2dLink: reverseImageSearch.fetchAscii2dLink,
-    }
+    };
   }
 
   updateImageUploadUrl(server) {
@@ -50,7 +55,9 @@ export default class Image {
     serverUrls.forEach(async server => {
       let startTime = new Date().getTime();
       await ajax('https://' + server + pingPath);
-      console.log('fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server);
+      console.log(
+        'fetched after ' + (new Date().getTime() - startTime) + 'ms: ' + server,
+      );
       if (!fastestServer) {
         fastestServer = server;
         this.updateImageUploadUrl(server);
@@ -62,46 +69,58 @@ export default class Image {
   async updateScreenshotSearchContextMenu() {
     if (await get('screenshotSearch')) {
       data.Image.screenshotSearchHandle = browser.contextMenus.create({
-        "id": "screenshotSearch",
-        "title": GL("screenshot_search"),
-        "contexts": ["all"],
-        "onclick": this.screenshotSearch
+        id: 'screenshotSearch',
+        title: GL('screenshot_search'),
+        contexts: ['all'],
+        onclick: this.screenshotSearch,
       });
-    }else {
+    } else {
       if (data.Image.screenshotSearchHandle) {
         browser.contextMenus.remove(data.Image.screenshotSearchHandle);
         data.Image.screenshotSearchHandle = null;
       }
     }
   }
-  async screenshotSearch(info, tab){
-    browser.tabs.sendMessage(tab.id, 'loaded', (response) => {
+  async screenshotSearch(info, tab) {
+    browser.tabs.sendMessage(tab.id, 'loaded', response => {
       if (response == 'yes') {
-        browser.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+        browser.tabs.captureVisibleTab(tab.windowId, dataURL => {
           browser.tabs.sendMessage(tab.id, {
-            job: "screenshotSearch",
-            data: dataURL
+            job: 'screenshotSearch',
+            data: dataURL,
           });
         });
       } else {
-        browser.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
-          browser.tabs.executeScript(tab.id, { file: 'thirdParty/jquery.min.js' }, () => {
-            if (browser.runtime.lastError) {
-              browser.notifications.create('screenshotFailed', {
-                type: 'basic',
-                iconUrl: '/images/icon_128.png',
-                title: GL("ls_1"),
-                message: GL("ls_2")
-              }, voidFunc);
-              return;
-            }
-            browser.tabs.executeScript(tab.id, { file: 'js/screenshotSearch.js' }, () => {
-              browser.tabs.sendMessage(tab.id, {
-                job: "screenshotSearch",
-                data: dataURL
-              });
-            });
-          });
+        browser.tabs.captureVisibleTab(tab.windowId, dataURL => {
+          browser.tabs.executeScript(
+            tab.id,
+            { file: 'thirdParty/jquery.min.js' },
+            () => {
+              if (browser.runtime.lastError) {
+                browser.notifications.create(
+                  'screenshotFailed',
+                  {
+                    type: 'basic',
+                    iconUrl: '/images/icon_128.png',
+                    title: GL('ls_1'),
+                    message: GL('ls_2'),
+                  },
+                  voidFunc,
+                );
+                return;
+              }
+              browser.tabs.executeScript(
+                tab.id,
+                { file: 'js/screenshotSearch.js' },
+                () => {
+                  browser.tabs.sendMessage(tab.id, {
+                    job: 'screenshotSearch',
+                    data: dataURL,
+                  });
+                },
+              );
+            },
+          );
         });
       }
     });
@@ -109,14 +128,14 @@ export default class Image {
   async updateImageSearchContextMenu() {
     if (await get('imageSearch')) {
       data.Image.imageSearchHandle = browser.contextMenus.create({
-        "id": "imageSearch",
-        "title": GL("search_this_image"),
-        "contexts": ["image"],
-        "onclick": (image)=>{
+        id: 'imageSearch',
+        title: GL('search_this_image'),
+        contexts: ['image'],
+        onclick: image => {
           this.beginImageSearch(image.srcUrl);
-        }
+        },
       });
-    }else{
+    } else {
       if (data.Image.imageSearchHandle) {
         browser.contextMenus.remove(data.Image.imageSearchHandle);
         data.Image.imageSearchHandle = null;
@@ -127,10 +146,10 @@ export default class Image {
   async updateExtractImageContextMenu() {
     if (await get('extractImages')) {
       data.Image.extractImageHandle = browser.contextMenus.create({
-        "id": "extractImages",
-        "title": GL("extract_images"),
-        "contexts": ["all"],
-        "onclick": this.extractImages
+        id: 'extractImages',
+        title: GL('extract_images'),
+        contexts: ['all'],
+        onclick: this.extractImages,
       });
     } else {
       if (data.Image.extractImageHandle) {
@@ -143,28 +162,37 @@ export default class Image {
   extractImages(info, tab) {
     logEvent({
       category: 'extractImages',
-      action: 'run'
+      action: 'run',
     });
-    browser.tabs.sendMessage(tab.id, {
-      job: "extractImages"
-    }, {
-      frameId: info.frameId
-    }, (response) => {
-      if (!response) {
-        browser.notifications.create('extractImages', {
-          type: 'basic',
-          iconUrl: '/static/nooboxLogos/icon_128.png',
-          title: GL("extractImages"),
-          message: GL("ls_4")
-        }, () => {});
-      }
-      console.log("Last error:", browser.runtime.lastError);
-    });
+    browser.tabs.sendMessage(
+      tab.id,
+      {
+        job: 'extractImages',
+      },
+      {
+        frameId: info.frameId,
+      },
+      response => {
+        if (!response) {
+          browser.notifications.create(
+            'extractImages',
+            {
+              type: 'basic',
+              iconUrl: '/static/nooboxLogos/icon_128.png',
+              title: GL('extractImages'),
+              message: GL('ls_4'),
+            },
+            () => {},
+          );
+        }
+        console.log('Last error:', browser.runtime.lastError);
+      },
+    );
   }
   downloadExtractImages(sender, files) {
     logEvent({
       category: 'downloadExtractImages',
-      action: 'run'
+      action: 'run',
     });
     const zip = new JSZip();
     let remains = files.length;
@@ -176,41 +204,45 @@ export default class Image {
     reader.onloadend = () => {
       // console.log(remains);
       addImage(reader.result);
-    }
+    };
     function addImage(dataURI) {
       if (dataURI) {
         const ext = (dataURI.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
         const binary = convertDataURIToBinary(dataURI);
         // console.log(binary);
         zip.file(file.name + '.' + ext, binary, {
-          base64: false
+          base64: false,
         });
-      }
-      else {
+      } else {
         total--;
       }
       remains--;
-      chrome.tabs.sendMessage(sender.tab.id, {
-        job: 'downloadRemaining',
-        remains: remains,
-        total: total
-      }, () => { });
+      chrome.tabs.sendMessage(
+        sender.tab.id,
+        {
+          job: 'downloadRemaining',
+          remains: remains,
+          total: total,
+        },
+        () => {},
+      );
       if (remains == 0) {
-        zip.generateAsync({
-          type: 'blob'
-        }).then((content) => {
-          saveAs(content, 'NooBox.zip');
-        });
+        zip
+          .generateAsync({
+            type: 'blob',
+          })
+          .then(content => {
+            saveAs(content, 'NooBox.zip');
+          });
       } else {
         file = files[++i];
         if (file.url.slice(0, 4) == 'data') {
           addImage(file.url);
         } else {
-          fetchBlob(file.url, (blob) => {
+          fetchBlob(file.url, blob => {
             if (blob) {
               reader.readAsDataURL(blob);
-            }
-            else {
+            } else {
               addImage();
             }
           });
@@ -220,29 +252,28 @@ export default class Image {
     if (file.url.slice(0, 4) == 'data') {
       addImage(file.url);
     } else {
-      fetchBlob(file.url, (blob) => {
+      fetchBlob(file.url, blob => {
         if (blob) {
           reader.readAsDataURL(blob);
-        }
-        else {
+        } else {
           addImage();
         }
       });
     }
   }
-  async loadImageHistory(cursor){
-    let url = await generateNewTabUrl("searchResult.html");
+  async loadImageHistory(cursor) {
+    let url = await generateNewTabUrl('searchResult.html');
     await createNewTab({
-      url: url+"#/"+cursor,
-      active: await get('imageSearchNewTabFront')
+      url: url + '#/' + cursor,
+      active: await get('imageSearchNewTabFront'),
     });
   }
-  async beginImageSearch(base64orUrl){
+  async beginImageSearch(base64orUrl) {
     let cursor = await getDB('imageCursor');
-    if (typeof (cursor) === 'number') {
-      cursor ++;
+    if (typeof cursor === 'number') {
+      cursor++;
       await setDB('imageCursor', cursor);
-    }else{
+    } else {
       cursor = 0;
       await setDB('imageCursor', cursor);
     }
@@ -251,28 +282,28 @@ export default class Image {
     let base64Flag;
     //Check base64 or Url
     switch (checkUrlOrBase64(base64orUrl)) {
-      case "base64":
-      // console.log("here");
-      base64Flag = true;
-      await setDB(cursor,{base64:base64orUrl});
-      url = await generateNewTabUrl("searchResult.html");
-      await createNewTab({
-        url: url+"#/" + cursor,
-        active: await get('imageSearchNewTabFront')
-      });
+      case 'base64':
+        // console.log("here");
+        base64Flag = true;
+        await setDB(cursor, { base64: base64orUrl });
+        url = await generateNewTabUrl('searchResult.html');
+        await createNewTab({
+          url: url + '#/' + cursor,
+          active: await get('imageSearchNewTabFront'),
+        });
         logEvent({
           category: 'imageSearch',
-          action: 'dataURI'
+          action: 'dataURI',
         });
         const requestBody = {
           method: 'POST',
           headers: {
             //'User-Agent': 'Mozilla/4.0 MDN Example',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          mode: "cors",
+          mode: 'cors',
           body: JSON.stringify({ data: base64orUrl }),
-        }
+        };
         let a = await ajax(this.noobUploadUrl, requestBody);
         if (a.err) {
           console.log('having error, switch to default server');
@@ -282,18 +313,18 @@ export default class Image {
         }
         imageLink = this.noobDownLoadUrl + a.data;
         break;
-      case "url":
-      // console.log(base64orUrl);
-      base64Flag = false;
-      await setDB(cursor,{url:base64orUrl});
-      url = await generateNewTabUrl("searchResult.html");
-      await createNewTab({
-        url: url+"#/" + cursor,
-        active: await get('imageSearchNewTabFront')
-      });
+      case 'url':
+        // console.log(base64orUrl);
+        base64Flag = false;
+        await setDB(cursor, { url: base64orUrl });
+        url = await generateNewTabUrl('searchResult.html');
+        await createNewTab({
+          url: url + '#/' + cursor,
+          active: await get('imageSearchNewTabFront'),
+        });
         logEvent({
           category: 'imageSearch',
-          action: 'url'
+          action: 'url',
         });
         imageLink = base64orUrl;
         break;
@@ -302,35 +333,48 @@ export default class Image {
     }
     //Generate Image Link
     //console.log(imageLink);
-    if(imageLink) {
-      let resultObj ={
-        base64:base64orUrl,
-        searchImageInfo:[],
-        searchResult:[],
-        engineLink:{},
-        base64: base64Flag ? base64orUrl :"",
-        url: !base64Flag ? base64orUrl: "",
+    if (imageLink) {
+      let resultObj = {
+        base64: base64orUrl,
+        searchImageInfo: [],
+        searchResult: [],
+        engineLink: {},
+        base64: base64Flag ? base64orUrl : '',
+        url: !base64Flag ? base64orUrl : '',
       };
       //Get Opened Engine and send request
-      for(let i = 0; i< engineMap.length; i++){
+      for (let i = 0; i < engineMap.length; i++) {
         let dbName = engineMap[i].dbName;
-        let name   = engineMap[i].name;
-        let check  = await get(dbName);
-        if(check && this.fetchFunction[name+"Link"]){ 
+        let name = engineMap[i].name;
+        let check = await get(dbName);
+        if (check && this.fetchFunction[name + 'Link']) {
           resultObj.engineLink[name] = apiUrls[name] + imageLink;
-          if(name === "baidu"){
+          if (name === 'baidu') {
             await createSandbox();
           }
-          if(name === "bing"){
-            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink, imageLink,cursor,resultObj);
-          }else if(name == "ascii2d"){
-            this.fetchFunction[name+"Link"](apiUrls[name], imageLink,cursor,resultObj)
-          }else{
-            this.fetchFunction[name+"Link"](apiUrls[name] + imageLink,cursor,resultObj);
+          if (name === 'bing') {
+            this.fetchFunction[name + 'Link'](
+              apiUrls[name] + imageLink,
+              imageLink,
+              cursor,
+              resultObj,
+            );
+          } else if (name == 'ascii2d') {
+            this.fetchFunction[name + 'Link'](
+              apiUrls[name],
+              imageLink,
+              cursor,
+              resultObj,
+            );
+          } else {
+            this.fetchFunction[name + 'Link'](
+              apiUrls[name] + imageLink,
+              cursor,
+              resultObj,
+            );
           }
         }
       }
     }
   }
-
 }

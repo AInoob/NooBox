@@ -1,7 +1,7 @@
-import React from "react";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import { Upload } from "antd";
+import React from 'react';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import { Upload } from 'antd';
 const Dragger = Upload.Dragger;
 
 export default class UploadImage extends React.Component {
@@ -9,7 +9,7 @@ export default class UploadImage extends React.Component {
     super(props);
     this.state = {
       haveFile: false,
-      fileList: []
+      fileList: [],
     };
   }
   imageUpload(file) {
@@ -35,9 +35,9 @@ export default class UploadImage extends React.Component {
         beforeUpload={file => this.imageUpload(file)}
       >
         <FAIcon className="toolStart" icon={faSolid.faUpload} />
-        <p className="ant-upload-text">{i18n("reverse_image_search")}</p>
+        <p className="ant-upload-text">{i18n('reverse_image_search')}</p>
         <p className="ant-upload-hint">
-          {i18n("support_for_a_single_upload")}.
+          {i18n('support_for_a_single_upload')}.
         </p>
       </Dragger>
     );
