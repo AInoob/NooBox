@@ -26,9 +26,9 @@ export const defaultValues = {
   lastUpdateCheck: 0,
   updateHistory: [],
   history: true,
-}
+};
 
 export const constantValues = {
   displayList: ['imageSearch', 'autoRefresh', 'videoControl', 'checkUpdate'],
   version: chrome.runtime.getManifest().version,
-}
+};

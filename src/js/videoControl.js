@@ -7,7 +7,7 @@ let detectVideoHandle = null;
 let detectVideoTime = new Date().getTime();
 const indicatorSize = {
   width: 100,
-  height: 100
+  height: 100,
 };
 const conflictCount = [];
 let canvas;
@@ -25,44 +25,63 @@ function handleVisibilityChange() {
   }
 }
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.job) {
-      if (request.job === 'videoControlContentScriptSwitch') {
-        enabled = request.enabled;
-        if (enabled !== false) {
-          enabled = true;
-          initVideoControl();
-        }
-      } else if (request.job === 'videoControlContentScriptSelfCheck') {
-        isOn('videoControl', function() {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.job) {
+    if (request.job === 'videoControlContentScriptSwitch') {
+      enabled = request.enabled;
+      if (enabled !== false) {
+        enabled = true;
+        initVideoControl();
+      }
+    } else if (request.job === 'videoControlContentScriptSelfCheck') {
+      isOn(
+        'videoControl',
+        function() {
           const host = window.location.hostname;
           enabledDBId = 'videoControl_website_' + host;
           isOn(enabledDBId, initVideoControl);
-        }, function() {enabled = false})
-      }
+        },
+        function() {
+          enabled = false;
+        },
+      );
     }
-  });
+  }
+});
 
 function initVideoControl() {
   if (inited) {
     return;
   }
   inited = true;
-  $('body').append('<canvas id="NooBox-VideoBeyond-preCanvas" style="display: none"></canvas>');
+  $('body').append(
+    '<canvas id="NooBox-VideoBeyond-preCanvas" style="display: none"></canvas>',
+  );
   canvas = $('#NooBox-VideoBeyond-preCanvas')[0];
   ctx = canvas.getContext('2d');
-  buildVideoStates([{
-    event: 'play',
-    target: 'playPause'
-  }, {
-    event: 'pause',
-    target: 'playPause'
-  }, {
-    event: 'volumechange',
-    target: 'volumeChange'
-  }]);
-  $(document.head).append('<style>@-webkit-keyframes hideAnimation2{0% { opacity:0.618;} 100% {opacity:0;}}@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{-webkit-animation:hideAnimation2 ease-in 0.333s forwards;animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:' + indicatorSize.height + 'px;width:' + indicatorSize.width + 'px;position:absolute;text-align:center;font-size:23px;line-height:' + indicatorSize.height + 'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>');
+  buildVideoStates([
+    {
+      event: 'play',
+      target: 'playPause',
+    },
+    {
+      event: 'pause',
+      target: 'playPause',
+    },
+    {
+      event: 'volumechange',
+      target: 'volumeChange',
+    },
+  ]);
+  $(document.head).append(
+    '<style>@-webkit-keyframes hideAnimation2{0% { opacity:0.618;} 100% {opacity:0;}}@keyframes hideAnimation{0% { opacity:0.618;} 100% {opacity:0;}}.noobox-hide{-webkit-animation:hideAnimation2 ease-in 0.333s forwards;animation:hideAnimation ease-in 0.333s forwards;}#NooBox-Video-Indicator-Icon{margin-top:-25px;height:30px;margin-bottom:-5px}#NooBox-Video-Indicator{pointer-events:none;display:none;height:' +
+      indicatorSize.height +
+      'px;width:' +
+      indicatorSize.width +
+      'px;position:absolute;text-align:center;font-size:23px;line-height:' +
+      indicatorSize.height +
+      'px;opacity:0.618;background-color:rgb(43,54,125);color:white;z-index:99999999999999;margin:0;padding:0;border:0}</style>',
+  );
   $('body').append('<div id="NooBox-Video-Indicator"></div>');
   detectVideoHandle = setInterval(detectVideo, 111);
   $('body').on('click', function(e) {
@@ -75,26 +94,58 @@ function initVideoControl() {
   $('body').on('dblclick', function(e) {
     placeIndicator();
     vid = getVideo(e);
-    if (enabled && vid) {}
+    if (enabled && vid) {
+    }
   });
   document.onkeydown = function(e) {
     e = e || window.event;
     if (enabled && vid) {
       const k = e.keyCode;
-      if (k == '38' || k == '40' || k == '37' || k == '39' || k == '36' || k == '35') {
+      if (
+        k == '38' ||
+        k == '40' ||
+        k == '37' ||
+        k == '39' ||
+        k == '36' ||
+        k == '35'
+      ) {
         chrome.runtime.sendMessage({
           job: 'videoControlUse',
         });
       }
       placeIndicator();
       if (e.keyCode == '38') {
-        detectConflictAndAct(volumeUp, vid, 'volumeChange', 'arrowUpVolumeChange', 111);
+        detectConflictAndAct(
+          volumeUp,
+          vid,
+          'volumeChange',
+          'arrowUpVolumeChange',
+          111,
+        );
       } else if (e.keyCode == '40') {
-        detectConflictAndAct(volumeDown, vid, 'volumeChange', 'arrowDownVolumeChange', 111);
+        detectConflictAndAct(
+          volumeDown,
+          vid,
+          'volumeChange',
+          'arrowDownVolumeChange',
+          111,
+        );
       } else if (e.keyCode == '37') {
-        detectConflictAndAct(rewindSmall, vid, 'timeChange', 'rewindSmall', 111);
+        detectConflictAndAct(
+          rewindSmall,
+          vid,
+          'timeChange',
+          'rewindSmall',
+          111,
+        );
       } else if (e.keyCode == '39') {
-        detectConflictAndAct(forwardSmall, vid, 'timeChange', 'forwardSmall', 111);
+        detectConflictAndAct(
+          forwardSmall,
+          vid,
+          'timeChange',
+          'forwardSmall',
+          111,
+        );
       } else if (e.keyCode == '36') {
         goTo(vid, 0);
       } else if (e.keyCode == '35') {
@@ -107,9 +158,23 @@ function initVideoControl() {
       placeIndicator();
       e.preventDefault();
       const k = String.fromCharCode(e.which);
-      if (k == 'k' || k == ' ' || k == 'j' || k == 'l' || k == ',' || k == '.' || k == '<' || k == '>' || k == 'r' || k == 'm' || k == 'f' || k == 'd' || k == 'b') {
+      if (
+        k == 'k' ||
+        k == ' ' ||
+        k == 'j' ||
+        k == 'l' ||
+        k == ',' ||
+        k == '.' ||
+        k == '<' ||
+        k == '>' ||
+        k == 'r' ||
+        k == 'm' ||
+        k == 'f' ||
+        k == 'd' ||
+        k == 'b'
+      ) {
         chrome.runtime.sendMessage({
-          job: 'videoControl_use'
+          job: 'videoControl_use',
         });
       }
       switch (k) {
@@ -117,31 +182,73 @@ function initVideoControl() {
           detectConflictAndAct(playPause, vid, 'playPause', 'kPlayPause', 111);
           break;
         case ' ':
-          detectConflictAndAct(playPause, vid, 'playPause', 'spacePlayPause', 111);
+          detectConflictAndAct(
+            playPause,
+            vid,
+            'playPause',
+            'spacePlayPause',
+            111,
+          );
           break;
         case 'j':
           detectConflictAndAct(rewindBig, vid, 'timeChange', 'rewindBig', 111);
           break;
         case 'l':
-          detectConflictAndAct(forwardBig, vid, 'timeChange', 'forwardBig', 111);
+          detectConflictAndAct(
+            forwardBig,
+            vid,
+            'timeChange',
+            'forwardBig',
+            111,
+          );
           break;
         case ',':
-          detectConflictAndAct(rewindTiny, vid, 'timeChange', 'rewindTiny', 111);
+          detectConflictAndAct(
+            rewindTiny,
+            vid,
+            'timeChange',
+            'rewindTiny',
+            111,
+          );
           break;
         case '.':
-          detectConflictAndAct(forwardTiny, vid, 'timeChange', 'forwardTiny', 111);
+          detectConflictAndAct(
+            forwardTiny,
+            vid,
+            'timeChange',
+            'forwardTiny',
+            111,
+          );
           break;
         case '<':
-          detectConflictAndAct(slowDown, vid, 'rateChange', 'slowRateChange', 111);
+          detectConflictAndAct(
+            slowDown,
+            vid,
+            'rateChange',
+            'slowRateChange',
+            111,
+          );
           break;
         case '>':
-          detectConflictAndAct(speedUp, vid, 'rateChange', 'speedRateChange', 111);
+          detectConflictAndAct(
+            speedUp,
+            vid,
+            'rateChange',
+            'speedRateChange',
+            111,
+          );
           break;
         case 'r':
           rotate(vid, 90);
           break;
         case 'm':
-          detectConflictAndAct(mute, vid, 'volumeChange', 'muteVolumeChange', 111);
+          detectConflictAndAct(
+            mute,
+            vid,
+            'volumeChange',
+            'muteVolumeChange',
+            111,
+          );
           break;
         case 'f':
           toggleFullscreen(vid);
@@ -169,30 +276,44 @@ function displayIndicator(text, icon) {
   setTimeout(function() {
     $('#NooBox-Video-Indicator').addClass('noobox-hide');
   }, 100);
-  $('#NooBox-Video-Indicator').html('<div id="NooBox-Video-Indicator-Icon">' + icon + '</div>' + text);
+  $('#NooBox-Video-Indicator').html(
+    '<div id="NooBox-Video-Indicator-Icon">' + icon + '</div>' + text,
+  );
 }
 
-function detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout) {
+function detectConflictAndAct(
+  actFunction,
+  v,
+  actionId,
+  conflictId,
+  detectTimeout,
+) {
   placeIndicator();
   const index = getIndex(vid);
   if (!index) {
-    buildVideoStates([{
-      event: 'play',
-      target: 'playPause'
-    }, {
-      event: 'pause',
-      target: 'playPause'
-    }, {
-      event: 'volumechange',
-      target: 'volumeChange'
-    }, {
-      event: 'timeupdate',
-      target: 'timeUpdate'
-    }, {
-      event: 'ratechange',
-      target: 'rateChange'
-    }, {
-		}]);
+    buildVideoStates([
+      {
+        event: 'play',
+        target: 'playPause',
+      },
+      {
+        event: 'pause',
+        target: 'playPause',
+      },
+      {
+        event: 'volumechange',
+        target: 'volumeChange',
+      },
+      {
+        event: 'timeupdate',
+        target: 'timeUpdate',
+      },
+      {
+        event: 'ratechange',
+        target: 'rateChange',
+      },
+      {},
+    ]);
     detectConflictAndAct(actFunction, v, actionId, conflictId, detectTimeout);
     return;
   }
@@ -238,15 +359,15 @@ function beyond(v) {
       let temp = new Date().getTime();
       ctx.drawImage(v, 0, 0, $(v).width(), $(v).height());
       temp = new Date().getTime();
-      const dataURI = canvas.toDataURL("image/png");
+      const dataURI = canvas.toDataURL('image/png');
       temp = new Date().getTime();
       chrome.runtime.sendMessage({
         job: 'passToFront',
         message: {
           job: 'videoBeyond',
           dataURI: dataURI,
-          prev: prev
-        }
+          prev: prev,
+        },
       });
       temp = new Date().getTime();
     }, 200);
@@ -255,7 +376,6 @@ function beyond(v) {
     beyondId = -1;
   }
 }
-
 
 function rewind(v, step) {
   v.currentTime -= step;
@@ -292,8 +412,8 @@ function forwardTiny(v) {
 }
 
 function goTo(v, i) {
-  v.currentTime = v.duration * i / 10;
-  displayIndicator((i * 10) + '%', '&commat;');
+  v.currentTime = (v.duration * i) / 10;
+  displayIndicator(i * 10 + '%', '&commat;');
 }
 
 function volumeUp(v) {
@@ -311,7 +431,7 @@ function volumeDown(v) {
 }
 
 function speedUp(v) {
-	const step = playbackRateStep;
+  const step = playbackRateStep;
   if (v.playbackRate.toFixed(2) <= 16 - step) {
     v.playbackRate = (v.playbackRate + step).toFixed(2);
     displayIndicator(v.playbackRate, '&raquo;');
@@ -319,7 +439,7 @@ function speedUp(v) {
 }
 
 function slowDown(v) {
-	const step = playbackRateStep;
+  const step = playbackRateStep;
   if (v.playbackRate.toFixed(2) >= step + 0.0625) {
     v.playbackRate = (v.playbackRate - step).toFixed(2);
     displayIndicator(v.playbackRate, '&laquo;');
@@ -331,7 +451,10 @@ function rotate(v, step) {
   const matrix = vv.css('transform') || vv.css('-webkit-transform');
   let deg;
   if (matrix !== 'none') {
-    const values = matrix.split('(')[1].split(')')[0].split(',');
+    const values = matrix
+      .split('(')[1]
+      .split(')')[0]
+      .split(',');
     const a = values[0];
     const b = values[1];
     deg = Math.round(Math.atan2(b, a) * (180 / Math.PI));
@@ -346,7 +469,9 @@ function rotate(v, step) {
 function mute(v) {
   v.muted = !v.muted;
   if (v.muted) {
-    displayIndicator('<span style="font-size:48px;text-decoration:line-through;">&sung;</span>');
+    displayIndicator(
+      '<span style="font-size:48px;text-decoration:line-through;">&sung;</span>',
+    );
   } else {
     displayIndicator('<span style="font-size:48px;">&sung;</span>');
   }
@@ -362,7 +487,7 @@ function toggleFullscreen(v) {
 }
 
 function download(v) {
-  const link = document.createElement("a");
+  const link = document.createElement('a');
   link.href = v.currentSrc;
   link.download = 'video';
   document.body.appendChild(link);
@@ -384,7 +509,14 @@ function getVideo(e) {
   const y = e.pageY;
   for (let i = 0; i < videoList.length; i++) {
     pos = $(videoList[i]).offset();
-    if (!(x < pos.left || y < pos.top || x > pos.left + $(videoList[i]).width() || y > pos.top + $(videoList[i]).height())) {
+    if (
+      !(
+        x < pos.left ||
+        y < pos.top ||
+        x > pos.left + $(videoList[i]).width() ||
+        y > pos.top + $(videoList[i]).height()
+      )
+    ) {
       v = videoList[i];
       break;
     }
@@ -418,13 +550,16 @@ function buildVideoStates(listenerList) {
     if (index == null) {
       conflictCount.push({
         playPause: 0,
-        volumeChange: 0
+        volumeChange: 0,
       });
       const newIndex = conflictCount.length - 1;
-      $(v).addClass('NooBox-Video-' + (newIndex));
+      $(v).addClass('NooBox-Video-' + newIndex);
       for (let j = 0; j < listenerList.length; j++) {
         const listener = listenerList[j];
-        $(v).on(listener.event, incCounter.bind(null, newIndex, listener.target));
+        $(v).on(
+          listener.event,
+          incCounter.bind(null, newIndex, listener.target),
+        );
       }
     }
   }
@@ -445,23 +580,26 @@ function placeIndicator() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
   isOn('videoControl', function() {
     const host = window.location.hostname;
     enabledDBId = 'videoControl_website_' + host;
-    isOn(enabledDBId, function() {
-      enabled = true;
-    }, function() {
-      enabled = false;
-    });
+    isOn(
+      enabledDBId,
+      function() {
+        enabled = true;
+      },
+      function() {
+        enabled = false;
+      },
+    );
     initVideoControl();
   });
 });
 
 function get(key, callback) {
   chrome.storage.sync.get(key, function(result) {
-    if (callback)
-      callback(result[key]);
+    if (callback) callback(result[key]);
   });
 }
 

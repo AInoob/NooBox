@@ -1,14 +1,14 @@
-import React from "react";
-import { Table, Button, Card, Tooltip, Popconfirm } from "antd";
-import styled from "styled-components";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
+import React from 'react';
+import { Table, Button, Card, Tooltip, Popconfirm } from 'antd';
+import styled from 'styled-components';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
 //redux
-import { engineIcon } from "SRC/constant/settingMap.js";
-import { connect } from "dva";
-import reduxActions from "SRC/popup/reduxActions.js";
-import reselector from "SRC/popup/reselector.js";
-import Loader from "SRC/common/component/Loader.jsx";
+import { engineIcon } from 'SRC/constant/settingMap.js';
+import { connect } from 'dva';
+import reduxActions from 'SRC/popup/reduxActions.js';
+import reselector from 'SRC/popup/reselector.js';
+import Loader from 'SRC/common/component/Loader.jsx';
 const { Meta } = Card;
 const { Column } = Table;
 const HistoryContainer = styled.div`
@@ -59,11 +59,11 @@ class UserHistory extends React.Component {
     const { userHistory, actions } = this.props;
     let deleteAll = (
       <Popconfirm
-        title={i18n("clear_all") + " ?"}
+        title={i18n('clear_all') + ' ?'}
         onConfirm={() => actions.userHistoryDeleteAll()}
         placement="left"
       >
-        <div style={{ maxWidth: 100, margin: "auto" }}>
+        <div style={{ maxWidth: 100, margin: 'auto' }}>
           <Button type="danger">
             <FAIcon icon={faSolid.faTrash} />
           </Button>
@@ -76,16 +76,16 @@ class UserHistory extends React.Component {
           <Table dataSource={userHistory.dbData} bordered={true}>
             <Column
               className="tableHeader"
-              title={i18n("history")}
+              title={i18n('history')}
               key="dbKey"
               dataIndex="dbKey"
               render={(text, record) => {
                 let usedEngine = [];
-                let firstKeyword = "";
+                let firstKeyword = '';
                 let sizeInfo;
-                if(record.data.searchImageInfo){
+                if (record.data.searchImageInfo) {
                   record.data.searchImageInfo.forEach((e, index) => {
-                    if (firstKeyword == "" && e.keyword !== "") {
+                    if (firstKeyword == '' && e.keyword !== '') {
                       firstKeyword = e.keyword;
                     }
                     if (e.engine) {
@@ -97,33 +97,33 @@ class UserHistory extends React.Component {
                         />
                       );
                     }
-                    if (sizeInfo == undefined && e.imageInfo["height"]) {
+                    if (sizeInfo == undefined && e.imageInfo['height']) {
                       sizeInfo =
-                        e.imageInfo["width"] + "x" + e.imageInfo["height"];
+                        e.imageInfo['width'] + 'x' + e.imageInfo['height'];
                     }
                   });
                 }
                 return (
                   <Card
                     key={record.dbKey}
-                    style={{ width: "164px", margin: "auto" }}
+                    style={{ width: '164px', margin: 'auto' }}
                     cover={
                       <img
                         className="historyImage"
-                        src={record.data.base64 || record.data.url || ""}
+                        src={record.data.base64 || record.data.url || ''}
                         onClick={() =>
                           actions.userHistoryLoadHisotry(record.dbKey)
                         }
                       />
                     }
                     actions={[
-                      <Tooltip title={i18n("image_size")}>{sizeInfo}</Tooltip>,
-                      <Tooltip title={i18n("image_first_keyowrd")}>
+                      <Tooltip title={i18n('image_size')}>{sizeInfo}</Tooltip>,
+                      <Tooltip title={i18n('image_first_keyowrd')}>
                         {firstKeyword}
                       </Tooltip>,
-                      <Tooltip title={i18n("image_used_engine")}>
+                      <Tooltip title={i18n('image_used_engine')}>
                         {usedEngine}
-                      </Tooltip>
+                      </Tooltip>,
                     ]}
                   />
                 );
@@ -148,12 +148,12 @@ class UserHistory extends React.Component {
         </HistoryContainer>
       );
     } else {
-      return <Loader style={{ marginTop: "20%" }} />;
+      return <Loader style={{ marginTop: '20%' }} />;
     }
   }
 }
 
 export default connect(
   reselector,
-  reduxActions
+  reduxActions,
 )(UserHistory);

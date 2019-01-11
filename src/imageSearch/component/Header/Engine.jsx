@@ -1,30 +1,39 @@
-import React from "react";
-import styled from "styled-components";
-import { List,Card, Tooltip, Popover, InputNumber, Button, Icon,Spin } from "antd";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import google from "SRC/assets/engineLogos/google.png";
-import baidu from "SRC/assets/engineLogos/baidu.png";
-import ascii2d from "SRC/assets/engineLogos/ascii2d.png";
-import bing from "SRC/assets/engineLogos/bing.png";
-import saucenao from "SRC/assets/engineLogos/saucenao.png";
-import sogou from "SRC/assets/engineLogos/sogou.png";
-import tineye from "SRC/assets/engineLogos/tineye.png";
-import iqdb from "SRC/assets/engineLogos/iqdb.png";
-import Loader from "SRC/common/component/Loader.jsx";
-import yandex from "SRC/assets/engineLogos/yandex.png";
+import React from 'react';
+import styled from 'styled-components';
+import {
+  List,
+  Card,
+  Tooltip,
+  Popover,
+  InputNumber,
+  Button,
+  Icon,
+  Spin,
+} from 'antd';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import google from 'SRC/assets/engineLogos/google.png';
+import baidu from 'SRC/assets/engineLogos/baidu.png';
+import ascii2d from 'SRC/assets/engineLogos/ascii2d.png';
+import bing from 'SRC/assets/engineLogos/bing.png';
+import saucenao from 'SRC/assets/engineLogos/saucenao.png';
+import sogou from 'SRC/assets/engineLogos/sogou.png';
+import tineye from 'SRC/assets/engineLogos/tineye.png';
+import iqdb from 'SRC/assets/engineLogos/iqdb.png';
+import Loader from 'SRC/common/component/Loader.jsx';
+import yandex from 'SRC/assets/engineLogos/yandex.png';
 const { Meta } = Card;
 const gridStyle = {
-  width: "12.5%",
+  width: '12.5%',
   padding: 0,
-  textAlign: "center"
+  textAlign: 'center',
 };
 const EngineContainer = styled.div`
   .ant-card-body {
     padding: 0;
   }
   .box:before {
-    content: "";
+    content: '';
     display: block;
     padding-top: 100%;
   }
@@ -44,16 +53,16 @@ const EngineContainer = styled.div`
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-    opacity:1;
-    filer:blur(0px);
+    opacity: 1;
+    filer: blur(0px);
     transition: opacity 2s;
   }
-  .engineImageLoading{
+  .engineImageLoading {
     width: 50px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-    filter:blur(2px);
+    filter: blur(2px);
     opacity: 0.3;
   }
   .engineImageHide {
@@ -78,7 +87,7 @@ const EngineContainer = styled.div`
     left: 0;
     right: 0;
     transform: translateY(-50%);
-    z-index:10;
+    z-index: 10;
     opacity: 1;
   }
   .engineLoadingDone {
@@ -88,9 +97,9 @@ const EngineContainer = styled.div`
     right: 0;
     transform: translateY(-50%);
     opacity: 0;
-    z-index:10;
-    visibility:hidden;
-    transition: opacity 2s,visibility 2s;
+    z-index: 10;
+    visibility: hidden;
+    transition: opacity 2s, visibility 2s;
   }
 `;
 
@@ -110,25 +119,24 @@ export default class Engine extends React.Component {
                   // spinning = {true}
                   className={
                     !this.props.google || this.props.googleDone
-                      ? "engineLoadingDone"
-                      : "engineLoading"
+                      ? 'engineLoadingDone'
+                      : 'engineLoading'
                   }
                   type="loading"
-                >
-                </Spin>
-                <a href={engineLink["google"]} target="_blank">
-                    {" "}
-                    <img
-                      className={
-                        this.props.google ?
-                        this.props.googleDone ?
-                        "engineImage":
-                        "engineImageLoading" :
-                        "engineImageHide"
-                      }
-                      src={google}
-                    />
-                  </a>
+                />
+                <a href={engineLink['google']} target="_blank">
+                  {' '}
+                  <img
+                    className={
+                      this.props.google
+                        ? this.props.googleDone
+                          ? 'engineImage'
+                          : 'engineImageLoading'
+                        : 'engineImageHide'
+                    }
+                    src={google}
+                  />
+                </a>
               </div>
             </div>
           </Card.Grid>
@@ -139,19 +147,19 @@ export default class Engine extends React.Component {
                   <Spin
                     className={
                       !this.props.baidu || this.props.baiduDone
-                        ? "engineLoadingDone"
-                        : "engineLoading"
+                        ? 'engineLoadingDone'
+                        : 'engineLoading'
                     }
                   />
-                  <a href={engineLink["baidu"]} target="_blank">
-                    {" "}
+                  <a href={engineLink['baidu']} target="_blank">
+                    {' '}
                     <img
                       className={
-                        this.props.baidu ?
-                        this.props.baiduDone ?
-                        "engineImage":
-                        "engineImageLoading" :
-                        "engineImageHide"
+                        this.props.baidu
+                          ? this.props.baiduDone
+                            ? 'engineImage'
+                            : 'engineImageLoading'
+                          : 'engineImageHide'
                       }
                       src={baidu}
                     />
@@ -167,20 +175,20 @@ export default class Engine extends React.Component {
                   <Spin
                     className={
                       !this.props.yandex || this.props.yandexDone
-                        ? "engineLoadingDone"
-                        : "engineLoading"
+                        ? 'engineLoadingDone'
+                        : 'engineLoading'
                     }
                     type="loading"
                   />
-                  <a href={engineLink["yandex"]} target="_blank">
-                    {" "}
+                  <a href={engineLink['yandex']} target="_blank">
+                    {' '}
                     <img
                       className={
-                        this.props.yandex ?
-                        this.props.yandexDone ?
-                        "engineImage":
-                        "engineImageLoading" :
-                        "engineImageHide"
+                        this.props.yandex
+                          ? this.props.yandexDone
+                            ? 'engineImage'
+                            : 'engineImageLoading'
+                          : 'engineImageHide'
                       }
                       src={yandex}
                     />
@@ -196,20 +204,20 @@ export default class Engine extends React.Component {
                   <Spin
                     className={
                       !this.props.bing || this.props.bingDone
-                        ? "engineLoadingDone"
-                        : "engineLoading"
+                        ? 'engineLoadingDone'
+                        : 'engineLoading'
                     }
                     type="loading"
                   />
-                  <a href={engineLink["bing"]} target="_blank">
-                    {" "}
+                  <a href={engineLink['bing']} target="_blank">
+                    {' '}
                     <img
                       className={
-                        this.props.bing ?
-                        this.props.bingDone ?
-                        "engineImage":
-                        "engineImageLoading" :
-                        "engineImageHide"
+                        this.props.bing
+                          ? this.props.bingDone
+                            ? 'engineImage'
+                            : 'engineImageLoading'
+                          : 'engineImageHide'
                       }
                       src={bing}
                     />
@@ -225,20 +233,20 @@ export default class Engine extends React.Component {
                   <Spin
                     className={
                       !this.props.tineye || this.props.tineyeDone
-                        ? "engineLoadingDone"
-                        : "engineLoading"
+                        ? 'engineLoadingDone'
+                        : 'engineLoading'
                     }
                     type="loading"
                   />
-                  <a href={engineLink["tineye"]} target="_blank">
-                    {" "}
+                  <a href={engineLink['tineye']} target="_blank">
+                    {' '}
                     <img
                       className={
-                        this.props.tineye ?
-                        this.props.tineyeDone ?
-                        "engineImage":
-                        "engineImageLoading" :
-                        "engineImageHide"
+                        this.props.tineye
+                          ? this.props.tineyeDone
+                            ? 'engineImage'
+                            : 'engineImageLoading'
+                          : 'engineImageHide'
                       }
                       src={tineye}
                     />
@@ -251,20 +259,21 @@ export default class Engine extends React.Component {
             <div className="box">
               <div className="engineContainer">
                 <Spin
-                  className= {
+                  className={
                     !this.props.saucenao || this.props.saucenaoDone
-                      ? "engineLoadingDone"
-                      : "engineLoading"
+                      ? 'engineLoadingDone'
+                      : 'engineLoading'
                   }
                   type="loading"
                 />
-                <a href={engineLink["saucenao"]} target="_blank">
+                <a href={engineLink['saucenao']} target="_blank">
                   <img
                     className={
-                      this.props.saucenao ? this.props.saucenaoDone ?
-                      "engineImage":
-                      "engineImageLoading" :
-                      "engineImageHide"
+                      this.props.saucenao
+                        ? this.props.saucenaoDone
+                          ? 'engineImage'
+                          : 'engineImageLoading'
+                        : 'engineImageHide'
                     }
                     src={saucenao}
                   />
@@ -275,20 +284,22 @@ export default class Engine extends React.Component {
           <Card.Grid style={gridStyle}>
             <div className="box">
               <div className="engineContainer">
-                  <Spin
-                    className={
+                <Spin
+                  className={
                     !this.props.iqdb || this.props.iqdbDone
-                      ? "engineLoadingDone"
-                      : "engineLoading"
-                    }
-                    type="loading" />
-                <a href={engineLink["iqdb"]} target="_blank">
+                      ? 'engineLoadingDone'
+                      : 'engineLoading'
+                  }
+                  type="loading"
+                />
+                <a href={engineLink['iqdb']} target="_blank">
                   <img
                     className={
-                      this.props.iqdb ? this.props.iqdbDone ?
-                      "engineImage":
-                      "engineImageLoading" :
-                      "engineImageHide"
+                      this.props.iqdb
+                        ? this.props.iqdbDone
+                          ? 'engineImage'
+                          : 'engineImageLoading'
+                        : 'engineImageHide'
                     }
                     src={iqdb}
                   />
@@ -297,43 +308,74 @@ export default class Engine extends React.Component {
             </div>
           </Card.Grid>
           <Card.Grid style={gridStyle}>
-            <Popover content={
-              engineLink["ascii2d"] == undefined ? "":
-                <ul
-                  style ={{
-                    listStyleType:"none",
-                    paddingLeft:"5px",
-                  }}
-                >
-                  <li>
-                    <a href= {"https://ascii2d.net/search/color/" + engineLink["ascii2d"]} target="_blank" >{i18n("ascii2d_link_mode_color")}</a>
-                  </li>
-                  <li>
-                    <a href= {"https://ascii2d.net/search/bovw/" + engineLink["ascii2d"]} target="_blank" >{i18n("ascii2d_link_mode_bovw")}</a>
-                  </li>
-                  <li>
-                    <a href= {"https://ascii2d.net/details/" + engineLink["ascii2d"]+"/new"} target="_blank" >{i18n("ascii2d_link_mode_detail")}</a>
-                  </li>
-                </ul>
-            }
-            placement="right"
+            <Popover
+              content={
+                engineLink['ascii2d'] == undefined ? (
+                  ''
+                ) : (
+                  <ul
+                    style={{
+                      listStyleType: 'none',
+                      paddingLeft: '5px',
+                    }}
+                  >
+                    <li>
+                      <a
+                        href={
+                          'https://ascii2d.net/search/color/' +
+                          engineLink['ascii2d']
+                        }
+                        target="_blank"
+                      >
+                        {i18n('ascii2d_link_mode_color')}
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href={
+                          'https://ascii2d.net/search/bovw/' +
+                          engineLink['ascii2d']
+                        }
+                        target="_blank"
+                      >
+                        {i18n('ascii2d_link_mode_bovw')}
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href={
+                          'https://ascii2d.net/details/' +
+                          engineLink['ascii2d'] +
+                          '/new'
+                        }
+                        target="_blank"
+                      >
+                        {i18n('ascii2d_link_mode_detail')}
+                      </a>
+                    </li>
+                  </ul>
+                )
+              }
+              placement="right"
             >
               <div className="box">
                 <div className="engineContainer">
                   <Spin
                     className={
                       !this.props.ascii2d || this.props.ascii2dDone
-                        ? "engineLoadingDone"
-                        : "engineLoading"
+                        ? 'engineLoadingDone'
+                        : 'engineLoading'
                     }
-                    type="loading" />
-                  <a href={engineLink["ascii2d"]} target="_blank">
+                    type="loading"
+                  />
+                  <a href={engineLink['ascii2d']} target="_blank">
                     <img
                       className={
-                        this.props.ascii2d ? this.props.ascii2dDone ?
-                          "engineImage":
-                          "engineImageLoading" :
-                          "engineImageHide"
+                        this.props.ascii2d
+                          ? this.props.ascii2dDone
+                            ? 'engineImage'
+                            : 'engineImageLoading'
+                          : 'engineImageHide'
                       }
                       src={ascii2d}
                     />
@@ -341,7 +383,6 @@ export default class Engine extends React.Component {
                 </div>
               </div>
             </Popover>
-
           </Card.Grid>
         </Card>
       </EngineContainer>
