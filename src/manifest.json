@@ -12,23 +12,29 @@
   "icons": {
     "128": "static/nooboxLogos/icon_128.png"
   },
-  "web_accessible_resources":["searchResult.html"],
+  "web_accessible_resources": ["searchResult.html"],
   "background": {
-    "scripts":["thirdParty/jquery.min.js", "thirdParty/fileSavor.js", "thirdParty/jszip.min.js", "js/background.js"]
+    "scripts": [
+      "thirdParty/jquery.min.js",
+      "thirdParty/fileSavor.js",
+      "thirdParty/jszip.min.js",
+      "js/background.js"
+    ]
   },
-  "content_scripts":[
+  "content_scripts": [
     {
-      "matches":[
-        "http://*/*",
-        "https://*/*"
+      "matches": ["http://*/*", "https://*/*"],
+      "js": [
+        "thirdParty/jquery.min.js",
+        "js/videoControl.js",
+        "js/extractImages.js"
       ],
-      "js":["thirdParty/jquery.min.js", "js/videoControl.js", "js/extractImages.js"],
-      "run_at":"document_start",
-      "all_frames":true
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
   "sandbox": {
-    "pages":["sandbox.html"]
+    "pages": ["sandbox.html"]
   },
   "default_locale": "en",
   "permissions": [

@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 //redux
-import { connect } from "dva";
-import reduxActions from "SRC/popup/reduxActions.js";
-import reselector from "SRC/popup/reselector.js";
-import { Button } from "antd";
-import UploadImage from "SRC/popup/components/overview/UploadImage.jsx";
-import AutoRefresh from "SRC/popup/components/overview/AutoRefresh.jsx";
-import H5VideoControl from "SRC/popup/components/overview/H5VideoControl.jsx";
-import Loader from "SRC/common/component/Loader.jsx";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import styled from "styled-components";
-import emoji from "SRC/assets/fun/emoji.svg";
+import { connect } from 'dva';
+import reduxActions from 'SRC/popup/reduxActions.js';
+import reselector from 'SRC/popup/reselector.js';
+import { Button } from 'antd';
+import UploadImage from 'SRC/popup/components/overview/UploadImage.jsx';
+import AutoRefresh from 'SRC/popup/components/overview/AutoRefresh.jsx';
+import H5VideoControl from 'SRC/popup/components/overview/H5VideoControl.jsx';
+import Loader from 'SRC/common/component/Loader.jsx';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import styled from 'styled-components';
+import emoji from 'SRC/assets/fun/emoji.svg';
 const OverviewContainer = styled.div`
   margin-bottom: 10px;
   .uploadImage {
@@ -92,7 +92,7 @@ class Overview extends React.Component {
   render() {
     const { actions, overview } = this.props;
     if (!overview.inited) {
-      return <Loader style={{ marginTop: "20%" }} />;
+      return <Loader style={{ marginTop: '20%' }} />;
     } else {
       let imageSearch = overview.showImageSearch ? (
         <div className="uploadImage">
@@ -130,7 +130,7 @@ class Overview extends React.Component {
               <FAIcon icon={faSolid.faArrowUp} />
             </div>
             <div className="description">
-              <span>{i18n("choose_tools_from_here") + " ?"}</span>
+              <span>{i18n('choose_tools_from_here') + ' ?'}</span>
             </div>
             <div className="emoji">
               <img src={emoji} />
@@ -152,5 +152,5 @@ class Overview extends React.Component {
 
 export default connect(
   reselector,
-  reduxActions
+  reduxActions,
 )(Overview);

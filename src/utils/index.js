@@ -1,14 +1,22 @@
 const BASE64_MARKER = ';base64,';
 
-export const serialize = (obj) => {
-  return '?' + Object.keys(obj).reduce(function (a, k) { a.push(k + '=' + encodeURIComponent(obj[k])); return a }, []).join('&')
+export const serialize = obj => {
+  return (
+    '?' +
+    Object.keys(obj)
+      .reduce(function(a, k) {
+        a.push(k + '=' + encodeURIComponent(obj[k]));
+        return a;
+      }, [])
+      .join('&')
+  );
 };
 
 export const wait = duration => {
   return new Promise(resolve => {
     setTimeout(resolve, duration);
   });
-}
+};
 
 export const fetchBlob = (uri, callback) => {
   const xhr = new XMLHttpRequest();
@@ -16,30 +24,29 @@ export const fetchBlob = (uri, callback) => {
   xhr.responseType = 'blob';
 
   xhr.onload = function(e) {
-		if(xhr.readyState == 4) {
-			if (this.status == 200) {
-				const blob = new Blob([this.response], {
-					type: 'image/png'
-				});;
-				if (callback) {
-					callback(blob);
-				}
-			}
-			else {
-				console.log('error! yay');
-				callback();
-			}
-		}
+    if (xhr.readyState == 4) {
+      if (this.status == 200) {
+        const blob = new Blob([this.response], {
+          type: 'image/png',
+        });
+        if (callback) {
+          callback(blob);
+        }
+      } else {
+        console.log('error! yay');
+        callback();
+      }
+    }
   };
-	xhr.onerror = function() {
-		console.log('error! yay');
-		callback();
-	}
+  xhr.onerror = function() {
+    console.log('error! yay');
+    callback();
+  };
   xhr.send();
 };
 
-export const convertDataURIToBinary = (dataURI) => {
-    console.log(dataURI);
+export const convertDataURIToBinary = dataURI => {
+  console.log(dataURI);
   try {
     const base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
     const base64 = dataURI.substring(base64Index);
@@ -63,9 +70,9 @@ export const convertDataURIToBinary = (dataURI) => {
       }
       return array2;
     } catch (e) {
-      return ;
+      return;
     }
     console.log(e);
     return array;
   }
-}
+};
