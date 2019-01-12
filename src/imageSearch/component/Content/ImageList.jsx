@@ -1,11 +1,11 @@
-import React from "react";
-import styled from "styled-components";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import { engineIcon } from "SRC/constant/settingMap.js";
-import { Row, Col, Icon, List, Avatar, Modal } from "antd";
-import Loader from "SRC/common/component/Loader.jsx";
-import ImageLost from  "SRC/assets/fun/ImageLost.png"
+import React from 'react';
+import styled from 'styled-components';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import { engineIcon } from 'SRC/constant/settingMap.js';
+import { Row, Col, Icon, List, Avatar, Modal } from 'antd';
+import Loader from 'SRC/common/component/Loader.jsx';
+import ImageLost from 'SRC/assets/fun/ImageLost.png';
 const ResultContainer = styled.div`
   background:white;
   border: 1px solid #e8e8e8;
@@ -45,21 +45,21 @@ export default class ImageList extends React.Component {
     super(props);
     this.state = {
       showModal: false,
-      imageUrl: ""
+      imageUrl: '',
     };
   }
   showModal(sourceUrl) {
     this.setState({
       showModal: true,
-      imageUrl: sourceUrl
+      imageUrl: sourceUrl,
     });
   }
   hideModal() {
     this.setState({
-      showModal: false
+      showModal: false,
     });
   }
-  imgError(e){
+  imgError(e) {
     e.target.src = ImageLost;
   }
   render() {
@@ -81,16 +81,16 @@ export default class ImageList extends React.Component {
                     icon={faSolid.faSearchPlus}
                   />,
                   item.imageInfo.width == -1 ? (
-                    <p>{i18n("no_size_info")}</p>
+                    <p>{i18n('no_size_info')}</p>
                   ) : (
                     <p className="sizeInfo">
-                      {item.imageInfo.height + " x " + item.imageInfo.width}
+                      {item.imageInfo.height + ' x ' + item.imageInfo.width}
                     </p>
                   ),
                   <img
                     className="searchEngine"
-                    src={engineIcon[item["searchEngine"]]}
-                  />
+                    src={engineIcon[item['searchEngine']]}
+                  />,
                 ]}
                 extra={
                   <img
@@ -98,7 +98,7 @@ export default class ImageList extends React.Component {
                     alt="Image Is Dead, Sorry"
                     onClick={() => this.showModal(item.imageUrl)}
                     src={item.imageUrl}
-                    onError={(e)=>this.imgError(e)}
+                    onError={e => this.imgError(e)}
                   />
                 }
               >
@@ -120,9 +120,9 @@ export default class ImageList extends React.Component {
           >
             <img
               alt="Image Down Sorry"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               src={this.state.imageUrl}
-              onError={(e)=>this.imgError(e)}
+              onError={e => this.imgError(e)}
             />
           </Modal>
         </ResultContainer>
@@ -130,7 +130,7 @@ export default class ImageList extends React.Component {
     } else {
       return (
         <ResultContainer>
-          <Loader style={{ marginTop: "5%" }} />
+          <Loader style={{ marginTop: '5%' }} />
         </ResultContainer>
       );
     }

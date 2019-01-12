@@ -1,24 +1,24 @@
-import React from "react";
-import { withRouter } from "dva/router";
-import { LocaleProvider } from "antd";
+import React from 'react';
+import { withRouter } from 'dva/router';
+import { LocaleProvider } from 'antd';
 //redux
-import { connect } from "dva";
-import reduxActions from "SRC/popup/reduxActions.js";
-import reselector from "SRC/popup/reselector.js";
-import zh_CN from "antd/lib/locale-provider/zh_CN";
-import zh_TW from "antd/lib/locale-provider/zh_TW";
-import en_US from "antd/lib/locale-provider/en_US";
-import styled from "styled-components";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import { Menu } from "antd";
+import { connect } from 'dva';
+import reduxActions from 'SRC/popup/reduxActions.js';
+import reselector from 'SRC/popup/reselector.js';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import zh_TW from 'antd/lib/locale-provider/zh_TW';
+import en_US from 'antd/lib/locale-provider/en_US';
+import styled from 'styled-components';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import { Menu } from 'antd';
 import {
   OVERVIEW_URL,
   HISTORY_URL,
   OPTIONS_URL,
-  ABOUT_URL
-} from "../../constant/navURL.js";
-import { Link, Router, Redirect } from "react-router-dom";
+  ABOUT_URL,
+} from '../../constant/navURL.js';
+import { Link, Router, Redirect } from 'react-router-dom';
 
 const NooboxContainer = styled.div`
   width: 360px;
@@ -29,9 +29,9 @@ const NooboxContainer = styled.div`
   }
 `;
 const locale = {
-  "en-US": en_US,
-  "zh-CN": zh_CN,
-  "zh-TW": zh_TW
+  'en-US': en_US,
+  'zh-CN': zh_CN,
+  'zh-TW': zh_TW,
 };
 class Noobox extends React.Component {
   render() {
@@ -60,7 +60,7 @@ class Noobox extends React.Component {
             <Menu.Item
               key={ABOUT_URL}
               onOpenChange={() => {
-                console.log("test");
+                console.log('test');
               }}
             >
               <Link to={ABOUT_URL}>
@@ -77,6 +77,6 @@ class Noobox extends React.Component {
 export default withRouter(
   connect(
     reselector,
-    reduxActions
-  )(Noobox)
+    reduxActions,
+  )(Noobox),
 );
