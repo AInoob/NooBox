@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 //redux
 //i18nMSG_appNamei18n
-import { connect } from "dva";
-import reduxActions from "SRC/popup/reduxActions.js";
-import reselector from "SRC/popup/reselector.js";
+import { connect } from 'dva';
+import reduxActions from 'SRC/popup/reduxActions.js';
+import reselector from 'SRC/popup/reselector.js';
 
-import { Tree, Card, Col, Row, Tooltip } from "antd";
-import styled from "styled-components";
-import { engineMap } from "SRC/constant/settingMap.js";
-import Loader from "SRC/common/component/Loader.jsx";
+import { Tree, Card, Col, Row, Tooltip } from 'antd';
+import styled from 'styled-components';
+import { engineMap } from 'SRC/constant/settingMap.js';
+import Loader from 'SRC/common/component/Loader.jsx';
 const TreeNode = Tree.TreeNode;
 const OptionsContainer = styled.div`
   margin: 10px;
@@ -63,7 +63,7 @@ class Options extends React.Component {
               src={element.icon}
               onClick={() => actions.optionsCheckEngine(element.dbName)}
               className={
-                currentEngine[element.dbName] ? "engineOpen" : "engineClose"
+                currentEngine[element.dbName] ? 'engineOpen' : 'engineClose'
               }
             />
           </Card>
@@ -74,44 +74,44 @@ class Options extends React.Component {
   render() {
     let { actions, options } = this.props;
     if (!options.inited) {
-      return <Loader style={{ marginTop: "20%" }} />;
+      return <Loader style={{ marginTop: '20%' }} />;
     }
     return (
       <OptionsContainer>
         <div id="exp">
-          <h4>{i18n("experience")}</h4>
+          <h4>{i18n('experience')}</h4>
           <Tree
             checkable
             onCheck={e => actions.optionsCheckExp(e)}
             defaultCheckedKeys={options.currentExp}
           >
-            <TreeNode title={i18n("history")} key="history" />
+            <TreeNode title={i18n('history')} key="history" />
             {/* <TreeNode title = {i18n('checkUpdate')} key = "checkUpdate"/> */}
           </Tree>
         </div>
         <div id="tool">
-          <h4>{i18n("tools")}</h4>
+          <h4>{i18n('tools')}</h4>
           <Tree
             checkable
             onCheck={e => actions.optionsCheckTool(e)}
-            onExpand = {(keys)=>actions.optionsExpandTree(keys)}
+            onExpand={keys => actions.optionsExpandTree(keys)}
             defaultCheckedKeys={options.currentTool}
-            expandedKeys ={options.expandImage}
+            expandedKeys={options.expandImage}
           >
-            <TreeNode title={i18n("auto_refresh")} key="autoRefresh" />
-            <TreeNode title={i18n("video_control")} key="videoControl" />
-            <TreeNode title={i18n("image")} key="image" >
+            <TreeNode title={i18n('auto_refresh')} key="autoRefresh" />
+            <TreeNode title={i18n('video_control')} key="videoControl" />
+            <TreeNode title={i18n('image')} key="image">
               <TreeNode
-                title={i18n("reverse_image_search")}
+                title={i18n('reverse_image_search')}
                 key="imageSearch"
               />
               <TreeNode
-                title={i18n("result_page_tab_front")}
+                title={i18n('result_page_tab_front')}
                 key="imageSearchNewTabFront"
               />
-              <TreeNode title={i18n("extract_images")} key="extractImages" />
+              <TreeNode title={i18n('extract_images')} key="extractImages" />
               <TreeNode
-                title={i18n("screenshot_search")}
+                title={i18n('screenshot_search')}
                 key="screenshotSearch"
               />
             </TreeNode>
@@ -119,13 +119,13 @@ class Options extends React.Component {
         </div>
         {options.showEngines ? (
           <div id="engines">
-            <h4>{i18n("avaiable_engine")}</h4>
+            <h4>{i18n('avaiable_engine')}</h4>
             <Row gutter={-1}>
               {this.generateIcon(this.props.actions, options.currentEngine)}
             </Row>
           </div>
         ) : (
-          ""
+          ''
         )}
       </OptionsContainer>
     );
@@ -134,5 +134,5 @@ class Options extends React.Component {
 
 export default connect(
   reselector,
-  reduxActions
+  reduxActions,
 )(Options);
