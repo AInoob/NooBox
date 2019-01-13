@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  Spin,
-} from 'antd';
+import { Card, Spin } from 'antd';
 import google from 'SRC/assets/engineLogos/google.png';
 import baidu from 'SRC/assets/engineLogos/baidu.png';
 import ascii2d from 'SRC/assets/engineLogos/ascii2d.png';
@@ -11,7 +8,7 @@ import saucenao from 'SRC/assets/engineLogos/saucenao.png';
 import tineye from 'SRC/assets/engineLogos/tineye.png';
 import iqdb from 'SRC/assets/engineLogos/iqdb.png';
 import yandex from 'SRC/assets/engineLogos/yandex.png';
-import './assets/Engine.css'
+import './assets/Engine.css';
 const gridStyle = {
   width: '12.5%',
   padding: 0,
@@ -27,12 +24,12 @@ const gridOptions = [
   { keys: ['saucenao', 'saucenaoDone'], src: saucenao },
   { keys: ['iqdb', 'iqdbDone'], src: iqdb },
   { keys: ['ascii2d', 'ascii2dDone'], src: ascii2d },
-]
+];
 
 export default class Engine extends React.Component {
   handleGridClick = item => {
     const [type] = item.keys;
-  }
+  };
 
   render() {
     const { engineLink } = this.props;
@@ -41,7 +38,11 @@ export default class Engine extends React.Component {
         {gridOptions.map((item, i) => {
           const [type, done] = item.keys;
           return (
-            <Card.Grid style={gridStyle} key={`engine-card-grid-${i}`} onClick={() => this.handleGridClick(item)}>
+            <Card.Grid
+              style={gridStyle}
+              key={`engine-card-grid-${i}`}
+              onClick={() => this.handleGridClick(item)}
+            >
               <div className="box">
                 <div className="engineContainer">
                   <Spin
@@ -52,7 +53,11 @@ export default class Engine extends React.Component {
                     }
                     type="loading"
                   />
-                  <a href={engineLink[type]} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={engineLink[type]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <img
                       alt=""
                       className={
@@ -68,7 +73,7 @@ export default class Engine extends React.Component {
                 </div>
               </div>
             </Card.Grid>
-          )
+          );
         })}
       </Card>
     );
