@@ -34,21 +34,10 @@ const x = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         query: {
-          presets: [
-            'react',
-            [
-              'env',
-              {
-                targets: {
-                  browsers: ['> 1%'],
-                },
-              },
-            ],
-          ],
+          presets: ['@babel/preset-react', '@babel/preset-env'],
           plugins: [
-            'transform-es2015-destructuring',
-            'transform-es2015-parameters',
-            'transform-object-rest-spread',
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-syntax-dynamic-import',
           ],
         },
       },
@@ -63,6 +52,10 @@ const x = {
             },
           },
         ],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
