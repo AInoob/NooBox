@@ -1,5 +1,5 @@
 import dva from 'dva';
-import bowser from "SRC/utils/useBrowser.js";
+import bowser from 'SRC/utils/useBrowser.js';
 bowser();
 // import './popup.css';
 // 1. Initialize

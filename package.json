@@ -2,11 +2,14 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "dev": "npm run buildLocale && webpack -w --mode development",
+    "start": "npm run buildLocale && webpack -w --mode development",
     "preProd": "webpack -w --mode production --env preProd",
     "prod": "npm run buildLocale && webpack --mode production --env prod",
     "buildLocale": "node ./scripts/buildLocale.js",
-    "lint": "eslint --ext .js src test"
+    "lint": "eslint --ext .js src test",
+    "prettier": "node ./scripts/prettier.js",
+    "lint-staged": "lint-staged",
+    "lint:commit": "npx eslint ."
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
@@ -26,9 +29,17 @@
     "webpack": "^4.12.0"
   },
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^8.2.5",
-    "babel-loader": "^7.1.2",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-import": "^1.11.0",
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-es2015-parameters": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -37,6 +48,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.26.0",
     "copy-webpack-plugin": "^4.5.1",
+    "css-loader": "^2.1.0",
     "eslint": "^4.14.0",
     "eslint-config-umi": "^0.1.1",
     "eslint-plugin-flowtype": "^2.34.1",
@@ -45,11 +57,24 @@
     "eslint-plugin-react": "^7.1.0",
     "file-loader": "^1.1.11",
     "husky": "^0.12.0",
+    "lint-staged": "^8.1.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.15.3",
     "redbox-react": "^1.4.3",
+    "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^1.0.1",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.0.8",
     "yamljs": "^0.3.0"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "*.{js,css}": [
+      "node ./scripts/prettier.js",
+      "git add"
+    ]
   }
 }

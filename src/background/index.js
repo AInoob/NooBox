@@ -2,8 +2,12 @@ import userBrowser from '../utils/useBrowser';
 import AutoRefresh from './AutoRefresh';
 import Image from './Image';
 import Options from './Options';
-import { getCurrentTab, sendMessage,sendTabMessage } from 'SRC/utils/browserUtils';
-import {getDB, set} from '../utils/db';
+import {
+  getCurrentTab,
+  sendMessage,
+  sendTabMessage,
+} from 'SRC/utils/browserUtils';
+import { getDB, set } from '../utils/db';
 import { wait } from '../utils';
 import { logEvent } from '../utils/bello';
 userBrowser();
@@ -27,10 +31,15 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   // console.log(request);
   if (job === 'updateAutoRefresh') {
     const { tabId, interval, active, startAt } = request;
-    const autoRefreshStatus = autoRefresh.update(tabId, active, interval, startAt, true);
+    const autoRefreshStatus = autoRefresh.update(
+      tabId,
+      active,
+      interval,
+      startAt,
+      true,
+    );
     sendResponse(autoRefreshStatus);
-  }
-  else if (job === 'set') {
+  } else if (job === 'set') {
     const { key, value } = request;
     await set(key, value);
     switch (key) {
@@ -44,36 +53,39 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         await image.updateImageSearchContextMenu();
         break;
       case 'videoControl':
-        browser.tabs.query({}, (tabs) => {
+        browser.tabs.query({}, tabs => {
           for (let i = 0; i < tabs.length; i++) {
-            browser.tabs.sendMessage(tabs[i].id, {
-              job: 'videoControlContentScriptSelfCheck',
-            }, () => {});
+            browser.tabs.sendMessage(
+              tabs[i].id,
+              {
+                job: 'videoControlContentScriptSelfCheck',
+              },
+              () => {},
+            );
           }
         });
         break;
       default:
     }
-  }
-  else if (job === 'getCurrentTabAutoRefreshStatus') {
+  } else if (job === 'getCurrentTabAutoRefreshStatus') {
     const { tabId } = request;
     const autoRefreshStatus = autoRefresh.getStatus(tabId);
     sendResponse(autoRefreshStatus);
-  } else if (job === "beginImageSearch") {
-    const {base64} = request;
+  } else if (job === 'beginImageSearch') {
+    const { base64 } = request;
     image.beginImageSearch(base64);
     // browser.tabs.create({ url:"/searchResult.html" });
-  } else if(job === "loadImageHistory"){
-    const {cursor} = request;
+  } else if (job === 'loadImageHistory') {
+    const { cursor } = request;
     image.loadImageHistory(cursor);
-  }else if (job == 'urlDownloadZip') {
+  } else if (job == 'urlDownloadZip') {
     image.downloadExtractImages(sender, request.files);
   } else if (job == 'getDB') {
     const value = await getDB(request.key);
     browser.tabs.sendMessage(sender.tab.id, {
       job: 'returnDB',
       key: request.key,
-      data: value
+      data: value,
     });
   } else if (job === 'analytics') {
     logEvent({
@@ -89,23 +101,27 @@ browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       logEvent({
         category: 'videoControl',
         action: 'run',
-        label: ''
-      })
+        label: '',
+      });
     }
-  } else if(job === "videoControl_website_switch"){
+  } else if (job === 'videoControl_website_switch') {
     logEvent({
       category: 'videoControlWebsiteSwitch',
       action: request.isEnable ? 'enable' : 'disable',
-      label: ''
+      label: '',
     });
     console.log(request);
-    browser.tabs.query({}, (tabs) => {
+    browser.tabs.query({}, tabs => {
       for (let i = 0; i < tabs.length; i++) {
         if (tabs[i].url.indexOf(request.host)) {
-          browser.tabs.sendMessage(tabs[i].id, {
-            job: 'videoControlContentScriptSwitch',
-            enabled: request.isEnable
-          }, () => {});
+          browser.tabs.sendMessage(
+            tabs[i].id,
+            {
+              job: 'videoControlContentScriptSwitch',
+              enabled: request.isEnable,
+            },
+            () => {},
+          );
         }
       }
     });
@@ -116,4 +132,3 @@ document.addEventListener('DOMContentLoaded', async () => {
   await options.init();
   await image.init();
 });
-

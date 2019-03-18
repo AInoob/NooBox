@@ -1,0 +1,83 @@
+.Engine {}
+
+.ant-card-body {
+  padding: 0;
+}
+
+.box:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.box {
+  width: 100%;
+  position: relative;
+}
+
+.engineContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.engineImage {
+  width: 50px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+  transition: opacity 2s;
+}
+
+.engineImageLoading {
+  width: 50px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: blur(2px);
+  opacity: 0.3;
+}
+
+.engineImageHide {
+  width: 50px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.2;
+}
+
+.engineSetting {
+  position: absolute;
+  bottom: 10px;
+  right: 13px;
+  font-size: 16px;
+}
+
+.settingIcon {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.engineLoading {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 10;
+  opacity: 1;
+}
+
+.engineLoadingDone {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  opacity: 0;
+  z-index: 10;
+  visibility: hidden;
+  transition: opacity 2s, visibility 2s;
+}

@@ -1,19 +1,19 @@
-import { engineMap } from "SRC/constant/settingMap.js";
-import { get, set, getDB, setDB } from "SRC/utils/db.js";
-import { sendMessage } from "SRC/utils/browserUtils";
-import { imageSearchUploadSearchAgain } from "../actions";
+import { engineMap } from 'SRC/constant/settingMap.js';
+import { get, set, getDB, setDB } from 'SRC/utils/db.js';
+import { sendMessage } from 'SRC/utils/browserUtils';
+import { imageSearchUploadSearchAgain } from '../actions';
 export default {
-  namespace: "imageSearch",
+  namespace: 'imageSearch',
   state: {
-    pageId: "",
+    pageId: '',
     inited: false,
-    base64: "",
-    url: "",
+    base64: '',
+    url: '',
     engineLink: {},
     searchImageInfo: [],
     searchResult: [],
     displayMode: 2,
-    sortBy: "relevance",
+    sortBy: 'relevance',
     sortByOrder: 0,
     google: false,
     googleDone: false,
@@ -38,13 +38,13 @@ export default {
     iqdbMax: 1,
     ascii2d: false,
     ascii2dDone: false,
-    ascii2dMax: 1
+    ascii2dMax: 1,
   },
   effects: {
     *init({ payload }, { call, put }) {
-      yield put({ type: "updateState", payload: { pageId: payload } });
+      yield put({ type: 'updateState', payload: { pageId: payload } });
       let engineStatus = {};
-      let cursor = yield call(getDB, "imageCursor");
+      let cursor = yield call(getDB, 'imageCursor');
       // console.log(cursor);
       // console.log(payload);
       let dataBaseFlag = false;
@@ -52,8 +52,8 @@ export default {
         let hasDataBase = yield call(getDB, Number.parseInt(payload));
         // console.log(hasDataBase);
         if (hasDataBase) {
-          engineStatus.base64 = hasDataBase.base64 || "";
-          engineStatus.url = hasDataBase.url || "";
+          engineStatus.base64 = hasDataBase.base64 || '';
+          engineStatus.url = hasDataBase.url || '';
           engineStatus.searchImageInfo = hasDataBase.searchImageInfo || [];
           engineStatus.searchResult = hasDataBase.searchResult || [];
           engineStatus.engineLink = hasDataBase.engineLink || undefined;
@@ -62,7 +62,7 @@ export default {
       if (engineStatus.engineLink) {
         for (let name in engineStatus.engineLink) {
           engineStatus[name] = true;
-          engineStatus[name + "Done"] = true;
+          engineStatus[name + 'Done'] = true;
         }
       } else {
         engineStatus.engineLink = {};
@@ -77,44 +77,44 @@ export default {
           }
         }
       }
-      let displayMode = yield call(get, "displayMode");
+      let displayMode = yield call(get, 'displayMode');
       if (displayMode) {
         engineStatus.displayMode = displayMode;
       } else if (displayMode == undefined || displayMode == null) {
         engineStatus.displayMode = 1;
-        yield call(set, "displayMode", 1);
+        yield call(set, 'displayMode', 1);
       }
       engineStatus.inited = true;
-      yield put({ type: "updateState", payload: engineStatus });
+      yield put({ type: 'updateState', payload: engineStatus });
     },
     *updateDisplayMode({ payload }, { call, put }) {
       // console.log(payload);
-      yield call(set, "displayMode", payload);
-      yield put({ type: "updateState", payload: { displayMode: payload } });
+      yield call(set, 'displayMode', payload);
+      yield put({ type: 'updateState', payload: { displayMode: payload } });
     },
     *uploadSearch({ payload }, { call, put }) {
       const img = payload;
-      const workerCanvas = document.createElement("canvas");
-      const workerCtx = workerCanvas.getContext("2d");
+      const workerCanvas = document.createElement('canvas');
+      const workerCtx = workerCanvas.getContext('2d');
       workerCanvas.width = img.naturalWidth;
       workerCanvas.height = img.naturalHeight;
       workerCtx.drawImage(img, 0, 0);
       const imgDataURI = workerCanvas.toDataURL();
       let message = {
-        job: "beginImageSearch",
-        base64: imgDataURI
+        job: 'beginImageSearch',
+        base64: imgDataURI,
       };
       yield call(sendMessage, message);
     },
-    *searchAgain({ payload }, { call, put,select }) {
+    *searchAgain({ payload }, { call, put, select }) {
       let { base64, url } = yield select(state => state.imageSearch);
       let message = {
-        job: "beginImageSearch",
-        base64: base64 == "" ? url : base64
+        job: 'beginImageSearch',
+        base64: base64 == '' ? url : base64,
       };
       yield call(sendMessage, message);
     },
-    *updateInnerState({ payload }, { call, put, select,take }) {
+    *updateInnerState({ payload }, { call, put, select, take }) {
       const { pageId } = yield select(state => state.imageSearch);
       if (pageId == payload.cursor) {
         // console.log(payload);
@@ -123,12 +123,12 @@ export default {
           type: type,
           payload: {
             cursor: payload.cursor,
-            result: payload.result
-          }
+            result: payload.result,
+          },
         });
         // yield take(type+"/@@end");
       }
-    }
+    },
   },
   reducers: {
     updateState(state, { payload }) {
@@ -154,29 +154,29 @@ export default {
     setupListener({ dispatch, history }) {
       browser.runtime.onMessage.addListener((message, sender, response) => {
         let payload;
-        if (message.job === "image_result_update") {
+        if (message.job === 'image_result_update') {
           payload = {
-            type: "updateSearchResult",
+            type: 'updateSearchResult',
             cursor: message.cursor,
-            result: message.result
+            result: message.result,
           };
-        }else if (message.job === "image_base64") {
+        } else if (message.job === 'image_base64') {
           payload = {
-            type: "updateImageBase64",
+            type: 'updateImageBase64',
             cursor: message.cursor,
-            result: message.result
+            result: message.result,
           };
-        } else if (message.job === "image_url") {
+        } else if (message.job === 'image_url') {
           payload = {
-            type: "updateImageUrl",
+            type: 'updateImageUrl',
             cursor: message.cursor,
-            result: message.result
+            result: message.result,
           };
-        } 
+        }
         if (payload) {
-          dispatch({ type: "updateInnerState", payload: payload });
+          dispatch({ type: 'updateInnerState', payload: payload });
         }
       });
-    }
-  }
+    },
+  },
 };

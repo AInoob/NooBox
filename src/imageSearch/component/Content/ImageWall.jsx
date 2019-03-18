@@ -1,11 +1,11 @@
-import React from "react";
-import styled from "styled-components";
-import FAIcon from "@fortawesome/react-fontawesome";
-import faSolid from "@fortawesome/fontawesome-free-solid";
-import { Row, Col, Card, Icon, Popover, Avatar, Modal } from "antd";
-import { engineIcon } from "SRC/constant/settingMap.js";
-import Loader from "SRC/common/component/Loader.jsx";
-import ImageLost from  "SRC/assets/fun/ImageLost.png";
+import React from 'react';
+import styled from 'styled-components';
+import FAIcon from '@fortawesome/react-fontawesome';
+import faSolid from '@fortawesome/fontawesome-free-solid';
+import { Row, Col, Card, Icon, Popover, Avatar, Modal } from 'antd';
+import { engineIcon } from 'SRC/constant/settingMap.js';
+import Loader from 'SRC/common/component/Loader.jsx';
+import ImageLost from 'SRC/assets/fun/ImageLost.png';
 const ResultContainer = styled.div`
   background:white;
   border: 1px solid #e8e8e8;
@@ -33,29 +33,29 @@ const ResultContainer = styled.div`
 
 `;
 const popoverContent = {
-  maxWidth: "256px",
-  margin: 0
+  maxWidth: '256px',
+  margin: 0,
 };
 export default class ImageWall extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      imageUrl: ""
+      imageUrl: '',
     };
   }
   showModal(sourceUrl) {
     this.setState({
       showModal: true,
-      imageUrl: sourceUrl
+      imageUrl: sourceUrl,
     });
   }
   hideModal() {
     this.setState({
-      showModal: false
+      showModal: false,
     });
   }
-  imgError(e){
+  imgError(e) {
     e.target.src = ImageLost;
   }
   generateCardList(imageDataList) {
@@ -74,9 +74,9 @@ export default class ImageWall extends React.Component {
               content={
                 <div style={popoverContent}>
                   {item.imageInfo.width == -1 ? (
-                    <p>{i18n("no_size_info")}</p>
+                    <p>{i18n('no_size_info')}</p>
                   ) : (
-                    <p>{item.imageInfo.width + "x" + item.imageInfo.height}</p>
+                    <p>{item.imageInfo.width + 'x' + item.imageInfo.height}</p>
                   )}
                   {item.description}
                 </div>
@@ -91,12 +91,19 @@ export default class ImageWall extends React.Component {
             >
               <Card
                 hoverable={true}
-                style={{ width: "100%", minHeight: 60 }}
-                cover={<img alt="Image Is Dead, Sorry" src={item.imageUrl} onError={(e)=>this.imgError(e)} onClick={() => this.showModal(item.imageUrl)} />}
+                style={{ width: '100%', minHeight: 60 }}
+                cover={
+                  <img
+                    alt="Image Is Dead, Sorry"
+                    src={item.imageUrl}
+                    onError={e => this.imgError(e)}
+                    onClick={() => this.showModal(item.imageUrl)}
+                  />
+                }
               >
-                <div className="cardMetaWrapper"> 
+                <div className="cardMetaWrapper">
                   <Card.Meta
-                    avatar={<Avatar src={engineIcon[item["searchEngine"]]} />}
+                    avatar={<Avatar src={engineIcon[item['searchEngine']]} />}
                   />
                 </div>
               </Card>
@@ -132,9 +139,9 @@ export default class ImageWall extends React.Component {
           >
             <img
               alt="Image Down Sorry"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               src={this.state.imageUrl}
-              onError={(e)=>this.imgError(e)}
+              onError={e => this.imgError(e)}
             />
           </Modal>
         </ResultContainer>
@@ -142,7 +149,7 @@ export default class ImageWall extends React.Component {
     } else {
       return (
         <ResultContainer>
-          <Loader style={{ marginTop: "5%" }} />
+          <Loader style={{ marginTop: '5%' }} />
         </ResultContainer>
       );
     }
