@@ -99,7 +99,7 @@ Set Timer and click the refresh icon to start auto refresh for webpage
 </p>
 
 ## License
-<a href = "https://opensource.org/licenses/MIT">MIT</a>
+<a href = "https://www.gnu.org/licenses/gpl-3.0.html">GPL V3</a>
 ## Available Language
  🇨🇳 🇹🇼 :us: :jp:
 
