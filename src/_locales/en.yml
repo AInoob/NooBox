@@ -179,6 +179,10 @@ about_contribution_zhtw2013:
   message: zhtw2013
 about_contribution_zhtw2013_description:
   message: zh-TW translation provider
+about_contribution_zy410419243:
+  message: orzorzorzorz
+about_contribution_zy410419243_description:
+  message: Provide Prettier and Refactor Engine.jsx
 ls_1:
   message: Screenshot search failed
 ls_2:

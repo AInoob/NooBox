@@ -81,6 +81,12 @@ const specialThanks = [
     icon: 'https://avatars1.githubusercontent.com/u/9501406?s=100&v=4',
     link: 'https://github.com/zhtw2013',
   },
+  {
+    title: i18n('about_contribution_zy410419243'),
+    description: i18n('about_contribution_zhtw2013_description'),
+    icon: 'https://avatars1.githubusercontent.com/u/24520193?s=460&v=4',
+    link: 'https://github.com/zy410419243',
+  }
 ];
 const mainContributor = [
   {
