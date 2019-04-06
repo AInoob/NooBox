@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   verbose: false,
   setupFiles: ['./scripts/setup.js'],
@@ -18,9 +20,11 @@ module.exports = {
   snapshotSerializers: ['enzyme-to-json/serializer'],
   testURL: 'http://localhost',
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': path.join(
+      __dirname,
       './mock/fileMock.js',
-    '\\.(css|scss|less)$': './mock/styleMock.js',
+    ),
+    '\\.(css|scss|less)$': path.join(__dirname, './mock/styleMock.js'),
   },
   collectCoverageFrom: [
     '**/*.{js,jsx,ts,tsx}',
