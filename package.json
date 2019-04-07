@@ -1,55 +1,45 @@
 {
-  "private": true,
+  "name": "noobox",
+  "version": "1.1.0",
+  "description": "A useful toolbox for browsers",
   "scripts": {
-    "build": "webpack",
-    "dev": "npm run buildLocale && webpack -w --mode development",
-    "preProd": "webpack -w --mode production --env preProd",
-    "prod": "npm run buildLocale && webpack --mode production --env prod",
-    "buildLocale": "node ./scripts/buildLocale.js",
-    "lint": "eslint --ext .js src test"
+    "start": "npm run release",
+    "release": "npm run prettify &&webpack -env.production",
+    "prettify": "prettier --write '**/*.{js, ts, tsx}'",
+    "dev": "webpack",
+    "test": "echo bello"
   },
-  "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.8",
-    "@fortawesome/fontawesome-free-solid": "^5.0.13",
-    "@fortawesome/react-fontawesome": "0.0.20",
-    "antd": "^3.10.3",
-    "babel-loader": "^7.1.4",
-    "dva": "^2.3.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-fontawesome": "^1.6.1",
-    "redux-actions": "^2.4.0",
-    "regenerator-runtime": "^0.12.0",
-    "reselect": "^3.0.1",
-    "socket.io-client": "^2.1.1",
-    "styled-components": "^3.3.2",
-    "webpack": "^4.12.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AInoob/NooBox.git"
   },
+  "keywords": [
+    "NooBox",
+    "Reverse image search",
+    "browser extension",
+    "AInoob",
+    "RageCoke"
+  ],
+  "author": "AInoob, RageCoke",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/AInoob/NooBox/issues"
+  },
+  "homepage": "https://github.com/AInoob/NooBox#readme",
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^8.2.5",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-es2015-parameters": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.16.0",
-    "babel-register": "^6.26.0",
-    "copy-webpack-plugin": "^4.5.1",
-    "eslint": "^4.14.0",
-    "eslint-config-umi": "^0.1.1",
-    "eslint-plugin-flowtype": "^2.34.1",
-    "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0",
-    "file-loader": "^1.1.11",
-    "husky": "^0.12.0",
-    "redbox-react": "^1.4.3",
-    "uglifyjs-webpack-plugin": "^1.2.7",
-    "url-loader": "^1.0.1",
-    "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-cli": "^3.0.8",
-    "yamljs": "^0.3.0"
+    "@types/jquery": "^3.3.29",
+    "awesome-typescript-loader": "^5.2.1",
+    "copy-webpack-plugin": "^5.0.2",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
+    "prettier": "^1.16.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.2",
+    "uuid": "^3.3.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   }
 }
