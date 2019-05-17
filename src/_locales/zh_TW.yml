@@ -25,7 +25,7 @@ saucenao:
 iqdb:
   message: IQDB
 ascii2d:
-  message: 二次元畫像
+  message: 二次元画像
 # overview:
 choose_tools_from_here:
   message: 選擇一種工具？
