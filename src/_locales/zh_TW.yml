@@ -32,7 +32,7 @@ choose_tools_from_here:
 reverse_image_search:
   message: 以圖搜圖
 support_for_a_single_upload:
-  message: 支援單個上傳圖片
+  message: 支援單一圖片上傳
 html_5_video_control:
   message: HTML 5 影片控制 (預覽版)
 auto_refresh:
@@ -136,7 +136,7 @@ about_feedback_message:
 extract_range:
   message: 提取範圍
 history:
-  message: 歷程
+  message: 搜尋歷程
 # options:
 imageSearch:
   message: 以圖搜圖
@@ -151,7 +151,7 @@ videoControl:
 about_data:
   message: 即時資料
 about_data_reason:
-  message: 二箱不會收集你是誰或者你搜了什麼圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麼功能上。下面是二箱的即時資料。
+  message: 二箱不會收集你是誰或者你搜尋了什麼圖片，但是它會收集你的使用記錄。兩個原因：1. 這是我們開發的動力，看到很多人在用二箱，蠻有成就感的。2. 這能更好的讓我們決定到底應該注重在什麼功能上。下面是二箱的即時資料。
 about_contribution:
   message: 特別感謝
 about_contribution_george:
@@ -172,4 +172,4 @@ ls_1:
 ls_2:
   message: 無法在目前頁面使用擷圖搜尋
 ls_4:
-  message: 重新整理這個頁面以載入二箱元件，如果還是不行就說明目前頁面不支援擷取圖片
+  message: 重新整理這個頁面以載入二箱套件，如果還是不行就說明目前頁面不支援擷取圖片
