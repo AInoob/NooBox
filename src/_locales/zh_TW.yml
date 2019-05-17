@@ -58,9 +58,9 @@ experience:
     message: 體驗設定
 #Image Search
 support_devlopers:
-  message: 點擊廣告支持開發者們
+  message: 點選廣告支持開發者們
 guessing_keyword:
-  message: 關鍵詞
+  message: 關鍵字
 display_mode:
   message: 顯示模式
 download:
@@ -68,11 +68,11 @@ download:
 search_again:
   message: 重新搜尋
 ascii2d_link_mode_color:
-  message: Ascii2d色合検索
+  message: Ascii2d色彩搜尋(色合検索)
 ascii2d_link_mode_bovw:
-  message: Ascii2d特徴検索
+  message: Ascii2d特徵搜尋(特徴検索)
 ascii2d_link_mode_detail:
-  message: Ascii2d詳細登録
+  message: Ascii2d圖片細節(詳細登録)
 upload_search:
   message: 如沒有結果，請嘗試點選
 list:
