@@ -45,7 +45,7 @@ video_control:
 image:
     message: 圖片相關
 result_page_tab_front:
-    message: 結果顯示在新分頁
+    message: 搜尋結果顯示在新分頁
 extract_images:
     message: 提取圖片
 screenshot_search:
