@@ -30,7 +30,7 @@ ascii2d:
 choose_tools_from_here:
   message: 选择一种工具？
 support_for_a_single_upload:
-  message: 支持单个上传图片
+  message: 仅支持上传单张图片
 html_5_video_control:
   message: HTML 5 视频控制 (预览版
 auto_refresh:
