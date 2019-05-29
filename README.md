@@ -46,7 +46,7 @@
 <img src="https://user-images.githubusercontent.com/12090689/45597429-49db2180-b99a-11e8-916c-fba450c5cfe1.gif"/>
 </p>
 
-## Broswer Support
+## Browser Support
 | Winodws | Version | MacOS | Version |
 | --- | --- | --- | --- |
 | <a href = "https://www.google.com/chrome/" target = "_blank">Chrome</a> | Version 69.0.3497.100 | <a href = "https://www.google.com/chrome/" target = "_blank">Chrome</a> | Version 69.0.3497.100 |
