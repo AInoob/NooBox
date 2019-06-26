@@ -39,7 +39,7 @@
   </table>
 </div>
 
-## 如何安装 CRX 文件（无法访问商店话，请下载CRX件）?
+## 如何安装 CRX 文件（无法访问商店的话，请下载 CRX 文件）?
 <h3 align = "center"> 设置 -> 更多工具 -> 扩展 -> 打开开发者模式 -> 拖动 CRX 文件进浏览器</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45597429-49db2180-b99a-11e8-916c-fba450c5cfe1.gif"/>
