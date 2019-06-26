@@ -30,9 +30,9 @@ ascii2d:
 choose_tools_from_here:
   message: 选择一种工具？
 support_for_a_single_upload:
-  message: 支持单个上传图片
+  message: 仅支持上传单张图片
 html_5_video_control:
-  message: HTML 5 视频控制 (预览版
+  message: HTML 5 视频控制 (预览版)
 auto_refresh:
   message: 网页自动刷新
 s:
@@ -72,7 +72,7 @@ ascii2d_link_mode_color:
 ascii2d_link_mode_bovw:
   message: Ascii2d特征搜索
 ascii2d_link_mode_detail:
-  message: Ascii2d图片细节
+  message: Ascii2d登录细节
 list:
   message: 图片列表
 image_wall:
@@ -163,7 +163,7 @@ about_contribution_ainoob_description:
 about_contribution_zhtw2013:
   message: zhtw2013
 about_contribution_zhtw2013_description:
-  message: 中文繁体贡献者
+  message: 繁体中文贡献者
 ls_1:
   message: 截图搜索失败，
 ls_2:
