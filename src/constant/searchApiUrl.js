@@ -1,7 +1,6 @@
 export const apiUrls = {
   google: 'https://www.google.com/searchbyimage?&image_url=',
-  // baidu: 'https://image.baidu.com/n/pc_search?queryImageUrl=',
-  baidu: 'https://image.baidu.com/pcdutu?queryImageUrl=',
+  baidu: 'https://graph.baidu.com/upload?image=',
   tineye: 'http://www.tineye.com/search/?url=',
   bing: 'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:',
   yandex: 'https://www.yandex.com/images/search?rpt=imageview&img_url=',
@@ -10,15 +9,3 @@ export const apiUrls = {
   sogou: 'http://pic.sogou.com/ris?query=',
   ascii2d: 'https://ascii2d.net/search/uri',
 };
-// export const apiUrls = {
-//   google: 'error',
-//   // baidu: 'https://image.baidu.com/n/pc_search?queryImageUrl=',
-//   baidu: 'error',
-//   tineye: 'error',
-//   bing: 'error',
-//   yandex: 'error',
-//   saucenao: 'error',
-//   iqdb: 'error',
-//   sogou: 'error',
-//   ascii2d: 'error',
-// };

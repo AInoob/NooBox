@@ -234,112 +234,61 @@ export const reverseImageSearch = {
   /*Fetch Available Page Link On Baidu Return Obj*/
   fetchBaiduLink: async (link, cursor, resultObj) => {
     try {
-      let searchImage = {
-        keyword: '',
-        keywordLink: '',
-        engine: 'baidu',
-        imageInfo: {},
-      };
-      // console.log(link)
       const { data, err } = await ajax(link, {
         method: 'GET',
       });
       if (err) {
         throw err;
       }
-      // console.log(data);
-      let baiduObj = {};
-      //Parse Db
-      const page = HTML.parseFromString(data, 'text/html');
-      let node = page.getElementsByTagName('script')[1].innerHTML;
-      // console.log(page.getElementsByTagName('script'));
-      node = node.substring(17, node.indexOf('bd.queryImageUrl') - 1);
-      baiduObj.dbString = 'bd = ' + node;
-      // console.log(baiduObj.dbString);
-      let obj = await reverseImageSearch.waitForSandBox(baiduObj);
-      // console.log(obj);
-      let { simiList, sameSizeList, guessWord, multitags } = obj;
-      // console.log(simiList);
-      //Get result from sandbox
-      // console.log("success");
-      searchImage.keyword = guessWord == '' ? multitags || '' : guessWord;
-      if (searchImage.keyword != '') {
-        searchImage.keywordLink =
-          'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baiduerr&bar=&wd=' +
-          searchImage.keyword;
+      const imageSign = data.data.sign;
+      // resultObj.engineLink[BAIDU] = data.data.url;
+      let sameUrl = 'https://graph.baidu.com/ajax/pcsame?sign=' + imageSign;
+      const IMAGE_LIMIT = 30;
+      sameUrl = `${sameUrl}&limit=${IMAGE_LIMIT}`;
+      const sameObj = await ajax(sameUrl, {
+        method: 'GET',
+      });
+      if (sameObj.err) {
+        throw sameObj.err;
       }
-      // Send message of search image info to front page
-      resultObj.searchImageInfo = resultObj.searchImageInfo.concat(searchImage);
-      //Raynor Version
-      //Pick 5 from sameSizeList
-      let count = 25;
-      let result = [];
-      if (sameSizeList) {
-        if (sameSizeList.length > 5) {
-          sameSizeList.length = 5;
-        }
-        count -= sameSizeList.length;
-        for (let i = 0; i < sameSizeList.length; i++) {
-          let singleResult = {
-            title: sameSizeList[i].fromPageTitle || '',
-            thumbUrl: sameSizeList[i].thumbURL || '',
-            imageUrl: sameSizeList[i].objURL || '',
-            sourceUrl: sameSizeList[i].fromURL || '',
-            imageInfo: {
-              height: sameSizeList[i].height,
-              width: sameSizeList[i].width,
-            },
-            searchEngine: 'baidu',
-            description: sameSizeList[i].textHost || '',
-            weight: ENGINE_WEIGHTS.baidu - i + Math.random() - 4,
-          };
-          result[result.length] = singleResult;
-        }
-      }
-
-      if (simiList) {
-        if (simiList > count) {
-          simiList.length = count;
-        }
-        for (let i = 0; i < simiList.length; i++) {
-          let singleResult = {
-            title:
-              simiList[i].fromPageTitle ||
-              simiList[i].FromPageSummary ||
-              simiList[i].FromPageSummaryOrig ||
-              '',
-            thumbUrl: simiList[i].MiddleThumbnailImageUrl || '',
-            imageUrl:
-              simiList[i].ObjURL.indexOf('timgsa.baidu.com') != -1
-                ? simiList[i].ObjURL.substring(
-                    simiList[i].ObjURL.indexOf('src=') + 4,
-                    simiList[i].ObjURL.length,
-                  )
-                : simiList[i].ObjURL || '',
-            sourceUrl: simiList[i].FromURL || '',
-            imageInfo: {
-              height: simiList[i].ImageHeight,
-              width: simiList[i].ImageWidth,
-            },
-            searchEngine: 'baidu',
-            description: simiList[i].FromPageSummary || '',
-            weight: ENGINE_WEIGHTS.baidu - i + Math.random(),
-          };
-          result[result.length] = singleResult;
-        }
-      }
-      resultObj.searchResult = resultObj.searchResult.concat(result);
+      const sameResult = reverseImageSearch.processBaiduData(
+        sameObj.data.data.list,
+      );
+      resultObj.searchResult = sameResult;
       resultObj['baiduDone'] = true;
       await setDB(cursor, resultObj);
       reverseImageSearch.updateResultImage(resultObj, cursor);
     } catch (e) {
+      console.error(e);
       resultObj['baiduDone'] = true;
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }
   },
   /*Get Obj From Sand Box And Process Obj by this function*/
-  processBaiduData: async () => {
-    /* Dummy Code To Maintain File Shape*/
+  processBaiduData: imgArray => {
+    const results = [];
+    for (let i = 0; i < imgArray.length; i++) {
+      const singleResult = {
+        title: '',
+        thumbUrl: '',
+        imageUrl: '',
+        sourceUrl: '',
+        imageInfo: {},
+        searchEngine: 'baidu',
+        description: '',
+        weight: ENGINE_WEIGHTS.baidu - i + Math.random(),
+      };
+
+      singleResult.title = imgArray[i].title || '';
+      singleResult.imageUrl = imgArray[i].image_src || '';
+      singleResult.sourceUrl = imgArray[i].url || '';
+      singleResult.thumbUrl = imgArray[i].image_src || '';
+      singleResult.imageInfo.height = imgArray[i].height;
+      singleResult.imageInfo.width = imgArray[i].width;
+      singleResult.description = imgArray[i].abstract || '';
+      results[results.length] = singleResult;
+    }
+    return results;
   },
   fetchTineyeLink: async (link, cursor, resultObj) => {
     try {
@@ -367,7 +316,7 @@ export const reverseImageSearch = {
           .getElementsByTagName('h2')[0]
           .innerHTML.split(' ')[0],
       );
-      //Get Curreent Search Link
+      //Get Current Search Link
       const links = page.getElementsByTagName('link');
       let pageLink;
       for (let i = 0; i < links.length; i++) {
@@ -583,8 +532,6 @@ export const reverseImageSearch = {
           method: 'GET',
           credentials: 'same-origin',
         });
-        // console.log(data);
-        // console.log(data);
         if (err) {
           throw err;
         }
@@ -610,6 +557,7 @@ export const reverseImageSearch = {
       resultObj['bingDone'] = true;
       reverseImageSearch.updateResultImage(resultObj, cursor);
     } catch (e) {
+      console.error(e);
       resultObj['bingDone'] = true;
       reverseImageSearch.updateResultImage(resultObj, cursor);
     }

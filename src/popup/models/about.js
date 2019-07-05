@@ -12,8 +12,7 @@ export default {
     autoRefresh: 0,
   },
   effects: {
-    *init({ payload }, { call, put }) {
-      window.socket = io('https://ainoob.com:443/');
+    *init({ payload, dispatch }, { call, put }) {
       const data = yield call(
         ajax,
         'https://ainoob.com/api/public/data/?x=' + Math.random(),
@@ -44,7 +43,6 @@ export default {
   },
   reducers: {
     updateState(state, { payload }) {
-      console.log(payload);
       return Object.assign({}, state, payload);
     },
     plusOne(state, { payload }) {
@@ -52,6 +50,24 @@ export default {
       let data = state[payload];
       obj[payload] = data + 1;
       return Object.assign({}, state, obj);
+    },
+  },
+  subscriptions: {
+    dataSubscription({ dispatch }) {
+      const socket = io('https://ainoob.com:443/');
+      const plusOneGenerator = section => {
+        return function() {
+          dispatch({
+            type: 'plusOne',
+            payload: section,
+          });
+        };
+      };
+      socket.on('imageSearch', plusOneGenerator('imageSearch'));
+      socket.on('extractImage', plusOneGenerator('extractImage'));
+      socket.on('screenshotSearch', plusOneGenerator('screenshotSearch'));
+      socket.on('videoControl', plusOneGenerator('videoControl'));
+      socket.on('autoRefresh', plusOneGenerator('autoRefresh'));
     },
   },
 };

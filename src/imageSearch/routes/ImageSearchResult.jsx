@@ -133,14 +133,7 @@ class ImageSearchResult extends React.Component {
                   sortByOrder={imageSearch.sortByOrder}
                 />
               </Col>
-              <Col span={4}>
-                <div className="ads">
-                  <a target="_blank" href="https://ainoob.com/ads/first">
-                    <h2 className="adsTag">{i18n('support_developers')}</h2>
-                    <img border="0" src="https://ainoob.com/ads.jpg" />
-                  </a>
-                </div>
-              </Col>
+              <Col span={4} />
             </Row>
           </div>
           <div className="result">
