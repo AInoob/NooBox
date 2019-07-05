@@ -8,12 +8,7 @@ import { apiUrls } from 'SRC/constant/searchApiUrl.js';
 import { get, set, getDB, setDB } from 'SRC/utils/db.js';
 import ajax from 'SRC/utils/ajax.js';
 import { checkUrlOrBase64 } from 'SRC/utils/imageUtils';
-import {
-  createNewTab,
-  sendMessage,
-  generateNewTabUrl,
-  createSandbox,
-} from 'SRC/utils/browserUtils';
+import { createNewTab, generateNewTabUrl } from 'SRC/utils/browserUtils';
 export default class Image {
   constructor() {
     this.noobUploadUrl;
@@ -335,7 +330,6 @@ export default class Image {
     //console.log(imageLink);
     if (imageLink) {
       let resultObj = {
-        base64: base64orUrl,
         searchImageInfo: [],
         searchResult: [],
         engineLink: {},
@@ -349,9 +343,6 @@ export default class Image {
         let check = await get(dbName);
         if (check && this.fetchFunction[name + 'Link']) {
           resultObj.engineLink[name] = apiUrls[name] + imageLink;
-          if (name === 'baidu') {
-            await createSandbox();
-          }
           if (name === 'bing') {
             this.fetchFunction[name + 'Link'](
               apiUrls[name] + imageLink,

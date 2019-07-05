@@ -104,20 +104,12 @@ class About extends React.Component {
       actions.aboutInit();
     }
   }
-  setupSocket(actions) {
-    window.socket.on('imageSearch', type => actions('imageSearch'));
-    window.socket.on('extractImage', type => actions('extractImage'));
-    window.socket.on('screenshotSearch', type => actions('screenshotSearch'));
-    window.socket.on('videoControl', type => actions('videoControl'));
-    window.socket.on('autoRefresh', type => actions('autoRefresh'));
-  }
 
   render() {
     const { about, actions } = this.props;
     if (!about.inited) {
       return <Loader style={{ marginTop: '20%' }} />;
     } else {
-      this.setupSocket(actions.plusOne);
       return (
         <AboutContainer>
           <Collapse defaultActiveKey={['3']}>

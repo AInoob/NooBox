@@ -49,16 +49,3 @@ export const createNewTab = options => {
     });
   });
 };
-
-export const createSandbox = () => {
-  return new Promise(resolve => {
-    let sandbox = document.createElement('iframe');
-    sandbox.onload = function() {
-      console.log('Load Sanbox');
-      resolve();
-    };
-    sandbox.id = 'theFrame';
-    sandbox.src = 'sandbox.html';
-    document.getElementsByTagName('body')[0].appendChild(sandbox);
-  });
-};
