@@ -350,6 +350,12 @@ export default class Image {
               cursor,
               resultObj,
             );
+          } else if (name == 'yandex') {
+            this.fetchFunction[name + 'Link'](
+              apiUrls[name] + encodeURIComponent(imageLink),
+              cursor,
+              resultObj,
+            );
           } else if (name == 'ascii2d') {
             this.fetchFunction[name + 'Link'](
               apiUrls[name],

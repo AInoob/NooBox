@@ -254,7 +254,7 @@ export const reverseImageSearch = {
       const sameResult = reverseImageSearch.processBaiduData(
         sameObj.data.data.list,
       );
-      resultObj.searchResult = sameResult;
+      resultObj.searchResult = resultObj.searchResult.concat(sameResult);
       resultObj['baiduDone'] = true;
       await setDB(cursor, resultObj);
       reverseImageSearch.updateResultImage(resultObj, cursor);
