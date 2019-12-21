@@ -3,16 +3,15 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "short_name": "NB",
-  "version": "1.0.2.5",
+  "version": "1.0.3.0",
   "browser_action": {
-    "default_icon": "static/nooboxLogos/icon_128.png",
+    "default_icon": "images/icon_128.png",
     "default_title": "NooBox~",
     "default_popup": "popup.html"
   },
   "icons": {
-    "128": "static/nooboxLogos/icon_128.png"
+    "128": "images/icon_128.png"
   },
-  "web_accessible_resources": ["searchResult.html"],
   "background": {
     "scripts": [
       "thirdParty/jquery.min.js",
@@ -20,21 +19,6 @@
       "thirdParty/jszip.min.js",
       "js/background.js"
     ]
-  },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": [
-        "thirdParty/jquery.min.js",
-        "js/videoControl.js",
-        "js/extractImages.js"
-      ],
-      "run_at": "document_start",
-      "all_frames": true
-    }
-  ],
-  "sandbox": {
-    "pages": ["sandbox.html"]
   },
   "default_locale": "en",
   "permissions": [

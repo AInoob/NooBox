@@ -1,86 +1,62 @@
-const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const x = {
-  plugins: [
-    new CopyWebpackPlugin([
-      { from: './src/assets', to: 'static' },
-      { from: './thirdParty', to: 'thirdParty' },
-      { from: './src/manifest.json' },
-      { from: './src/js', to: 'js' },
-      { from: './src/html' },
-    ]),
-  ],
-  entry: {
-    popup: ['babel-polyfill', './src/popup/popup.js'],
-    background: ['babel-polyfill', './src/background/index.js'],
-    imageSearch: ['babel-polyfill', './src/imageSearch/imageSearch.js'],
-  },
-  resolve: {
-    extensions: ['.webpack.js', '.js', '.jsx'],
-    alias: {
-      SRC: path.resolve(__dirname, 'src/'),
-      ASSET: path.resolve(__dirname, 'src/assets/'),
+const base = {
+    entry: {
+        background: './src/background/background.ts',
+        popup: './src/popup/popupRoot.tsx',
     },
-  },
-  module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: [/node_modules/],
-        query: {
-          presets: [
-            'react',
-            [
-              'env',
-              {
-                targets: {
-                  browsers: ['> 1%'],
+    output: {
+        filename: 'js/[name].js',
+        path: path.resolve('dist')
+    },
+    plugins: [
+        new CopyWebpackPlugin([
+            { from: './thirdParty', to: 'thirdParty' },
+            { from: './src/manifest.json' },
+            { from: './src/images', to: 'images' },
+            { from: './src/popup/popup.html' },
+            { from: './src/_locales', to: '_locales',
+                transform: (content) => {
+                    const locales = {};
+                    content.toString().split('\n').forEach(line => {
+                        const matchResult = line.match(/(\w+): (.*)/);
+                        if (!matchResult) {
+                            return;
+                        }
+                        const key = matchResult[1];
+                        const message = matchResult[2];
+                        locales[key] = {
+                            message
+                        };
+                    });
+                    return JSON.stringify(locales);
                 },
-              },
-            ],
-          ],
-          plugins: [
-            'transform-es2015-destructuring',
-            'transform-es2015-parameters',
-            'transform-object-rest-spread',
-          ],
-        },
-      },
-      {
-        test: /\.(png|jp(e*)g|svg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              // Convert images < 8kb to base64 strings
-              name: 'images/[hash]-[name].[ext]',
-            },
-          },
-        ],
-      },
+                transformPath: (targetPath) => {
+                    return targetPath.replace(/\/(\w+)\.yml$/, (_, locale) => {
+                        return `/${locale}/messages.json`;
+                    });
+                }
+            }
+        ])
     ],
-  },
-  output: {
-    path: path.resolve('dist'),
-    filename: 'js/[name].js',
-  },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js', '.json', '.mjs']
+    },
+    module: {
+        rules: [
+            { test: /\.tsx?$/, loader: 'awesome-typescript-loader' }
+        ]
+    },
+    target: 'web'
 };
 
-module.exports = env => {
-  if (env === 'prod') {
-    x.optimization = {
-      minimizer: [new UglifyJsPlugin()],
-    };
-  } else if (env === 'preProd') {
-    x.plugins.push(new BundleAnalyzerPlugin());
-  } else {
-    x.devtool = 'source-map';
-  }
-  return x;
+module.exports = (env) => {
+    env = env || {};
+    const isProd = env.production;
+    base.mode = isProd ? 'production' : 'development';
+    if (!isProd) {
+        base.devtool = 'source-map';
+    }
+    return base;
 };

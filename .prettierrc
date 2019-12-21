@@ -1,13 +1,8 @@
 {
+  "tabWidth": 2,
+  "parser": "typescript",
   "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 80,
-  "overrides": [
-    {
-      "files": ".prettierrc",
-      "options": {
-        "parser": "json"
-      }
-    }
-  ]
+  "jsxBracketSameLine": true,
+  "arrowParens": "always",
+  "jsxSingleQuote": true
 }

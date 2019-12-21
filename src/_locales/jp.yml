@@ -1,165 +1,86 @@
-appName:
-  message: Noobox
-appDesc:
-  message: 実用的なツールボックス！検索エンジンをマップするマルチエンジン+画像の抽出+スクリーンショットの検索+ HTML5のビデオコントロール
-search_this_image:
-  message: この画像を検索
-extract_this_images:
-  message: この写真を抽出する
-take_screenshot:
-  message: スクリーンショット検索
-google:
-  message: Google
-baidu:
-  message: Baidu
-yandex:
-  message: Yandex
-bing:
-  message: Bing
-tineye:
-  message: ティン・アイ
-saucenao:
-  message: SauceNAO
-iqdb:
-  message: IQDB
-ascii2d:
-  message: 二次画像
-#overview:
-choose_tools_from_here:
-  message: ツールを選択しますか？
-support_for_a_single_upload:
-  message: シングルアップロード画像をサポート
-html_5_video_control:
-  message: HTML 5ビデオコントロール（プレビュー）
-auto_refresh:
-  message: Webページの自動更新
-s:
-  message: 秒
-#Option
-image:
-  message: 画像関連
-reverse_image_search:
-  message: 画像で検索
-result_page_tab_front:
-  message: 結果は新しいタブに表示されます
-extract_images:
-  message: 画像を抽出する
-screenshot_search:
-  message: スクリーンショット検索
-tools:
-  message: ツールの設定
-avaiable_engine:
-  message: 検索エンジンの設定
-experience:
-  message: 体験設定
-#Image Search
-display_mode:
-  message: 表示モード
-download:
-  message: 画像をダウンロード
-search_again:
-  message: 再検索
-upload_search:
-  message: 結果がない場合は、クリックしてください
-list:
-  message: 画像一覧
-image_wall:
-  message: 絵の壁
-sort_by:
-  message: 並び替え
-area:
-  message: エリア
-ascii2d_link_mode_color:
-  message: Ascii2d色合検索
-ascii2d_link_mode_bovw:
-  message: Ascii2d特徴検索
-ascii2d_link_mode_detail:
-  message: Ascii2d詳細登録
-width:
-  message: 幅
-height:
-  message: 高さ
-relevance:
-  message: 関連性
-increase:
-  message: 昇順
-decrease:
-  message: 降順
-save:
-  message: 保存
-clear:
-  message: clear
-no_size_info:
-  message: 画像サイズ情報なし
-#about
-about_what:
-  message: 2番目のボックスとは何ですか？
-about_what_message_0:
-  message: 2番目のボックスはツールボックスで、次の機能を提供します
-about_what_message_1:
-  message: 画像で検索
-about_what_message_2:
-  message: ページが自動的に更新されます
-about_what_message_3:
-  message: HTML 5ビデオコントロール
-about_privacy:
-  message: プライバシー
-about_privacy_message_0:
-  message: あなたの履歴を追跡して記録しますか？
-about_privacy_message_1:
-  message: いいえ、2番目のボックスは表示されません。
-about_privacy_message_2:
-  message: あなたは誰ですか？
-about_privacy_message_3:
-  message: いいえ、2番目のボックスは表示されません。
-about_privacy_message_4:
-  message: 他人にあなたの情報を提供しますか？
-about_privacy_message_5:
-  message: いいえ、決して！
-about_privacy_message_6:
-  message: 最後に？
-about_privacy_message_7:
-  message: 2番目のボックスには、特定の機能を使用している人の数が分かっています。このデータは、開発の優先順位を理解するのに役立ちます。
-about_feedback:
-  message: フィードバック
-about_feedback_messageについて:
-  message: 提案やバグがある場合は、Githubに問題を送信してください
-#extract image page
-extract_range:
-  message: 抽出範囲
-history:
-  message: 履歴
-imageSearch:
-  message: 画像検索
-extractImages:
-  message: 画像を抽出する
-screenshotSearch:
-  message: screenshot search
-videoControl:
-  message: HTML5動画のコントロール（テスト）
-autoRefresh:
-  message: 自動更新
-about_data:
-  message: リアルタイムデータ
-about_data_reason:
-  message: 2番目のボックスはあなたの人物やあなたが検索した画像を収集しませんが、使用履歴を収集します。 2つの理由:1.私たちの発展の原動力です。多くの人が2つのボックスを使い、達成感を感じました。 2.これは、私たちがどの機能に焦点を当てるべきかを決定する良い方法です。以下はリアルタイムデータの2つのボックスです。
-about_contribution:
-  message: ありがとう
-about_contribution_george:
-  message: George
-about_contribution_grorge_description:
-  message: コア開発者
-about_contribution_ainoob:
-  message: aInoob
-about_contribution_ainoob_description:
-  message: コア開発者
-about_contribution_zhtw2013:
-  message: zhtw2013
-about_contribution_zhtw2013_description:
-  message: 中国の伝統的な貢献者
-Ls_1:
-  message: スクリーンショットの検索に失敗しました。
-Ls_2:
-  message: 現在のページでスクリーンショット検索を使用できません
-Ls_4:
-  message: このページをリフレッシュして2番目のボックスコンポーネントを読み込みます。まだ動作しない場合、現在のページはイメージの抽出をサポートしていません。
+appName: Noobox
+appDesc: 実用的なツールボックス！検索エンジンをマップするマルチエンジン+画像の抽出+スクリーンショットの検索+ HTML5のビデオコントロール
+search_this_image: この画像を検索
+extract_this_images: この写真を抽出する
+take_screenshot: スクリーンショット検索
+# Engine Name
+google: Google
+baidu: Baidu
+yandex: Yandex
+bing: Bing
+tineye: ティン・アイ
+saucenao: SauceNAO
+iqdb: IQDB
+ascii2d: 二次画像
+# Overview
+choose_tools_from_here: ツールを選択しますか？
+support_for_a_single_upload: シングルアップロード画像をサポート
+html_5_video_control: HTML 5ビデオコントロール（プレビュー）
+auto_refresh: Webページの自動更新
+s: 秒
+# Options
+image: 画像関連
+reverse_image_search: 画像で検索
+result_page_tab_front: 結果は新しいタブに表示されます
+extract_images: 画像を抽出する
+screenshot_search: スクリーンショット検索
+tools: ツールの設定
+avaiable_engine: 検索エンジンの設定
+experience: 体験設定
+# Image Search
+display_mode: 表示モード
+download: 画像をダウンロード
+search_again: 再検索
+upload_search: 結果がない場合は、クリックしてください
+list: 画像一覧
+image_wall: 絵の壁
+sort_by: 並び替え
+area: エリア
+ascii2d_link_mode_color: Ascii2d色合検索
+ascii2d_link_mode_bovw: Ascii2d特徴検索
+ascii2d_link_mode_detail: Ascii2d詳細登録
+width: 幅
+height: 高さ
+relevance: 関連性
+increase: 昇順
+decrease: 降順
+save: 保存
+clear: clear
+no_size_info: 画像サイズ情報なし
+# About
+about_what: 2番目のボックスとは何ですか？
+about_what_message_0: 2番目のボックスはツールボックスで、次の機能を提供します
+about_what_message_1: 画像で検索
+about_what_message_2: ページが自動的に更新されます
+about_what_message_3: HTML 5ビデオコントロール
+about_privacy: プライバシー
+about_privacy_message_0: あなたの履歴を追跡して記録しますか？
+about_privacy_message_1: いいえ、2番目のボックスは表示されません。
+about_privacy_message_2: あなたは誰ですか？
+about_privacy_message_3: いいえ、2番目のボックスは表示されません。
+about_privacy_message_4: 他人にあなたの情報を提供しますか？
+about_privacy_message_5: いいえ、決して！
+about_privacy_message_6: 最後に？
+about_privacy_message_7: 2番目のボックスには、特定の機能を使用している人の数が分かっています。このデータは、開発の優先順位を理解するのに役立ちます。
+about_feedback: フィードバック
+about_feedback_messageについて: 提案やバグがある場合は、Githubに問題を送信してください
+# Extract Image Page
+extract_range: 抽出範囲
+history: 履歴
+imageSearch: 画像検索
+extractImages: 画像を抽出する
+screenshotSearch: screenshot search
+videoControl: HTML5動画のコントロール（テスト）
+autoRefresh: 自動更新
+about_data: リアルタイムデータ
+about_data_reason: 2番目のボックスはあなたの人物やあなたが検索した画像を収集しませんが、使用履歴を収集します。 2つの理由:1.私たちの発展の原動力です。多くの人が2つのボックスを使い、達成感を感じました。 2.これは、私たちがどの機能に焦点を当てるべきかを決定する良い方法です。以下はリアルタイムデータの2つのボックスです。
+about_contribution: ありがとう
+about_contribution_george: George
+about_contribution_grorge_description: コア開発者
+about_contribution_ainoob: aInoob
+about_contribution_ainoob_description: コア開発者
+about_contribution_zhtw2013: zhtw2013
+about_contribution_zhtw2013_description: 中国の伝統的な貢献者
+Ls_1: スクリーンショットの検索に失敗しました。
+Ls_2: 現在のページでスクリーンショット検索を使用できません
+Ls_4: このページをリフレッシュして2番目のボックスコンポーネントを読み込みます。まだ動作しない場合、現在のページはイメージの抽出をサポートしていません。
