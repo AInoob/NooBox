@@ -3,20 +3,29 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   faArrowsAltH,
   faBars,
+  faCog,
   faDonate,
   faGenderless,
+  faHistory,
   faLongArrowAltLeft,
   faLongArrowAltRight,
   faMars,
+  faQuestion,
   faSync,
+  faToolbox,
   faTrash,
-  faVenus
+  faVenus,
+  faVideo
 } from '@fortawesome/free-solid-svg-icons';
 import { Provider } from 'mobx-react';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { useChrome } from '../utils/useChrome';
 import { Popup } from './popup';
+import { AutoRefreshStore } from './stores/autoRefreshStore';
+import { OptionsStore } from './stores/optionsStore';
+import { RouterStore } from './stores/routerStore';
+import { VideoControlStore } from './stores/videoControlStore';
 
 useChrome();
 
@@ -31,14 +40,29 @@ library.add(
   faGenderless,
   faMars,
   faVenus,
-  faDonate
+  faDonate,
+  faToolbox,
+  faHistory,
+  faCog,
+  faQuestion,
+  faVideo
 );
 
 window.addEventListener('error', (e) => {
   console.error(e);
 });
 
-const stores = {};
+const autoRefreshStore = new AutoRefreshStore();
+const optionsStore = new OptionsStore();
+const routerStore = new RouterStore();
+const videoControlStore = new VideoControlStore();
+
+const stores = {
+  autoRefreshStore,
+  optionsStore,
+  routerStore,
+  videoControlStore
+};
 
 class PopupRoot extends React.Component {
   public render() {

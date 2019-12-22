@@ -7,6 +7,18 @@ interface IAjax {
   };
 }
 
+export const serialize = (obj: any) => {
+  return (
+    '?' +
+    Object.keys(obj)
+      .reduce((a: any, k: any) => {
+        a.push(k + '=' + encodeURIComponent(obj[k]));
+        return a;
+      }, [])
+      .join('&')
+  );
+};
+
 export const ajax = (params: IAjax) => {
   const { method, url, body, headers } = params;
   return new Promise<string>((resolve, reject) => {

@@ -1,17 +1,22 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import { About } from './about';
 import { Footer } from './footer';
 import { Header } from './header';
+import { Options } from './options';
+import { Overview } from './overview';
+import { RouterStore } from './stores/routerStore';
 
-interface IPopupInjectedProps {}
+interface IPopupInjectedProps {
+  routerStore: RouterStore;
+}
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
   }
   body * {
-    transition: all 0.318s ease;
   }
   a {
     color: black;
@@ -21,13 +26,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const PopupDiv = styled.div`
+  width: 360px;
   font-size: 18px;
-  width: 600px;
-  min-height: 600px;
   padding: 4px;
+  padding-bottom: 90px;
 `;
 
-@inject()
+@inject('routerStore')
 @observer
 export class Popup extends React.Component {
   get injected() {
@@ -43,8 +48,21 @@ export class Popup extends React.Component {
       <PopupDiv>
         <GlobalStyle />
         <Header />
+        {this.getMainContent()}
         <Footer />
       </PopupDiv>
     );
+  }
+
+  private getMainContent() {
+    const { routerStore } = this.injected;
+    const { location } = routerStore;
+    if (location === 'overview') {
+      return <Overview />;
+    } else if (location === 'options') {
+      return <Options />;
+    } else {
+      return <About />;
+    }
   }
 }

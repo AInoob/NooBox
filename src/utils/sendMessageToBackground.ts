@@ -1,5 +1,13 @@
 export interface ISendMessageToBackgroundRequest {
-  job: 'getBasics' | 'reloadBasics' | 'set' | 'cleanFakeFans' | 'removeFan';
+  job:
+    | 'getCurrentTabAutoRefreshStatus'
+    | 'set'
+    | 'updateAutoRefresh'
+    | 'urlDownloadZip'
+    | 'videoControl'
+    | 'beginImageSearch'
+    | 'analytics'
+    | 'getOptions';
   value?: any;
 }
 

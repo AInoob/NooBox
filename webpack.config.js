@@ -12,6 +12,7 @@ const base = {
     },
     plugins: [
         new CopyWebpackPlugin([
+            { from: './src/contentScript', to: 'contentScript' },
             { from: './thirdParty', to: 'thirdParty' },
             { from: './src/manifest.json' },
             { from: './src/images', to: 'images' },

@@ -1,43 +1,23 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Menu } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
+import { LocationType, RouterStore } from './stores/routerStore';
 
-interface IHeaderInjectedProps {}
+interface IHeaderInjectedProps {
+  routerStore: RouterStore;
+}
 
 const HeaderDiv = styled.div`
-  padding: 4px;
-  margin-bottom: 8px;
-  &:hover {
-    box-shadow: 0px 0px 3px;
-  }
-  #avatar {
-    width: 23px;
-    height: 23px;
-    margin-bottom: -3px;
-  }
-  #name {
-    margin-left: 8px;
-    font-size: 23px;
-    font-weight: bold;
-  }
-  #followersCount {
-    margin-left: 16px;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  #reload {
-    float: right;
-    margin-right: 8px;
-    cursor: pointer;
-    margin-top: 3px;
-    &.loading {
-      cursor: initial;
-      opacity: 0.3;
-    }
+  .ant-menu-item {
+    width: 25%;
+    text-align: center;
   }
 `;
 
-@inject()
+@inject('routerStore')
 @observer
 export class Header extends React.Component {
   get injected() {
@@ -49,6 +29,32 @@ export class Header extends React.Component {
   }
 
   public render() {
-    return <HeaderDiv></HeaderDiv>;
+    const { routerStore } = this.injected;
+    const { location } = routerStore;
+    return (
+      <HeaderDiv>
+        <Menu mode='horizontal' selectedKeys={[location]}>
+          {this.getMenuItem('overview', 'toolbox')}
+          {this.getMenuItem('history', 'history')}
+          {this.getMenuItem('options', 'cog')}
+          {this.getMenuItem('about', 'question')}
+        </Menu>
+      </HeaderDiv>
+    );
+  }
+
+  private getMenuItem(location: LocationType, faIcon: IconProp) {
+    const { routerStore } = this.injected;
+    return (
+      <Menu.Item
+        key={location}
+        onClick={() => {
+          routerStore.goTo(location);
+        }}>
+        <a>
+          <FontAwesomeIcon icon={faIcon} size={'lg'} />
+        </a>
+      </Menu.Item>
+    );
   }
 }

@@ -20,6 +20,18 @@
       "js/background.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": [
+        "thirdParty/jquery.min.js",
+        "contentScript/videoControl.js",
+        "contentScript/extractImages.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
   "default_locale": "en",
   "permissions": [
     "tabs",
