@@ -18,6 +18,7 @@ export class Image {
   private imageSearchHandle: any = null;
   private extractImageHandle: any = null;
   private screenshotSearchHandle: any = null;
+  private IMAGE_SEARCH: string = 'beginImageSearch';
 
   constructor() {
     this.updateImageUploadUrl('ainoob.com');
@@ -90,7 +91,7 @@ export class Image {
             const { files } = request.value;
             this.downloadExtractImages(sender, files);
             return sendResponse(null);
-          case 'beginImageSearch':
+          case this.IMAGE_SEARCH:
             const { base64 } = request.value;
             this.beginImageSearch(base64).catch(console.error);
             return sendResponse(null);
