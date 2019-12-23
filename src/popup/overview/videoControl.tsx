@@ -14,9 +14,22 @@ interface IVideoControlDivProps {
 }
 
 const VideoControlDiv = styled.div`
+  text-align: center;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  position: relative;
+  margin: 10px 10px 0px;
+  border-width: 1px;
+  border-style: dashed;
+  border-color: rgb(217, 217, 217);
+  border-image: initial;
+  background: rgb(250, 250, 250);
   #htmlVideoControlStatus {
     cursor: pointer;
     color: ${(p: IVideoControlDivProps) => (p.active ? '#40a9ff' : '#495056')};
+  }
+  span {
+    display: block;
   }
 `;
 
@@ -36,13 +49,13 @@ export class VideoControl extends React.Component {
     const { active, hostname } = videoControlStore;
     return (
       <VideoControlDiv active={active}>
-        <p id='autoRefreshHeader'>{getI18nMessage('html_5_video_control')}</p>
         <span
           id='htmlVideoControlStatus'
           onClick={() => videoControlStore.toggle().catch(console.error)}>
-          <FontAwesomeIcon icon='video' />
+          <FontAwesomeIcon icon='video' size='lg' />
         </span>
-        <p>{hostname}</p>
+        <span>{getI18nMessage('html_5_video_control')}</span>
+        <span>{hostname}</span>
       </VideoControlDiv>
     );
   }

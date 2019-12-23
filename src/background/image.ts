@@ -8,6 +8,7 @@ import { fetchImageBlob } from '../utils/fetchImageBlob';
 import { generateNewTabUrl } from '../utils/generateNewTabUrl';
 import { getI18nMessage } from '../utils/getI18nMessage';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
+import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
 
 export class Image {
@@ -228,10 +229,7 @@ export class Image {
     };
     function addImage(input?: string | ArrayBuffer | null) {
       if (input) {
-        const dataUri: string =
-          typeof input === 'string'
-            ? input
-            : String.fromCharCode.apply(null, new Uint16Array(input));
+        const dataUri: string = stringOrArrayBufferToString(input);
         const ext = (dataUri.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
         const binary = convertDataUriToBinary(dataUri);
         zip.file(file.name + '.' + ext, binary, {

@@ -15,6 +15,7 @@ interface IPopupInjectedProps {
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+    height: initial;
   }
   body * {
   }
@@ -29,7 +30,7 @@ const PopupDiv = styled.div`
   width: 360px;
   font-size: 18px;
   padding: 4px;
-  padding-bottom: 90px;
+  padding-bottom: 10px;
 `;
 
 @inject('routerStore')

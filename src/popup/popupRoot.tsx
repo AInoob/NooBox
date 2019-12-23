@@ -14,6 +14,7 @@ import {
   faSync,
   faToolbox,
   faTrash,
+  faUpload,
   faVenus,
   faVideo
 } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +24,7 @@ import { render } from 'react-dom';
 import { useChrome } from '../utils/useChrome';
 import { Popup } from './popup';
 import { AutoRefreshStore } from './stores/autoRefreshStore';
+import { ImageStore } from './stores/imageStore';
 import { OptionsStore } from './stores/optionsStore';
 import { RouterStore } from './stores/routerStore';
 import { VideoControlStore } from './stores/videoControlStore';
@@ -45,7 +47,8 @@ library.add(
   faHistory,
   faCog,
   faQuestion,
-  faVideo
+  faVideo,
+  faUpload
 );
 
 window.addEventListener('error', (e) => {
@@ -53,12 +56,14 @@ window.addEventListener('error', (e) => {
 });
 
 const autoRefreshStore = new AutoRefreshStore();
+const imageStore = new ImageStore();
 const optionsStore = new OptionsStore();
 const routerStore = new RouterStore();
 const videoControlStore = new VideoControlStore();
 
 const stores = {
   autoRefreshStore,
+  imageStore,
   optionsStore,
   routerStore,
   videoControlStore

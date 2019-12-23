@@ -16,6 +16,15 @@ interface IAutoRefreshDivProps {
 }
 
 const AutoRefreshDiv = styled.div`
+  text-align: center;
+  padding-bottom: 12px;
+  position: relative;
+  margin: 10px 10px 0px;
+  border-width: 1px;
+  border-style: dashed;
+  border-color: rgb(217, 217, 217);
+  border-image: initial;
+  background: rgb(250, 250, 250);
   #autoRefreshHeader {
     font-size: 16px;
     margin: 0 0 4px;
@@ -26,6 +35,10 @@ const AutoRefreshDiv = styled.div`
     position: absolute;
     top: -13px;
     left: 0;
+  }
+  .ant-progress-line {
+    height: 12px;
+    display: block;
   }
   .ant-input-number {
     border-radius: 0;
@@ -58,7 +71,6 @@ export class AutoRefresh extends React.Component {
     return (
       <AutoRefreshDiv active={active}>
         <Progress percent={(elapsedTime / interval) * 100} showInfo={false} />
-        <p id='autoRefreshHeader'>{getI18nMessage('auto_refresh')}</p>
         <span
           id='refreshToggle'
           onClick={async () =>
@@ -67,8 +79,9 @@ export class AutoRefresh extends React.Component {
               tabId: (await getActiveTab())!.id!
             })
           }>
-          <FontAwesomeIcon icon='sync' spin={active} />
+          <FontAwesomeIcon icon='sync' spin={active} size='lg' />
         </span>
+        <p id='autoRefreshHeader'>{getI18nMessage('auto_refresh')}</p>
         <InputNumber
           value={interval / 1000}
           min={1}

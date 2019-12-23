@@ -8,6 +8,7 @@ interface IFooterInjectedProps {
 }
 
 const FooterDiv = styled.div`
+  display: none;
   position: fixed;
   bottom: 0;
   width: 100%;
