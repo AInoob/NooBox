@@ -10,6 +10,7 @@ import { getI18nMessage } from '../utils/getI18nMessage';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
+import { GoogleSearchByImage } from '../contentScript/engine/googleSearchByImage';
 
 export class Image {
   private imageUploadUrl: string = '';
@@ -18,6 +19,7 @@ export class Image {
   private imageSearchHandle: any = null;
   private extractImageHandle: any = null;
   private screenshotSearchHandle: any = null;
+  private IMAGE_SEARCH: string = 'beginImageSearch';
 
   constructor() {
     this.updateImageUploadUrl('ainoob.com');
@@ -90,7 +92,7 @@ export class Image {
             const { files } = request.value;
             this.downloadExtractImages(sender, files);
             return sendResponse(null);
-          case 'beginImageSearch':
+          case this.IMAGE_SEARCH:
             const { base64 } = request.value;
             this.beginImageSearch(base64).catch(console.error);
             return sendResponse(null);
@@ -285,6 +287,7 @@ export class Image {
   }
 
   private async beginImageSearch(base64orUrl: string) {
+    console.log('begin to search');
     let cursor: number | null = await getDB('imageCursor');
     if (typeof cursor === 'number') {
       cursor++;
@@ -297,66 +300,64 @@ export class Image {
     let url;
     let base64Flag;
     // Check base64 or Url
-    switch (checkUrlOrBase64(base64orUrl)) {
-      case 'base64':
-        // console.log("here");
-        base64Flag = true;
-        await setDB(cursor, { base64: base64orUrl });
-        url = await generateNewTabUrl('searchResult.html');
-        await createNewTab({
-          active: await get('imageSearchNewTabFront'),
-          url: url + '#/' + cursor
-        });
-        logEvent({
-          action: 'dataURI',
-          category: 'imageSearch'
-        });
-        const requestBody = {
-          body: JSON.stringify({ data: base64orUrl }),
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          method: 'POST',
-          mode: 'cors'
-        };
-        try {
-          imageLink =
-            this.imageDownloadUrl +
-            (await ajax({
-              body: JSON.stringify(requestBody),
-              url: this.imageUploadUrl
-            }));
-        } catch (e) {
-          console.error(e);
-          console.log('having error, switch to default server');
-          this.updateImageUploadUrl('ainoob.com');
-          this.updateImageDownloadUrl('ainoob.com');
-          imageLink =
-            this.imageDownloadUrl +
-            (await ajax({
-              body: JSON.stringify(requestBody),
-              url: this.imageUploadUrl
-            }));
-        }
-        break;
-      case 'url':
-        // console.log(base64orUrl);
-        base64Flag = false;
-        await setDB(cursor, { url: base64orUrl });
-        url = await generateNewTabUrl('searchResult.html');
-        await createNewTab({
-          active: await get('imageSearchNewTabFront'),
-          url: url + '#/' + cursor
-        });
-        logEvent({
-          action: 'url',
-          category: 'imageSearch'
-        });
-        imageLink = base64orUrl;
-        break;
-      default:
-        break;
+    const imageType = checkUrlOrBase64(base64orUrl);
+
+    if (imageType === 'base64') {
+      base64Flag = true;
+      await setDB(cursor, { base64: base64orUrl });
+      url = await generateNewTabUrl('searchResult.html');
+      await createNewTab({
+        active: await get('imageSearchNewTabFront'),
+        url: url + '#/' + cursor
+      });
+      logEvent({
+        action: 'dataURI',
+        category: 'imageSearch'
+      });
+      const requestBody = {
+        body: JSON.stringify({ data: base64orUrl }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        mode: 'cors'
+      };
+      try {
+        imageLink =
+          this.imageDownloadUrl +
+          (await ajax({
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            url: this.imageUploadUrl
+          }));
+      } catch (e) {
+        console.error(e);
+        console.log('having error, switch to default server');
+        this.updateImageUploadUrl('ainoob.com');
+        this.updateImageDownloadUrl('ainoob.com');
+        imageLink =
+          this.imageDownloadUrl +
+          (await ajax({
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            url: this.imageUploadUrl
+          }));
+      }
+    } else if (imageType === 'url') {
+      base64Flag = false;
+      await setDB(cursor, { url: base64orUrl });
+      url = await generateNewTabUrl('searchResult.html');
+      await createNewTab({
+        active: await get('imageSearchNewTabFront'),
+        url: url + '#/' + cursor
+      });
+      logEvent({
+        action: 'url',
+        category: 'imageSearch'
+      });
+      imageLink = base64orUrl;
     }
+
     // Generate Image Link
     // console.log(imageLink);
     if (imageLink) {
@@ -367,8 +368,67 @@ export class Image {
         searchResult: [],
         url: !base64Flag ? base64orUrl : ''
       };
-      console.log(resultObj);
+      const engineMap = [
+        {
+          name: 'google',
+          dbName: 'imageSearchUrl_google'
+        },
+        {
+          name: 'baidu',
+          dbName: 'imageSearchUrl_baidu'
+        },
+        {
+          name: 'yandex',
+          dbName: 'imageSearchUrl_yandex'
+        },
+        {
+          name: 'bing',
+          dbName: 'imageSearchUrl_bing'
+        },
+        {
+          name: 'tineye',
+          dbName: 'imageSearchUrl_tineye'
+        },
+        {
+          name: 'saucenao',
+          dbName: 'imageSearchUrl_saucenao'
+        },
+        {
+          name: 'iqdb',
+          dbName: 'imageSearchUrl_iqdb'
+        },
+        {
+          name: 'ascii2d',
+          dbName: 'imageSearchUrl_ascii2d'
+        }
+      ];
       // Get Opened Engine and send request
+      for (const eachEngine of engineMap) {
+        const dbName = eachEngine.dbName;
+        const name = eachEngine.name;
+        if (await get(dbName)) {
+          switch (name) {
+            case 'google':
+              const googleSearch = new GoogleSearchByImage(
+                imageLink,
+                cursor,
+                resultObj
+              );
+              googleSearch.generateResult();
+              break;
+            case 'baidu':
+              break;
+            case 'yandex':
+              break;
+            case 'bing':
+              break;
+            case 'tineye':
+              break;
+            case 'saucenao':
+              break;
+          }
+        }
+      }
       // for (let i = 0; i < engineMap.length; i++) {
       //   const dbName = engineMap[i].dbName;
       //   const name = engineMap[i].name;

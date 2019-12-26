@@ -8,7 +8,10 @@
     "checkFormat": "prettier --check '**/*.{ts,tsx}' '!dist/**'",
     "format": "prettier --write '**/*.{ts,tsx}' '!dist/**'"
   },
-  "pre-commit": [ "checkFormat", "lint" ],
+  "pre-commit": [
+    "checkFormat",
+    "lint"
+  ],
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",

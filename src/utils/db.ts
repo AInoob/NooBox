@@ -1,7 +1,7 @@
 import { IOptions } from '../background/options';
 import { sendMessageToBackground } from './sendMessageToBackground';
 
-type KeyType = 'followersCleanCount' | keyof IOptions;
+type KeyType = 'followersCleanCount' | keyof IOptions | string;
 
 export const get = (key: KeyType, defaultValue?: any): Promise<any> => {
   return new Promise((resolve) => {
