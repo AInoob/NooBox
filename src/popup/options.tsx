@@ -3,7 +3,11 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
 import { IOptions } from '../background/options';
-import { ENGINE_LIST, getEngineOptionKey } from '../utils/constants';
+import {
+  ENGINE_LIST,
+  getEngineImageUrl,
+  getEngineOptionKey
+} from '../utils/constants';
 import { getI18nMessage } from '../utils/getI18nMessage';
 import { OptionsStore } from './stores/optionsStore';
 
@@ -72,7 +76,7 @@ export class Options extends React.Component {
               <Tooltip title={getI18nMessage(engine)}>
                 <Card bordered={false}>
                   <img
-                    src={'images/engineLogos/' + engine + '.png'}
+                    src={getEngineImageUrl(engine)}
                     onClick={() => optionsStore.update(key, !options[key])}
                     className={options[key] ? '' : 'engineDisabled'}
                   />

@@ -11,6 +11,7 @@ import {
   faLongArrowAltRight,
   faMars,
   faQuestion,
+  faRetweet,
   faSync,
   faToolbox,
   faTrash,
@@ -22,6 +23,8 @@ import { Provider } from 'mobx-react';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { useChrome } from '../utils/useChrome';
+import { SearchResult } from './searchResult';
+import { SearchResultStore } from './stores/searchResultStore';
 
 useChrome();
 
@@ -42,18 +45,27 @@ library.add(
   faCog,
   faQuestion,
   faVideo,
-  faUpload
+  faUpload,
+  faRetweet
 );
 
 window.addEventListener('error', (e) => {
   console.error(e);
 });
 
-const stores = {};
+const searchResultStore = new SearchResultStore();
+
+const stores = {
+  searchResultStore
+};
 
 class PopupRoot extends React.Component {
   public render() {
-    return <Provider {...stores}></Provider>;
+    return (
+      <Provider {...stores}>
+        <SearchResult />
+      </Provider>
+    );
   }
 }
 

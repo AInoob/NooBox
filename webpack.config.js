@@ -5,6 +5,7 @@ const base = {
     entry: {
         background: './src/background/background.ts',
         popup: './src/popup/popupRoot.tsx',
+        searchResult: './src/searchResult/searchResultRoot.tsx',
     },
     output: {
         filename: 'js/[name].js',
@@ -17,6 +18,7 @@ const base = {
             { from: './src/manifest.json' },
             { from: './src/images', to: 'images' },
             { from: './src/popup/popup.html' },
+            { from: './src/searchResult/searchResult.html' },
             { from: './src/_locales', to: '_locales',
                 transform: (content) => {
                     const locales = {};

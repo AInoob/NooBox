@@ -1,5 +1,5 @@
 export interface ISendMessageToFrontendRequest {
-  job: 'updateBasicsToFrontend' | 'fanRemoved';
+  job: 'image_result_update';
   value?: any;
 }
 

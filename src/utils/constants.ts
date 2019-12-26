@@ -25,6 +25,10 @@ export const ENGINE_LIST: EngineType[] = [
   'iqdb'
 ];
 
+export const getEngineImageUrl = (engine: EngineType) => {
+  return 'images/engineLogos/' + engine + '.png';
+};
+
 export const ENGINE_OPTION_KEY_PREFIX = 'imageSearchUrl_';
 
 export const getEngineOptionKey = (engine: EngineType) => {
