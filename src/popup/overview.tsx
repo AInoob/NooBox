@@ -1,10 +1,10 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
+import { OptionsStore } from '../shared/stores/optionsStore';
 import { AutoRefresh } from './overview/autoRefresh';
 import { ImageUpload } from './overview/imageUpload';
 import { VideoControl } from './overview/videoControl';
-import { OptionsStore } from './stores/optionsStore';
 
 interface IOverviewInjectedProps {
   optionsStore: OptionsStore;

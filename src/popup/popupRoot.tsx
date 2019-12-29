@@ -21,11 +21,11 @@ import {
 import { Provider } from 'mobx-react';
 import * as React from 'react';
 import { render } from 'react-dom';
+import { OptionsStore } from '../shared/stores/optionsStore';
 import { useChrome } from '../utils/useChrome';
 import { Popup } from './popup';
 import { AutoRefreshStore } from './stores/autoRefreshStore';
 import { ImageStore } from './stores/imageStore';
-import { OptionsStore } from './stores/optionsStore';
 import { RouterStore } from './stores/routerStore';
 import { VideoControlStore } from './stores/videoControlStore';
 

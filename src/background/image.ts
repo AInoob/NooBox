@@ -1,3 +1,4 @@
+import { GoogleSearchByImage } from '../contentScript/engine/googleSearchByImage';
 import { ajax } from '../utils/ajax';
 import { logEvent } from '../utils/bello';
 import { checkUrlOrBase64 } from '../utils/checkImageType';
@@ -10,7 +11,6 @@ import { getI18nMessage } from '../utils/getI18nMessage';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
-import { GoogleSearchByImage } from '../contentScript/engine/googleSearchByImage';
 
 export class Image {
   private imageUploadUrl: string = '';

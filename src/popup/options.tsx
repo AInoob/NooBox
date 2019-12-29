@@ -3,13 +3,13 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
 import { IOptions } from '../background/options';
+import { OptionsStore } from '../shared/stores/optionsStore';
 import {
   ENGINE_LIST,
   getEngineImageUrl,
   getEngineOptionKey
 } from '../utils/constants';
 import { getI18nMessage } from '../utils/getI18nMessage';
-import { OptionsStore } from './stores/optionsStore';
 
 interface IOptionsInjectedProps {
   optionsStore: OptionsStore;

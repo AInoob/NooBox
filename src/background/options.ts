@@ -7,6 +7,8 @@ import { VideoControl } from './videoControl';
 
 export interface IOptions {
   autoRefresh: boolean;
+  displayMode: 1 | 2;
+  sortBy: 'relevance' | 'area' | 'width' | 'height';
   extractImages: boolean;
   history: boolean;
   imageSearch: boolean;
@@ -27,6 +29,8 @@ export interface IOptions {
 
 export const defaultOptions: IOptions = {
   autoRefresh: true,
+  displayMode: 1,
+  sortBy: 'relevance',
   extractImages: true,
   history: true,
   imageSearch: true,
@@ -88,6 +92,10 @@ export class Options {
         switch (request.job) {
           case 'set':
             const { key, value } = request.value;
+            sendResponse({
+              key,
+              value
+            });
             await this.set(key, value);
             if (
               key === 'videoControl' ||
@@ -106,10 +114,7 @@ export class Options {
             } else if (key === 'imageSearch') {
               this.image!.updateImageSearchContextMenu().catch(console.error);
             }
-            return sendResponse({
-              key,
-              value
-            });
+            break;
           case 'getOptions':
             return sendResponse(this.options);
         }

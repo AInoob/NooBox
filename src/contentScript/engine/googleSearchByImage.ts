@@ -1,5 +1,5 @@
-import { ISearchByImage } from '../searchByImage';
 import { ajax } from '../../utils/ajax';
+import { ISearchByImage } from '../searchByImage';
 import { SearchByImageHelper } from './searchByImageHelper';
 export class GoogleSearchByImage implements ISearchByImage {
   public imageLink: string;

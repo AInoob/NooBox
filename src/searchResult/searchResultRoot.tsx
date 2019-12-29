@@ -12,6 +12,7 @@ import {
   faMars,
   faQuestion,
   faRetweet,
+  faSearchPlus,
   faSync,
   faToolbox,
   faTrash,
@@ -22,6 +23,7 @@ import {
 import { Provider } from 'mobx-react';
 import * as React from 'react';
 import { render } from 'react-dom';
+import { OptionsStore } from '../shared/stores/optionsStore';
 import { useChrome } from '../utils/useChrome';
 import { SearchResult } from './searchResult';
 import { SearchResultStore } from './stores/searchResultStore';
@@ -46,7 +48,8 @@ library.add(
   faQuestion,
   faVideo,
   faUpload,
-  faRetweet
+  faRetweet,
+  faSearchPlus
 );
 
 window.addEventListener('error', (e) => {
@@ -54,12 +57,14 @@ window.addEventListener('error', (e) => {
 });
 
 const searchResultStore = new SearchResultStore();
+const optionsStore = new OptionsStore();
 
 const stores = {
-  searchResultStore
+  searchResultStore,
+  optionsStore
 };
 
-class PopupRoot extends React.Component {
+class SearchResultRoot extends React.Component {
   public render() {
     return (
       <Provider {...stores}>
@@ -69,4 +74,4 @@ class PopupRoot extends React.Component {
   }
 }
 
-render(<PopupRoot />, document.getElementById('root'));
+render(<SearchResultRoot />, document.getElementById('root'));
