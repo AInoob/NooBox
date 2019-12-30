@@ -21,6 +21,8 @@ interface IEngineDivProps {
 }
 
 const EngineDiv = styled.div`
+  background-color: ${(p: IEngineDivProps) =>
+    p.status === 'error' ? '#ff000021;' : 'initial;'};
   position: relative;
   width: 12.5%;
   float: left;
