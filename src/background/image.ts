@@ -130,7 +130,9 @@ export class Image {
   }
 
   private async getImageServer() {
-    const serverUrls = JSON.parse(await ajax({ url: this.imageServerUrl }));
+    const serverUrls = JSON.parse(
+      (await ajax({ url: this.imageServerUrl })).body
+    );
     let fastestServer: string | null = null;
     const pingPath = '/search';
     serverUrls.forEach(async (server: string) => {
@@ -347,11 +349,13 @@ export class Image {
       try {
         imageLink =
           this.imageDownloadUrl +
-          (await ajax({
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            url: this.imageUploadUrl
-          }));
+          (
+            await ajax({
+              method: 'POST',
+              body: JSON.stringify(requestBody),
+              url: this.imageUploadUrl
+            })
+          ).body;
       } catch (e) {
         console.error(e);
         console.log('having error, switch to default server');
@@ -359,11 +363,13 @@ export class Image {
         this.updateImageDownloadUrl('ainoob.com');
         imageLink =
           this.imageDownloadUrl +
-          (await ajax({
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            url: this.imageUploadUrl
-          }));
+          (
+            await ajax({
+              method: 'POST',
+              body: JSON.stringify(requestBody),
+              url: this.imageUploadUrl
+            })
+          ).body;
       }
     } else if (imageType === 'url') {
       url = await generateNewTabUrl('searchResult.html');

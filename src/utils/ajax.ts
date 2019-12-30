@@ -1,10 +1,15 @@
-interface IAjax {
+interface IAjaxRequest {
   method?: 'GET' | 'POST' | 'DELETE';
   url: string;
-  body?: string;
+  body?: string | FormData;
   headers?: {
     [index: string]: string;
   };
+}
+
+interface IAjaxResponse {
+  body?: any;
+  responseUrl: string;
 }
 
 export const serialize = (obj: any) => {
@@ -19,14 +24,17 @@ export const serialize = (obj: any) => {
   );
 };
 
-export const ajax = (params: IAjax) => {
+export const ajax = (params: IAjaxRequest) => {
   const { method, url, body, headers } = params;
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<IAjaxResponse>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (this.readyState === 4) {
         if (this.status < 299 && this.status >= 200) {
-          resolve(this.responseText);
+          resolve({
+            body: this.responseText,
+            responseUrl: this.responseURL
+          });
         } else {
           reject(this.responseText);
         }

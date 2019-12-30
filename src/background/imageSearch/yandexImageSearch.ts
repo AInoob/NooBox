@@ -8,13 +8,13 @@ import { BaseImageSearch } from './baseImageSearch';
 
 export class YandexImageSearch extends BaseImageSearch {
   protected async searchInternal(imageUrl: string, result: ISearchResult) {
-    const response = await ajax({
+    const { body } = await ajax({
       url:
         'https://yandex.com/images/search?source=collections&rpt=imageview&url=' +
         imageUrl
     });
 
-    const document = this.domParser.parseFromString(response, 'text/html');
+    const document = this.domParser.parseFromString(body, 'text/html');
     this.getKeyword(document, result);
     this.getResults(document, result);
   }
@@ -37,7 +37,6 @@ export class YandexImageSearch extends BaseImageSearch {
   }
 
   private getResults(document: Document, result: ISearchResult) {
-    const searchResultItemList: ISearchResultItem[] = [];
     const similar = document.getElementsByClassName('similar__thumbs');
     if (similar.length > 0) {
       const similarList = similar[0].getElementsByTagName('li');
@@ -80,7 +79,7 @@ export class YandexImageSearch extends BaseImageSearch {
         const imagePart = singleItem.getElementsByTagName('img')[0];
         singleResult.thumbUrl = 'https:' + imagePart.getAttribute('src');
         singleResult.imageUrl = 'https:' + imagePart.getAttribute('src');
-        searchResultItemList.push(singleResult);
+        result.searchResult!.push(singleResult);
       }
     }
     const otherSite = document.getElementsByClassName('other-sites__container');
@@ -120,11 +119,8 @@ export class YandexImageSearch extends BaseImageSearch {
         singleResult.description = singleItem.getElementsByClassName(
           'other-sites__desc'
         )[0].innerHTML;
-        searchResultItemList[searchResultItemList.length] = singleResult;
+        result.searchResult!.push(singleResult);
       }
     }
-    searchResultItemList.forEach((searchResultItem) => {
-      result.searchResult!.push(searchResultItem);
-    });
   }
 }

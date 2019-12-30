@@ -28,6 +28,11 @@ const OptionsDiv = styled.div`
   .engineDisabled {
     opacity: 0.2;
   }
+  .engineToggle {
+    img {
+      cursor: pointer;
+    }
+  }
 `;
 
 @inject('optionsStore')
@@ -74,7 +79,7 @@ export class Options extends React.Component {
           return (
             <Col span={6} key={engine}>
               <Tooltip title={getI18nMessage(engine)}>
-                <Card bordered={false}>
+                <Card className={'engineToggle'} bordered={false}>
                   <img
                     src={getEngineImageUrl(engine)}
                     onClick={() => optionsStore.update(key, !options[key])}
