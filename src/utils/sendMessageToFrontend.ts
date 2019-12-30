@@ -7,8 +7,9 @@ export const sendMessageToFrontend = (
   request: ISendMessageToFrontendRequest
 ) => {
   return new Promise<any>((resolve) => {
-    const views = chrome.extension.getViews({ type: 'popup' });
-    if (views.length === 0) {
+    const popupViews = chrome.extension.getViews({ type: 'popup' });
+    const tabViews = chrome.extension.getViews({ type: 'tab' });
+    if (popupViews.length === 0 && tabViews.length === 0) {
       return resolve();
     }
     chrome.runtime.sendMessage(

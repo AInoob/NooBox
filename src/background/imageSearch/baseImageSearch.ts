@@ -1,0 +1,48 @@
+import { ISearchResult } from '../../searchResult/stores/searchResultStore';
+import { EngineType } from '../../utils/constants';
+import { get, setDB } from '../../utils/db';
+import { sendMessageToFrontend } from '../../utils/sendMessageToFrontend';
+
+export class BaseImageSearch {
+  protected readonly engine: EngineType;
+  protected readonly domParser = new DOMParser();
+
+  constructor(engine: EngineType) {
+    this.engine = engine;
+  }
+
+  public async search(imageUrl: string, cursor: number, result: ISearchResult) {
+    if (!(await get(('imageSearchUrl_' + this.engine) as any))) {
+      result.engineStatus![this.engine] = 'disabled';
+      this.updateSearchResult(cursor, result);
+      return;
+    }
+    result.engineStatus![this.engine] = 'loading';
+    this.updateSearchResult(cursor, result);
+    this.searchInternal(imageUrl, result)
+      .then(() => {
+        result.engineStatus![this.engine] = 'loaded';
+        this.updateSearchResult(cursor, result);
+      })
+      .catch((e: any) => {
+        console.error(e);
+        result.engineStatus![this.engine] = 'error';
+        this.updateSearchResult(cursor, result);
+      });
+  }
+
+  protected async searchInternal(imageUrl: string, result: ISearchResult) {
+    throw new Error('Method must be override' + imageUrl + result);
+  }
+
+  private updateSearchResult(cursor: number, result: ISearchResult) {
+    setDB(cursor, result).then(() => {
+      sendMessageToFrontend({
+        job: 'image_result_update',
+        value: {
+          cursor
+        }
+      }).catch(console.error);
+    });
+  }
+}

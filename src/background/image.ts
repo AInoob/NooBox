@@ -1,7 +1,8 @@
-import { GoogleSearchByImage } from '../contentScript/engine/googleSearchByImage';
+import { ISearchResult } from '../searchResult/stores/searchResultStore';
 import { ajax } from '../utils/ajax';
 import { logEvent } from '../utils/bello';
 import { checkUrlOrBase64 } from '../utils/checkImageType';
+import { ENGINE_LIST, EngineType } from '../utils/constants';
 import { convertDataUriToBinary } from '../utils/convertDataURIToBinary';
 import { createNewTab } from '../utils/createNewTab';
 import { get, getDB, setDB } from '../utils/db';
@@ -11,6 +12,15 @@ import { getI18nMessage } from '../utils/getI18nMessage';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
+import { Ascii2dImageSearch } from './imageSearch/ascii2dImageSearch';
+import { BaiduImageSearch } from './imageSearch/baiduImageSearch';
+import { BaseImageSearch } from './imageSearch/baseImageSearch';
+import { BingImageSearch } from './imageSearch/bingImageSearch';
+import { GoogleImageSearch } from './imageSearch/googleImageSearch';
+import { IqdbImageSearch } from './imageSearch/iqdbImageSearch';
+import { SauceNaoImageSearch } from './imageSearch/saucenaoImageSearch';
+import { TineyeImageSearch } from './imageSearch/tineyeImageSearch';
+import { YandexImageSearch } from './imageSearch/yandexImageSearch';
 
 export class Image {
   private imageUploadUrl: string = '';
@@ -20,6 +30,16 @@ export class Image {
   private extractImageHandle: any = null;
   private screenshotSearchHandle: any = null;
   private IMAGE_SEARCH: string = 'beginImageSearch';
+  private imageSearchMap: { [index in EngineType]: BaseImageSearch } = {
+    ascii2d: new Ascii2dImageSearch('ascii2d'),
+    baidu: new BaiduImageSearch('baidu'),
+    bing: new BingImageSearch('bing'),
+    iqdb: new IqdbImageSearch('iqdb'),
+    saucenao: new SauceNaoImageSearch('saucenao'),
+    tineye: new TineyeImageSearch('tineye'),
+    google: new GoogleImageSearch('google'),
+    yandex: new YandexImageSearch('yandex')
+  };
 
   constructor() {
     this.updateImageUploadUrl('ainoob.com');
@@ -288,23 +308,25 @@ export class Image {
 
   private async beginImageSearch(base64orUrl: string) {
     console.log('begin to search');
-    let cursor: number | null = await getDB('imageCursor');
-    if (typeof cursor === 'number') {
-      cursor++;
-      await setDB('imageCursor', cursor);
-    } else {
-      cursor = 0;
-      await setDB('imageCursor', cursor);
-    }
-    let imageLink;
+    let cursor: number = (await getDB('imageCursor')) || 0;
+    cursor++;
+    await setDB('imageCursor', cursor);
+    let imageLink: string;
     let url;
-    let base64Flag;
     // Check base64 or Url
     const imageType = checkUrlOrBase64(base64orUrl);
 
+    const resultObj: ISearchResult = {
+      base64: imageType === 'base64' ? base64orUrl : '',
+      engineLink: {},
+      engineStatus: {},
+      searchImageInfo: [],
+      searchResult: [],
+      url: imageType === 'url' ? base64orUrl : ''
+    };
+    await setDB(cursor, resultObj);
+
     if (imageType === 'base64') {
-      base64Flag = true;
-      await setDB(cursor, { base64: base64orUrl });
       url = await generateNewTabUrl('searchResult.html');
       await createNewTab({
         active: await get('imageSearchNewTabFront'),
@@ -344,8 +366,6 @@ export class Image {
           }));
       }
     } else if (imageType === 'url') {
-      base64Flag = false;
-      await setDB(cursor, { url: base64orUrl });
       url = await generateNewTabUrl('searchResult.html');
       await createNewTab({
         active: await get('imageSearchNewTabFront'),
@@ -358,109 +378,11 @@ export class Image {
       imageLink = base64orUrl;
     }
 
-    // Generate Image Link
-    // console.log(imageLink);
-    if (imageLink) {
-      const resultObj = {
-        base64: base64Flag ? base64orUrl : '',
-        engineLink: {},
-        searchImageInfo: [],
-        searchResult: [],
-        url: !base64Flag ? base64orUrl : ''
-      };
-      const engineMap = [
-        {
-          name: 'google',
-          dbName: 'imageSearchUrl_google'
-        },
-        {
-          name: 'baidu',
-          dbName: 'imageSearchUrl_baidu'
-        },
-        {
-          name: 'yandex',
-          dbName: 'imageSearchUrl_yandex'
-        },
-        {
-          name: 'bing',
-          dbName: 'imageSearchUrl_bing'
-        },
-        {
-          name: 'tineye',
-          dbName: 'imageSearchUrl_tineye'
-        },
-        {
-          name: 'saucenao',
-          dbName: 'imageSearchUrl_saucenao'
-        },
-        {
-          name: 'iqdb',
-          dbName: 'imageSearchUrl_iqdb'
-        },
-        {
-          name: 'ascii2d',
-          dbName: 'imageSearchUrl_ascii2d'
-        }
-      ];
-      // Get Opened Engine and send request
-      for (const eachEngine of engineMap) {
-        const dbName = eachEngine.dbName;
-        const name = eachEngine.name;
-        if (await get(dbName)) {
-          switch (name) {
-            case 'google':
-              const googleSearch = new GoogleSearchByImage(
-                imageLink,
-                cursor,
-                resultObj
-              );
-              googleSearch.generateResult();
-              break;
-            case 'baidu':
-              break;
-            case 'yandex':
-              break;
-            case 'bing':
-              break;
-            case 'tineye':
-              break;
-            case 'saucenao':
-              break;
-          }
-        }
-      }
-      // for (let i = 0; i < engineMap.length; i++) {
-      //   const dbName = engineMap[i].dbName;
-      //   const name = engineMap[i].name;
-      //   const check = await get(dbName);
-      //   if (check && this.fetchFunction[name + 'Link']) {
-      //     resultObj.engineLink[name] = apiUrls[name] + imageLink;
-      //     if (name === 'baidu') {
-      //       await createSandbox();
-      //     }
-      //     if (name === 'bing') {
-      //       this.fetchFunction[name + 'Link'](
-      //         apiUrls[name] + imageLink,
-      //         imageLink,
-      //         cursor,
-      //         resultObj,
-      //       );
-      //     } else if (name == 'ascii2d') {
-      //       this.fetchFunction[name + 'Link'](
-      //         apiUrls[name],
-      //         imageLink,
-      //         cursor,
-      //         resultObj,
-      //       );
-      //     } else {
-      //       this.fetchFunction[name + 'Link'](
-      //         apiUrls[name] + imageLink,
-      //         cursor,
-      //         resultObj,
-      //       );
-      //     }
-      //   }
-      // }
-    }
+    // Get Opened Engine and send request
+    ENGINE_LIST.forEach(async (engine) => {
+      this.imageSearchMap[engine]
+        .search(imageLink, cursor, resultObj)
+        .catch(console.error);
+    });
   }
 }

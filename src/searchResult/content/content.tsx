@@ -88,7 +88,7 @@ export class Content extends React.Component {
     const { result } = searchResultStore;
     const { options } = optionsStore;
     const { sortBy } = options;
-    return (result.searchResult || []).sort((a, b) => {
+    return (result.searchResult || []).slice().sort((a, b) => {
       switch (sortBy) {
         case 'area':
           return (
@@ -122,6 +122,7 @@ export class Content extends React.Component {
 
       columns[index].push(
         <Popover
+          key={i}
           content={
             <div>
               {getImageWidth(result) === 1 ? (
@@ -140,7 +141,6 @@ export class Content extends React.Component {
             </div>
           }>
           <Card
-            key={i}
             hoverable={true}
             style={{ width: '100%', minHeight: 60 }}
             cover={
@@ -181,7 +181,6 @@ export class Content extends React.Component {
         itemLayout='vertical'
         size='large'
         dataSource={this.getSortedList()}
-        footer={<div>Noobox</div>}
         renderItem={(item) => (
           <List.Item
             key={item.title}

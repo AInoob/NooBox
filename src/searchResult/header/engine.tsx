@@ -1,8 +1,12 @@
+import { Spin } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
 import { EngineType, getEngineImageUrl } from '../../utils/constants';
-import { SearchResultStore } from '../stores/searchResultStore';
+import {
+  EngineStatusType,
+  SearchResultStore
+} from '../stores/searchResultStore';
 
 interface IEngineProps {
   engine: EngineType;
@@ -12,7 +16,12 @@ interface IEngineInjectedProps {
   searchResultStore: SearchResultStore;
 }
 
+interface IEngineDivProps {
+  status: EngineStatusType;
+}
+
 const EngineDiv = styled.div`
+  position: relative;
   width: 12.5%;
   float: left;
   a {
@@ -29,6 +38,35 @@ const EngineDiv = styled.div`
   img {
     width: 100%;
   }
+  .ant-spin {
+    display: ${(p: IEngineDivProps) =>
+      p.status === 'loading' ? 'inline-block;' : 'none;'}
+    position: absolute;
+    width: 100%;
+    padding-top: 100%
+    .ant-spin-dot {
+      height: 30px;
+      width: 30px;
+      position: absolute;
+      left: 50%;
+      margin-left: -15px;
+      top: 50%;
+      margin-top: -15px;
+    }
+  }
+  ${(p: IEngineDivProps) => {
+    if (p.status !== 'loaded') {
+      return `
+        a {
+          cursor: initial;
+        }
+        img {
+          opacity: 0.2333;
+        }
+      `;
+    }
+    return ``;
+  }}
 `;
 
 @inject('searchResultStore')
@@ -47,10 +85,24 @@ export class Engine extends React.Component<IEngineProps> {
     const { searchResultStore } = this.injected;
     const { result } = searchResultStore;
     const link = result.engineLink ? result.engineLink[engine] : '';
+    let status: EngineStatusType = 'disabled';
+    if (result.engineStatus) {
+      if (
+        result.engineStatus[engine] != null &&
+        result.engineStatus[engine] != null
+      ) {
+        status = result.engineStatus[engine]!;
+      }
+    } else if ((result.engineLink || {})[engine]) {
+      // if it's using legacy structure
+      // @ts-ignore
+      status = result[engine + 'Done'] ? 'loaded' : 'loading';
+    }
     return (
-      <EngineDiv>
+      <EngineDiv status={status}>
+        <Spin />
         <a href={link} target='_blank'>
-          <img src={getEngineImageUrl(engine)} />
+          <img alt='engineIcon' src={getEngineImageUrl(engine)} />
         </a>
       </EngineDiv>
     );

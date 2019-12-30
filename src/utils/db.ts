@@ -32,7 +32,7 @@ export const bgSet = async (key: KeyType, value: any) => {
   });
 };
 
-export const getDB = (key: string): Promise<any> => {
+export const getDB = (key: string | number): Promise<any> => {
   return new Promise((resolve, reject) => {
     const indexedDB = window.indexedDB;
     const open = indexedDB.open('NooBox', 1);

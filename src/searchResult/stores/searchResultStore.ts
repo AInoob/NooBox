@@ -11,7 +11,6 @@ interface IImageInfo {
 
 interface ISearchImageInfo {
   engine: EngineType;
-  imageInfo: IImageInfo;
   keyword: string;
   keywordLink: string;
 }
@@ -27,12 +26,15 @@ export interface ISearchResultItem {
   weight: number;
 }
 
-interface ISearchResult {
+export type EngineStatusType = 'disabled' | 'loading' | 'loaded' | 'error';
+
+export interface ISearchResult {
   url?: string;
   base64?: string;
   engineLink?: { [key in EngineType]?: string };
   searchImageInfo?: ISearchImageInfo[];
   searchResult?: ISearchResultItem[];
+  engineStatus?: { [key in EngineType]?: EngineStatusType };
 }
 
 const DEFAULT_MODAL_IMAGE_WIDTH = 512;
@@ -43,7 +45,7 @@ export class SearchResultStore {
   @observable public modelImageWidth: number = DEFAULT_MODAL_IMAGE_WIDTH;
   @observable public modelOpened: boolean = false;
 
-  private cursor: string;
+  private cursor: number;
 
   constructor() {
     this.setUpListener();
@@ -65,8 +67,8 @@ export class SearchResultStore {
   }
 
   private async updateResult() {
-    this.cursor = window.location.hash.substr(2);
-    const result = await getDB(parseInt(this.cursor, 0) as any);
+    this.cursor = parseInt(window.location.hash.substr(2), 0);
+    const result = await getDB(this.cursor);
     this.result = result;
     console.log(result);
   }
@@ -74,11 +76,12 @@ export class SearchResultStore {
   private setUpListener() {
     chrome.runtime.onMessage.addListener(
       async (request: ISendMessageToFrontendRequest, _sender, sendResponse) => {
+        console.log(request);
         switch (request.job) {
           case 'image_result_update':
             sendResponse(null);
             const { cursor } = request.value;
-            if (this.cursor === cursor.toString()) {
+            if (this.cursor === cursor) {
               await this.updateResult();
             }
             break;

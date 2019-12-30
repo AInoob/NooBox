@@ -12,6 +12,7 @@ export type EngineType =
   | 'yandex'
   | 'bing'
   | 'saucenao'
+  | 'tineye'
   | 'ascii2d'
   | 'iqdb';
 
@@ -19,6 +20,7 @@ export const ENGINE_LIST: EngineType[] = [
   'google',
   'baidu',
   'yandex',
+  'tineye',
   'bing',
   'saucenao',
   'ascii2d',
