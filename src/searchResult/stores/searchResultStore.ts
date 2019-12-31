@@ -1,7 +1,9 @@
 import { observable } from 'mobx';
 import { EngineType } from '../../utils/constants';
 import { getDB } from '../../utils/db';
+import { getBase64FromImage } from '../../utils/getBase64FromImage';
 import { getImageWidth } from '../../utils/getImageWidth';
+import { sendMessageToBackground } from '../../utils/sendMessageToBackground';
 import { ISendMessageToFrontendRequest } from '../../utils/sendMessageToFrontend';
 
 interface IImageInfo {
@@ -64,6 +66,25 @@ export class SearchResultStore {
     }
     this.modelImageUrl = modelImageUrl;
     this.modelOpened = true;
+  }
+
+  public async searchImage(base64OrUrl: string) {
+    await sendMessageToBackground({
+      job: 'beginImageSearch',
+      value: {
+        base64OrUrl
+      }
+    });
+  }
+
+  public async uploadSearch(img: any) {
+    const base64 = getBase64FromImage(img);
+    await sendMessageToBackground({
+      job: 'beginImageSearch',
+      value: {
+        base64OrUrl: base64
+      }
+    });
   }
 
   private async updateResult() {

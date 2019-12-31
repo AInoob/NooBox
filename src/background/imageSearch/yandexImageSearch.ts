@@ -8,11 +8,12 @@ import { BaseImageSearch } from './baseImageSearch';
 
 export class YandexImageSearch extends BaseImageSearch {
   protected async searchInternal(imageUrl: string, result: ISearchResult) {
-    const { body } = await ajax({
+    const { body, responseUrl } = await ajax({
       url:
         'https://yandex.com/images/search?source=collections&rpt=imageview&url=' +
         imageUrl
     });
+    result.engineLink![this.engine] = responseUrl;
 
     const document = this.domParser.parseFromString(body, 'text/html');
     this.getKeyword(document, result);

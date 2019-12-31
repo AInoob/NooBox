@@ -1,4 +1,4 @@
-interface IAjaxRequest {
+export interface IAjaxRequest {
   method?: 'GET' | 'POST' | 'DELETE';
   url: string;
   body?: string | FormData;
@@ -7,7 +7,7 @@ interface IAjaxRequest {
   };
 }
 
-interface IAjaxResponse {
+export interface IAjaxResponse {
   body?: any;
   responseUrl: string;
 }

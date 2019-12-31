@@ -23,7 +23,6 @@ const ANALYTICS = 'analytics';
 const IMAGE_SEARCH = 'beginImageSearch';
 chrome.runtime.onMessage.addListener(
   (request: ISendMessageToBackgroundRequest, _sender, sendResponse) => {
-    console.log(request);
     switch (request.job) {
       case ANALYTICS:
         logEvent(request.value);

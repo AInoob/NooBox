@@ -8,10 +8,11 @@ import { BaseImageSearch } from './baseImageSearch';
 
 export class IqdbImageSearch extends BaseImageSearch {
   protected async searchInternal(imageUrl: string, result: ISearchResult) {
-    const { body } = await ajax({
-      url: 'http://iqdb.org/?url=' + imageUrl
+    const { body, responseUrl } = await ajax({
+      url: 'https://iqdb.org/?url=' + imageUrl
     });
 
+    result.engineLink![this.engine] = responseUrl;
     const document = this.domParser.parseFromString(body, 'text/html');
     this.getResults(document, result);
   }

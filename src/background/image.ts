@@ -1,5 +1,5 @@
 import { ISearchResult } from '../searchResult/stores/searchResultStore';
-import { ajax } from '../utils/ajax';
+import { ajax, IAjaxRequest } from '../utils/ajax';
 import { logEvent } from '../utils/bello';
 import { checkUrlOrBase64 } from '../utils/checkImageType';
 import { ENGINE_LIST, EngineType } from '../utils/constants';
@@ -29,7 +29,6 @@ export class Image {
   private imageSearchHandle: any = null;
   private extractImageHandle: any = null;
   private screenshotSearchHandle: any = null;
-  private IMAGE_SEARCH: string = 'beginImageSearch';
   private imageSearchMap: { [index in EngineType]: BaseImageSearch } = {
     ascii2d: new Ascii2dImageSearch('ascii2d'),
     baidu: new BaiduImageSearch('baidu'),
@@ -112,9 +111,9 @@ export class Image {
             const { files } = request.value;
             this.downloadExtractImages(sender, files);
             return sendResponse(null);
-          case this.IMAGE_SEARCH:
-            const { base64 } = request.value;
-            this.beginImageSearch(base64).catch(console.error);
+          case 'beginImageSearch':
+            const { base64OrUrl } = request.value;
+            this.beginImageSearch(base64OrUrl).catch(console.error);
             return sendResponse(null);
         }
       }
@@ -309,7 +308,6 @@ export class Image {
   }
 
   private async beginImageSearch(base64orUrl: string) {
-    console.log('begin to search');
     let cursor: number = (await getDB('imageCursor')) || 0;
     cursor++;
     await setDB('imageCursor', cursor);
@@ -338,38 +336,22 @@ export class Image {
         action: 'dataURI',
         category: 'imageSearch'
       });
-      const requestBody = {
+      const request: IAjaxRequest = {
+        method: 'POST',
         body: JSON.stringify({ data: base64orUrl }),
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'POST',
-        mode: 'cors'
+        url: this.imageUploadUrl
       };
       try {
-        imageLink =
-          this.imageDownloadUrl +
-          (
-            await ajax({
-              method: 'POST',
-              body: JSON.stringify(requestBody),
-              url: this.imageUploadUrl
-            })
-          ).body;
+        imageLink = this.imageDownloadUrl + (await ajax(request)).body;
       } catch (e) {
         console.error(e);
         console.log('having error, switch to default server');
         this.updateImageUploadUrl('ainoob.com');
         this.updateImageDownloadUrl('ainoob.com');
-        imageLink =
-          this.imageDownloadUrl +
-          (
-            await ajax({
-              method: 'POST',
-              body: JSON.stringify(requestBody),
-              url: this.imageUploadUrl
-            })
-          ).body;
+        imageLink = this.imageDownloadUrl + (await ajax(request)).body;
       }
     } else if (imageType === 'url') {
       url = await generateNewTabUrl('searchResult.html');

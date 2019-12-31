@@ -70,11 +70,14 @@ export class Brief extends React.Component {
   }
 
   private getSearchAgainActionItem() {
+    const { searchResultStore } = this.injected;
     return (
       <span
         className='actionItem'
         onClick={() => {
-          console.log('yoyoyo');
+          searchResultStore
+            .searchImage((document.getElementById('searchImage') as any).src)
+            .catch(console.error);
         }}>
         <Tooltip
           placement='top'
@@ -87,11 +90,14 @@ export class Brief extends React.Component {
   }
 
   private getUploadSearchActionItem() {
+    const { searchResultStore } = this.injected;
     return (
       <span
         className='actionItem'
         onClick={() => {
-          console.log('yoyoyo');
+          searchResultStore
+            .uploadSearch(document.getElementById('searchImage')!)
+            .catch(console.error);
         }}>
         <Tooltip
           placement='top'
