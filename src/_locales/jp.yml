@@ -18,6 +18,10 @@ support_for_a_single_upload: シングルアップロード画像をサポート
 html_5_video_control: HTML 5ビデオコントロール（プレビュー）
 auto_refresh: Webページの自動更新
 s: 秒
+# History
+clear_all: Delete All
+image_first_keyword: Image First Keyword
+image_used_engine: Used Engines
 # Options
 image: 画像関連
 reverse_image_search: 画像で検索

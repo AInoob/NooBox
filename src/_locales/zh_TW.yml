@@ -20,6 +20,10 @@ support_for_a_single_upload: 僅支援上傳單張圖片
 html_5_video_control: HTML 5 影片控制 (預覽版)
 auto_refresh: 網頁自動重新整理
 s: 秒
+# History
+clear_all: 全部清空
+image_first_keyword: 第一个关键字
+image_used_engine: 使用的引擎
 # Options
 video_control: HTML5 影片控制 (預覽版)
 imagege: 圖片相關

@@ -4,8 +4,6 @@ export const NOOBOX_VERSION = chrome.runtime.getManifest().version;
 
 export const HTML5_VIDEO_CONTROL_OPTION_KEY_PREFIX = 'videoControl_website_';
 
-export const HISTORY_DB_KEY = 'history_records';
-
 export type EngineType =
   | 'google'
   | 'baidu'

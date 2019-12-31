@@ -22,8 +22,7 @@ auto_refresh: Auto Refresh
 s: S
 # History
 clear_all: Delete All
-image_size: Image Size
-image_first_keyowrd: Image First Keyword
+image_first_keyword: Image First Keyword
 image_used_engine: Used Engines
 # Options
 video_control: HTML5 Video Control (Alpha)

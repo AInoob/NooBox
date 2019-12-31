@@ -25,6 +25,7 @@ import { OptionsStore } from '../shared/stores/optionsStore';
 import { useChrome } from '../utils/useChrome';
 import { Popup } from './popup';
 import { AutoRefreshStore } from './stores/autoRefreshStore';
+import { ImageSearchHistoryStore } from './stores/imageSearchHistoryStore';
 import { ImageStore } from './stores/imageStore';
 import { RouterStore } from './stores/routerStore';
 import { VideoControlStore } from './stores/videoControlStore';
@@ -57,6 +58,7 @@ window.addEventListener('error', (e) => {
 
 const autoRefreshStore = new AutoRefreshStore();
 const imageStore = new ImageStore();
+const imageSearchHistoryStore = new ImageSearchHistoryStore();
 const optionsStore = new OptionsStore();
 const routerStore = new RouterStore();
 const videoControlStore = new VideoControlStore();
@@ -64,6 +66,7 @@ const videoControlStore = new VideoControlStore();
 const stores = {
   autoRefreshStore,
   imageStore,
+  imageSearchHistoryStore,
   optionsStore,
   routerStore,
   videoControlStore

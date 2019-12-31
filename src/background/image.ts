@@ -1,14 +1,14 @@
+import { imageSearchDao } from '../dao/imageSearchDao';
 import { ISearchResult } from '../searchResult/stores/searchResultStore';
 import { ajax, IAjaxRequest } from '../utils/ajax';
 import { logEvent } from '../utils/bello';
 import { checkUrlOrBase64 } from '../utils/checkImageType';
 import { ENGINE_LIST, EngineType } from '../utils/constants';
 import { convertDataUriToBinary } from '../utils/convertDataURIToBinary';
-import { createNewTab } from '../utils/createNewTab';
 import { get, getDB, setDB } from '../utils/db';
 import { fetchImageBlob } from '../utils/fetchImageBlob';
-import { generateNewTabUrl } from '../utils/generateNewTabUrl';
 import { getI18nMessage } from '../utils/getI18nMessage';
+import { openSearchResultTab } from '../utils/openSearchResultTab';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
@@ -43,6 +43,7 @@ export class Image {
   constructor() {
     this.updateImageUploadUrl('ainoob.com');
     this.updateImageDownloadUrl('ainoob.com');
+    this.migrateHistory().catch(console.error);
   }
 
   public async init() {
@@ -101,6 +102,28 @@ export class Image {
         this.screenshotSearchHandle = null;
       }
     }
+  }
+
+  private async migrateHistory() {
+    const migrateV1 = await getDB('migratedV1');
+    if (migrateV1) {
+      console.log('skip migrating V1');
+      return;
+    }
+    const cursor = await getDB('imageCursor');
+    const now = Date.now();
+    for (let i = 0; i <= cursor; i++) {
+      const result = await getDB(i);
+      if (result && (result.base64 || result.url)) {
+        await imageSearchDao.add({
+          id: i,
+          createdAt: now + i,
+          result
+        });
+      }
+    }
+    await setDB('migratedV1', true);
+    console.log('migratedV1');
   }
 
   private setUpListener() {
@@ -312,11 +335,10 @@ export class Image {
     cursor++;
     await setDB('imageCursor', cursor);
     let imageLink: string;
-    let url;
     // Check base64 or Url
     const imageType = checkUrlOrBase64(base64orUrl);
 
-    const resultObj: ISearchResult = {
+    const result: ISearchResult = {
       base64: imageType === 'base64' ? base64orUrl : '',
       engineLink: {},
       engineStatus: {},
@@ -324,14 +346,14 @@ export class Image {
       searchResult: [],
       url: imageType === 'url' ? base64orUrl : ''
     };
-    await setDB(cursor, resultObj);
+    await imageSearchDao.add({
+      id: cursor,
+      createdAt: Date.now(),
+      result
+    });
 
+    await openSearchResultTab(cursor);
     if (imageType === 'base64') {
-      url = await generateNewTabUrl('searchResult.html');
-      await createNewTab({
-        active: await get('imageSearchNewTabFront'),
-        url: url + '#/' + cursor
-      });
       logEvent({
         action: 'dataURI',
         category: 'imageSearch'
@@ -354,11 +376,6 @@ export class Image {
         imageLink = this.imageDownloadUrl + (await ajax(request)).body;
       }
     } else if (imageType === 'url') {
-      url = await generateNewTabUrl('searchResult.html');
-      await createNewTab({
-        active: await get('imageSearchNewTabFront'),
-        url: url + '#/' + cursor
-      });
       logEvent({
         action: 'url',
         category: 'imageSearch'
@@ -369,7 +386,7 @@ export class Image {
     // Get Opened Engine and send request
     ENGINE_LIST.forEach(async (engine) => {
       this.imageSearchMap[engine]
-        .search(imageLink, cursor, resultObj)
+        .search(imageLink, cursor, result)
         .catch(console.error);
     });
   }

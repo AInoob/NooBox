@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
+import { imageSearchDao } from '../../dao/imageSearchDao';
 import { EngineType } from '../../utils/constants';
-import { getDB } from '../../utils/db';
 import { getBase64FromImage } from '../../utils/getBase64FromImage';
 import { getImageWidth } from '../../utils/getImageWidth';
 import { sendMessageToBackground } from '../../utils/sendMessageToBackground';
@@ -89,9 +89,8 @@ export class SearchResultStore {
 
   private async updateResult() {
     this.cursor = parseInt(window.location.hash.substr(2), 0);
-    const result = await getDB(this.cursor);
-    this.result = result;
-    console.log(result);
+    const result = await imageSearchDao.get(this.cursor);
+    this.result = result!.result;
   }
 
   private setUpListener() {

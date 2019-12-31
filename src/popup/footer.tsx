@@ -81,7 +81,7 @@ export class Footer extends React.Component {
         <div id='footerMenu'>
           <a href='#'></a>
           <a href='#'>
-            <span id='name'></span>
+            <span id='123'></span>
           </a>
           <a
             id='contribute'
@@ -92,7 +92,7 @@ export class Footer extends React.Component {
           <a id='donate' href='#'>
             <FontAwesomeIcon icon='donate' />
             <div id='donateSection'>
-              <img src='/images/donate.png' alt='donate' />
+              {/*<img src='/images/donate.png' alt='donate' />*/}
             </div>
           </a>
         </div>

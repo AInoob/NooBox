@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { About } from './about';
 import { Footer } from './footer';
 import { Header } from './header';
+import { ImageSearchHistory } from './imageSearchHistory';
 import { Options } from './options';
 import { Overview } from './overview';
 import { RouterStore } from './stores/routerStore';
@@ -62,6 +63,8 @@ export class Popup extends React.Component {
       return <Overview />;
     } else if (location === 'options') {
       return <Options />;
+    } else if (location === 'history') {
+      return <ImageSearchHistory />;
     } else {
       return <About />;
     }

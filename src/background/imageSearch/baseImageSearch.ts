@@ -1,6 +1,7 @@
+import { imageSearchDao } from '../../dao/imageSearchDao';
 import { ISearchResult } from '../../searchResult/stores/searchResultStore';
 import { EngineType } from '../../utils/constants';
-import { get, setDB } from '../../utils/db';
+import { get } from '../../utils/db';
 import { sendMessageToFrontend } from '../../utils/sendMessageToFrontend';
 
 export class BaseImageSearch {
@@ -36,13 +37,19 @@ export class BaseImageSearch {
   }
 
   private updateSearchResult(cursor: number, result: ISearchResult) {
-    setDB(cursor, result).then(() => {
-      sendMessageToFrontend({
-        job: 'image_result_update',
-        value: {
-          cursor
-        }
-      }).catch(console.error);
-    });
+    imageSearchDao
+      .add({
+        id: cursor,
+        createdAt: Date.now(),
+        result
+      })
+      .then(() => {
+        sendMessageToFrontend({
+          job: 'image_result_update',
+          value: {
+            cursor
+          }
+        }).catch(console.error);
+      });
   }
 }
