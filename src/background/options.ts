@@ -57,7 +57,6 @@ export class Options {
   constructor(image: Image) {
     this.image = image;
     this.init().catch(console.error);
-    this.image.init().catch(console.error);
   }
 
   public getOptions() {
@@ -96,5 +95,6 @@ export class Options {
       }
       this.options[key] = (await get(key)) as never;
     }
+    await this.image.init();
   }
 }
