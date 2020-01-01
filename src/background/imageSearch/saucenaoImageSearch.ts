@@ -1,6 +1,6 @@
 import {
   ISearchResult,
-  ISearchResultItem
+  ISingleSearchResultItem
 } from '../../searchResult/stores/searchResultStore';
 import { ajax } from '../../utils/ajax';
 import { ENGINE_WEIGHTS } from '../../utils/constants';
@@ -21,7 +21,7 @@ export class SauceNaoImageSearch extends BaseImageSearch {
     const list = document.getElementsByClassName('result');
     if (list.length > 0) {
       for (let i = 1; i < list.length; i++) {
-        const singleResult: ISearchResultItem = {
+        const singleResult: ISingleSearchResultItem = {
           title: '',
           thumbUrl: '',
           imageUrl: '',

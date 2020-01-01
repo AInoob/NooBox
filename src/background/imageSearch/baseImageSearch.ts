@@ -20,16 +20,15 @@ export class BaseImageSearch {
     }
     result.engineStatus![this.engine] = 'loading';
     this.updateSearchResult(cursor, result);
-    this.searchInternal(imageUrl, result)
-      .then(() => {
-        result.engineStatus![this.engine] = 'loaded';
-        this.updateSearchResult(cursor, result);
-      })
-      .catch((e: any) => {
-        console.error(e);
-        result.engineStatus![this.engine] = 'error';
-        this.updateSearchResult(cursor, result);
-      });
+    try {
+      await this.searchInternal(imageUrl, result);
+      result.engineStatus![this.engine] = 'loaded';
+      this.updateSearchResult(cursor, result);
+    } catch (e) {
+      console.error(e);
+      result.engineStatus![this.engine] = 'error';
+      this.updateSearchResult(cursor, result);
+    }
   }
 
   protected async searchInternal(imageUrl: string, result: ISearchResult) {

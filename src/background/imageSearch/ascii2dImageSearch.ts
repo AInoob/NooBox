@@ -1,6 +1,6 @@
 import {
   ISearchResult,
-  ISearchResultItem
+  ISingleSearchResultItem
 } from '../../searchResult/stores/searchResultStore';
 import { ajax } from '../../utils/ajax';
 import { ENGINE_WEIGHTS } from '../../utils/constants';
@@ -24,7 +24,7 @@ export class Ascii2dImageSearch extends BaseImageSearch {
   private getResults(document: Document, result: ISearchResult) {
     const list = document.getElementsByClassName('item-box');
     for (let i = 0; i < list.length; i++) {
-      const singleResult: ISearchResultItem = {
+      const singleResult: ISingleSearchResultItem = {
         title: 'Possible Match',
         thumbUrl: '',
         imageUrl: '',

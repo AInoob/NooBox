@@ -17,7 +17,7 @@ interface ISearchImageInfo {
   keywordLink: string;
 }
 
-export interface ISearchResultItem {
+export interface ISingleSearchResultItem {
   description: string;
   imageInfo: IImageInfo;
   imageUrl: string;
@@ -35,7 +35,7 @@ export interface ISearchResult {
   base64?: string;
   engineLink?: { [key in EngineType]?: string };
   searchImageInfo?: ISearchImageInfo[];
-  searchResult?: ISearchResultItem[];
+  searchResult?: ISingleSearchResultItem[];
   engineStatus?: { [key in EngineType]?: EngineStatusType };
 }
 

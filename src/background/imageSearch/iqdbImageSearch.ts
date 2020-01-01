@@ -1,6 +1,6 @@
 import {
   ISearchResult,
-  ISearchResultItem
+  ISingleSearchResultItem
 } from '../../searchResult/stores/searchResultStore';
 import { ajax } from '../../utils/ajax';
 import { ENGINE_WEIGHTS } from '../../utils/constants';
@@ -30,7 +30,7 @@ export class IqdbImageSearch extends BaseImageSearch {
           }
           const header = singleItem.getElementsByTagName('th')[0];
           if (header == null || header.innerHTML === 'Possible match') {
-            const singleResult: ISearchResultItem = {
+            const singleResult: ISingleSearchResultItem = {
               title: 'Possible Match',
               thumbUrl: '',
               imageUrl: '',

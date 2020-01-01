@@ -1,6 +1,6 @@
 import {
   ISearchResult,
-  ISearchResultItem
+  ISingleSearchResultItem
 } from '../../searchResult/stores/searchResultStore';
 import { ajax } from '../../utils/ajax';
 import { ENGINE_WEIGHTS } from '../../utils/constants';
@@ -42,7 +42,7 @@ export class YandexImageSearch extends BaseImageSearch {
     if (similar.length > 0) {
       const similarList = similar[0].getElementsByTagName('li');
       for (let i = 0; i < similarList.length; i++) {
-        const singleResult: ISearchResultItem = {
+        const singleResult: ISingleSearchResultItem = {
           title: '',
           thumbUrl: '',
           imageUrl: '',
@@ -87,7 +87,7 @@ export class YandexImageSearch extends BaseImageSearch {
     if (otherSite.length > 0) {
       const otherSiteList = otherSite[0].getElementsByTagName('li');
       for (let i = 0; i < otherSiteList.length; i++) {
-        const singleResult: ISearchResultItem = {
+        const singleResult: ISingleSearchResultItem = {
           title: '',
           thumbUrl: '',
           imageUrl: '',
