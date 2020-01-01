@@ -11,7 +11,19 @@ interface IImageSearchHistoryInjectedProps {
   imageSearchHistoryStore: ImageSearchHistoryStore;
 }
 
-const ImageSearchHistoryDiv = styled.div``;
+const ImageSearchHistoryDiv = styled.div`
+  #imageSearchList {
+    width: 100%;
+  }
+  th,
+  td {
+    padding: 20px;
+    text-align: center;
+  }
+  .deleteColumn {
+    width: 66px;
+  }
+`;
 
 @inject('imageSearchHistoryStore')
 @observer
@@ -41,18 +53,26 @@ export class ImageSearchHistory extends React.Component {
     );
     return (
       <ImageSearchHistoryDiv>
-        <div id='imageSearchList'>
-          <span>{getI18nMessage('history')}</span>
-          {deleteAll}
-          {imageSearchList.map((imageSearchRecord) => {
-            return (
-              <ImageSearchHistoryItem
-                key={imageSearchRecord.id}
-                imageSearchRecord={imageSearchRecord}
-              />
-            );
-          })}
-        </div>
+        <table id='imageSearchList'>
+          <thead>
+            <tr>
+              <th>
+                <span>{getI18nMessage('history')}</span>
+              </th>
+              <th className='deleteColumn'>{deleteAll}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {imageSearchList.map((imageSearchRecord) => {
+              return (
+                <ImageSearchHistoryItem
+                  key={imageSearchRecord.id}
+                  imageSearchRecord={imageSearchRecord}
+                />
+              );
+            })}
+          </tbody>
+        </table>
       </ImageSearchHistoryDiv>
     );
   }
