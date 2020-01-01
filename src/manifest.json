@@ -1,4 +1,9 @@
 {
+  "applications": {
+    "gecko": {
+      "id": "noob@ainoob.com"
+    }
+  },
   "manifest_version": 2,
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",

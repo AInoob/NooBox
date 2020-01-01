@@ -6,10 +6,13 @@ type KeyType = keyof IOptions;
 export const get = (key: KeyType, defaultValue?: any): Promise<any> => {
   return new Promise((resolve) => {
     chrome.storage.sync.get(key, (result) => {
-      if (result[key] == null && defaultValue != null) {
-        resolve(defaultValue);
+      if ((result == null || result[key] == null) && defaultValue != null) {
+        return resolve(defaultValue);
       }
-      resolve(result[key]);
+      if (result == null) {
+        return resolve(null);
+      }
+      return resolve(result[key]);
     });
   });
 };

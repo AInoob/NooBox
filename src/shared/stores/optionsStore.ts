@@ -17,6 +17,10 @@ export class OptionsStore {
   }
 
   private async init() {
+    const yo = await sendMessageToBackground({
+      job: 'getOptions'
+    });
+    console.log('optionsFetched:' + JSON.stringify(yo));
     this.options = await sendMessageToBackground({
       job: 'getOptions'
     });

@@ -1,12 +1,7 @@
 import { getHostnameFromUrl } from '../utils/getHostnameFromUrl';
-import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { voidFunc } from '../utils/voidFunc';
 
 export class VideoControl {
-  constructor() {
-    this.setUpListener();
-  }
-
   public notifyAllToPerformSelfCheck() {
     chrome.tabs.query({}, (tabs) => {
       for (const tab of tabs) {
@@ -38,17 +33,5 @@ export class VideoControl {
         }
       }
     });
-  }
-
-  private setUpListener() {
-    chrome.runtime.onMessage.addListener(
-      (request: ISendMessageToBackgroundRequest, _sender, sendResponse) => {
-        switch (request.job) {
-          case 'videoControl':
-            this.notifyAllToPerformSelfCheck();
-            return sendResponse(null);
-        }
-      }
-    );
   }
 }

@@ -1,6 +1,5 @@
 import { logEvent } from '../utils/bello';
 import { clone } from '../utils/clone';
-import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 
 export interface ITabStatus {
   handler?: any;
@@ -29,28 +28,7 @@ export interface IUpdateAutoRefresh {
 export class AutoRefresh {
   private tabs: { [index: number]: ITabStatus } = {};
 
-  constructor() {
-    this.setUpListener();
-  }
-
-  private setUpListener() {
-    chrome.tabs.onRemoved.addListener((tabId) => {
-      this.delete(tabId);
-    });
-    chrome.runtime.onMessage.addListener(
-      (request: ISendMessageToBackgroundRequest, _sender, sendResponse) => {
-        switch (request.job) {
-          case 'getCurrentTabAutoRefreshStatus':
-            const { tabId } = request.value;
-            return sendResponse(this.getSetting(tabId));
-          case 'updateAutoRefresh':
-            return sendResponse(this.update(request.value));
-        }
-      }
-    );
-  }
-
-  private clear(tabId: number) {
+  public clear(tabId: number) {
     const setting = this.getSetting(tabId);
     if (setting.handler) {
       clearInterval(setting.handler);
@@ -59,28 +37,12 @@ export class AutoRefresh {
     this.tabs[tabId] = setting;
   }
 
-  private performAutoRefresh(tabId: number) {
-    chrome.tabs.reload(tabId, {}, () => {
-      console.log('refresh');
-    });
-    const setting = this.getSetting(tabId);
-    setting.lastRefreshedAt = new Date().getTime();
-    if (setting.isFirstTimeInterval) {
-      this.clear(tabId);
-      setting.isFirstTimeInterval = false;
-      setting.handler = setInterval(() => {
-        this.performAutoRefresh(tabId);
-      }, setting.interval);
-    }
-    this.tabs[tabId] = setting;
-  }
-
-  private delete(tabId: number) {
+  public delete(tabId: number) {
     this.update({ tabId, active: false });
     delete this.tabs[tabId];
   }
 
-  private update(params: IUpdateAutoRefresh) {
+  public update(params: IUpdateAutoRefresh) {
     const { tabId, active, startAt, shouldLogEvent } = params;
     let { interval } = params;
     if (!tabId) {
@@ -118,7 +80,23 @@ export class AutoRefresh {
     return this.getSetting(tabId);
   }
 
-  private getSetting(tabId: number) {
+  public getSetting(tabId: number) {
     return this.tabs[tabId] || clone(defaultTabStatus);
+  }
+
+  private performAutoRefresh(tabId: number) {
+    chrome.tabs.reload(tabId, {}, () => {
+      console.log('refresh');
+    });
+    const setting = this.getSetting(tabId);
+    setting.lastRefreshedAt = new Date().getTime();
+    if (setting.isFirstTimeInterval) {
+      this.clear(tabId);
+      setting.isFirstTimeInterval = false;
+      setting.handler = setInterval(() => {
+        this.performAutoRefresh(tabId);
+      }, setting.interval);
+    }
+    this.tabs[tabId] = setting;
   }
 }

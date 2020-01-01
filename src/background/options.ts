@@ -1,7 +1,6 @@
 import { clone } from '../utils/clone';
 import { HTML5_VIDEO_CONTROL_OPTION_KEY_PREFIX } from '../utils/constants';
 import { get, set } from '../utils/db';
-import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { Image } from './image';
 import { VideoControl } from './videoControl';
 
@@ -53,14 +52,36 @@ export const defaultOptions: IOptions = {
 
 export class Options {
   private options: IOptions = clone(defaultOptions);
-  private image: Image | null = null;
-  private videoControl: VideoControl | null = null;
-  constructor(image: Image, videoControl: VideoControl) {
+  private image: Image;
+  private videoControl: VideoControl;
+  constructor(image: Image) {
     this.image = image;
-    this.videoControl = videoControl;
-    this.setUpListener();
     this.init().catch(console.error);
     this.image.init().catch(console.error);
+  }
+
+  public getOptions() {
+    return clone(this.options);
+  }
+
+  public async set(key: keyof IOptions, value: any) {
+    await set(key, value);
+    this.options[key as keyof IOptions] = value as never;
+    if (
+      key === 'videoControl' ||
+      key.startsWith(HTML5_VIDEO_CONTROL_OPTION_KEY_PREFIX)
+    ) {
+      this.videoControl.notifyVideoControlSwitch(
+        key.substr(HTML5_VIDEO_CONTROL_OPTION_KEY_PREFIX.length),
+        value
+      );
+    } else if (key === 'screenshotSearch') {
+      this.image.updateScreenshotSearchContextMenu().catch(console.error);
+    } else if (key === 'extractImages') {
+      this.image.updateExtractImageContextMenu().catch(console.error);
+    } else if (key === 'imageSearch') {
+      this.image.updateImageSearchContextMenu().catch(console.error);
+    }
   }
   private async init() {
     const keyList: Array<keyof IOptions> = Object.keys(defaultOptions) as any;
@@ -75,50 +96,5 @@ export class Options {
       }
       this.options[key] = (await get(key)) as never;
     }
-  }
-
-  private async set(key: keyof IOptions, value: any) {
-    await set(key, value);
-    this.options[key as keyof IOptions] = value as never;
-  }
-
-  private setUpListener() {
-    chrome.runtime.onMessage.addListener(
-      async (
-        request: ISendMessageToBackgroundRequest,
-        _sender,
-        sendResponse
-      ) => {
-        switch (request.job) {
-          case 'set':
-            const { key, value } = request.value;
-            sendResponse({
-              key,
-              value
-            });
-            await this.set(key, value);
-            if (
-              key === 'videoControl' ||
-              key.startsWith(HTML5_VIDEO_CONTROL_OPTION_KEY_PREFIX)
-            ) {
-              this.videoControl!.notifyVideoControlSwitch(
-                key.substr(HTML5_VIDEO_CONTROL_OPTION_KEY_PREFIX.length),
-                value
-              );
-            } else if (key === 'screenshotSearch') {
-              this.image!.updateScreenshotSearchContextMenu().catch(
-                console.error
-              );
-            } else if (key === 'extractImages') {
-              this.image!.updateExtractImageContextMenu().catch(console.error);
-            } else if (key === 'imageSearch') {
-              this.image!.updateImageSearchContextMenu().catch(console.error);
-            }
-            break;
-          case 'getOptions':
-            return sendResponse(this.options);
-        }
-      }
-    );
   }
 }

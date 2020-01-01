@@ -9,7 +9,6 @@ import { get, getDB, setDB } from '../utils/db';
 import { fetchImageBlob } from '../utils/fetchImageBlob';
 import { getI18nMessage } from '../utils/getI18nMessage';
 import { openSearchResultTab } from '../utils/openSearchResultTab';
-import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
 import { Ascii2dImageSearch } from './imageSearch/ascii2dImageSearch';
@@ -47,7 +46,6 @@ export class Image {
   }
 
   public async init() {
-    this.setUpListener();
     await this.updateImageSearchContextMenu();
     await this.updateExtractImageContextMenu();
     await this.updateScreenshotSearchContextMenu();
@@ -104,6 +102,138 @@ export class Image {
     }
   }
 
+  public downloadExtractImages(sender: any, files: any) {
+    logEvent({
+      action: 'run',
+      category: 'downloadExtractImages'
+    });
+    const zip = new (window as any).JSZip();
+    let remains = files.length;
+    let total = files.length;
+    let i = 0;
+    let file = files[i];
+    const reader = new window.FileReader();
+    reader.onloadend = () => {
+      addImage(reader.result);
+    };
+    function addImage(input?: string | ArrayBuffer | null) {
+      if (input) {
+        const dataUri: string = stringOrArrayBufferToString(input);
+        const ext = (dataUri.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
+        const binary = convertDataUriToBinary(dataUri);
+        zip.file(file.name + '.' + ext, binary, {
+          base64: false
+        });
+      } else {
+        total--;
+      }
+      remains--;
+      chrome.tabs.sendMessage(
+        sender.tab.id,
+        {
+          job: 'downloadRemaining',
+          remains,
+          total
+        },
+        voidFunc
+      );
+      if (remains === 0) {
+        zip
+          .generateAsync({
+            type: 'blob'
+          })
+          .then((content: any) => {
+            (window as any).saveAs(content, 'NooBox.zip');
+          });
+      } else {
+        file = files[++i];
+        if (file.url.slice(0, 4) === 'data') {
+          addImage(file.url);
+        } else {
+          fetchImageBlob(file.url, (blob: Blob) => {
+            if (blob) {
+              reader.readAsDataURL(blob);
+            } else {
+              addImage();
+            }
+          });
+        }
+      }
+    }
+    if (file.url.slice(0, 4) === 'data') {
+      addImage(file.url);
+    } else {
+      fetchImageBlob(file.url, (blob: Blob) => {
+        if (blob) {
+          reader.readAsDataURL(blob);
+        } else {
+          addImage();
+        }
+      });
+    }
+  }
+
+  public async beginImageSearch(base64orUrl: string) {
+    let cursor: number = (await getDB('imageCursor')) || 0;
+    cursor++;
+    await setDB('imageCursor', cursor);
+    let imageLink: string;
+    // Check base64 or Url
+    const imageType = checkUrlOrBase64(base64orUrl);
+
+    const result: ISearchResult = {
+      base64: imageType === 'base64' ? base64orUrl : '',
+      engineLink: {},
+      engineStatus: {},
+      searchImageInfo: [],
+      searchResult: [],
+      url: imageType === 'url' ? base64orUrl : ''
+    };
+    await imageSearchDao.add({
+      id: cursor,
+      createdAt: Date.now(),
+      result
+    });
+
+    await openSearchResultTab(cursor);
+    if (imageType === 'base64') {
+      logEvent({
+        action: 'dataURI',
+        category: 'imageSearch'
+      });
+      const request: IAjaxRequest = {
+        method: 'POST',
+        body: JSON.stringify({ data: base64orUrl }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        url: this.imageUploadUrl
+      };
+      try {
+        imageLink = this.imageDownloadUrl + (await ajax(request)).body;
+      } catch (e) {
+        console.error(e);
+        console.log('having error, switch to default server');
+        this.updateImageUploadUrl('ainoob.com');
+        this.updateImageDownloadUrl('ainoob.com');
+        imageLink = this.imageDownloadUrl + (await ajax(request)).body;
+      }
+    } else if (imageType === 'url') {
+      logEvent({
+        action: 'url',
+        category: 'imageSearch'
+      });
+      imageLink = base64orUrl;
+    }
+
+    // Get Opened Engine and send request
+    ENGINE_LIST.forEach(async (engine) => {
+      this.imageSearchMap[engine]
+        .search(imageLink, cursor, result)
+        .catch(console.error);
+    });
+  }
+
   private async migrateHistory() {
     const migrateV1 = await getDB('migratedV1');
     if (migrateV1) {
@@ -124,23 +254,6 @@ export class Image {
     }
     await setDB('migratedV1', true);
     console.log('migratedV1');
-  }
-
-  private setUpListener() {
-    chrome.runtime.onMessage.addListener(
-      (request: ISendMessageToBackgroundRequest, sender, sendResponse) => {
-        switch (request.job) {
-          case 'urlDownloadZip':
-            const { files } = request.value;
-            this.downloadExtractImages(sender, files);
-            return sendResponse(null);
-          case 'beginImageSearch':
-            const { base64OrUrl } = request.value;
-            this.beginImageSearch(base64OrUrl).catch(console.error);
-            return sendResponse(null);
-        }
-      }
-    );
   }
 
   private updateImageUploadUrl(server: string) {
@@ -257,137 +370,5 @@ export class Image {
         }
       }
     );
-  }
-
-  private downloadExtractImages(sender: any, files: any) {
-    logEvent({
-      action: 'run',
-      category: 'downloadExtractImages'
-    });
-    const zip = new (window as any).JSZip();
-    let remains = files.length;
-    let total = files.length;
-    let i = 0;
-    let file = files[i];
-    const reader = new window.FileReader();
-    reader.onloadend = () => {
-      addImage(reader.result);
-    };
-    function addImage(input?: string | ArrayBuffer | null) {
-      if (input) {
-        const dataUri: string = stringOrArrayBufferToString(input);
-        const ext = (dataUri.slice(0, 20).match(/image\/(\w*)/) || ['', ''])[1];
-        const binary = convertDataUriToBinary(dataUri);
-        zip.file(file.name + '.' + ext, binary, {
-          base64: false
-        });
-      } else {
-        total--;
-      }
-      remains--;
-      chrome.tabs.sendMessage(
-        sender.tab.id,
-        {
-          job: 'downloadRemaining',
-          remains,
-          total
-        },
-        voidFunc
-      );
-      if (remains === 0) {
-        zip
-          .generateAsync({
-            type: 'blob'
-          })
-          .then((content: any) => {
-            (window as any).saveAs(content, 'NooBox.zip');
-          });
-      } else {
-        file = files[++i];
-        if (file.url.slice(0, 4) === 'data') {
-          addImage(file.url);
-        } else {
-          fetchImageBlob(file.url, (blob: Blob) => {
-            if (blob) {
-              reader.readAsDataURL(blob);
-            } else {
-              addImage();
-            }
-          });
-        }
-      }
-    }
-    if (file.url.slice(0, 4) === 'data') {
-      addImage(file.url);
-    } else {
-      fetchImageBlob(file.url, (blob: Blob) => {
-        if (blob) {
-          reader.readAsDataURL(blob);
-        } else {
-          addImage();
-        }
-      });
-    }
-  }
-
-  private async beginImageSearch(base64orUrl: string) {
-    let cursor: number = (await getDB('imageCursor')) || 0;
-    cursor++;
-    await setDB('imageCursor', cursor);
-    let imageLink: string;
-    // Check base64 or Url
-    const imageType = checkUrlOrBase64(base64orUrl);
-
-    const result: ISearchResult = {
-      base64: imageType === 'base64' ? base64orUrl : '',
-      engineLink: {},
-      engineStatus: {},
-      searchImageInfo: [],
-      searchResult: [],
-      url: imageType === 'url' ? base64orUrl : ''
-    };
-    await imageSearchDao.add({
-      id: cursor,
-      createdAt: Date.now(),
-      result
-    });
-
-    await openSearchResultTab(cursor);
-    if (imageType === 'base64') {
-      logEvent({
-        action: 'dataURI',
-        category: 'imageSearch'
-      });
-      const request: IAjaxRequest = {
-        method: 'POST',
-        body: JSON.stringify({ data: base64orUrl }),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        url: this.imageUploadUrl
-      };
-      try {
-        imageLink = this.imageDownloadUrl + (await ajax(request)).body;
-      } catch (e) {
-        console.error(e);
-        console.log('having error, switch to default server');
-        this.updateImageUploadUrl('ainoob.com');
-        this.updateImageDownloadUrl('ainoob.com');
-        imageLink = this.imageDownloadUrl + (await ajax(request)).body;
-      }
-    } else if (imageType === 'url') {
-      logEvent({
-        action: 'url',
-        category: 'imageSearch'
-      });
-      imageLink = base64orUrl;
-    }
-
-    // Get Opened Engine and send request
-    ENGINE_LIST.forEach(async (engine) => {
-      this.imageSearchMap[engine]
-        .search(imageLink, cursor, result)
-        .catch(console.error);
-    });
   }
 }
