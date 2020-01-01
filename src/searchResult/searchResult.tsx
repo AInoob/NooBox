@@ -28,6 +28,9 @@ const GlobalStyle = createGlobalStyle`
       width: 100%;
     }
   }
+  .ant-popover-content {
+    max-width: 300px;
+  }
 `;
 
 const PopupDiv = styled.div`
