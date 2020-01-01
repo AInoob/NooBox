@@ -14,7 +14,7 @@ const image = new Image();
 
 const videoControl = new VideoControl();
 
-const options = new Options(image);
+const options = new Options(image, videoControl);
 
 (window as any).options = options;
 

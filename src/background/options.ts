@@ -54,8 +54,9 @@ export class Options {
   private options: IOptions = clone(defaultOptions);
   private image: Image;
   private videoControl: VideoControl;
-  constructor(image: Image) {
+  constructor(image: Image, videoControl: VideoControl) {
     this.image = image;
+    this.videoControl = videoControl;
     this.init().catch(console.error);
   }
 
