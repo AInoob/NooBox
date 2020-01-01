@@ -355,7 +355,7 @@ export class Image {
           chrome.notifications.create(
             'extractImages',
             {
-              iconUrl: '/static/nooboxLogos/icon_128.png',
+              iconUrl: '/images/icon_128.png',
               message: getI18nMessage('ls_4'),
               title: getI18nMessage('extractImages'),
               type: 'basic'

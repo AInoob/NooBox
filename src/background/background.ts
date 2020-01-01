@@ -18,15 +18,10 @@ const options = new Options(image);
 
 (window as any).options = options;
 
-const ANALYTICS = 'analytics';
-const IMAGE_SEARCH = 'beginImageSearch';
 chrome.runtime.onMessage.addListener(
   (request: ISendMessageToBackgroundRequest, sender, sendResponse) => {
     switch (request.job) {
-      case ANALYTICS:
-        logEvent(request.value);
-        return sendResponse(null);
-      case IMAGE_SEARCH:
+      case 'analytics':
         logEvent(request.value);
         return sendResponse(null);
       case 'getCurrentTabAutoRefreshStatus':

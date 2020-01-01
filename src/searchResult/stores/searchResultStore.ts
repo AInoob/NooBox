@@ -96,7 +96,6 @@ export class SearchResultStore {
   private setUpListener() {
     chrome.runtime.onMessage.addListener(
       async (request: ISendMessageToFrontendRequest, _sender, sendResponse) => {
-        console.log(request);
         switch (request.job) {
           case 'image_result_update':
             sendResponse(null);

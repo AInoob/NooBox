@@ -22,7 +22,6 @@ export const sendMessageToBackground = (
         if (lastError) {
           console.error(lastError);
         }
-        console.log('response: ' + JSON.stringify(response));
         return resolve(response);
       }
     );

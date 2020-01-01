@@ -31,7 +31,6 @@ function getImages() {
   const linkImage = $('#linkImage').prop('checked');
   let notification = false;
   const val = $('#NooBox-extractImages-selector-range').val();
-  console.log(val);
   const gallery = $('#NooBox-extractImages-gallery')[0];
   $(gallery).empty();
   imgSet = {};

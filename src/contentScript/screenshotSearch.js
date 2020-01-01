@@ -185,11 +185,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           var ctx = canvas1.getContext('2d');
           ctx.putImageData(imgData, 0, 0);
           var dataURL = canvas1.toDataURL();
-          console.log(dataURL);
           chrome.extension.sendMessage({
             job: 'beginImageSearch',
             value: {
-              base64: dataURL
+              base64OrUrl: dataURL
             }
           });
         });

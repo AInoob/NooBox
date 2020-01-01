@@ -1,7 +1,6 @@
 const BASE64_MARKER = ';base64,';
 
 export const convertDataUriToBinary = (dataURI: string) => {
-  console.log(dataURI);
   try {
     const base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
     const base64 = dataURI.substring(base64Index);

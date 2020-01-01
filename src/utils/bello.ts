@@ -32,7 +32,6 @@ export const logEvent = (obj: ILogEventRequest) => {
     analyticsOnce = true;
     logPageView().catch(console.error);
   }
-  // console.log(obj);
   const params = {
     action: obj.action,
     ainoob: Math.random(),
