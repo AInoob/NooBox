@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card, Tooltip } from 'antd';
+import { Affix, Card, Tooltip } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -53,19 +53,21 @@ export class Brief extends React.Component {
       actions.push(this.getUploadSearchActionItem());
     }
     return (
-      <BriefDiv>
-        <Card
-          style={{ width: '100%' }}
-          cover={
-            <img
-              id='searchImage'
-              alt='image searched'
-              src={base64 ? base64 : url}
-            />
-          }
-          actions={actions}
-        />
-      </BriefDiv>
+      <Affix>
+        <BriefDiv>
+          <Card
+            style={{ width: '100%' }}
+            cover={
+              <img
+                id='searchImage'
+                alt='image searched'
+                src={base64 ? base64 : url}
+              />
+            }
+            actions={actions}
+          />
+        </BriefDiv>
+      </Affix>
     );
   }
 
