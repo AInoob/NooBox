@@ -57,15 +57,11 @@ export class Content extends React.Component {
     return (this.props as any) as IContentInjectedProps;
   }
 
-  constructor(props: any) {
-    super(props);
-  }
-
   public render() {
     const { searchResultStore, optionsStore } = this.injected;
     const { modelImageUrl, modelImageWidth, modelOpened } = searchResultStore;
-    const { options } = optionsStore;
-    const { displayMode } = options;
+    // 1 为图片列表，2 为图片墙
+    const { displayMode } = optionsStore.options;
     return (
       <ContentDiv>
         <Modal
@@ -153,6 +149,7 @@ export class Content extends React.Component {
                 onError={(e: any) => {
                   e.target.src = 'images/404.png';
                 }}
+                style={{ width: '100%', height: 300 }}
               />
             }>
             <div className='cardMetaWrapper'>
