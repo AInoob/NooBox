@@ -33,6 +33,9 @@ screenshot_search: Screenshot & Search
 toolsge: Tools Setting
 avaiable_enginege: Available Engines Setting
 experiencege: Experience Setting
+update_search_result: Update Search Result
+auto: Auto
+manual: Manual
 # About
 about_what: What is Noobox ?
 about_what_message_0: NooBox is a Tool Box providing
