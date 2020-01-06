@@ -6,11 +6,17 @@ import { ajax } from '../../utils/ajax';
 import { BaseImageSearch } from './baseImageSearch';
 
 export class BaiduImageSearch extends BaseImageSearch {
-  protected async searchInternal(imageUrl: string, result: ISearchResult) {
-    const { body } = await ajax({
+  protected async searchInternal(
+    imageUrl: string,
+    result: ISearchResult,
+    updateResultCallback: () => void
+  ) {
+    const { body, responseUrl } = await ajax({
       url: 'https://graph.baidu.com/upload?image=' + imageUrl,
       method: 'GET'
     });
+    result.engineLink![this.engine] = responseUrl;
+    updateResultCallback();
     const { data, msg } = JSON.parse(body);
     if (msg === 'Success') {
       const imageKey = data.sign;

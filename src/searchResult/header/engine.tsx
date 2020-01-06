@@ -37,6 +37,12 @@ const EngineDiv = styled.div`
       transition: 0.3s;
     }
   }
+  a.withLink {
+    cursor: pointer;
+  }
+  a.withoutLink {
+    cursor: initial;
+  }
   img {
     width: 100%;
   }
@@ -59,9 +65,6 @@ const EngineDiv = styled.div`
   ${(p: IEngineDivProps) => {
     if (p.status !== 'loaded') {
       return `
-        a {
-          cursor: initial;
-        }
         img {
           opacity: 0.2333;
         }
@@ -103,7 +106,10 @@ export class Engine extends React.Component<IEngineProps> {
     return (
       <EngineDiv status={status}>
         <Spin />
-        <a href={link} target='_blank'>
+        <a
+          href={link}
+          className={link ? 'withLink' : 'withoutLink'}
+          target='_blank'>
           <img alt='engineIcon' src={getEngineImageUrl(engine)} />
         </a>
       </EngineDiv>

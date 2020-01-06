@@ -21,7 +21,9 @@ export class BaseImageSearch {
     result.engineStatus![this.engine] = 'loading';
     this.updateSearchResult(cursor, result);
     try {
-      await this.searchInternal(imageUrl, result);
+      await this.searchInternal(imageUrl, result, () => {
+        this.updateSearchResult(cursor, result);
+      });
       result.engineStatus![this.engine] = 'loaded';
       this.updateSearchResult(cursor, result);
     } catch (e) {
@@ -31,8 +33,12 @@ export class BaseImageSearch {
     }
   }
 
-  protected async searchInternal(imageUrl: string, result: ISearchResult) {
-    throw new Error('Method must be override' + imageUrl + result);
+  protected async searchInternal(
+    _imageUrl: string,
+    _result: ISearchResult,
+    _updateResultCallback: () => void
+  ) {
+    throw new Error('Method must be override');
   }
 
   private updateSearchResult(cursor: number, result: ISearchResult) {

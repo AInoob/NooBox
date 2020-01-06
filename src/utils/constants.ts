@@ -50,7 +50,7 @@ export const ENGINE_WEIGHTS = {
   ascii2d: -69,
   baidu: 28,
   bing: 28,
-  google: 30,
+  google: 33,
   iqdb: -100,
   saucenao: 10,
   tineye: 28,
