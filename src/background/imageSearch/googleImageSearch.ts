@@ -7,14 +7,21 @@ import { ENGINE_WEIGHTS } from '../../utils/constants';
 import { BaseImageSearch } from './baseImageSearch';
 
 export class GoogleImageSearch extends BaseImageSearch {
-  protected async searchInternal(imageUrl: string, result: ISearchResult) {
+  protected async searchInternal(
+    imageUrl: string,
+    result: ISearchResult,
+    updateResultCallback: () => void
+  ) {
     const { body, responseUrl } = await ajax({
       url: 'https://www.google.com/searchbyimage?&image_url=' + imageUrl
     });
     result.engineLink![this.engine] = responseUrl;
+    updateResultCallback();
 
     const document = this.domParser.parseFromString(body, 'text/html');
     this.getKeyword(document, result);
+    updateResultCallback();
+
     this.getResults(document, result);
   }
 

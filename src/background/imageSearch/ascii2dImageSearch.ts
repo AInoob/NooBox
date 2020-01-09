@@ -7,7 +7,11 @@ import { ENGINE_WEIGHTS } from '../../utils/constants';
 import { BaseImageSearch } from './baseImageSearch';
 
 export class Ascii2dImageSearch extends BaseImageSearch {
-  protected async searchInternal(imageUrl: string, result: ISearchResult) {
+  protected async searchInternal(
+    imageUrl: string,
+    result: ISearchResult,
+    updateResultCallback: () => void
+  ) {
     const formData = new FormData();
     formData.append('uri', imageUrl);
     const { body, responseUrl } = await ajax({
@@ -16,8 +20,10 @@ export class Ascii2dImageSearch extends BaseImageSearch {
       body: formData
     });
 
-    const document = this.domParser.parseFromString(body, 'text/html');
     result.engineLink![this.engine] = responseUrl;
+    updateResultCallback();
+
+    const document = this.domParser.parseFromString(body, 'text/html');
     this.getResults(document, result);
   }
 

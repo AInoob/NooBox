@@ -56,8 +56,8 @@ window.addEventListener('error', (e) => {
   console.error(e);
 });
 
-const searchResultStore = new SearchResultStore();
 const optionsStore = new OptionsStore();
+const searchResultStore = new SearchResultStore(optionsStore);
 
 const stores = {
   searchResultStore,

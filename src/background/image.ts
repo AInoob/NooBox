@@ -234,6 +234,56 @@ export class Image {
     });
   }
 
+  public async screenshotSearch(
+    _info: chrome.contextMenus.OnClickData,
+    tab: chrome.tabs.Tab
+  ) {
+    chrome.tabs.sendMessage(tab.id!, 'loaded', (response) => {
+      if (response === 'yes') {
+        chrome.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+          chrome.tabs.sendMessage(tab.id!, {
+            data: dataURL,
+            job: 'screenshotSearch'
+          });
+        });
+      } else {
+        chrome.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
+          chrome.tabs.executeScript(
+            tab.id!,
+            { file: 'thirdParty/jquery.min.js' },
+            () => {
+              if (chrome.runtime.lastError) {
+                chrome.notifications.create(
+                  'screenshotFailed',
+                  {
+                    iconUrl: '/images/icon_128.png',
+                    message: getI18nMessage('ls_2'),
+                    title: getI18nMessage('ls_1'),
+                    type: 'basic'
+                  },
+                  (notificationId) => {
+                    console.debug(notificationId);
+                  }
+                );
+                return;
+              }
+              chrome.tabs.executeScript(
+                tab.id!,
+                { file: 'contentScript/screenshotSearch.js' },
+                () => {
+                  chrome.tabs.sendMessage(tab.id!, {
+                    data: dataURL,
+                    job: 'screenshotSearch'
+                  });
+                }
+              );
+            }
+          );
+        });
+      }
+    });
+  }
+
   private async migrateHistory() {
     const migrateV1 = await getDB('migratedV1');
     if (migrateV1) {
@@ -280,56 +330,6 @@ export class Image {
         fastestServer = server;
         this.updateImageUploadUrl(server);
         this.updateImageDownloadUrl(server);
-      }
-    });
-  }
-
-  private async screenshotSearch(
-    _info: chrome.contextMenus.OnClickData,
-    tab: chrome.tabs.Tab
-  ) {
-    chrome.tabs.sendMessage(tab.id!, 'loaded', (response) => {
-      if (response === 'yes') {
-        chrome.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
-          chrome.tabs.sendMessage(tab.id!, {
-            data: dataURL,
-            job: 'screenshotSearch'
-          });
-        });
-      } else {
-        chrome.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
-          chrome.tabs.executeScript(
-            tab.id!,
-            { file: 'thirdParty/jquery.min.js' },
-            () => {
-              if (chrome.runtime.lastError) {
-                chrome.notifications.create(
-                  'screenshotFailed',
-                  {
-                    iconUrl: '/images/icon_128.png',
-                    message: getI18nMessage('ls_2'),
-                    title: getI18nMessage('ls_1'),
-                    type: 'basic'
-                  },
-                  (notificationId) => {
-                    console.debug(notificationId);
-                  }
-                );
-                return;
-              }
-              chrome.tabs.executeScript(
-                tab.id!,
-                { file: 'contentScript/screenshotSearch.js' },
-                () => {
-                  chrome.tabs.sendMessage(tab.id!, {
-                    data: dataURL,
-                    job: 'screenshotSearch'
-                  });
-                }
-              );
-            }
-          );
-        });
       }
     });
   }

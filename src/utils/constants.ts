@@ -35,22 +35,11 @@ export const getEngineOptionKey = (engine: EngineType) => {
   return ENGINE_OPTION_KEY_PREFIX + engine;
 };
 
-export const ENGINE_DONE = {
-  ASCII2D_DONE: 'ascii2dDone',
-  BAIDU_DONE: 'baiduDone',
-  BING_DONE: 'bingDone',
-  GOOGLE_DONE: 'googleDone',
-  IQDB_DONE: 'iqdb',
-  SAUCENAO_DONE: 'saucenaoDone',
-  TINEYE_DONE: 'tineyeDone',
-  YANDEX_DONE: 'yandexDone'
-};
-
 export const ENGINE_WEIGHTS = {
   ascii2d: -69,
   baidu: 28,
   bing: 28,
-  google: 30,
+  google: 33,
   iqdb: -100,
   saucenao: 10,
   tineye: 28,

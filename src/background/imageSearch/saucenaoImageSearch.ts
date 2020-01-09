@@ -7,11 +7,16 @@ import { ENGINE_WEIGHTS } from '../../utils/constants';
 import { BaseImageSearch } from './baseImageSearch';
 
 export class SauceNaoImageSearch extends BaseImageSearch {
-  protected async searchInternal(imageUrl: string, result: ISearchResult) {
+  protected async searchInternal(
+    imageUrl: string,
+    result: ISearchResult,
+    updateResultCallback: () => void
+  ) {
     const { body, responseUrl } = await ajax({
       url: 'https://saucenao.com/search.php?db=999&url=' + imageUrl
     });
     result.engineLink![this.engine] = responseUrl;
+    updateResultCallback();
 
     const document = this.domParser.parseFromString(body, 'text/html');
     this.getResults(document, result);

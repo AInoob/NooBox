@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 import { imageSearchDao } from '../../dao/imageSearchDao';
+import { OptionsStore } from '../../shared/stores/optionsStore';
 import { EngineType } from '../../utils/constants';
 import { getBase64FromImage } from '../../utils/getBase64FromImage';
 import { getImageWidth } from '../../utils/getImageWidth';
@@ -46,10 +47,13 @@ export class SearchResultStore {
   @observable public modelImageUrl: string = '';
   @observable public modelImageWidth: number = DEFAULT_MODAL_IMAGE_WIDTH;
   @observable public modelOpened: boolean = false;
+  @observable public hasUpdate: boolean = false;
+  private optionsStore: OptionsStore;
 
   private cursor: number;
 
-  constructor() {
+  constructor(optionsStore: OptionsStore) {
+    this.optionsStore = optionsStore;
     this.setUpListener();
     this.updateResult().catch(console.error);
   }
@@ -87,10 +91,19 @@ export class SearchResultStore {
     });
   }
 
-  private async updateResult() {
-    this.cursor = parseInt(window.location.hash.substr(2), 0);
-    const result = await imageSearchDao.get(this.cursor);
-    this.result = result!.result;
+  public async updateResult(forceUpdate?: boolean) {
+    if (
+      !forceUpdate &&
+      this.optionsStore.options.updateSearchResult === 'manual' &&
+      this.result.searchResult!.length > 0
+    ) {
+      this.hasUpdate = true;
+    } else {
+      this.cursor = parseInt(window.location.hash.substr(2), 0);
+      const result = await imageSearchDao.get(this.cursor);
+      this.result = result!.result;
+      this.hasUpdate = false;
+    }
   }
 
   private setUpListener() {

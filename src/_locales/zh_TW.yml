@@ -33,6 +33,9 @@ screenshot_searchge: 擷圖搜尋
 toolsge: 工具設定
 avaiable_enginege: 搜尋引擎設定
 experiencege: 體驗設定
+update_search_result: 更新搜索結果
+auto: 自動
+manual: 手動
 # Image Search
 support_devlopers: 點選廣告支持開發者們
 guessing_keyword: 關鍵字

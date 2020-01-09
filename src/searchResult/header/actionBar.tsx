@@ -1,4 +1,4 @@
-import { Divider, Radio, Tooltip } from 'antd';
+import { Button, Divider, Radio, Tooltip } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -43,8 +43,8 @@ export class ActionBar extends React.Component {
   public render() {
     const { optionsStore, searchResultStore } = this.injected;
     const { options } = optionsStore;
-    const { displayMode, sortBy } = options;
-    const { result } = searchResultStore;
+    const { displayMode, sortBy, updateSearchResult } = options;
+    const { result, hasUpdate } = searchResultStore;
     const { searchImageInfo } = result;
     return (
       <ActionBarDiv>
@@ -67,7 +67,9 @@ export class ActionBar extends React.Component {
         <div id='displayMode'>
           <span>{getI18nMessage('display_mode')}</span>
           <Radio.Group
-            onChange={(e) => optionsStore.update('displayMode', e.target.value)}
+            onChange={async (e) => {
+              await optionsStore.update('displayMode', e.target.value);
+            }}
             value={displayMode}>
             <Radio.Button value={1}>{getI18nMessage('list')}</Radio.Button>
             <Radio.Button value={2}>
@@ -75,6 +77,32 @@ export class ActionBar extends React.Component {
             </Radio.Button>
           </Radio.Group>
         </div>
+
+        <div id='updateSearchResult'>
+          <span>{getI18nMessage('update_search_result')}</span>
+          <Radio.Group
+            onChange={async (e) => {
+              await optionsStore.update('updateSearchResult', e.target.value);
+            }}
+            value={updateSearchResult}>
+            <Radio.Button value={'auto'}>{getI18nMessage('auto')}</Radio.Button>
+            <Radio.Button value={'manual'}>
+              {getI18nMessage('manual')}
+            </Radio.Button>
+          </Radio.Group>
+        </div>
+
+        {hasUpdate && (
+          <div id='updateResult'>
+            <Button
+              type='primary'
+              onClick={async () => {
+                await searchResultStore.updateResult(true);
+              }}>
+              {getI18nMessage('update_search_result')}
+            </Button>
+          </div>
+        )}
 
         <Divider />
         <div id='keyword'>

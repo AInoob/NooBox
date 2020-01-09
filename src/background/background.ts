@@ -1,4 +1,5 @@
 import { logEvent } from '../utils/bello';
+import { getActiveTab } from '../utils/getActiveTab';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { useChrome } from '../utils/useChrome';
 import { AutoRefresh } from './autoRefresh';
@@ -17,6 +18,16 @@ const videoControl = new VideoControl();
 const options = new Options(image, videoControl);
 
 (window as any).options = options;
+
+chrome.commands.onCommand.addListener(async (command: string) => {
+  switch (command) {
+    case 'screenshotSearch':
+      await image.screenshotSearch(null as any, (await getActiveTab())!);
+      break;
+    default:
+      console.error('Unknown command: ' + command);
+  }
+});
 
 chrome.runtime.onMessage.addListener(
   (request: ISendMessageToBackgroundRequest, sender, sendResponse) => {

@@ -32,6 +32,9 @@ screenshot_search: 截图搜索
 toolsge: 工具设置
 avaiable_enginege: 搜索引擎设置
 experiencege: 体验设置
+update_search_result: 更新搜索结果
+auto: 自动
+manual: 手动
 # Image Search
 support_devlopers: 点击广告支持开发者们
 guessing_keyword: 关键词
