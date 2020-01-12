@@ -1,4 +1,4 @@
-import { Button, Divider, Radio, Tooltip } from 'antd';
+import { Divider, Radio, Tooltip } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -12,9 +12,9 @@ interface IActionBarInjectedProps {
 }
 
 const ActionBarDiv = styled.div`
-  padding: 2px 12px;
+  padding: 4px 16px;
   #displayMode {
-    margin-top: 9px;
+    margin-top: 8px;
   }
   span + .ant-radio-group {
     margin-left: 16px;
@@ -27,6 +27,9 @@ const ActionBarDiv = styled.div`
       margin-left: 16px;
     }
   }
+  #updateSearchResult {
+    margin-top: 8px;
+  }
 `;
 
 @inject('searchResultStore', 'optionsStore')
@@ -36,15 +39,11 @@ export class ActionBar extends React.Component {
     return (this.props as any) as IActionBarInjectedProps;
   }
 
-  constructor(props: any) {
-    super(props);
-  }
-
   public render() {
     const { optionsStore, searchResultStore } = this.injected;
     const { options } = optionsStore;
     const { displayMode, sortBy, updateSearchResult } = options;
-    const { result, hasUpdate } = searchResultStore;
+    const { result } = searchResultStore;
     const { searchImageInfo } = result;
     return (
       <ActionBarDiv>
@@ -79,30 +78,16 @@ export class ActionBar extends React.Component {
         </div>
 
         <div id='updateSearchResult'>
-          <span>{getI18nMessage('update_search_result')}</span>
+          <span>{getI18nMessage('enable_image_preload')}</span>
           <Radio.Group
             onChange={async (e) => {
               await optionsStore.update('updateSearchResult', e.target.value);
             }}
             value={updateSearchResult}>
-            <Radio.Button value={'auto'}>{getI18nMessage('auto')}</Radio.Button>
-            <Radio.Button value={'manual'}>
-              {getI18nMessage('manual')}
-            </Radio.Button>
+            <Radio.Button value='yes'>{getI18nMessage('yes')}</Radio.Button>
+            <Radio.Button value='no'>{getI18nMessage('no')}</Radio.Button>
           </Radio.Group>
         </div>
-
-        {hasUpdate && (
-          <div id='updateResult'>
-            <Button
-              type='primary'
-              onClick={async () => {
-                await searchResultStore.updateResult(true);
-              }}>
-              {getI18nMessage('update_search_result')}
-            </Button>
-          </div>
-        )}
 
         <Divider />
         <div id='keyword'>
@@ -116,9 +101,8 @@ export class ActionBar extends React.Component {
                   </a>
                 </Tooltip>
               );
-            } else {
-              return null;
             }
+            return null;
           })}
         </div>
       </ActionBarDiv>

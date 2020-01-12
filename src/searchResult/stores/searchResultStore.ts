@@ -47,7 +47,6 @@ export class SearchResultStore {
   @observable public modelImageUrl: string = '';
   @observable public modelImageWidth: number = DEFAULT_MODAL_IMAGE_WIDTH;
   @observable public modelOpened: boolean = false;
-  @observable public hasUpdate: boolean = false;
   private optionsStore: OptionsStore;
 
   private cursor: number;
@@ -126,18 +125,18 @@ export class SearchResultStore {
 
   // tslint:disable-next-line
   public async updateResult(forceUpdate?: boolean) {
+    this.cursor = parseInt(window.location.hash.substr(2), 0);
+    const daoResult = await imageSearchDao.get(this.cursor);
+    const result = daoResult!.result;
     if (
       !forceUpdate &&
-      this.optionsStore.options.updateSearchResult === 'manual' &&
-      this.result.searchResult!.length > 0
+      this.optionsStore.options.updateSearchResult === 'no' &&
+      result.searchResult!.length > 0
     ) {
-      this.hasUpdate = true;
+      this.result = result;
     } else {
-      this.cursor = parseInt(window.location.hash.substr(2), 0);
-      const daoResult = await imageSearchDao.get(this.cursor);
-      const patchedResult = daoResult!.result.searchResult;
-      await this.updatePatchImg(patchedResult || [], [], 20, daoResult!.result);
-      this.hasUpdate = false;
+      const patchedResult = result.searchResult;
+      await this.updatePatchImg(patchedResult || [], [], 20, result);
     }
   }
 

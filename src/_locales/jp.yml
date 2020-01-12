@@ -31,9 +31,9 @@ screenshot_search: スクリーンショット検索
 tools: ツールの設定
 avaiable_engine: 検索エンジンの設定
 experience: 体験設定
-update_search_result: 検索結果を更新する
-auto: オート
-manual: マニュアル
+enable_image_preload: イメージのプリロードを有効にするかどうか
+yes: yes
+no: no
 # Image Search
 display_mode: 表示モード
 download: 画像をダウンロード
