@@ -149,7 +149,6 @@ export class Content extends React.Component {
                 onError={(e: any) => {
                   e.target.src = 'images/404.png';
                 }}
-                style={{ width: '100%', height: 300 }}
               />
             }>
             <div className='cardMetaWrapper'>
@@ -161,13 +160,11 @@ export class Content extends React.Component {
         </Popover>
       );
     });
-    const wall = columns.map((resultListD, index) => {
-      return (
-        <Col key={index} span={4}>
-          {resultListD}
-        </Col>
-      );
-    });
+    const wall = columns.map((resultListD, index) => (
+      <Col key={index} span={4}>
+        {resultListD}
+      </Col>
+    ));
     return <Row>{wall}</Row>;
   }
 

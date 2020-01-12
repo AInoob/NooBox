@@ -91,7 +91,40 @@ export class SearchResultStore {
     });
   }
 
-  public async updateResult(forceUpdate?: boolean) {
+  private preLoadImage = async (
+    data: ISingleSearchResultItem[]
+  ): Promise<any[]> => {
+    for (const item of data || []) {
+      const img = new Image();
+      img.src = item.thumbUrl;
+      await new Promise((resolve) => {
+        img.onload = () => {
+          resolve();
+        };
+        img.onerror = () => {
+          resolve();
+        };
+      });
+    }
+    return data;
+  };
+
+  private updatePatchImg = async (
+    data: any[],
+    result: any[],
+    patch: number,
+    originData: any
+  ) => {
+    const target = data.splice(0, patch);
+    result = [...result, ...(await this.preLoadImage(target))];
+    originData.searchResult = result;
+    this.result = originData;
+    if (data.length) {
+      this.updatePatchImg(data, result, patch, originData);
+    }
+  };
+
+  private async updateResult(forceUpdate?: boolean) {
     if (
       !forceUpdate &&
       this.optionsStore.options.updateSearchResult === 'manual' &&
@@ -100,8 +133,9 @@ export class SearchResultStore {
       this.hasUpdate = true;
     } else {
       this.cursor = parseInt(window.location.hash.substr(2), 0);
-      const result = await imageSearchDao.get(this.cursor);
-      this.result = result!.result;
+      const daoResult = await imageSearchDao.get(this.cursor);
+      const patchedResult = daoResult!.result.searchResult;
+      await this.updatePatchImg(patchedResult || [], [], 20, daoResult!.result);
       this.hasUpdate = false;
     }
   }
