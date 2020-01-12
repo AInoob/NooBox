@@ -124,7 +124,8 @@ export class SearchResultStore {
     }
   };
 
-  private async updateResult(forceUpdate?: boolean) {
+  // tslint:disable-next-line
+  public async updateResult(forceUpdate?: boolean) {
     if (
       !forceUpdate &&
       this.optionsStore.options.updateSearchResult === 'manual' &&
