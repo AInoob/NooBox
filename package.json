@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "webpack -w",
+    "start": "webpack -w",
     "prod": "webpack --env.production",
     "release": "npm run checkFormat && npm run lint && rm -rdf dist && npm run prod && npm run zipDist",
     "zipDist": "cd dist && zip -r -FS ../dist.zip *",
