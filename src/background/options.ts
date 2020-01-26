@@ -24,7 +24,7 @@ export interface IOptions {
   screenshotSearch: boolean;
   userId: string;
   videoControl: boolean;
-  updateSearchResult: 'yes' | 'no';
+  preload_all_images: boolean;
 }
 
 export const defaultOptions: IOptions = {
@@ -45,7 +45,7 @@ export const defaultOptions: IOptions = {
   imageSearchUrl_tineye: true,
   imageSearchUrl_yandex: true,
   screenshotSearch: true,
-  updateSearchResult: 'no',
+  preload_all_images: false,
   userId:
     (Math.random().toString(36) + '00000000000000000').slice(2, 19) +
     (Math.random().toString(36) + '00000000000000000').slice(2, 19),

@@ -27,7 +27,7 @@ const ActionBarDiv = styled.div`
       margin-left: 16px;
     }
   }
-  #updateSearchResult {
+  #preloadAllImages {
     margin-top: 8px;
   }
 `;
@@ -42,7 +42,7 @@ export class ActionBar extends React.Component {
   public render() {
     const { optionsStore, searchResultStore } = this.injected;
     const { options } = optionsStore;
-    const { displayMode, sortBy, updateSearchResult } = options;
+    const { displayMode, sortBy, preload_all_images } = options;
     const { result } = searchResultStore;
     const { searchImageInfo } = result;
     return (
@@ -77,13 +77,16 @@ export class ActionBar extends React.Component {
           </Radio.Group>
         </div>
 
-        <div id='updateSearchResult'>
+        <div id='preloadAllImages'>
           <span>{getI18nMessage('enable_image_preload')}</span>
           <Radio.Group
             onChange={async (e) => {
-              await optionsStore.update('updateSearchResult', e.target.value);
+              await optionsStore.update(
+                'preload_all_images',
+                e.target.value === 'yes'
+              );
             }}
-            value={updateSearchResult}>
+            value={preload_all_images ? 'yes' : 'no'}>
             <Radio.Button value='yes'>{getI18nMessage('yes')}</Radio.Button>
             <Radio.Button value='no'>{getI18nMessage('no')}</Radio.Button>
           </Radio.Group>

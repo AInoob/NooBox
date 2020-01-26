@@ -130,7 +130,7 @@ export class SearchResultStore {
     const result = daoResult!.result;
     if (
       !forceUpdate &&
-      this.optionsStore.options.updateSearchResult === 'no' &&
+      !this.optionsStore.options.preload_all_images &&
       result.searchResult!.length > 0
     ) {
       this.result = result;
