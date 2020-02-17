@@ -1,5 +1,5 @@
-appName: 二箱 以图搜图
-appDesc: 一个实用的工具箱！多引擎以图搜图+提取图片+截图搜索+HTML5视频控制
+appName: 二箱
+appDesc: 多引擎以图搜图
 # Context Menu
 search_this_image: 搜索这张图片
 extract_this_images: 提取这张图片

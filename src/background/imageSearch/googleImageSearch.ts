@@ -83,7 +83,10 @@ export class GoogleImageSearch extends BaseImageSearch {
       const tagA = singleItem.getElementsByTagName('a');
       singleResult.sourceUrl = tagA[0].getAttribute('href')!;
       const title = tagA[0].childNodes;
-      singleResult.title = (title[0] as any).innerText;
+      singleResult.title = (title[1] as any).innerText;
+      if (!singleResult.title) {
+        singleResult.title = (tagA[0].childNodes as any).innerText;
+      }
       // new method to dig the image Source
       for (let j = 2; j < tagA.length; j++) {
         if (tagA[j]) {
