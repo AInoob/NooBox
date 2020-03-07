@@ -8,7 +8,7 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "short_name": "NB",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "browser_action": {
     "default_icon": "images/icon_128.png",
     "default_title": "NooBox~",
@@ -55,6 +55,5 @@
       "description": "__MSG_screenshot_search__"
     }
   },
-  "minimum_chrome_version": "35",
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
+  "minimum_chrome_version": "35"
 }
