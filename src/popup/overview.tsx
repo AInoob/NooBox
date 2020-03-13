@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { OptionsStore } from '../shared/stores/optionsStore';
 import { AutoRefresh } from './overview/autoRefresh';
 import { ImageUpload } from './overview/imageUpload';
+import { Promo } from './overview/promo';
 import { VideoControl } from './overview/videoControl';
 
 interface IOverviewInjectedProps {
@@ -32,6 +33,7 @@ export class Overview extends React.Component {
         {imageSearch && <ImageUpload />}
         {autoRefresh && <AutoRefresh />}
         {videoControl && <VideoControl />}
+        <Promo />
       </OverviewDiv>
     );
   }
