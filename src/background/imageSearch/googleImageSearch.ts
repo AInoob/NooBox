@@ -15,6 +15,7 @@ export class GoogleImageSearch extends BaseImageSearch {
     const { body, responseUrl } = await ajax({
       url: 'https://www.google.com/searchbyimage?&image_url=' + imageUrl
     });
+
     result.engineLink![this.engine] = responseUrl;
     updateResultCallback();
 

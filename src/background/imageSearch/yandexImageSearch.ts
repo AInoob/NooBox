@@ -117,7 +117,6 @@ export class YandexImageSearch extends BaseImageSearch {
           singleResult.imageInfo.width = Number.parseInt(size[0], 10);
           singleResult.imageInfo.height = Number.parseInt(size[1], 10);
         }
-        (window as any).a = singleItem;
         const title = singleItem.getElementsByClassName(
           'other-sites__snippet-title-link'
         )[0];
