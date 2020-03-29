@@ -117,13 +117,14 @@ export class YandexImageSearch extends BaseImageSearch {
           singleResult.imageInfo.width = Number.parseInt(size[0], 10);
           singleResult.imageInfo.height = Number.parseInt(size[1], 10);
         }
+        (window as any).a = singleItem;
         const title = singleItem.getElementsByClassName(
-          'other-sites__title-link'
+          'other-sites__snippet-title-link'
         )[0];
         singleResult.title = title.innerHTML;
         singleResult.sourceUrl = title.getAttribute('href') || '';
         singleResult.description = singleItem.getElementsByClassName(
-          'other-sites__desc'
+          'other-sites__snippet-desc'
         )[0].innerHTML;
         result.searchResult!.push(singleResult);
       }
