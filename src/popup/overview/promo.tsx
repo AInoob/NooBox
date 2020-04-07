@@ -35,6 +35,7 @@ const PromoDiv = styled.div`
       .qrDiv {
         display: block;
       }
+      height: 500px;
     }
   }
 `;
