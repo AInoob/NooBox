@@ -32,19 +32,16 @@ export class GoogleImageSearch extends BaseImageSearch {
       const cardList = topStuff.getElementsByClassName('card-section');
       if (cardList.length > 0) {
         const card = cardList[0];
-        const cardNodeList = card.childNodes;
-        if (cardNodeList.length > 1) {
-          const keywordAnchorList = (cardNodeList[1] as any).getElementsByTagName(
-            'a'
-          );
-          if (keywordAnchorList > 0) {
-            const searchImageInfo = {
-              engine: this.engine,
-              keyword: keywordAnchorList[0].text,
-              keywordLink: keywordAnchorList[0].href
-            };
-            result.searchImageInfo!.push(searchImageInfo);
-          }
+        const anchorList = card.getElementsByTagName('a');
+        if (anchorList.length > 0) {
+          const keyword = anchorList[anchorList.length - 1].text;
+          const searchImageInfo = {
+            engine: this.engine,
+            keyword,
+            keywordLink:
+              'https://www.google.com/search?q=' + encodeURIComponent(keyword)
+          };
+          result.searchImageInfo!.push(searchImageInfo);
         }
       }
     }
@@ -62,10 +59,7 @@ export class GoogleImageSearch extends BaseImageSearch {
   }
 
   private getResults(document: Document, result: ISearchResult) {
-    const websiteList = document.getElementsByClassName('srg');
-    const list = websiteList[websiteList.length - 1].getElementsByClassName(
-      'g'
-    );
+    const list = document.getElementsByClassName('rc');
     for (let i = 0; i < list.length; i++) {
       const singleResult: ISingleSearchResultItem = {
         title: '',
@@ -78,9 +72,6 @@ export class GoogleImageSearch extends BaseImageSearch {
         weight: ENGINE_WEIGHTS.google - i + Math.random()
       };
       const singleItem = list[i];
-      // process title,imageUrl,sourceUrl and thumbUrl
-      // first <a> contains title and imageUrl
-      // second <a> contains sourceUrl and thumbUrl
       const tagA = singleItem.getElementsByTagName('a');
       singleResult.sourceUrl = tagA[0].getAttribute('href')!;
       const title = tagA[0].childNodes;
@@ -88,7 +79,6 @@ export class GoogleImageSearch extends BaseImageSearch {
       if (!singleResult.title) {
         singleResult.title = (tagA[0].childNodes as any).innerText;
       }
-      // new method to dig the image Source
       for (let j = 2; j < tagA.length; j++) {
         if (tagA[j]) {
           let link = tagA[j].getAttribute('href');
