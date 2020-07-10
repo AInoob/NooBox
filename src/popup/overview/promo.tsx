@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { getI18nMessage } from '../../utils/getI18nMessage';
 
 const PromoDiv = styled.div`
   text-align: center;
@@ -11,9 +12,13 @@ const PromoDiv = styled.div`
     cursor: pointer;
   }
   .promo {
-    width: 50px;
+    width: 50%;
+    float: left;
     margin: auto;
     overflow: hidden;
+    span {
+      float: left;
+    }
     .icon {
       width: 33px;
       height: 33px;
@@ -46,6 +51,14 @@ export class Promo extends React.Component {
       <PromoDiv>
         <div className='promo'>
           <img className='icon' src={'/images/google_play.png'} />
+          <span>{getI18nMessage('noobox_mobile')}</span>
+          <div className='qrDiv'>
+            <img className='qr' src={'/images/google_play_qr_new.png'} />
+          </div>
+        </div>
+        <div className='promo'>
+          <img className='icon' src={'/images/google_play.png'} />
+          <span>{getI18nMessage('imageScope_mobile')}</span>
           <div className='qrDiv'>
             <img className='qr' src={'/images/google_play_qr.png'} />
           </div>

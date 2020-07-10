@@ -1,5 +1,7 @@
 appName: NooBox
 appDesc: Reverse image search
+noobox_mobile: NooBox App
+imageScope_mobile: Image Scope App
 # Context Menu
 search_this_image: Search This Image
 extract_this_images: Extract This Image

@@ -1,5 +1,7 @@
 appName: 二箱
 appDesc: 多搜尋引擎以圖搜圖
+noobox_mobile: 二箱app
+imageScope_mobile: 圖镜app
 # Context Menu
 search_this_image: 搜尋這張圖片
 extract_this_images: 提取這張圖片
@@ -28,7 +30,7 @@ image_used_engine: 使用的引擎
 video_control: HTML5 影片控制 (預覽版)
 imagege: 圖片相關
 result_page_tab_frontge: 搜尋結果顯示在新分頁
-extract_imagesge: 提取圖片
+extract_images: 提取圖片
 screenshot_searchge: 擷圖搜尋
 toolsge: 工具設定
 avaiable_enginege: 搜尋引擎設定

@@ -1,5 +1,7 @@
 appName: 二箱
 appDesc: 多引擎以图搜图
+noobox_mobile: 二箱app
+imageScope_mobile: 图镜app
 # Context Menu
 search_this_image: 搜索这张图片
 extract_this_images: 提取这张图片
