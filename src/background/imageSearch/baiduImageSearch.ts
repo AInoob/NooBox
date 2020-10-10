@@ -36,7 +36,7 @@ export class BaiduImageSearch extends BaseImageSearch {
   }
 
   private getResults(sameImage: any, result: ISearchResult) {
-    const dataList = sameImage.data.list;
+    const dataList = sameImage.tpldata.list;
     for (let i = 0; i < dataList.length; i++) {
       const singleResult: ISingleSearchResultItem = {
         title: 'Possible Match',

@@ -90,24 +90,21 @@ export class GoogleImageSearch extends BaseImageSearch {
           }
         }
       }
-      const tagSpan = singleItem.getElementsByClassName('st')[0].childNodes;
+      const tagSpan = singleItem.getElementsByTagName('span');
       let description = '';
+      if (tagSpan.length > 0) {
+        description = tagSpan[tagSpan.length - 1].innerText;
+      }
+      singleResult.imageInfo.width = -1;
+      singleResult.imageInfo.height = -1;
       for (let j = 0; j < tagSpan.length; j++) {
-        if (j === 0) {
-          if ((tagSpan[j] as any).innerHTML) {
-            let size = (tagSpan[j] as any).innerHTML.split('-')[0];
-            size = size.replace(/ /g, '').split('×');
-            if (size) {
-              singleResult.imageInfo.width = Number.parseInt(size[0], 10);
-              singleResult.imageInfo.height = Number.parseInt(size[1], 10);
-            }
-          } else {
-            singleResult.imageInfo.width = -1;
-            singleResult.imageInfo.height = -1;
+        const s = tagSpan[j].innerText;
+        if (s) {
+          const match = s.match(/(\d+) × (\d+)/);
+          if (match) {
+            singleResult.imageInfo.width = Number.parseInt(match[1], 10);
+            singleResult.imageInfo.height = Number.parseInt(match[2], 10);
           }
-        } else {
-          description +=
-            (tagSpan[j] as any).innerHTML || tagSpan[j].textContent;
         }
       }
       singleResult.description = description;
