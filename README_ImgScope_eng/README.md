@@ -81,7 +81,7 @@ Noobox can extract all image in current webpage. Click "Download" button to Zip 
 </p>
 
 ## License
-<a href = "https://opensource.org/licenses/MIT">MIT</a>
+<a href = "https://opensource.org/licenses/gpl-license">GPL-V3</a>
 ## Available Language
  🇨🇳 🇹🇼 :us: :jp:
 
