@@ -11,11 +11,6 @@
 </h1>
 
 ![user_ _70000](https://badgen.net/chrome-web-store/users/kidibbfcblfbbafhnlanccjjdehoahep)
-![react_ 16 4 1](https://user-images.githubusercontent.com/12090689/45795176-48467d80-bc68-11e8-8a01-ac06e338e346.png)
-![antd_ 3 6 3](https://user-images.githubusercontent.com/12090689/45795246-bdb24e00-bc68-11e8-9b5d-cd5a54c05f0d.png)
-![dva_ 2 3 1](https://user-images.githubusercontent.com/12090689/45795297-079b3400-bc69-11e8-8f06-51d0a9c2d310.png)
-![styledcomponent_ 3 3 2](https://user-images.githubusercontent.com/12090689/45795406-91e39800-bc69-11e8-98dd-b8fe205bfc75.png)
-![webpack_ 4 12 0](https://user-images.githubusercontent.com/12090689/45795454-cb1c0800-bc69-11e8-8456-02ffe5c5ae13.png)
 ## Table Of Content
 * [Installation](#installation)
 * [Functionalities](#search-by-image)
