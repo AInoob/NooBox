@@ -1,25 +1,22 @@
 
 <h1 align="center">
   <br>
-  <a href="https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src="https://user-images.githubusercontent.com/12090689/45327137-5daeff80-b524-11e8-8398-36ee837c54e7.png" alt="NooBox" width="100"></a>
+  <a href="https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src="https://user-images.githubusercontent.com/12090689/98494977-0df71c00-21f3-11eb-8806-0edd4147588f.png" alt="NooBox" width="100"></a>
   <br>
-  <a href="https://github.com/AInoob/NooBox">Noobox |</a>
-  <a href="https://github.com/AInoob/NooBox/tree/master/README_zh-cn">二箱(简) |</a>
-  <a href="https://github.com/AInoob/NooBox/tree/master/README_zh-tw">二箱(繁)</a>
+  <a href="https://github.com/AInoob/NooBox">ImgScope-Extension</a>
+  <a href="https://github.com/AInoob/NooBox/tree/master/README_ImgScope_zh-cn">图镜(简)-插件</a>
+  <a href="https://github.com/AInoob/NooBox/tree/master/README_ImgScope_zh-tw">图镜(繁)-插件</a>
   <br>
   <br>
 </h1>
 
-![user_ _18000](https://user-images.githubusercontent.com/12090689/45795323-344f4b80-bc69-11e8-8baf-434ecc9b447a.png)
-![react_ 16 4 1](https://user-images.githubusercontent.com/12090689/45795176-48467d80-bc68-11e8-8a01-ac06e338e346.png)
-![antd_ 3 6 3](https://user-images.githubusercontent.com/12090689/45795246-bdb24e00-bc68-11e8-9b5d-cd5a54c05f0d.png)
-![dva_ 2 3 1](https://user-images.githubusercontent.com/12090689/45795297-079b3400-bc69-11e8-8f06-51d0a9c2d310.png)
-![styledcomponent_ 3 3 2](https://user-images.githubusercontent.com/12090689/45795406-91e39800-bc69-11e8-98dd-b8fe205bfc75.png)
-![webpack_ 4 12 0](https://user-images.githubusercontent.com/12090689/45795454-cb1c0800-bc69-11e8-8456-02ffe5c5ae13.png)
+![user_ _18000](https://chrome.google.com/webstore/detail/noobox-search-by-image/fmogjofnfmaaifocahboddmmjlehpchi)
+
 ## Table Of Content
 * [Installation](#installation)
 * [Functionalities](#search-by-image)
-  * [Search By Image](#search-by-image)
+  * [Search Image By Keyword](#search-by-image)
+  * [Search Image By Image](#search-by-image)
   * [Extract Images](#extract-images)
   * [Auto Refresh](#auto-refresh)
   * [HTML5 Video Control (Abort)](#abort)
@@ -34,7 +31,7 @@
       <th>CRX Download</th>
     </tr>
     <tr>
-      <td><a href= "https://chrome.google.com/webstore/detail/noobox-search-by-image/kidibbfcblfbbafhnlanccjjdehoahep"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a></td>
+      <td><a href= "https://chrome.google.com/webstore/detail/img-scope/fmogjofnfmaaifocahboddmmjlehpchi"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a></td>
       <td><a href = "https://github.com/AInoob/NooBox/releases/download/1.0.2.2/Noobox.crx">V 1.0.2.2</a></td>
     </tr>
   </table>
@@ -46,16 +43,11 @@
 <img src="https://user-images.githubusercontent.com/12090689/45597429-49db2180-b99a-11e8-916c-fba450c5cfe1.gif"/>
 </p>
 
-## Browser Support
-| Winodws | Version | MacOS | Version |
-| --- | --- | --- | --- |
-| <a href = "https://www.google.com/chrome/" target = "_blank">Chrome</a> | Version 69.0.3497.100 | <a href = "https://www.google.com/chrome/" target = "_blank">Chrome</a> | Version 69.0.3497.100 |
-| <a href = "https://browser.qq.com/" target= "_blank">QQ Browser</a> | Version 10.2.1 | <a href = "https://browser.qq.com/mac/en/index.html" target= "_blank">QQ Browser</a> | Version 4.4.119.400 (64-bit) |
-|  <a href = "http://browser.360.cn/ee/" target= "_blank">360 Browser</a> | Version 9.5 | <a href = "https://vivaldi.com/" target= "_blank">Vivaldi</a> |Version 2.0.1309.42 (Stable channel) (64-bit) |
-| --- | --- | --- | --- |
+## ImgScope and Noobox
 
-## Search By Image
-"If you’ve stumbled across an image on the internet—perhaps on your favorite social media site—and you want to know more about it, you can always ask the person responsible for the post. Odds are good that they probably just cribbed the image from somewhere else, and don’t know any more about where it came from. But that’s fine. You can also take on the detective work yourself, and there are plenty of resources to help you out." --- Life Hacker
+Basically, Search by Image is one tool belong to Noobox before, the main developing idea of Noobox is for tool, when we found “Search By Image” is the most popular, we decide to extract it out and enhance it .
+
+All Image Related Functionalities from Noobox will be included in ImgScope
 
 ## Problem
 The results from one search engine are limited
@@ -63,7 +55,7 @@ The results from one search engine are limited
 ## How Noobox Does ?
 Grab All results from different engines 
 
-## Different Approcah
+## Functionilities 
 <h3 align = "center"> 1."Select to Search" : Click to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif"/>
