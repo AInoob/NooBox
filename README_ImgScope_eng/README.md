@@ -10,7 +10,7 @@
   <br>
 </h1>
 
-![user_ _18000](https://chrome.google.com/webstore/detail/noobox-search-by-image/fmogjofnfmaaifocahboddmmjlehpchi)
+![user_ _18000](https://badgen.net/chrome-web-store/users/fmogjofnfmaaifocahboddmmjlehpchi)
 
 ## Table Of Content
 * [Installation](#installation)
