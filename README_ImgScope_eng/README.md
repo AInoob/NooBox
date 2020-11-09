@@ -14,7 +14,8 @@
 
 ## Table Of Content
 * [Installation](#installation)
-* [Functionalities](#search-by-image)
+* [ImgScope and Noobox](#imgScopeAndNoobox)
+* [Functionalities](#functioinilities)
   * [Search Image By Keyword](#search-by-image)
   * [Search Image By Image](#search-by-image)
   * [Extract Images](#extract-images)
@@ -24,7 +25,7 @@
 * [Language](#available-language)
 
 ## Installation
-<div align = "center">
+<div align = "center" name ="installation">
   <table  align = "center">
     <tr>
       <th>Chrome Web Stroe</th>
@@ -32,7 +33,7 @@
     </tr>
     <tr>
       <td><a href= "https://chrome.google.com/webstore/detail/img-scope/fmogjofnfmaaifocahboddmmjlehpchi"><img src = "https://user-images.githubusercontent.com/12090689/45331133-0f572c00-b537-11e8-962f-fc777c6bb9b5.png" width = "150px"></a></td>
-      <td><a href = "https://github.com/AInoob/NooBox/releases/download/1.0.2.2/Noobox.crx">V 1.0.2.2</a></td>
+      <td><a href = "https://github.com/AInoob/NooBox/releases/download/1.0.2.2/Noobox.crx">V 1.0.0</a></td>
     </tr>
   </table>
 </div>
@@ -44,19 +45,15 @@
 </p>
 
 ## ImgScope and Noobox
-
+<p name = "imgScopeAndNoobox">
 Basically, Search by Image is one tool belong to Noobox before, the main developing idea of Noobox is for tool, when we found “Search By Image” is the most popular, we decide to extract it out and enhance it .
 
 All Image Related Functionalities from Noobox will be included in ImgScope
+<p/>
 
-## Problem
-The results from one search engine are limited
-
-## How Noobox Does ?
-Grab All results from different engines 
 
 ## Functionilities 
-<h3 align = "center"> 1."Select to Search" : Click to upload the local image</h3>
+<h3 align = "center" name="functioinilities"> 1."Select to Search" : Click to upload the local image</h3>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/12090689/45771176-65506180-bc12-11e8-8174-b7b57fd4a4f0.gif"/>
 </p>
