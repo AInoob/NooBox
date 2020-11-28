@@ -2,6 +2,7 @@ appName: Noobox
 appDesc: 検索エンジンをマップするマルチエンジン
 noobox_mobile: NooBox App
 imageScope_mobile: Image Scope App
+imageScope: Image Scope
 search_this_image: この画像を検索
 extract_this_images: この写真を抽出する
 take_screenshot: スクリーンショット検索

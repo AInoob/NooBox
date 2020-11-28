@@ -11,32 +11,30 @@ export class BaiduImageSearch extends BaseImageSearch {
     result: ISearchResult,
     updateResultCallback: () => void
   ) {
-    const { body, responseUrl } = await ajax({
-      url: 'https://graph.baidu.com/upload?image=' + imageUrl,
-      method: 'GET'
+    const formData = new FormData();
+    formData.append('image', imageUrl);
+    const { body } = await ajax({
+      url: 'https://graph.baidu.com/upload',
+      method: 'POST',
+      body: formData
     });
-    result.engineLink![this.engine] = responseUrl;
+    const { data } = JSON.parse(body);
+    result.engineLink![this.engine] = data.url;
     updateResultCallback();
-    const { data, msg } = JSON.parse(body);
-    if (msg === 'Success') {
-      const imageKey = data.sign;
-      const sameImageChunk = await ajax({
-        url:
-          'https://graph.baidu.com/ajax/pcsame?sign=' +
-          imageKey +
-          '&limit=' +
-          10,
-        method: 'POST'
-      });
-      const sameImage = JSON.parse(sameImageChunk.body);
-      if (typeof sameImage === 'object') {
-        this.getResults(sameImage, result);
-      }
+    const imageKey = data.sign;
+    const sameImageChunk = await ajax({
+      url:
+        'https://graph.baidu.com/ajax/pcsame?sign=' + imageKey + '&limit=' + 10,
+      method: 'POST'
+    });
+    const sameImage = JSON.parse(sameImageChunk.body);
+    if (typeof sameImage === 'object') {
+      this.getResults(sameImage, result);
     }
   }
 
   private getResults(sameImage: any, result: ISearchResult) {
-    const dataList = sameImage.tpldata.list;
+    const dataList = sameImage.data.list;
     for (let i = 0; i < dataList.length; i++) {
       const singleResult: ISingleSearchResultItem = {
         title: 'Possible Match',

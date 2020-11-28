@@ -12,17 +12,25 @@ const PromoDiv = styled.div`
     cursor: pointer;
   }
   .promo {
-    width: 50%;
+    font-size: 13px;
+    width: ${chrome ? '33.3%' : '50%'};
     float: left;
     margin: auto;
     overflow: hidden;
     span {
       float: left;
+      text-align: left;
     }
     .icon {
       width: 33px;
       height: 33px;
-      display: block;
+      display: inline-block;
+      float: left;
+    }
+    .icon.mini {
+      width: 12px;
+      height: 12px;
+      margin-left: 3px;
     }
     .qrDiv {
       position: absolute;
@@ -36,12 +44,6 @@ const PromoDiv = styled.div`
         margin: auto;
       }
     }
-    &:hover {
-      .qrDiv {
-        display: block;
-      }
-      height: 500px;
-    }
   }
 `;
 
@@ -50,19 +52,44 @@ export class Promo extends React.Component {
     return (
       <PromoDiv>
         <div className='promo'>
-          <img className='icon' src={'/images/google_play.png'} />
-          <span>{getI18nMessage('noobox_mobile')}</span>
-          <div className='qrDiv'>
-            <img className='qr' src={'/images/google_play_qr_new.png'} />
-          </div>
+          <a
+            target='_blank'
+            href='https://play.google.com/store/apps/details?id=com.ainoob.NooBox_Mobile'>
+            <div>
+              <img className='icon' src={'/images/icon_128.png'} />
+              <img className='icon mini' src={'/images/google_play.png'} />
+            </div>
+            <span>{getI18nMessage('noobox_mobile')}</span>
+          </a>
         </div>
         <div className='promo'>
-          <img className='icon' src={'/images/google_play.png'} />
-          <span>{getI18nMessage('imageScope_mobile')}</span>
-          <div className='qrDiv'>
-            <img className='qr' src={'/images/google_play_qr.png'} />
-          </div>
+          <a
+            target='_blank'
+            href='https://play.google.com/store/apps/details?id=com.ainoob.mobile.imagescope'>
+            <div>
+              <img className='icon' src={'/images/image_scope.jpg'} />
+              <img className='icon mini' src={'/images/google_play.png'} />
+            </div>
+            <span>{getI18nMessage('imageScope_mobile')}</span>
+          </a>
         </div>
+        {chrome && (
+          <div className='promo'>
+            <a
+              target='_blank'
+              href='https://chrome.google.com/webstore/detail/img-scope/fmogjofnfmaaifocahboddmmjlehpchi'>
+              <div>
+                <img className='icon' src={'/images/image_scope.jpg'} />
+                <img
+                  style={{ height: '25px', width: '60px' }}
+                  className='icon mini'
+                  src={'/images/chrome_web_store.png'}
+                />
+              </div>
+              <span>{getI18nMessage('imageScope')}</span>
+            </a>
+          </div>
+        )}
       </PromoDiv>
     );
   }

@@ -2,7 +2,7 @@
   "scripts": {
     "start": "webpack -w",
     "prod": "webpack --env.production",
-    "release": "npm run checkFormat && npm run lint && rm -rdf dist && npm run prod && npm run zipDist",
+    "release": "npm run checkFormat && rm -rdf dist && npm run prod && npm run zipDist",
     "zipDist": "cd dist && zip -r -FS ../dist.zip *",
     "lint-staged": "lint-staged",
     "lint": "node_modules/tslint/bin/tslint --project tsconfig.json",
