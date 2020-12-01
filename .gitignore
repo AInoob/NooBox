@@ -8,3 +8,4 @@ package-lock.json
 *.iml
 dist.zip
 .DS_Store
+source_code.zip

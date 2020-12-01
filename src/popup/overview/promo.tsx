@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { getI18nMessage } from '../../utils/getI18nMessage';
+import { BrowserType, browserType } from '../../utils/ua';
 
 const PromoDiv = styled.div`
   text-align: center;
@@ -73,7 +74,7 @@ export class Promo extends React.Component {
             <span>{getI18nMessage('imageScope_mobile')}</span>
           </a>
         </div>
-        {chrome && (
+        {browserType == BrowserType.CHROME && (
           <div className='promo'>
             <a
               target='_blank'

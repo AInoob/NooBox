@@ -2,8 +2,9 @@
   "scripts": {
     "start": "webpack -w",
     "prod": "webpack --env.production",
-    "release": "npm run checkFormat && rm -rdf dist && npm run prod && npm run zipDist",
+    "release": "npm run checkFormat && rm -rdf dist && npm run prod && npm run zipDist && npm run zipSourceCode",
     "zipDist": "cd dist && zip -r -FS ../dist.zip *",
+    "zipSourceCode": "cd dist && zip -r -FS ../source_code.zip * -x '**/node_modules/*'",
     "lint-staged": "lint-staged",
     "lint": "node_modules/tslint/bin/tslint --project tsconfig.json",
     "checkFormat": "prettier --check '**/*.{ts,tsx}' '!dist/**'",
