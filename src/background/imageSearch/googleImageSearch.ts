@@ -20,6 +20,7 @@ export class GoogleImageSearch extends BaseImageSearch {
     updateResultCallback();
 
     const document = this.domParser.parseFromString(body, 'text/html');
+    (window as any).d = document;
     this.getKeyword(document, result);
     updateResultCallback();
 
@@ -59,7 +60,7 @@ export class GoogleImageSearch extends BaseImageSearch {
   }
 
   private getResults(document: Document, result: ISearchResult) {
-    const list = document.getElementsByClassName('rc');
+    const list = document.getElementsByClassName('g');
     for (let i = 0; i < list.length; i++) {
       const singleResult: ISingleSearchResultItem = {
         title: '',
