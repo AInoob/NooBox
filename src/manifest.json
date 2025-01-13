@@ -1,15 +1,10 @@
 {
-  "applications": {
-    "gecko": {
-      "id": "noob@ainoob.com"
-    }
-  },
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "short_name": "NB",
   "version": "1.1.12",
-  "browser_action": {
+  "action": {
     "default_icon": "images/icon_128.png",
     "default_title": "NooBox~",
     "default_popup": "popup.html"
@@ -18,12 +13,8 @@
     "128": "images/icon_128.png"
   },
   "background": {
-    "scripts": [
-      "thirdParty/jquery.min.js",
-      "thirdParty/fileSavor.js",
-      "thirdParty/jszip.min.js",
-      "js/background.js"
-    ]
+    "service_worker": "js/background.service-worker.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -43,7 +34,9 @@
     "contextMenus",
     "storage",
     "activeTab",
-    "notifications",
+    "notifications"
+  ],
+  "host_permissions": [
     "<all_urls>"
   ],
   "commands": {
