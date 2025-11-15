@@ -1,5 +1,6 @@
 import { logEvent } from '../utils/bello';
 import { getActiveTab } from '../utils/getActiveTab';
+import { getGlobalScope, isManifestV3 } from '../utils/runtime';
 import { ISendMessageToBackgroundRequest } from '../utils/sendMessageToBackground';
 import { useChrome } from '../utils/useChrome';
 import { AutoRefresh } from './autoRefresh';
@@ -10,14 +11,19 @@ import { VideoControl } from './videoControl';
 useChrome();
 
 const autoRefresh = new AutoRefresh();
-
 const image = new Image();
-
 const videoControl = new VideoControl();
-
 const options = new Options(image, videoControl);
 
-(window as any).options = options;
+getGlobalScope().options = options;
+
+if (typeof DEBUG_BUILD !== 'undefined' && DEBUG_BUILD) {
+  import('../utils/debugCommandClient')
+    .then(({ startDebugCommandPolling }) => startDebugCommandPolling())
+    .catch((error) =>
+      console.error('Failed to start debug command polling', error)
+    );
+}
 
 chrome.commands.onCommand.addListener(async (command: string) => {
   switch (command) {
@@ -34,36 +40,74 @@ chrome.runtime.onMessage.addListener(
     switch (request.job) {
       case 'analytics':
         logEvent(request.value);
-        return sendResponse(null);
+        sendResponse(null);
+        break;
       case 'getCurrentTabAutoRefreshStatus':
-        const { tabId } = request.value;
-        return sendResponse(autoRefresh.getSetting(tabId));
+        sendResponse(autoRefresh.getSetting(request.value.tabId));
+        break;
       case 'updateAutoRefresh':
-        return sendResponse(autoRefresh.update(request.value));
+        sendResponse(autoRefresh.update(request.value));
+        break;
       case 'urlDownloadZip':
-        const { files } = request.value;
-        image.downloadExtractImages(sender, files);
-        return sendResponse(null);
+        image.downloadExtractImages(sender, request.value.files);
+        sendResponse(null);
+        break;
       case 'beginImageSearch':
-        const { base64OrUrl } = request.value;
-        image.beginImageSearch(base64OrUrl).catch(console.error);
-        return sendResponse(null);
+        image.beginImageSearch(request.value.base64OrUrl).catch(console.error);
+        sendResponse(null);
+        break;
       case 'videoControl':
         videoControl.notifyAllToPerformSelfCheck();
-        return sendResponse(null);
+        sendResponse(null);
+        break;
       case 'set':
-        const { key, value } = request.value;
         sendResponse({
-          key,
-          value
+          key: request.value.key,
+          value: request.value.value
         });
-        options.set(key, value).catch(console.error);
+        options
+          .set(request.value.key, request.value.value)
+          .catch(console.error);
         break;
       case 'getOptions':
-        return sendResponse(options.getOptions());
+        sendResponse(options.getOptions());
+        break;
+      default:
+        sendResponse(null);
     }
+    return true;
   }
 );
+
+chrome.runtime.onInstalled.addListener(() => {
+  image.init().catch(console.error);
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  switch (info.menuItemId) {
+    case 'imageSearch':
+      if (info.srcUrl) {
+        image.beginImageSearch(info.srcUrl).catch(console.error);
+      }
+      break;
+    case 'extractImages':
+      if (tab) {
+        image.extractImages(info, tab);
+      }
+      break;
+    case 'screenshotSearch':
+      if (tab) {
+        image.screenshotSearch(info, tab).catch(console.error);
+      }
+      break;
+  }
+});
+
+if (isManifestV3()) {
+  chrome.runtime.onStartup?.addListener(() => {
+    image.init().catch(console.error);
+  });
+}
 
 chrome.tabs.onRemoved.addListener((tabId) => {
   autoRefresh.delete(tabId);

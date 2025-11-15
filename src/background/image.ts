@@ -6,9 +6,11 @@ import { checkUrlOrBase64 } from '../utils/checkImageType';
 import { ENGINE_LIST, EngineType } from '../utils/constants';
 import { convertDataUriToBinary } from '../utils/convertDataURIToBinary';
 import { get, getDB, setDB } from '../utils/db';
+import { logDebug } from '../utils/debugReporter';
 import { fetchImageBlob } from '../utils/fetchImageBlob';
 import { getI18nMessage } from '../utils/getI18nMessage';
 import { openSearchResultTab } from '../utils/openSearchResultTab';
+import { getGlobalScope, isManifestV3 } from '../utils/runtime';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
 import { Ascii2dImageSearch } from './imageSearch/ascii2dImageSearch';
@@ -25,9 +27,6 @@ export class Image {
   private imageUploadUrl: string = '';
   private imageDownloadUrl: string = '';
   private imageServerUrl = 'https://ainoob.com/api/get/imageServers/';
-  private imageSearchHandle: any = null;
-  private extractImageHandle: any = null;
-  private screenshotSearchHandle: any = null;
   private imageSearchMap: { [index in EngineType]: BaseImageSearch } = {
     ascii2d: new Ascii2dImageSearch('ascii2d'),
     baidu: new BaiduImageSearch('baidu'),
@@ -54,51 +53,37 @@ export class Image {
 
   public async updateImageSearchContextMenu() {
     if (await get('imageSearch')) {
-      this.imageSearchHandle = chrome.contextMenus.create({
+      await this.removeMenu('imageSearch');
+      await this.createMenu('imageSearch', {
         contexts: ['image'],
-        id: 'imageSearch',
-        onclick: (image) => {
-          this.beginImageSearch(image.srcUrl!).catch(console.error);
-        },
         title: getI18nMessage('search_this_image')
       });
     } else {
-      if (this.imageSearchHandle) {
-        chrome.contextMenus.remove(this.imageSearchHandle);
-        this.imageSearchHandle = null;
-      }
+      await this.removeMenu('imageSearch');
     }
   }
 
   public async updateExtractImageContextMenu() {
     if (await get('extractImages')) {
-      this.extractImageHandle = chrome.contextMenus.create({
+      await this.removeMenu('extractImages');
+      await this.createMenu('extractImages', {
         contexts: ['all'],
-        id: 'extractImages',
-        onclick: this.extractImages,
         title: getI18nMessage('extract_images')
       });
     } else {
-      if (this.extractImageHandle) {
-        chrome.contextMenus.remove(this.extractImageHandle);
-        this.extractImageHandle = null;
-      }
+      await this.removeMenu('extractImages');
     }
   }
 
   public async updateScreenshotSearchContextMenu() {
     if (await get('screenshotSearch')) {
-      this.screenshotSearchHandle = chrome.contextMenus.create({
+      await this.removeMenu('screenshotSearch');
+      await this.createMenu('screenshotSearch', {
         contexts: ['all'],
-        id: 'screenshotSearch',
-        onclick: this.screenshotSearch,
         title: getI18nMessage('screenshot_search')
       });
     } else {
-      if (this.screenshotSearchHandle) {
-        chrome.contextMenus.remove(this.screenshotSearchHandle);
-        this.screenshotSearchHandle = null;
-      }
+      await this.removeMenu('screenshotSearch');
     }
   }
 
@@ -107,12 +92,26 @@ export class Image {
       action: 'run',
       category: 'downloadExtractImages'
     });
-    const zip = new (window as any).JSZip();
+
+    if (isManifestV3()) {
+      if (sender.tab?.id) {
+        chrome.tabs.sendMessage(sender.tab.id, {
+          job: 'downloadError',
+          message:
+            getI18nMessage('ls_3') ||
+            'Please use the MV2 build to download ZIP files.'
+        });
+      }
+      return;
+    }
+
+    const globalScope = getGlobalScope();
+    const zip = new (globalScope as any).JSZip();
     let remains = files.length;
     let total = files.length;
     let i = 0;
     let file = files[i];
-    const reader = new window.FileReader();
+    const reader = new globalScope.FileReader();
     reader.onloadend = () => {
       addImage(reader.result);
     };
@@ -143,7 +142,7 @@ export class Image {
             type: 'blob'
           })
           .then((content: any) => {
-            (window as any).saveAs(content, 'NooBox.zip');
+            (globalScope as any).saveAs(content, 'NooBox.zip');
           });
       } else {
         file = files[++i];
@@ -196,6 +195,15 @@ export class Image {
     });
 
     await openSearchResultTab(cursor);
+    logDebug({
+      event: 'search:init',
+      engine: 'all',
+      tag: 'beginImageSearch',
+      extra: {
+        cursor,
+        imageType
+      }
+    }).catch(() => undefined);
     if (imageType === 'base64') {
       logEvent({
         action: 'dataURI',
@@ -238,49 +246,146 @@ export class Image {
     _info: chrome.contextMenus.OnClickData,
     tab: chrome.tabs.Tab
   ) {
-    chrome.tabs.sendMessage(tab.id!, 'loaded', (response) => {
-      if (response === 'yes') {
+    if (!tab.id) {
+      return;
+    }
+
+    chrome.tabs.sendMessage(tab.id, 'loaded', (response) => {
+      const capture = () => {
         chrome.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
           chrome.tabs.sendMessage(tab.id!, {
             data: dataURL,
             job: 'screenshotSearch'
           });
         });
-      } else {
-        chrome.tabs.captureVisibleTab(tab.windowId, (dataURL) => {
-          chrome.tabs.executeScript(
+      };
+
+      if (response === 'yes') {
+        capture();
+        return;
+      }
+
+      chrome.tabs.captureVisibleTab(tab.windowId, async (dataURL) => {
+        try {
+          await this.executeContentScript(tab.id!, 'thirdParty/jquery.min.js');
+          await this.executeContentScript(
             tab.id!,
-            { file: 'thirdParty/jquery.min.js' },
-            () => {
-              if (chrome.runtime.lastError) {
-                chrome.notifications.create(
-                  'screenshotFailed',
-                  {
-                    iconUrl: '/images/icon_128.png',
-                    message: getI18nMessage('ls_2'),
-                    title: getI18nMessage('ls_1'),
-                    type: 'basic'
-                  },
-                  (notificationId) => {
-                    console.debug(notificationId);
-                  }
-                );
-                return;
-              }
-              chrome.tabs.executeScript(
-                tab.id!,
-                { file: 'contentScript/screenshotSearch.js' },
-                () => {
-                  chrome.tabs.sendMessage(tab.id!, {
-                    data: dataURL,
-                    job: 'screenshotSearch'
-                  });
-                }
-              );
+            'contentScript/screenshotSearch.js'
+          );
+          chrome.tabs.sendMessage(tab.id!, {
+            data: dataURL,
+            job: 'screenshotSearch'
+          });
+        } catch (error) {
+          chrome.notifications.create(
+            'screenshotFailed',
+            {
+              iconUrl: '/images/icon_128.png',
+              message: getI18nMessage('ls_2'),
+              title: getI18nMessage('ls_1'),
+              type: 'basic'
+            },
+            (notificationId) => {
+              console.debug(notificationId);
             }
           );
-        });
+          console.error('Failed to inject screenshot scripts', error);
+        }
+      });
+    });
+  }
+
+  public extractImages(
+    info: chrome.contextMenus.OnClickData,
+    tab: chrome.tabs.Tab
+  ) {
+    logEvent({
+      action: 'run',
+      category: 'extractImages'
+    });
+    chrome.tabs.sendMessage(
+      tab.id!,
+      {
+        job: 'extractImages'
+      },
+      {
+        frameId: info.frameId
+      },
+      (response) => {
+        if (!response) {
+          chrome.notifications.create(
+            'extractImages',
+            {
+              iconUrl: '/images/icon_128.png',
+              message: getI18nMessage('ls_4'),
+              title: getI18nMessage('extractImages'),
+              type: 'basic'
+            },
+            (notificationId) => {
+              console.debug(notificationId);
+            }
+          );
+        }
+        if (chrome.runtime.lastError) {
+          console.error('Last error:', chrome.runtime.lastError);
+        }
       }
+    );
+  }
+
+  private createMenu(
+    id: string,
+    props: chrome.contextMenus.CreateProperties
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      chrome.contextMenus.create(
+        {
+          ...props,
+          id
+        },
+        () => {
+          const lastError = chrome.runtime.lastError;
+          if (lastError) {
+            console.debug('createMenu error:', lastError.message);
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
+  private removeMenu(id: string): Promise<void> {
+    return new Promise((resolve) => {
+      chrome.contextMenus.remove(id, () => {
+        const lastError = chrome.runtime.lastError;
+        if (lastError) {
+          console.debug('removeMenu error:', lastError.message);
+        }
+        resolve();
+      });
+    });
+  }
+
+  private executeContentScript(tabId: number, file: string): Promise<void> {
+    const scripting = (chrome as any).scripting;
+    if (scripting && scripting.executeScript) {
+      return scripting
+        .executeScript({
+          target: { tabId },
+          files: [file]
+        })
+        .then(() => undefined);
+    }
+
+    return new Promise((resolve, reject) => {
+      chrome.tabs.executeScript(tabId, { file }, () => {
+        const lastError = chrome.runtime.lastError;
+        if (lastError) {
+          reject(lastError);
+        } else {
+          resolve();
+        }
+      });
     });
   }
 
@@ -332,43 +437,5 @@ export class Image {
         this.updateImageDownloadUrl(server);
       }
     });
-  }
-
-  private extractImages(
-    info: chrome.contextMenus.OnClickData,
-    tab: chrome.tabs.Tab
-  ) {
-    logEvent({
-      action: 'run',
-      category: 'extractImages'
-    });
-    chrome.tabs.sendMessage(
-      tab.id!,
-      {
-        job: 'extractImages'
-      },
-      {
-        frameId: info.frameId
-      },
-      (response) => {
-        if (!response) {
-          chrome.notifications.create(
-            'extractImages',
-            {
-              iconUrl: '/images/icon_128.png',
-              message: getI18nMessage('ls_4'),
-              title: getI18nMessage('extractImages'),
-              type: 'basic'
-            },
-            (notificationId) => {
-              console.debug(notificationId);
-            }
-          );
-        }
-        if (chrome.runtime.lastError) {
-          console.error('Last error:', chrome.runtime.lastError);
-        }
-      }
-    );
   }
 }

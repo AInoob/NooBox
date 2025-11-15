@@ -62,6 +62,8 @@ export class Options extends React.Component {
         {this.getEngines()}
 
         {this.getCheckBox('extractImages', 'extract_images', true)}
+
+        {this.getDebugToggle()}
       </OptionsDiv>
     );
   }
@@ -111,5 +113,23 @@ export class Options extends React.Component {
     } else {
       return <div className='option'>{checkbox}</div>;
     }
+  }
+
+  private getDebugToggle() {
+    const { optionsStore } = this.injected;
+    const { options } = optionsStore;
+    return (
+      <div className='option'>
+        <Checkbox
+          checked={options.debugMode}
+          onChange={(e) =>
+            optionsStore
+              .update('debugMode', e.target.checked)
+              .catch(console.error)
+          }>
+          Debug mode (send logs to localhost:3030)
+        </Checkbox>
+      </div>
+    );
   }
 }

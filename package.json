@@ -1,10 +1,20 @@
 {
   "scripts": {
-    "start": "webpack -w",
-    "prod": "webpack --env.production",
-    "release": "npm run checkFormat && rm -rdf dist && npm run prod && npm run zipDist && npm run zipSourceCode",
-    "zipDist": "cd dist && zip -r -FS ../dist.zip *",
-    "zipSourceCode": "cd dist && zip -r -FS ../source_code.zip * -x '**/node_modules/*'",
+    "start": "webpack -w --env.mv=v2",
+    "start:v2": "webpack -w --env.mv=v2",
+    "start:v3": "webpack -w --env.mv=v3",
+    "build:v2": "webpack --env.production --env.mv=v2",
+    "build:v3": "webpack --env.production --env.mv=v3",
+    "build:v2:debug": "webpack --env.production --env.mv=v2 --env.debug",
+    "build:v3:debug": "webpack --env.production --env.mv=v3 --env.debug",
+    "build:all": "npm run build:v2 && npm run build:v3",
+    "clean": "rm -rdf dist dist-v2 dist-v3 *.zip",
+    "prod": "webpack --env.production --env.mv=v2",
+    "debug:server": "cd debug-server && npm install && npm start",
+    "zip:v2": "cd dist-v2 && zip -r -FS ../noobox-v2.zip *",
+    "zip:v3": "cd dist-v3 && zip -r -FS ../noobox-v3.zip *",
+    "zip:source": "zip -r -FS source_code.zip src/ package.json webpack.config.js tsconfig.json BUILD.md README.md LICENSE -x '**/node_modules/*'",
+    "release": "npm run checkFormat && npm run clean && npm run build:all && npm run zip:v2 && npm run zip:v3 && npm run zip:source",
     "lint-staged": "lint-staged",
     "lint": "node_modules/tslint/bin/tslint --project tsconfig.json",
     "checkFormat": "prettier --check '**/*.{ts,tsx}' '!dist/**'",
@@ -22,6 +32,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/preset-env": "^7.23.9",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
@@ -32,6 +46,7 @@
     "@types/styled-components": "^4.4.1",
     "antd": "^3.26.3",
     "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.3.0",
     "copy-webpack-plugin": "^5.1.1",
     "lint-staged": "^9.5.0",
     "mobx": "^5.15.0",
@@ -46,5 +61,8 @@
     "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "linkedom": "^0.18.12"
   }
 }

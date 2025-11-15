@@ -1,4 +1,5 @@
 import { IOptions } from '../background/options';
+import { getGlobalScope } from './runtime';
 import { sendMessageToBackground } from './sendMessageToBackground';
 
 type KeyType = keyof IOptions;
@@ -37,7 +38,7 @@ export const bgSet = async (key: KeyType, value: any) => {
 
 export const getDB = (key: string | number): Promise<any> => {
   return new Promise((resolve, reject) => {
-    const indexedDB = window.indexedDB;
+    const indexedDB = getGlobalScope().indexedDB;
     const open = indexedDB.open('NooBox', 1);
     open.onupgradeneeded = () => {
       const db = open.result;
@@ -57,7 +58,7 @@ export const getDB = (key: string | number): Promise<any> => {
           resolve(null);
         }
       };
-      action1.onerror = (e) => {
+      action1.onerror = (e: Event) => {
         console.log('getDB fail');
         reject(e);
       };
@@ -67,7 +68,7 @@ export const getDB = (key: string | number): Promise<any> => {
 
 export const setDB = (key: string | number, value: any) => {
   return new Promise((resolve, reject) => {
-    const indexedDB = window.indexedDB;
+    const indexedDB = getGlobalScope().indexedDB;
     const open = indexedDB.open('NooBox', 1);
     open.onupgradeneeded = () => {
       const db = open.result;
@@ -86,7 +87,7 @@ export const setDB = (key: string | number, value: any) => {
       action1.onsuccess = () => {
         resolve('set !');
       };
-      action1.onerror = (e) => {
+      action1.onerror = (e: Event) => {
         console.log('setDB fail');
         reject(e);
       };
@@ -96,6 +97,7 @@ export const setDB = (key: string | number, value: any) => {
 
 export const deleteDB = (key: string) => {
   return new Promise((resolve, reject) => {
+    const indexedDB = getGlobalScope().indexedDB;
     const open = indexedDB.open('NooBox', 1);
     open.onupgradeneeded = () => {
       const db = open.result;
@@ -111,7 +113,7 @@ export const deleteDB = (key: string) => {
       action1.onsuccess = () => {
         resolve();
       };
-      action1.onerror = (e) => {
+      action1.onerror = (e: Event) => {
         console.log('deleteDB fail');
         reject(e);
       };

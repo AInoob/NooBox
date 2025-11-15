@@ -9,6 +9,7 @@ export interface IOptions {
   displayMode: 1 | 2;
   sortBy: 'relevance' | 'area' | 'width' | 'height';
   extractImages: boolean;
+  debugMode: boolean;
   history: boolean;
   imageSearch: boolean;
   imageSearchNewTabFront: boolean;
@@ -32,6 +33,7 @@ export const defaultOptions: IOptions = {
   displayMode: 1,
   sortBy: 'relevance',
   extractImages: true,
+  debugMode: false,
   history: true,
   imageSearch: true,
   imageSearchNewTabFront: true,
@@ -97,6 +99,10 @@ export class Options {
         await set(key, defaultOptions[key]);
       }
       this.options[key] = (await get(key)) as never;
+    }
+    if (typeof DEBUG_BUILD !== 'undefined' && DEBUG_BUILD) {
+      this.options.debugMode = true;
+      await set('debugMode', true);
     }
     await this.image.init();
   }

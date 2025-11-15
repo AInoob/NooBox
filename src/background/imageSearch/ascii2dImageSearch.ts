@@ -17,7 +17,9 @@ export class Ascii2dImageSearch extends BaseImageSearch {
     const { body, responseUrl } = await ajax({
       url: 'https://ascii2d.net/search/uri',
       method: 'POST',
-      body: formData
+      body: formData,
+      debugTag: 'ascii2d:search',
+      debugBody: true
     });
 
     result.engineLink![this.engine] = responseUrl;

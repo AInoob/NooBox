@@ -16,7 +16,9 @@ export class BaiduImageSearch extends BaseImageSearch {
     const { body } = await ajax({
       url: 'https://graph.baidu.com/upload',
       method: 'POST',
-      body: formData
+      body: formData,
+      debugTag: 'baidu:upload',
+      debugBody: true
     });
     const { data } = JSON.parse(body);
     result.engineLink![this.engine] = data.url;
@@ -25,7 +27,9 @@ export class BaiduImageSearch extends BaseImageSearch {
     const sameImageChunk = await ajax({
       url:
         'https://graph.baidu.com/ajax/pcsame?sign=' + imageKey + '&limit=' + 10,
-      method: 'POST'
+      method: 'POST',
+      debugTag: 'baidu:same',
+      debugBody: true
     });
     const sameImage = JSON.parse(sameImageChunk.body);
     if (typeof sameImage === 'object') {

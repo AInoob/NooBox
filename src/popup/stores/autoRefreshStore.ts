@@ -12,7 +12,7 @@ export class AutoRefreshStore {
   @observable public active: boolean = false;
   @observable public interval: number = defaultTabStatus.interval;
   private tabStatus: ITabStatus = defaultTabStatus;
-  private handle: number | null = null;
+  private handle: ReturnType<typeof setInterval> | null = null;
 
   public async getCurrentTabStatus() {
     this.tabStatus = await sendMessageToBackground({

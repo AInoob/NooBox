@@ -21,7 +21,9 @@ export class BingImageSearch extends BaseImageSearch {
 
     const { body, responseUrl } = await ajax({
       url: 'https://www.bing.com/images/search?' + queryString.toString(),
-      method: 'GET'
+      method: 'GET',
+      debugTag: 'bing:search',
+      debugBody: true
     });
     result.engineLink![this.engine] = responseUrl;
     updateResultCallback();
@@ -108,7 +110,9 @@ export class BingImageSearch extends BaseImageSearch {
 
     const searchResponse = await ajax({
       url: baseURL + queryString.toString(),
-      method: 'GET'
+      method: 'GET',
+      debugTag: 'bing:details',
+      debugBody: true
     });
     return JSON.parse(searchResponse.body);
   }

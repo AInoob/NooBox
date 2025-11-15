@@ -1,7 +1,10 @@
+import { getGlobalScope } from './runtime';
+
 export const useChrome = () => {
-  if ((window as any).browser) {
+  const globalScope = getGlobalScope();
+  if (globalScope.browser && !globalScope.chrome) {
     console.log('using chrome instead of browser');
-    (window as any).chrome = (window as any).browser;
+    globalScope.chrome = globalScope.browser;
     console.log('done using chrome instead of browser');
   }
 };

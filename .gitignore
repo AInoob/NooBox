@@ -3,9 +3,15 @@
 yarn.lock
 package-lock.json
 /dist/
+/dist-v2/
+/dist-v3/
 /.idea/
 /.vscode/
 *.iml
 dist.zip
 .DS_Store
 source_code.zip
+noobox-v2.zip
+noobox-v3.zip
+debug-server/logs/
+debug-server/node_modules/

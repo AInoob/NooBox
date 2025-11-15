@@ -13,7 +13,9 @@ export class SauceNaoImageSearch extends BaseImageSearch {
     updateResultCallback: () => void
   ) {
     const { body, responseUrl } = await ajax({
-      url: 'https://saucenao.com/search.php?db=999&url=' + imageUrl
+      url: 'https://saucenao.com/search.php?db=999&url=' + imageUrl,
+      debugTag: 'saucenao:search',
+      debugBody: true
     });
     result.engineLink![this.engine] = responseUrl;
     updateResultCallback();

@@ -13,7 +13,9 @@ export class TineyeImageSearch extends BaseImageSearch {
     const postResponse = await ajax({
       url: 'https://tineye.com/search',
       method: 'POST',
-      body: formData
+      body: formData,
+      debugTag: 'tineye:search',
+      debugBody: true
     });
 
     const id = postResponse.body.match(/var base_url = "\/result\/(.*)";/)[1];

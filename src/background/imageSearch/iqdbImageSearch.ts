@@ -13,7 +13,9 @@ export class IqdbImageSearch extends BaseImageSearch {
     updateResultCallback: () => void
   ) {
     const { body, responseUrl } = await ajax({
-      url: 'https://iqdb.org/?url=' + imageUrl
+      url: 'https://iqdb.org/?url=' + imageUrl,
+      debugTag: 'iqdb:search',
+      debugBody: true
     });
 
     result.engineLink![this.engine] = responseUrl;

@@ -13,14 +13,15 @@ export class GoogleImageSearch extends BaseImageSearch {
     updateResultCallback: () => void
   ) {
     const { body, responseUrl } = await ajax({
-      url: 'https://www.google.com/searchbyimage?&image_url=' + imageUrl
+      url: 'https://www.google.com/searchbyimage?&image_url=' + imageUrl,
+      debugTag: 'google:search',
+      debugBody: true
     });
 
     result.engineLink![this.engine] = responseUrl;
     updateResultCallback();
 
     const document = this.domParser.parseFromString(body, 'text/html');
-    (window as any).d = document;
     this.getKeyword(document, result);
     updateResultCallback();
 
@@ -80,15 +81,17 @@ export class GoogleImageSearch extends BaseImageSearch {
       if (!singleResult.title) {
         singleResult.title = (tagA[0].childNodes as any).innerText;
       }
-      for (let j = 2; j < tagA.length; j++) {
-        if (tagA[j]) {
-          let link = tagA[j].getAttribute('href');
-          link = this.parseImageLink(link!);
-          if (link) {
-            singleResult.imageUrl = link;
-            singleResult.thumbUrl = link;
-            break;
-          }
+      const anchorList = Array.from(tagA).slice(2);
+      for (const anchor of anchorList) {
+        if (!anchor) {
+          continue;
+        }
+        let link = anchor.getAttribute('href');
+        link = this.parseImageLink(link!);
+        if (link) {
+          singleResult.imageUrl = link;
+          singleResult.thumbUrl = link;
+          break;
         }
       }
       const tagSpan = singleItem.getElementsByTagName('span');
@@ -98,8 +101,8 @@ export class GoogleImageSearch extends BaseImageSearch {
       }
       singleResult.imageInfo.width = -1;
       singleResult.imageInfo.height = -1;
-      for (let j = 0; j < tagSpan.length; j++) {
-        const s = tagSpan[j].innerText;
+      for (const span of Array.from(tagSpan)) {
+        const s = span.innerText;
         if (s) {
           const match = s.match(/(\d+) × (\d+)/);
           if (match) {

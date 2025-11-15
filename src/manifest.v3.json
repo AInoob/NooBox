@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_appName__",
+  "description": "__MSG_appDesc__",
+  "short_name": "NB",
+  "version": "1.1.12",
+  "action": {
+    "default_icon": "images/icon_128.png",
+    "default_title": "NooBox~",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "images/icon_128.png"
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": [
+        "thirdParty/jquery.min.js",
+        "contentScript/videoControl.js",
+        "contentScript/extractImages.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "default_locale": "en",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "notifications",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "commands": {
+    "screenshotSearch": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "__MSG_screenshot_search__"
+    }
+  },
+  "minimum_chrome_version": "88"
+}
