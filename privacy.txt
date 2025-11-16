@@ -1,0 +1,5 @@
+NooBox respects your privacy. We only collect anonymous usage telemetry about how
+you interact with the extension—such as which buttons or actions are clicked—so
+we can understand feature usage and prioritize improvements. We do not collect
+or store any personal information, identity data, or anything that can be used
+to determine who you are.
