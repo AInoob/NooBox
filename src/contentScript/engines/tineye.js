@@ -27,23 +27,6 @@
       return Number.isFinite(numeric) ? numeric : undefined;
     };
 
-    const getKeywordFromMeta = (meta) => {
-      if (meta?.queryImageUrl) {
-        try {
-          const parsed = new URL(meta.queryImageUrl, window.location.href);
-          const segments = parsed.pathname.split('/').filter(Boolean);
-          const last = segments.pop();
-          if (last) {
-            return decodeURIComponent(last);
-          }
-          return parsed.hostname || parsed.href;
-        } catch {
-          return meta.queryImageUrl;
-        }
-      }
-      return 'TinEye';
-    };
-
     const getMeta = () => {
       const countEl = document.querySelector('[data-test="result-count"]');
       const h1 = countEl?.closest('h1');
@@ -226,15 +209,14 @@
         sequence: ++state.sequence
       });
       const results = collectResults();
-      const keyword = getKeywordFromMeta(meta);
       const hash = hashPayload(meta, results);
       if (override && hash === state.lastHash) {
         return;
       }
       state.lastHash = hash;
       ctx.postResult({
-        keyword,
-        keywordLink: meta.queryImageUrl || window.location.href,
+        keyword: '',
+        keywordLink: '',
         results,
         url: window.location.href,
         override: !!override,

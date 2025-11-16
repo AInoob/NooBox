@@ -15,11 +15,16 @@ export class GoogleDebugger {
     number,
     Promise<IDebuggerSession>
   >();
+  private readonly debuggerAvailable: boolean;
 
   constructor() {
+    this.debuggerAvailable = typeof chrome.debugger !== 'undefined';
     chrome.tabs.onRemoved.addListener((tabId) => {
       void this.detach(tabId);
     });
+    if (!this.debuggerAvailable) {
+      return;
+    }
     chrome.debugger.onDetach.addListener((source) => {
       if (source.tabId != null) {
         this.sessions.delete(source.tabId);
@@ -54,6 +59,7 @@ export class GoogleDebugger {
   }
 
   public async prepareTab(tabId: number, targetUrl: string) {
+    this.assertDebuggerAvailable();
     const session = await this.ensureSession(tabId);
     await this.sendCommand(session.target, 'Page.enable');
     await this.sendCommand(session.target, 'Runtime.enable');
@@ -73,6 +79,7 @@ export class GoogleDebugger {
   }
 
   public async evaluate(tabId: number, expression: string) {
+    this.assertDebuggerAvailable();
     const session = await this.ensureSession(tabId);
     const response = await this.sendCommand<any>(
       session.target,
@@ -102,11 +109,13 @@ export class GoogleDebugger {
   }
 
   public async bringToFront(tabId: number) {
+    this.assertDebuggerAvailable();
     const session = await this.ensureSession(tabId);
     await this.sendCommand(session.target, 'Page.bringToFront');
   }
 
   public async scrollToBottom(tabId: number) {
+    this.assertDebuggerAvailable();
     const session = await this.ensureSession(tabId);
     await this.sendCommand(session.target, 'Runtime.evaluate', {
       expression: `(() => {
@@ -147,6 +156,9 @@ export class GoogleDebugger {
   }
 
   public async detach(tabId: number) {
+    if (!this.debuggerAvailable) {
+      return;
+    }
     const session = this.sessions.get(tabId);
     if (!session) {
       return;
@@ -176,6 +188,7 @@ export class GoogleDebugger {
   }
 
   private async attach(tabId: number): Promise<IDebuggerSession> {
+    this.assertDebuggerAvailable();
     if (!chrome.debugger) {
       throw new Error('Debugger API is not available');
     }
@@ -204,6 +217,7 @@ export class GoogleDebugger {
     method: string,
     params?: Record<string, any>
   ): Promise<T | undefined> {
+    this.assertDebuggerAvailable();
     return new Promise<T | undefined>((resolve, reject) => {
       chrome.debugger.sendCommand(target, method, params || {}, (result) => {
         const error = chrome.runtime.lastError;
@@ -214,5 +228,11 @@ export class GoogleDebugger {
         resolve(result as T);
       });
     });
+  }
+
+  private assertDebuggerAvailable() {
+    if (!this.debuggerAvailable) {
+      throw new Error('Debugger API is disabled');
+    }
   }
 }
