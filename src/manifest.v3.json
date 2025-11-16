@@ -34,6 +34,7 @@
     "activeTab",
     "notifications",
     "scripting",
+    "debugger",
     "tabs"
   ],
   "host_permissions": [

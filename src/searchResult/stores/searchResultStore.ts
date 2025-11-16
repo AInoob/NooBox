@@ -38,6 +38,7 @@ export interface ISearchResult {
   searchImageInfo?: ISearchImageInfo[];
   searchResult?: ISingleSearchResultItem[];
   engineStatus?: { [key in EngineType]?: EngineStatusType };
+  pendingFocus?: { [key in EngineType]?: boolean };
 }
 
 const DEFAULT_MODAL_IMAGE_WIDTH = 512;

@@ -31,11 +31,6 @@
       }
       logProgress(`google:${section}_error`, message);
     };
-    const THUMB_SCROLL_DELAY = 120;
-    const THUMB_POLL_INTERVAL_MS = 1000;
-    const THUMB_POLL_TIMEOUT_MS = 30000;
-    const thumbPollers = new WeakMap();
-
     const isLensHost = () => window.location.hostname.includes('lens.google.com');
     const isSearchPage = () =>
       window.location.hostname.includes('google.') && window.location.pathname === '/search';
@@ -109,15 +104,32 @@
       if (!img) {
         return '';
       }
+      const prefer = [img.currentSrc, img.src];
+      for (const candidate of prefer) {
+        if (candidate && !candidate.startsWith('data:')) {
+          return candidate;
+        }
+      }
+      const srcset = img.getAttribute('srcset');
+      if (srcset) {
+        const first = srcset.split(/\s+/)[0];
+        if (first && !first.startsWith('data:')) {
+          return first;
+        }
+      }
       const attrs = ['src', 'data-src', 'data-lz', 'data-deferred-src'];
       for (const attr of attrs) {
         const value = img.getAttribute(attr);
-        if (value) {
+        if (value && !value.startsWith('data:')) {
           return value;
         }
       }
       if (img.dataset) {
-        return img.dataset.src || img.dataset.lz || img.dataset.deferredSrc || '';
+        const datasetSource =
+          img.dataset.src || img.dataset.lz || img.dataset.deferredSrc || '';
+        if (datasetSource && !datasetSource.startsWith('data:')) {
+          return datasetSource;
+        }
       }
       return '';
     };
@@ -210,178 +222,6 @@
       const headings = Array.from(document.querySelectorAll('h2, h3, [role="heading"]'));
       const match = headings.find((node) => cleanText(node.textContent).toLowerCase().includes(lower));
       return match ? match.closest('div') || match.parentElement : null;
-    };
-
-    const tryScrollElementIntoView = (element, delay = 0) => {
-      if (!element) {
-        return;
-      }
-      setTimeout(() => {
-        if (!document.contains(element)) {
-          return;
-        }
-        try {
-          element.scrollIntoView({ block: 'center', inline: 'center', behavior: 'auto' });
-        } catch {
-          const rect = element.getBoundingClientRect();
-          const targetTop = Math.max(rect.top + window.scrollY - window.innerHeight / 2, 0);
-          window.scrollTo({ top: targetTop, behavior: 'auto' });
-        }
-      }, delay);
-    };
-
-    const driveSiteThumbnailsIntoView = () => {
-      const cards = Array.from(
-        document.querySelectorAll('.g, .SoaBEf, .kvH3mc, .hlcw0c, .Ww4FFb')
-      );
-      cards.forEach((card, index) => {
-        const thumb = card.querySelector(
-          '.LnCrMe img, .szUakf img, img.VeBrne, img.XNo5Ab, img[src*="encrypted-tbn"]'
-        );
-        if (!thumb) {
-          return;
-        }
-        if (thumb.complete && thumb.naturalWidth) {
-          return;
-        }
-        const delay = Math.min(index * THUMB_SCROLL_DELAY, 4000);
-        tryScrollElementIntoView(card, delay);
-      });
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
-    };
-
-    const hydrateThumbFromInlineMap = (img) => {
-      const googleObj = window.google || window['google'];
-      const ldi = googleObj && googleObj.ldi;
-      if (!ldi) {
-        return false;
-      }
-      const key = img.id || img.getAttribute('data-iid');
-      if (!key) {
-        return false;
-      }
-      const mappedSrc = ldi[key];
-      if (!mappedSrc) {
-        return false;
-      }
-      if (!img.src || img.src.startsWith('data:') || img.dataset.nooboxThumbStatus !== 'loaded') {
-        img.src = mappedSrc;
-        logProgress('google:thumb_inline_map', `hydrated ${key}`);
-      }
-      return true;
-    };
-
-    const hydrateThumbFromDataSrc = (img) => {
-      const dataSrc = img.getAttribute('data-src');
-      if (!dataSrc) {
-        return false;
-      }
-      if (!img.src || img.src.startsWith('data:')) {
-        img.src = dataSrc;
-        logProgress('google:thumb_data_src', `applied data-src for ${img.getAttribute('data-iid') || img.id || 'unknown'}`);
-        return true;
-      }
-      return false;
-    };
-
-    const bringThumbnailsIntoView = (section) => {
-      if (!section) {
-        return;
-      }
-      const images = Array.from(section.querySelectorAll('img'));
-      let scheduledCount = 0;
-      let loadedCount = 0;
-      images.forEach((img, index) => {
-        if (!img) {
-          return;
-        }
-        if (!img.complete || !img.naturalWidth) {
-          hydrateThumbFromInlineMap(img) || hydrateThumbFromDataSrc(img);
-        }
-        if (img.dataset.nooboxThumbStatus === 'loaded') {
-          loadedCount++;
-          return;
-        }
-        if (img.complete && img.naturalWidth) {
-          img.dataset.nooboxThumbStatus = 'loaded';
-          loadedCount++;
-          return;
-        }
-        if (img.dataset.nooboxThumbStatus === 'scheduled') {
-          return;
-        }
-        img.dataset.nooboxThumbStatus = 'scheduled';
-        const delay = Math.min(index * THUMB_SCROLL_DELAY, 3000);
-        scheduledCount++;
-        tryScrollElementIntoView(img, delay);
-        img.addEventListener(
-          'load',
-          () => {
-            img.dataset.nooboxThumbStatus = 'loaded';
-            logProgress('google:thumb_loaded', `loaded ${img.currentSrc || img.src || 'unknown'}`);
-          },
-          { once: true }
-        );
-      });
-      if (scheduledCount || loadedCount) {
-        logProgress(
-          'google:thumb_scroll',
-          `scheduled=${scheduledCount} loaded=${loadedCount} total=${images.length}`
-        );
-      }
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
-    };
-
-    const startThumbnailPolling = (section) => {
-      if (!section || thumbPollers.has(section)) {
-        return;
-      }
-      const state = {
-        start: Date.now(),
-        timer: null,
-        stopped: false
-      };
-
-      const stop = (reason) => {
-        if (state.stopped) {
-          return;
-        }
-        state.stopped = true;
-        if (state.timer) {
-          clearInterval(state.timer);
-          state.timer = null;
-        }
-        thumbPollers.delete(section);
-        logProgress('google:thumb_poll_stop', reason || 'stopped');
-      };
-
-      const tick = () => {
-        if (state.stopped) {
-          return;
-        }
-        const elapsed = Date.now() - state.start;
-        bringThumbnailsIntoView(section);
-        driveSiteThumbnailsIntoView();
-        postSnapshot(true);
-        const pending = Array.from(section.querySelectorAll('img')).some(
-          (img) => !img.complete || !img.naturalWidth
-        );
-        logProgress(
-          'google:thumb_poll_tick',
-          `elapsed=${elapsed} pending=${pending ? 'yes' : 'no'}`
-        );
-        if (!pending) {
-          stop('all_thumbs_loaded');
-          return;
-        }
-        if (elapsed >= THUMB_POLL_TIMEOUT_MS) {
-          stop('timeout');
-        }
-      };
-
-      tick();
-      state.timer = setInterval(tick, THUMB_POLL_INTERVAL_MS);
-      thumbPollers.set(section, state);
     };
 
     const parseDimsNearby = (root) => {
@@ -506,13 +346,11 @@
     };
 
     const setupDeferredUpdates = () => {
-      const ensureSectionThenObserve = () => {
-        const section = findSectionByHeading('Visual matches');
-        if (!section) {
+      const startSiteObservers = () => {
+        const container = document.querySelector('#search, #rso, body');
+        if (!container) {
           return false;
         }
-        const shouldRestoreScroll = document.visibilityState !== 'visible';
-        const originalScrollY = shouldRestoreScroll ? window.scrollY : null;
         let scheduled = false;
         const schedule = () => {
           if (scheduled) {
@@ -524,16 +362,55 @@
             postSnapshot(true);
           }, UPDATE_DEBOUNCE_MS);
         };
-        bringThumbnailsIntoView(section);
-        driveSiteThumbnailsIntoView();
-        startThumbnailPolling(section);
+        const handleMutations = (mutations) => {
+          if (
+            mutations.some(
+              (m) =>
+                m.type === 'attributes' ||
+                m.addedNodes.length ||
+                m.removedNodes.length
+            )
+          ) {
+            schedule();
+          }
+        };
+        const observer = new MutationObserver(handleMutations);
+        observer.observe(container, {
+          subtree: true,
+          childList: true,
+          attributes: true,
+          attributeFilter: ['src', 'srcset']
+        });
+        Array.from(container.querySelectorAll('img')).forEach((img) => {
+          if (!img.complete || !img.naturalWidth) {
+            img.addEventListener('load', schedule, { passive: true, once: true });
+          }
+        });
+        setTimeout(() => observer.disconnect(), MAX_THUMB_WAIT);
+        EXTRA_REFRESHES.forEach((delay) => setTimeout(schedule, delay));
+        return true;
+      };
+
+      const startVisualObservers = () => {
+        const section = findSectionByHeading('Visual matches');
+        if (!section) {
+          return false;
+        }
+        let scheduled = false;
+        const schedule = () => {
+          if (scheduled) {
+            return;
+          }
+          scheduled = true;
+          setTimeout(() => {
+            scheduled = false;
+            postSnapshot(true);
+          }, UPDATE_DEBOUNCE_MS);
+        };
         const observer = new MutationObserver((mutations) => {
           if (mutations.some((m) => m.type === 'attributes' || m.addedNodes.length)) {
             schedule();
           }
-          bringThumbnailsIntoView(section);
-          driveSiteThumbnailsIntoView();
-          startThumbnailPolling(section);
         });
         observer.observe(section, {
           subtree: true,
@@ -543,31 +420,26 @@
         });
         Array.from(section.querySelectorAll('img')).forEach((img) => {
           if (!img.complete || !img.naturalWidth) {
-            img.addEventListener('load', schedule, { passive: true });
+            img.addEventListener('load', schedule, { passive: true, once: true });
           }
         });
-        EXTRA_REFRESHES.forEach((delay) => {
-          setTimeout(() => {
-            bringThumbnailsIntoView(section);
-            driveSiteThumbnailsIntoView();
-            postSnapshot(true);
-          }, delay);
-        });
-        setTimeout(() => {
-          observer.disconnect();
-          if (shouldRestoreScroll && typeof originalScrollY === 'number') {
-            window.scrollTo({ top: originalScrollY, behavior: 'auto' });
-          }
-        }, MAX_THUMB_WAIT);
+        EXTRA_REFRESHES.forEach((delay) => setTimeout(schedule, delay));
+        setTimeout(() => observer.disconnect(), MAX_THUMB_WAIT);
         return true;
       };
 
-      if (ensureSectionThenObserve()) {
+      const ensureObservers = () => {
+        const visualAttached = startVisualObservers();
+        const siteAttached = startSiteObservers();
+        return visualAttached || siteAttached;
+      };
+
+      if (ensureObservers()) {
         return;
       }
 
       const fallback = new MutationObserver(() => {
-        if (ensureSectionThenObserve()) {
+        if (ensureObservers()) {
           fallback.disconnect();
         }
       });

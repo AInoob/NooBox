@@ -100,3 +100,5 @@ about_contribution_zhtw2013_description: zh-TW translation provider
 ls_1: Screenshot search failed
 ls_2: Cannot perform screenshot search on this tab
 ls_4: Reload this page to load NooBox components, if fail again, this page is not supported
+focus_google_notification_title: Focus Google Search
+focus_google_notification_message: NooBox will briefly focus the Google results tab to load thumbnails.

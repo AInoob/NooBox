@@ -21,10 +21,10 @@ import { fetchImageBlob } from '../utils/fetchImageBlob';
 import { getI18nMessage } from '../utils/getI18nMessage';
 import { openSearchResultTab } from '../utils/openSearchResultTab';
 import { getGlobalScope, isManifestV3 } from '../utils/runtime';
+import { sendMessageToFrontend } from '../utils/sendMessageToFrontend';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
-import { sendMessageToFrontend } from '../utils/sendMessageToFrontend';
-import { EngineTabHooks, EngineTabManager } from './engineTabs';
+import { EngineTabManager, IEngineTabHooks } from './engineTabs';
 
 interface IContentScriptResultItemPayload {
   title?: string;
@@ -87,7 +87,8 @@ export class Image {
     this.migrateHistory().catch(console.error);
     this.engineTabs = new EngineTabManager({
       handleEngineLinkUpdate: this.handleEngineLinkUpdate,
-      handleEngineError: this.handleEngineBootstrapError
+      handleEngineError: this.handleEngineBootstrapError,
+      handleFocusPrompt: this.handleFocusPromptChange
     });
   }
 
@@ -440,6 +441,16 @@ export class Image {
     }
   }
 
+  public async getFocusPromptState(cursor: number) {
+    const record = await imageSearchDao.get(cursor);
+    return {
+      visible: !!record?.result?.pendingFocus,
+      message:
+        getI18nMessage('focus_google_notification_message') ||
+        'NooBox will briefly focus Google to load thumbnails.'
+    };
+  }
+
   public async screenshotSearch(
     _info: chrome.contextMenus.OnClickData,
     tab: chrome.tabs.Tab
@@ -620,7 +631,7 @@ export class Image {
     return rawItems.map((item, index) => {
       const width = item.imageInfo?.width ?? item.width ?? -1;
       const height = item.imageInfo?.height ?? item.height ?? -1;
-      return {
+      const normalized: ISingleSearchResultItem = {
         title: item.title || 'Possible Match',
         thumbUrl: item.thumbUrl || item.imageUrl || '',
         imageUrl: item.imageUrl || item.thumbUrl || '',
@@ -632,7 +643,8 @@ export class Image {
         searchEngine: engine,
         description: item.description || '',
         weight: baseWeight - index + Math.random()
-      } as ISingleSearchResultItem;
+      };
+      return normalized;
     });
   }
 
@@ -640,7 +652,7 @@ export class Image {
     return `${item.sourceUrl || ''}|${item.imageUrl || ''}`;
   }
 
-  private handleEngineLinkUpdate: EngineTabHooks['handleEngineLinkUpdate'] = async (
+  private handleEngineLinkUpdate: IEngineTabHooks['handleEngineLinkUpdate'] = async (
     cursor,
     engine,
     url
@@ -658,7 +670,7 @@ export class Image {
     });
   };
 
-  private handleEngineBootstrapError: EngineTabHooks['handleEngineError'] = async (
+  private handleEngineBootstrapError: IEngineTabHooks['handleEngineError'] = async (
     cursor,
     engine,
     error
@@ -673,6 +685,26 @@ export class Image {
         phase: 'bootstrap'
       }
     }).catch(() => undefined);
+  };
+
+  private handleFocusPromptChange: IEngineTabHooks['handleFocusPrompt'] = async (
+    cursor,
+    engine,
+    pending
+  ) => {
+    await this.mutateSearchResult(cursor, (result) => {
+      const map = { ...(result.pendingFocus || {}) };
+      if (pending) {
+        map[engine] = true;
+      } else {
+        delete map[engine];
+      }
+      if (Object.keys(map).length) {
+        result.pendingFocus = map;
+      } else {
+        delete result.pendingFocus;
+      }
+    });
   };
 
   private createMenu(

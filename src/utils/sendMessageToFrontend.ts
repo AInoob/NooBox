@@ -1,5 +1,5 @@
 export interface ISendMessageToFrontendRequest {
-  job: 'image_result_update';
+  job: 'image_result_update' | 'google_focus_prompt';
   value?: any;
 }
 

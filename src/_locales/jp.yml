@@ -94,3 +94,5 @@ about_contribution_zhtw2013_description: 中国の伝統的な貢献者
 Ls_1: スクリーンショットの検索に失敗しました。
 Ls_2: 現在のページでスクリーンショット検索を使用できません
 Ls_4: このページをリフレッシュして2番目のボックスコンポーネントを読み込みます。まだ動作しない場合、現在のページはイメージの抽出をサポートしていません。
+focus_google_notification_title: Google検索結果にフォーカス
+focus_google_notification_message: サムネイルを読み込むためにGoogleタブを一時的に前面にします。

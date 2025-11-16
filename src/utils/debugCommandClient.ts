@@ -1,5 +1,6 @@
 import { get } from './db';
 import { isDebugEnabled, logDebug } from './debugReporter';
+import { getI18nMessage } from './getI18nMessage';
 import { getGlobalScope } from './runtime';
 import { sendMessageToBackground } from './sendMessageToBackground';
 
@@ -228,6 +229,51 @@ const handleEngineEval = async (command: ICommand) => {
   }
 };
 
+const handleNotify = async (command: ICommand) => {
+  const title =
+    command.payload?.title ||
+    getI18nMessage('focus_google_notification_title') ||
+    'NooBox Notification';
+  const message =
+    command.payload?.message ||
+    getI18nMessage('focus_google_notification_message') ||
+    'NooBox debug notification.';
+  try {
+    await new Promise<void>((resolve, reject) => {
+      chrome.notifications.create(
+        {
+          type: 'basic',
+          iconUrl: chrome.runtime.getURL('images/icon_128.png'),
+          title,
+          message,
+          priority: 0
+        },
+        () => {
+          const err = chrome.runtime.lastError;
+          if (err) {
+            reject(new Error(err.message));
+            return;
+          }
+          resolve();
+        }
+      );
+    });
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'ok',
+      message: 'Notification displayed'
+    });
+  } catch (error) {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+};
+
 export const startDebugCommandPolling = () => {
   let timer: ReturnType<typeof setInterval> | null = null;
   let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
@@ -258,6 +304,9 @@ export const startDebugCommandPolling = () => {
         break;
       case 'engineEval':
         await handleEngineEval(command);
+        break;
+      case 'notify':
+        await handleNotify(command);
         break;
       default:
         await postResult({

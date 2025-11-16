@@ -98,3 +98,5 @@ about_contribution_zhtw2013_description: 繁体中文贡献者
 ls_1: 截图搜索失败，
 ls_2: 无法在当前页面使用截图搜索
 ls_4: 刷新这个页面以加载二箱组件，如果还是不行就说明当前页面不支持提取图片
+focus_google_notification_title: 聚焦 Google 搜索结果
+focus_google_notification_message: 二箱会短暂切换到 Google 标签页以加载缩略图。
