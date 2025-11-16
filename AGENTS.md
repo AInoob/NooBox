@@ -39,8 +39,30 @@ Use this checklist whenever an image search engine integration regresses. The fl
 
 7. **Iterate Until Parsed Output Looks Good**
    - Use `/results` + stored JSON to verify keyword/result counts.
+   - When debugging Google/Bing, you can trigger the Chrome debugger auto-focus flows (enabled in debug builds). Watch for the pending-focus pill in `searchResult.html` before the tab is focused.
    - If parsing still fails, loop back to MCP to reconfirm selectors/state and adjust the adapter again.
+   - For engines that block inline script injection (e.g., Bing), use the debug-server `engineEval` command (`{"type":"engineEval","payload":{"engine":"bing","cursor":<cursor>,"code":"...expression..."}}`) to run CDP-powered evaluations. These logs show up under `debug-server/logs/results/*-parsed.json` so you can confirm selectors like `.pigc .pritext` emit the expected dimensions.
+   - Useful snippet to capture Bing counts during testing:
+     ```js
+     (() => ({
+       images: document.querySelectorAll('a.richImgLnk').length,
+       pages: document.querySelectorAll('.insights.rr .pginlv ul li .pigc .richImgLnk').length
+     }))()
+     ```
 
 8. **Finalize**
    - Once satisfied, run a production build (`npm run build:v3` / `build:v2`) to ensure debug-only code is not bundled.
    - Document any new selectors/state fields the engine now depends on.
+
+# Testing Knowledge
+
+- Always run exploratory work in debug builds so the `chrome.debugger` focus helpers are available. Watch the pending-focus pill in `searchResult.html`; it must appear *before* the backend focuses Google/Bing and disappear once control returns.
+- Bing (and other CSP-heavy engines) cannot accept inline injections, so rely on the debug server’s `engineEval` command:
+  ```
+  curl -X POST -H 'Content-Type: application/json' \
+    -d '{"type":"engineEval","payload":{"engine":"bing","cursor":<cursor>,"code":"(() => ({images: document.querySelectorAll(\"a.richImgLnk\").length, pages: document.querySelectorAll(\".insights.rr .pginlv ul li .pigc .richImgLnk\").length}))()"}}' \
+    http://localhost:3030/command
+  ```
+  The response shows up under `debug-server/logs/results/*-parsed.json`, letting you confirm selectors like `.pigc`, `.pritext`, and `.richImgLnk` before you touch the adapter.
+- When Bing/Google runs stall, focus the engine tab via the debugger (triggered automatically by `pendingFocus`) and scroll to the bottom to hydrate thumbnails, then use `/results` to confirm `pages > 0` and that metadata (dimensions, site text) matches DOM snippets such as `.pirc .pritext`.
+- For thorough repros, kick off searches with known assets (e.g., `https://ainoob.com/api/getImage/4b2fc4bd-7782-4938-bec8-63b68a348a70`) and monitor `debug-server/logs/html/*.html` for the captured DOM.

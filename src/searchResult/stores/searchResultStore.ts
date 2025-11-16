@@ -39,6 +39,7 @@ export interface ISearchResult {
   searchResult?: ISingleSearchResultItem[];
   engineStatus?: { [key in EngineType]?: EngineStatusType };
   pendingFocus?: { [key in EngineType]?: boolean };
+  engineMeta?: { [key in EngineType]?: any };
 }
 
 const DEFAULT_MODAL_IMAGE_WIDTH = 512;

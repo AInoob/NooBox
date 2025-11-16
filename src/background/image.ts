@@ -57,6 +57,7 @@ interface IEngineResultPayload {
   override?: boolean;
   aiOverview?: any;
   aboutImage?: any;
+  meta?: any;
   errors?: IEngineSectionError[];
 }
 
@@ -234,6 +235,7 @@ export class Image {
       engineStatus: {},
       searchImageInfo: [],
       searchResult: [],
+      engineMeta: {},
       url: imageType === 'url' ? base64orUrl : ''
     };
     const enabledEngines = await this.getEnabledEngines();
@@ -339,6 +341,10 @@ export class Image {
           keyword: payload.keyword,
           keywordLink: payload.keywordLink || resolvedUrl || ''
         });
+      }
+      if (typeof payload.meta !== 'undefined') {
+        const metaMap = result.engineMeta || (result.engineMeta = {});
+        metaMap[engine] = payload.meta;
       }
       if (normalizedResults.length) {
         this.appendResults(result, normalizedResults);
