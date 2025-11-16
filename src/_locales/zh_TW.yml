@@ -104,3 +104,4 @@ focus_google_notification_title: 聚焦 Google 搜尋結果
 focus_google_notification_message: 二箱會短暫切換到 Google 分頁以載入縮圖。
 focus_bing_notification_title: 聚焦 Bing 搜尋結果
 focus_bing_notification_message: 二箱會短暫切換到 Bing 分頁以載入內容。
+focus_saucenao_notification_message: 二箱會切換到 SauceNAO 分頁，協助你完成 Cloudflare 驗證。

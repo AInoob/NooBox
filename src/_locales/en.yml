@@ -104,3 +104,4 @@ focus_google_notification_title: Focus Google Search
 focus_google_notification_message: NooBox will briefly focus the Google results tab to load thumbnails.
 focus_bing_notification_title: Focus Bing Search
 focus_bing_notification_message: NooBox will briefly focus the Bing results tab to load content.
+focus_saucenao_notification_message: NooBox will focus the SauceNAO tab so you can finish the Cloudflare check.

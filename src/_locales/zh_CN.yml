@@ -102,3 +102,4 @@ focus_google_notification_title: 聚焦 Google 搜索结果
 focus_google_notification_message: 二箱会短暂切换到 Google 标签页以加载缩略图。
 focus_bing_notification_title: 聚焦 Bing 搜索结果
 focus_bing_notification_message: 二箱会短暂切换到 Bing 标签页以加载内容。
+focus_saucenao_notification_message: 二箱会切换到 SauceNAO 标签页，协助你完成 Cloudflare 验证。

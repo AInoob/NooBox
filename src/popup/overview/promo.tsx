@@ -74,7 +74,7 @@ export class Promo extends React.Component {
             <span>{getI18nMessage('imageScope_mobile')}</span>
           </a>
         </div>
-        {browserType == BrowserType.CHROME && (
+        {browserType === BrowserType.CHROME && (
           <div className='promo'>
             <a
               target='_blank'

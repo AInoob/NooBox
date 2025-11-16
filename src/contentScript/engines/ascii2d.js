@@ -4,6 +4,20 @@
   }
 
   window.__nooboxEngineBootstrap('ascii2d', function(ctx) {
+    const parseDimensions = (text) => {
+      if (!text) {
+        return null;
+      }
+      const match = text.match(/(\d{2,5})\s*[×x]\s*(\d{2,5})/i);
+      if (!match) {
+        return null;
+      }
+      return {
+        width: Number(match[1]),
+        height: Number(match[2])
+      };
+    };
+
     const collectResults = () => {
       const list = document.getElementsByClassName('item-box');
       const results = [];
@@ -14,7 +28,8 @@
           thumbUrl: '',
           imageUrl: '',
           sourceUrl: '',
-          description: ''
+          description: '',
+          imageInfo: {}
         };
         const imageBox = item.getElementsByClassName('image-box')[0];
         if (imageBox) {
@@ -34,6 +49,14 @@
           }
           if (anchors[1]) {
             entry.description = `Author: ${anchors[1].textContent || ''}`;
+          }
+          const meta = infoBox.querySelector('small.text-muted, small');
+          const dims = parseDimensions(meta?.textContent || '');
+          if (dims) {
+            entry.imageInfo = {
+              width: dims.width,
+              height: dims.height
+            };
           }
         }
         results.push(entry);

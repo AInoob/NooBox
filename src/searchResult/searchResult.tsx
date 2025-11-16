@@ -91,20 +91,30 @@ export class SearchResult extends React.Component {
   }
 }
 
-const FOCUS_FALLBACKS: Record<string, string> = {
-  google:
-    'NooBox will briefly focus the Google results tab to load thumbnails.',
-  bing: 'NooBox will briefly focus the Bing results tab to load content.'
+const FOCUS_PROMPTS: Partial<Record<
+  EngineType,
+  { key: string; fallback: string }
+>> = {
+  google: {
+    key: 'focus_google_notification_message',
+    fallback:
+      'NooBox will briefly focus the Google results tab to load thumbnails.'
+  },
+  bing: {
+    key: 'focus_bing_notification_message',
+    fallback: 'NooBox will briefly focus the Bing results tab to load content.'
+  },
+  saucenao: {
+    key: 'focus_saucenao_notification_message',
+    fallback:
+      'NooBox will focus the SauceNAO tab so you can finish the Cloudflare check.'
+  }
 };
 
 const resolveFocusMessage = (engine?: EngineType) => {
-  if (engine === 'bing') {
-    return (
-      getI18nMessage('focus_bing_notification_message') || FOCUS_FALLBACKS.bing
-    );
+  const entry = (engine && FOCUS_PROMPTS[engine]) || FOCUS_PROMPTS.google;
+  if (!entry) {
+    return '';
   }
-  return (
-    getI18nMessage('focus_google_notification_message') ||
-    FOCUS_FALLBACKS.google
-  );
+  return getI18nMessage(entry.key) || entry.fallback;
 };

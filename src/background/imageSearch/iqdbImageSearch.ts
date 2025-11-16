@@ -12,8 +12,18 @@ export class IqdbImageSearch extends BaseImageSearch {
     result: ISearchResult,
     updateResultCallback: () => void
   ) {
+    const formData = new FormData();
+    formData.append('MAX_FILE_SIZE', '8388608');
+    ['1', '2', '3', '4', '5', '6', '11', '13'].forEach((serviceId) => {
+      formData.append('service[]', serviceId);
+    });
+    formData.append('url', imageUrl);
+    formData.append('file', new Blob([]), '');
+
     const { body, responseUrl } = await ajax({
-      url: 'https://iqdb.org/?url=' + imageUrl,
+      url: 'https://iqdb.org/',
+      method: 'POST',
+      body: formData,
       debugTag: 'iqdb:search',
       debugBody: true
     });

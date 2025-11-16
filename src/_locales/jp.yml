@@ -98,3 +98,4 @@ focus_google_notification_title: Google検索結果にフォーカス
 focus_google_notification_message: サムネイルを読み込むためにGoogleタブを一時的に前面にします。
 focus_bing_notification_title: Bing検索結果にフォーカス
 focus_bing_notification_message: コンテンツを読み込むためにBingタブを一時的に前面にします。
+focus_saucenao_notification_message: Cloudflare認証を完了できるようにSauceNAOタブを前面に表示します。

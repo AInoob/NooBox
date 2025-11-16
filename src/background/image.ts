@@ -396,6 +396,9 @@ export class Image {
     if (!engine || cursor == null) {
       return;
     }
+    if (engine === 'saucenao' && payload.stage === 'saucenao:cloudflare') {
+      await this.focusEngineForManualStep(cursor, engine);
+    }
     await logDebug({
       event: 'engine:progress',
       engine,
@@ -658,6 +661,23 @@ export class Image {
 
   private getResultSignature(item: ISingleSearchResultItem) {
     return `${item.sourceUrl || ''}|${item.imageUrl || ''}`;
+  }
+
+  private async focusEngineForManualStep(cursor: number, engine: EngineType) {
+    try {
+      await this.handleFocusPromptChange!(cursor, engine, true);
+    } catch {
+      // ignore dispatch errors
+    }
+    try {
+      await this.engineTabs.focusEngineTab(cursor, engine);
+    } finally {
+      try {
+        await this.handleFocusPromptChange!(cursor, engine, false);
+      } catch {
+        // ignore cleanup errors
+      }
+    }
   }
 
   private handleEngineLinkUpdate: IEngineTabHooks['handleEngineLinkUpdate'] = async (
