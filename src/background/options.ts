@@ -100,7 +100,7 @@ export class Options {
       }
       this.options[key] = (await get(key)) as never;
     }
-    if (typeof DEBUG_BUILD !== 'undefined' && DEBUG_BUILD) {
+    if (typeof __DEBUG__ !== 'undefined' && __DEBUG__) {
       this.options.debugMode = true;
       await set('debugMode', true);
     }

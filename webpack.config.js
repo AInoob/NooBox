@@ -17,7 +17,9 @@ const transpileModulePaths = transpileModules.map((moduleName) =>
 module.exports = (env = {}) => {
     const manifestVersion = env.mv === 'v3' ? 'v3' : 'v2';
     const isProd = !!env.production;
-    const isDebugBuild = !!env.debug;
+    const extModeInput = process.env.EXT_MODE || (env.debug ? 'debug' : 'prod');
+    const extMode = extModeInput === 'debug' ? 'debug' : 'prod';
+    const isDebugBuild = extMode === 'debug';
     const outputDir = path.resolve(__dirname, `dist-${manifestVersion}`);
 
     const copyPatterns = [
@@ -26,10 +28,6 @@ module.exports = (env = {}) => {
         { from: './src/images', to: 'images' },
         { from: './src/popup/popup.html' },
         { from: './src/searchResult/searchResult.html' },
-        {
-            from: `./src/manifest.${manifestVersion}.json`,
-            to: 'manifest.json'
-        },
         {
             from: './src/_locales',
             to: '_locales',
@@ -59,14 +57,20 @@ module.exports = (env = {}) => {
         }
     ];
 
+    const entry = {
+        background: './src/background/index.ts',
+        popup: './src/popup/popupRoot.tsx',
+        searchResult: './src/searchResult/searchResultRoot.tsx'
+    };
+
+    if (isDebugBuild) {
+        entry['background.debug'] = './src/background/index.debug.ts';
+    }
+
     return {
         mode: isProd ? 'production' : 'development',
         devtool: isProd ? false : 'source-map',
-        entry: {
-            background: './src/background/background.ts',
-            popup: './src/popup/popupRoot.tsx',
-            searchResult: './src/searchResult/searchResultRoot.tsx'
-        },
+        entry,
         output: {
             filename: 'js/[name].js',
             path: outputDir,
@@ -116,8 +120,9 @@ module.exports = (env = {}) => {
         plugins: [
             new webpack.DefinePlugin({
                 IS_MANIFEST_V3: JSON.stringify(manifestVersion === 'v3'),
-                DEBUG_BUILD: JSON.stringify(isDebugBuild),
-                'process.env.MANIFEST_VERSION': JSON.stringify(manifestVersion)
+                __DEBUG__: JSON.stringify(isDebugBuild),
+                'process.env.MANIFEST_VERSION': JSON.stringify(manifestVersion),
+                'process.env.EXT_MODE': JSON.stringify(extMode)
             }),
             new CopyWebpackPlugin(copyPatterns)
         ],

@@ -1,8 +1,8 @@
-import { get } from './db';
-import { isDebugEnabled, logDebug } from './debugReporter';
-import { getI18nMessage } from './getI18nMessage';
-import { getGlobalScope } from './runtime';
-import { sendMessageToBackground } from './sendMessageToBackground';
+import { get } from '../utils/db';
+import { isDebugEnabled, logDebug } from '../utils/debugReporter';
+import { getI18nMessage } from '../utils/getI18nMessage';
+import { getGlobalScope } from '../utils/runtime';
+import { sendMessageToBackground } from '../utils/sendMessageToBackground';
 
 interface ICommand {
   id: string;

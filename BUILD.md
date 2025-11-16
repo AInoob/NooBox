@@ -7,15 +7,27 @@ All build variants are produced through webpack and selected with the `--env.mv`
 
 | Command | Description |
 | --- | --- |
-| `npm run start:v2` | Watch mode for MV2 (outputs to `dist-v2`) |
-| `npm run start:v3` | Watch mode for MV3 (outputs to `dist-v3`) |
+| `npm run start:v2` | Watch mode for MV2 (debug flavor, outputs to `dist-v2`) |
+| `npm run start:v3` | Watch mode for MV3 (debug flavor, outputs to `dist-v3`) |
 | `npm run build:v2` | Production build for MV2 |
 | `npm run build:v3` | Production build for MV3 |
+| `npm run build:v2:debug` | Debug build for MV2 (keeps debugger permission + tooling) |
+| `npm run build:v3:debug` | Debug build for MV3 |
 | `npm run build:all` | Builds both versions in sequence |
 | `npm run clean` | Removes `dist`, `dist-v2`, `dist-v3`, and zip artifacts |
 | `npm run release` | Clean build of both manifests + create `noobox-*.zip` + `source_code.zip` |
 
 Each build folder contains the final `manifest.json` for that manifest version together with all static assets (`thirdParty`, `contentScript`, `_locales`, etc.).
+
+## Build Modes
+
+All commands are driven by a single environment flag: `EXT_MODE=debug` (default for watch/debug builds) or `EXT_MODE=prod` (default for release builds).  
+Debug builds keep the debugger permission, wide host permissions, and ship the debug-only background worker (`js/background.debug.js`). Release builds never include debug-only capabilities and run `tools/verify-prod.mjs` to assert that no debugger permissions or devtools assets slip through.
+
+## Manifest Generation
+
+Manifests now live under `manifest/<mv>/base.json` with mode-specific overrides at `manifest/<mv>/overrides/{debug,prod}.json5`.  
+`tools/manifest.mjs` merges the base + override for the selected manifest version/mode and writes `dist-*/manifest.json` after webpack finishes bundling. This keeps the manifest fields (permissions, host scopes, background worker entry) in sync with the chosen build flavor.
 
 ## Release Outputs
 

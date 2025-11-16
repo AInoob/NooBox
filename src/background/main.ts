@@ -18,14 +18,6 @@ const options = new Options(image, videoControl);
 getGlobalScope().options = options;
 getGlobalScope().nooboxImage = image;
 
-if (typeof DEBUG_BUILD !== 'undefined' && DEBUG_BUILD) {
-  import('../utils/debugCommandClient')
-    .then(({ startDebugCommandPolling }) => startDebugCommandPolling())
-    .catch((error) =>
-      console.error('Failed to start debug command polling', error)
-    );
-}
-
 chrome.commands.onCommand.addListener(async (command: string) => {
   switch (command) {
     case 'screenshotSearch':

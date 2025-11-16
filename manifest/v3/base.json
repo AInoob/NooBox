@@ -34,11 +34,19 @@
     "activeTab",
     "notifications",
     "scripting",
-    "debugger",
     "tabs"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "https://www.google.com/*",
+    "https://lens.google.com/*",
+    "https://yandex.com/*",
+    "https://www.bing.com/*",
+    "https://saucenao.com/*",
+    "https://tineye.com/*",
+    "https://ascii2d.net/*",
+    "https://iqdb.org/*",
+    "https://graph.baidu.com/*",
+    "https://www.baidu.com/*"
   ],
   "commands": {
     "screenshotSearch": {

@@ -1,0 +1,13 @@
+{
+  name: "__MSG_appName__ (Debug)",
+  version_name: "1.1.12+debug",
+  background: {
+    scripts: [
+      "thirdParty/jquery.min.js",
+      "thirdParty/fileSavor.js",
+      "thirdParty/jszip.min.js",
+      "js/background.debug.js"
+    ]
+  },
+  permissions: ["debugger"]
+}

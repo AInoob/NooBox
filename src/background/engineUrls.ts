@@ -1,5 +1,6 @@
 import { ajax } from '../utils/ajax';
 import { EngineType } from '../utils/constants';
+import { logDebug } from '../utils/debugReporter';
 
 const GOOGLE_SEARCH_URL = 'https://www.google.com/searchbyimage';
 const YANDEX_SEARCH_URL = 'https://yandex.com/images/search';
@@ -55,22 +56,113 @@ const buildIqdbUrl = (imageUrl: string) => {
   return `${IQDB_SEARCH_URL}?url=${encode(imageUrl)}`;
 };
 
-const buildBaiduUrl = async (imageUrl: string) => {
-  const formData = new FormData();
-  formData.append('image', imageUrl);
-  const { body } = await ajax({
+const getFilenameFromUrl = (url: string, fallbackExt = 'jpg') => {
+  try {
+    const parsed = new URL(url);
+    const pathname = parsed.pathname || '';
+    const name = pathname.split('/').pop() || '';
+    if (name && name.includes('.')) {
+      return name;
+    }
+  } catch {
+    // ignore parse failure
+  }
+  return `noobox.${fallbackExt}`;
+};
+
+const guessExtensionFromType = (type?: string | null) => {
+  if (!type) {
+    return 'jpg';
+  }
+  const map: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'image/gif': 'gif'
+  };
+  return map[type.toLowerCase()] || 'jpg';
+};
+
+const fetchImageBlob = async (imageUrl: string) => {
+  try {
+    const response = await fetch(imageUrl, {
+      credentials: 'omit',
+      mode: 'cors'
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const contentType = response.headers.get('content-type') || 'image/jpeg';
+    const buffer = await response.arrayBuffer();
+    const blob = new Blob([buffer], { type: contentType });
+    const filename = getFilenameFromUrl(
+      imageUrl,
+      guessExtensionFromType(contentType)
+    );
+    return { blob, filename };
+  } catch (error) {
+    await logDebug({
+      event: 'baidu:image_download_error',
+      error: error instanceof Error ? error.message : String(error),
+      extra: {
+        imageUrl
+      }
+    }).catch(() => undefined);
+    return null;
+  }
+};
+
+const uploadToBaidu = async (formData: FormData, hint: string) => {
+  const response = await ajax({
     url: 'https://graph.baidu.com/upload',
     method: 'POST',
     body: formData,
-    debugTag: 'baidu:upload',
+    debugTag: `baidu:upload:${hint}`,
     debugBody: true
   });
-  const parsed = JSON.parse(body);
-  const redirectUrl = parsed?.data?.url;
-  if (!redirectUrl) {
-    throw new Error('Baidu search did not return redirect URL');
+  return JSON.parse(response.body);
+};
+
+const buildBaiduUrl = async (imageUrl: string) => {
+  const attempts: Array<{ data: FormData; hint: string }> = [];
+  const downloaded = await fetchImageBlob(imageUrl);
+  if (downloaded) {
+    const formData = new FormData();
+    formData.append('image', downloaded.blob, downloaded.filename);
+    attempts.push({ data: formData, hint: 'file' });
   }
-  return redirectUrl;
+  const urlForm = new FormData();
+  urlForm.append('image', imageUrl);
+  attempts.push({ data: urlForm, hint: downloaded ? 'url_fallback' : 'url' });
+
+  for (const attempt of attempts) {
+    try {
+      const parsed = await uploadToBaidu(attempt.data, attempt.hint);
+      const redirectUrl = parsed?.data?.url;
+      if (parsed?.status === 0 && redirectUrl) {
+        return redirectUrl;
+      }
+      await logDebug({
+        event: 'baidu:upload_retry',
+        extra: {
+          hint: attempt.hint,
+          status: parsed?.status,
+          message: parsed?.msg
+        }
+      }).catch(() => undefined);
+    } catch (error) {
+      await logDebug({
+        event: 'baidu:upload_error',
+        error: error instanceof Error ? error.message : String(error),
+        extra: {
+          hint: attempt.hint
+        }
+      }).catch(() => undefined);
+    }
+  }
+
+  throw new Error('Baidu search did not return redirect URL');
 };
 
 export const buildEngineUrl = async (

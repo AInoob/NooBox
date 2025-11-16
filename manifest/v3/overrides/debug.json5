@@ -1,0 +1,9 @@
+{
+  name: "__MSG_appName__ (Debug)",
+  version_name: "1.1.12+debug",
+  background: {
+    service_worker: "js/background.debug.js"
+  },
+  permissions: ["debugger"],
+  host_permissions: ["<all_urls>"]
+}
