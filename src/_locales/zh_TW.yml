@@ -102,3 +102,5 @@ ls_2: 無法在目前頁面使用擷圖搜尋
 ls_4: 重新整理這個頁面以載入二箱套件，如果還是不行就說明目前頁面不支援擷取圖片
 focus_google_notification_title: 聚焦 Google 搜尋結果
 focus_google_notification_message: 二箱會短暫切換到 Google 分頁以載入縮圖。
+focus_bing_notification_title: 聚焦 Bing 搜尋結果
+focus_bing_notification_message: 二箱會短暫切換到 Bing 分頁以載入內容。

@@ -102,3 +102,5 @@ ls_2: Cannot perform screenshot search on this tab
 ls_4: Reload this page to load NooBox components, if fail again, this page is not supported
 focus_google_notification_title: Focus Google Search
 focus_google_notification_message: NooBox will briefly focus the Google results tab to load thumbnails.
+focus_bing_notification_title: Focus Bing Search
+focus_bing_notification_message: NooBox will briefly focus the Bing results tab to load content.

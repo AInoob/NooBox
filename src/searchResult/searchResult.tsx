@@ -1,6 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import { EngineType } from '../utils/constants';
 import { getI18nMessage } from '../utils/getI18nMessage';
 import { Content } from './content/content';
 import { Header } from './header';
@@ -68,12 +69,13 @@ export class SearchResult extends React.Component {
   }
 
   public render() {
-    const focusMessage =
-      getI18nMessage('focus_google_notification_message') ||
-      'NooBox will briefly focus Google to load thumbnails.';
     const { searchResultStore } = this.injected;
-    const showFocusPrompt =
-      searchResultStore.result.pendingFocus?.google ?? false;
+    const pendingFocus = searchResultStore.result.pendingFocus || {};
+    const pendingEngine = (Object.keys(pendingFocus) as EngineType[]).find(
+      (engine) => pendingFocus[engine]
+    );
+    const focusMessage = resolveFocusMessage(pendingEngine);
+    const showFocusPrompt = !!pendingEngine;
     return (
       <PopupDiv>
         <GlobalStyle />
@@ -88,3 +90,21 @@ export class SearchResult extends React.Component {
     );
   }
 }
+
+const FOCUS_FALLBACKS: Record<string, string> = {
+  google:
+    'NooBox will briefly focus the Google results tab to load thumbnails.',
+  bing: 'NooBox will briefly focus the Bing results tab to load content.'
+};
+
+const resolveFocusMessage = (engine?: EngineType) => {
+  if (engine === 'bing') {
+    return (
+      getI18nMessage('focus_bing_notification_message') || FOCUS_FALLBACKS.bing
+    );
+  }
+  return (
+    getI18nMessage('focus_google_notification_message') ||
+    FOCUS_FALLBACKS.google
+  );
+};

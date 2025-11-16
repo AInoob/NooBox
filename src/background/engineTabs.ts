@@ -55,6 +55,11 @@ export class EngineTabManager {
   private readonly googleDebugger = new GoogleDebugger();
   private readonly pendingFocus = new Set<number>();
   private readonly focusedGoogleTabs = new Set<number>();
+  private readonly focusedBingTabs = new Set<number>();
+  private readonly debuggerEngines: Set<EngineType> = new Set<EngineType>([
+    'google',
+    'bing'
+  ]);
 
   constructor(hooks: IEngineTabHooks) {
     this.hooks = hooks;
@@ -87,7 +92,7 @@ export class EngineTabManager {
         const trackedUrl = this.appendTrackingParams(baseUrl, cursor, engine);
         await this.hooks.handleEngineLinkUpdate(cursor, engine, trackedUrl);
         const info = await this.createEngineTab(cursor, engine, trackedUrl, {
-          useDebugger: debugEnabled && engine === 'google'
+          useDebugger: debugEnabled && this.supportsDebugger(engine)
         });
         info.imageUrl = imageUrl;
         this.registerTab(info);
@@ -146,24 +151,6 @@ export class EngineTabManager {
     await this.reopenEngineTab(cursor, engine, info || null);
   }
 
-  public async executeDebugScript(
-    cursor: number,
-    engine: EngineType,
-    code: string
-  ) {
-    if (!code || !code.trim()) {
-      throw new Error('Missing script code');
-    }
-    const info = this.getEngineInfo(cursor, engine);
-    if (!info || info.closed) {
-      throw new Error('Engine tab is not available');
-    }
-    if (engine === 'google' && (await this.isDebuggerEnabledSafely())) {
-      return this.googleDebugger.evaluate(info.tabId, code);
-    }
-    return this.evaluateWithScripting(info.tabId, code);
-  }
-
   public registerTab(info: IEngineTabInfo) {
     let perCursor = this.tabsByCursor.get(info.cursor);
     if (!perCursor) {
@@ -194,9 +181,34 @@ export class EngineTabManager {
     this.tabsByCursor.delete(cursor);
   }
 
+  public async evaluateEngineTab(
+    cursor: number,
+    engine: EngineType,
+    code: string
+  ) {
+    if (!code || !code.trim()) {
+      throw new Error('Missing script code');
+    }
+    if (!this.supportsDebugger(engine)) {
+      throw new Error(`Debugger is not enabled for ${engine}`);
+    }
+    const info = this.getEngineInfo(cursor, engine);
+    if (!info || info.closed) {
+      throw new Error('Engine tab is not available');
+    }
+    if (!(await this.isDebuggerEnabledSafely())) {
+      throw new Error('Debugger mode is disabled');
+    }
+    return this.googleDebugger.evaluate(info.tabId, code);
+  }
+
   private getEngineInfo(cursor: number, engine: EngineType) {
     const perCursor = this.tabsByCursor.get(cursor);
     return perCursor ? perCursor.get(engine) || null : null;
+  }
+
+  private supportsDebugger(engine: EngineType) {
+    return this.debuggerEngines.has(engine);
   }
 
   private appendTrackingParams(
@@ -233,7 +245,7 @@ export class EngineTabManager {
       await this.hooks.handleEngineLinkUpdate(cursor, engine, trackedUrl);
       const debugEnabled = await this.isDebuggerEnabledSafely();
       const info = await this.createEngineTab(cursor, engine, trackedUrl, {
-        useDebugger: debugEnabled && engine === 'google'
+        useDebugger: debugEnabled && this.supportsDebugger(engine)
       });
       info.imageUrl = imageUrl;
       this.registerTab(info);
@@ -389,34 +401,6 @@ export class EngineTabManager {
     });
   }
 
-  private async evaluateWithScripting(tabId: number, snippet: string) {
-    const scripting = (chrome as any).scripting;
-    if (!scripting?.executeScript) {
-      throw new Error('Scripting API is not available');
-    }
-    const runnerSource = `"use strict";
-return (async () => {
-  try {
-${snippet}
-  } catch (error) {
-    return { __nooboxEvalError: error && error.message ? error.message : String(error) };
-  }
-})();
-`;
-    // tslint:disable-next-line:function-constructor
-    const runner = new Function(runnerSource);
-    const results = await scripting.executeScript({
-      target: { tabId },
-      func: runner,
-      world: 'ISOLATED'
-    });
-    const payload = results && results.length ? results[0].result : null;
-    if (payload && typeof payload === 'object' && payload.__nooboxEvalError) {
-      throw new Error(payload.__nooboxEvalError);
-    }
-    return payload ?? null;
-  }
-
   private async bounceFocusForGoogle(info: IEngineTabInfo) {
     if (
       this.pendingFocus.has(info.tabId) ||
@@ -497,6 +481,9 @@ ${snippet}
       }
     }
     if (changeInfo.status === 'complete' && !info.closed) {
+      if (info.engine === 'bing' && this.shouldAutoFocusBing(info.url || '')) {
+        this.bounceFocusForBing(info).catch(() => undefined);
+      }
       this.injectEngineScripts(info).catch((error) => {
         this.hooks
           .handleEngineError(
@@ -528,6 +515,7 @@ ${snippet}
       info.closed = true;
       void this.googleDebugger.detach(tabId);
       this.focusedGoogleTabs.delete(tabId);
+      this.focusedBingTabs.delete(tabId);
       this.pendingFocus.delete(tabId);
       void this.setPendingFocus(info.cursor, info.engine, false);
     }
@@ -542,5 +530,84 @@ ${snippet}
     } catch {
       return false;
     }
+  }
+
+  private async bounceFocusForBing(info: IEngineTabInfo) {
+    if (
+      this.pendingFocus.has(info.tabId) ||
+      this.focusedBingTabs.has(info.tabId)
+    ) {
+      return;
+    }
+    if (!(await this.isDebuggerEnabledSafely())) {
+      return;
+    }
+    this.pendingFocus.add(info.tabId);
+    await this.setPendingFocus(info.cursor, info.engine, true);
+    try {
+      await this.googleDebugger.bringToFront(info.tabId);
+      await this.waitForBingPagesSelection(info.tabId);
+      await this.wait(600);
+    } catch {
+      this.pendingFocus.delete(info.tabId);
+      await this.setPendingFocus(info.cursor, info.engine, false);
+      return;
+    }
+    const searchTabId = this.searchTabByCursor.get(info.cursor);
+    if (searchTabId != null) {
+      await this.wait(500);
+      chrome.tabs.update(searchTabId, { active: true }, () => undefined);
+    }
+    this.focusedBingTabs.add(info.tabId);
+    this.pendingFocus.delete(info.tabId);
+    await this.setPendingFocus(info.cursor, info.engine, false);
+  }
+
+  private shouldAutoFocusBing(url: string) {
+    try {
+      const parsed = new URL(url);
+      return (
+        parsed.hostname.includes('bing.com') &&
+        parsed.pathname === '/images/search'
+      );
+    } catch {
+      return false;
+    }
+  }
+
+  private waitForBingPagesSelection(tabId: number) {
+    const expression = `
+(() => new Promise((resolve) => {
+  const selector = '#detailInfo #actionbar [aria-label="Pages"]';
+  const button = document.querySelector(selector);
+  const finish = (status) => {
+    if (observer) {
+      observer.disconnect();
+    }
+    resolve(status);
+  };
+  if (!button) {
+    finish('missing');
+    return;
+  }
+  if (button.getAttribute('aria-selected') === 'true') {
+    finish('already_selected');
+    return;
+  }
+  let observer = new MutationObserver(() => {
+    if (button.getAttribute('aria-selected') === 'true') {
+      finish('selected');
+    }
+  });
+  observer.observe(button, { attributes: true, attributeFilter: ['aria-selected'] });
+  const timeout = setTimeout(() => {
+    finish('timeout');
+  }, 4000);
+  button.addEventListener('click', () => {
+    clearTimeout(timeout);
+  }, { once: true });
+}))();
+`;
+    return this.googleDebugger.evaluate(tabId, expression).catch(() => null);
   }
 }

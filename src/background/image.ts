@@ -412,7 +412,7 @@ export class Image {
     code: string
   ) {
     try {
-      const result = await this.engineTabs.executeDebugScript(
+      const result = await this.engineTabs.evaluateEngineTab(
         cursor,
         engine,
         code
@@ -443,11 +443,13 @@ export class Image {
 
   public async getFocusPromptState(cursor: number) {
     const record = await imageSearchDao.get(cursor);
+    const pendingMap = record?.result?.pendingFocus || {};
+    const pendingEngine = (Object.keys(pendingMap) as EngineType[]).find(
+      (engine) => pendingMap[engine]
+    );
     return {
-      visible: !!record?.result?.pendingFocus,
-      message:
-        getI18nMessage('focus_google_notification_message') ||
-        'NooBox will briefly focus Google to load thumbnails.'
+      visible: !!pendingEngine,
+      message: this.getFocusPromptMessage(pendingEngine)
     };
   }
 
@@ -706,6 +708,19 @@ export class Image {
       }
     });
   };
+
+  private getFocusPromptMessage(engine?: EngineType) {
+    if (engine === 'bing') {
+      return (
+        getI18nMessage('focus_bing_notification_message') ||
+        'NooBox will briefly focus the Bing results tab to load content.'
+      );
+    }
+    return (
+      getI18nMessage('focus_google_notification_message') ||
+      'NooBox will briefly focus the Google results tab to load thumbnails.'
+    );
+  }
 
   private createMenu(
     id: string,

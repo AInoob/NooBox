@@ -72,18 +72,6 @@ chrome.runtime.onMessage.addListener((request: any, sender, sendResponse) => {
           .catch(console.error);
         sendResponse(null);
         return true;
-      case 'debugEngineEval':
-        image
-          .debugEngineEval(
-            request.value.cursor,
-            request.value.engine,
-            request.value.code
-          )
-          .then((result) => sendResponse({ ok: true, result }))
-          .catch((error: Error) => {
-            sendResponse({ ok: false, error: error?.message || String(error) });
-          });
-        return true;
     }
   }
 
@@ -100,6 +88,18 @@ chrome.runtime.onMessage.addListener((request: any, sender, sendResponse) => {
     case 'engine:progress':
       image.handleEngineProgressMessage(request, sender).catch(console.error);
       sendResponse(null);
+      return true;
+    case 'debugEngineEval':
+      image
+        .debugEngineEval(
+          request.value.cursor,
+          request.value.engine,
+          request.value.code
+        )
+        .then((result) => sendResponse({ ok: true, result }))
+        .catch((error: Error) => {
+          sendResponse({ ok: false, error: error?.message || String(error) });
+        });
       return true;
   }
 
