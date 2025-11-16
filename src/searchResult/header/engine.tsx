@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
 import { EngineType, getEngineImageUrl } from '../../utils/constants';
+import { sendMessageToBackground } from '../../utils/sendMessageToBackground';
 import {
   EngineStatusType,
   SearchResultStore
@@ -89,7 +90,7 @@ export class Engine extends React.Component<IEngineProps> {
     const { engine } = this.props;
     const { searchResultStore } = this.injected;
     const { result } = searchResultStore;
-    const link = result.engineLink ? result.engineLink[engine] : '';
+    const link = (result.engineLink && result.engineLink[engine]) || '';
     let status: EngineStatusType = 'disabled';
     if (result.engineStatus) {
       if (
@@ -109,10 +110,32 @@ export class Engine extends React.Component<IEngineProps> {
         <a
           href={link}
           className={link ? 'withLink' : 'withoutLink'}
+          onClick={(event) => this.handleEngineClick(event, engine, link)}
           target='_blank'>
           <img alt='engineIcon' src={getEngineImageUrl(engine)} />
         </a>
       </EngineDiv>
     );
   }
+
+  private handleEngineClick = async (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    engine: EngineType,
+    fallbackLink: string
+  ) => {
+    event.preventDefault();
+    const { searchResultStore } = this.injected;
+    const cursor = searchResultStore.getCursor();
+    if (cursor != null && !Number.isNaN(cursor)) {
+      await sendMessageToBackground({
+        job: 'focusEngineTab',
+        value: {
+          cursor,
+          engine
+        }
+      });
+    } else if (fallbackLink) {
+      window.open(fallbackLink, '_blank');
+    }
+  };
 }

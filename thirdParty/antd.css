@@ -15205,7 +15205,7 @@ textarea.ant-input-number {
 .ant-spin.ant-spin-show-text .ant-spin-text {
   display: block;
 }
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+@media (forced-colors: none), (forced-colors: active) {
   /* IE10+ */
   .ant-spin-blur {
     background: #fff;

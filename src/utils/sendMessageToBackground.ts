@@ -7,7 +7,9 @@ export interface ISendMessageToBackgroundRequest {
     | 'videoControl'
     | 'beginImageSearch'
     | 'analytics'
-    | 'getOptions';
+    | 'getOptions'
+    | 'focusEngineTab'
+    | 'debugEngineEval';
   value?: any;
 }
 

@@ -90,6 +90,10 @@ export class SearchResultStore {
     });
   }
 
+  public getCursor() {
+    return this.cursor;
+  }
+
   private preLoadImage = async (
     data: ISingleSearchResultItem[]
   ): Promise<any[]> => {

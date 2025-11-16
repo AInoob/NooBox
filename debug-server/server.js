@@ -11,14 +11,39 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 const LOG_DIR = path.join(__dirname, 'logs');
 const LOG_FILE = path.join(LOG_DIR, 'debug.log');
+const HISTORY_DIR = path.join(LOG_DIR, 'history');
 
 let commands = [];
 let results = [];
 const heartbeats = {};
 
-if (!fs.existsSync(LOG_DIR)) {
-  fs.mkdirSync(LOG_DIR, { recursive: true });
-}
+const archivePreviousLogs = () => {
+  if (!fs.existsSync(LOG_DIR)) {
+    fs.mkdirSync(LOG_DIR, { recursive: true });
+    return;
+  }
+  fs.mkdirSync(HISTORY_DIR, { recursive: true });
+  const entries = fs
+    .readdirSync(LOG_DIR)
+    .filter((name) => name && name !== 'history');
+  if (!entries.length) {
+    return;
+  }
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const targetDir = path.join(HISTORY_DIR, stamp);
+  fs.mkdirSync(targetDir, { recursive: true });
+  entries.forEach((name) => {
+    const source = path.join(LOG_DIR, name);
+    const target = path.join(targetDir, name);
+    try {
+      fs.renameSync(source, target);
+    } catch (error) {
+      console.error('[debug-server] Failed to archive', name, error.message);
+    }
+  });
+};
+
+archivePreviousLogs();
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '20mb' }));
@@ -130,7 +155,32 @@ app.post('/result', (req, res) => {
   }
   delete result.parsed;
 
-  results.push(result);
+  const applyResultUpdate = (entry) => {
+    if (entry.override) {
+      const idx = results.findIndex((existing) => {
+        const sameEngine = entry.engine && existing.engine === entry.engine;
+        const sameCursor =
+          typeof entry.cursor !== 'undefined' &&
+          typeof existing.cursor !== 'undefined' &&
+          entry.cursor === existing.cursor;
+        const sameId = entry.id && existing.id && entry.id === existing.id;
+        return (sameEngine && sameCursor) || sameId;
+      });
+      if (idx >= 0) {
+        results[idx] = {
+          ...results[idx],
+          ...entry,
+          overrideApplied: true,
+          updatedAt: entry.ts
+        };
+        return;
+      }
+      entry.overrideApplied = true;
+    }
+    results.push(entry);
+  };
+
+  applyResultUpdate(result);
   results = results.slice(-200);
   console.log(
     `[result] ${result.type || ''} ${result.id || ''} ${result.status || ''}`

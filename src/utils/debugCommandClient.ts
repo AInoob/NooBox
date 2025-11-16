@@ -1,8 +1,7 @@
-import { YandexImageSearch } from '../background/imageSearch/yandexImageSearch';
-import { ajax } from './ajax';
 import { get } from './db';
 import { isDebugEnabled, logDebug } from './debugReporter';
 import { getGlobalScope } from './runtime';
+import { sendMessageToBackground } from './sendMessageToBackground';
 
 interface ICommand {
   id: string;
@@ -79,46 +78,6 @@ const sendHeartbeat = async () => {
   }
 };
 
-const handleYandexSearch = async (command: ICommand) => {
-  const url = command.payload?.url;
-  if (!url) {
-    return;
-  }
-
-  try {
-    const { body, responseUrl } = await ajax({
-      url: `https://yandex.com/images/search?url=${encodeURIComponent(
-        url
-      )}&rpt=imageview`,
-      debugTag: 'yandex:debug-pull',
-      debugBody: true
-    });
-
-    const yandex = new YandexImageSearch('yandex' as any);
-    const parsedData = await yandex.extractForDebug(body, responseUrl);
-
-    await postResult({
-      id: command.id,
-      type: command.type,
-      status: 'ok',
-      responseUrl,
-      title: parsedData.title || '',
-      parsed: {
-        keywords: parsedData.keywords || [],
-        results: parsedData.results || []
-      },
-      body
-    });
-  } catch (error) {
-    await postResult({
-      id: command.id,
-      type: command.type,
-      status: 'error',
-      error: error?.message || String(error)
-    });
-  }
-};
-
 const handleReload = async (command: ICommand) => {
   try {
     await logDebug({
@@ -146,6 +105,129 @@ const handleReload = async (command: ICommand) => {
   }
 };
 
+const handleImageSearch = async (command: ICommand) => {
+  const base64OrUrl = command.payload?.base64OrUrl || command.payload?.url;
+  if (!base64OrUrl) {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: 'Missing base64OrUrl payload'
+    });
+    return;
+  }
+  try {
+    const globalScope = getGlobalScope() as any;
+    if (globalScope?.nooboxImage?.beginImageSearch) {
+      await globalScope.nooboxImage.beginImageSearch(base64OrUrl);
+    } else {
+      await sendMessageToBackground({
+        job: 'beginImageSearch',
+        value: { base64OrUrl }
+      });
+    }
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'ok',
+      message: 'Image search requested'
+    });
+  } catch (error) {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+};
+
+const handleEngineEval = async (command: ICommand) => {
+  const engine = command.payload?.engine;
+  const cursor = command.payload?.cursor;
+  const code = command.payload?.code;
+  if (!engine) {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: 'Missing engine'
+    });
+    return;
+  }
+  if (typeof cursor !== 'number') {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: 'Missing cursor'
+    });
+    return;
+  }
+  if (!code) {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: 'Missing code'
+    });
+    return;
+  }
+  try {
+    const globalScope = getGlobalScope() as any;
+    let response: any = null;
+    if (globalScope?.nooboxImage?.debugEngineEval) {
+      try {
+        const result = await globalScope.nooboxImage.debugEngineEval(
+          cursor,
+          engine,
+          code
+        );
+        response = { ok: true, result };
+      } catch (error) {
+        response = {
+          ok: false,
+          error: error instanceof Error ? error.message : String(error)
+        };
+      }
+    } else {
+      response = await sendMessageToBackground({
+        job: 'debugEngineEval',
+        value: { engine, cursor, code }
+      });
+    }
+    if (response?.ok === false) {
+      console.error('[NooBox][engineEval] failed', command.id, response);
+      await postResult({
+        id: command.id,
+        type: command.type,
+        status: 'error',
+        error: response?.error || 'Evaluation failed'
+      });
+      return;
+    }
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'ok',
+      parsed: {
+        engine,
+        cursor,
+        result: response?.result ?? null,
+        ts: Date.now(),
+        code
+      }
+    });
+  } catch (error) {
+    await postResult({
+      id: command.id,
+      type: command.type,
+      status: 'error',
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+};
+
 export const startDebugCommandPolling = () => {
   let timer: ReturnType<typeof setInterval> | null = null;
   let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
@@ -168,11 +250,14 @@ export const startDebugCommandPolling = () => {
     });
 
     switch (command.type) {
-      case 'yandexSearch':
-        await handleYandexSearch(command);
-        break;
       case 'reload':
         await handleReload(command);
+        break;
+      case 'imageSearch':
+        await handleImageSearch(command);
+        break;
+      case 'engineEval':
+        await handleEngineEval(command);
         break;
       default:
         await postResult({

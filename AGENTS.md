@@ -13,15 +13,17 @@ Use this checklist whenever an image search engine integration regresses. The fl
 
 3. **Start/Verify the Debug Server**
    - `npm --prefix debug-server start` (port 3030 by default). Confirm `/status` returns an active heartbeat.
+   - On each startup the server archives the previous `debug-server/logs` contents into `debug-server/logs/history/<timestamp>/`, so you always start with a clean slate.
    - The server writes inbound HTML to `debug-server/logs/html/*.html` and parsed payloads to `debug-server/logs/results/*-parsed.json`.
 
 4. **Trigger Remote Commands**
-   - POST to `/command` with `{"type":"yandexSearch","payload":{"url":"<test image>"}}` (substitute engine-specific command if needed).
+   - POST to `/command` with `{"type":"imageSearch","payload":{"url":"<test image>"}}` (or include `base64OrUrl` if you have a raw blob). The extension now runs the full tab-per-engine flow for you.
    - Wait for the extension heartbeat loop to pick it up; monitor `/results` until the command lands.
    - Each result entry provides:
      * `htmlPath` → raw HTML we fetched.
      * `parsedPath` → the adapter’s structured output.
      * `parsedSummary` → counts of keywords/results for quick sanity.
+   - When an engine re-posts with `override: true`, the debug server replaces its previous row so `/results` always reflects the freshest payload.
 
 5. **Inspect Captured HTML/JSON**
    - Open the `htmlPath` file to analyze class names, embedded React state, redirect flows, etc. Beautify if necessary (`npx js-beautify file.html`).

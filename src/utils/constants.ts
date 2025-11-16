@@ -45,3 +45,14 @@ export const ENGINE_WEIGHTS = {
   tineye: 28,
   yandex: 25
 };
+
+export const ENGINE_DEFAULT_ENABLED: { [K in EngineType]: boolean } = {
+  google: true,
+  baidu: true,
+  yandex: true,
+  tineye: true,
+  bing: true,
+  saucenao: false,
+  ascii2d: false,
+  iqdb: false
+};

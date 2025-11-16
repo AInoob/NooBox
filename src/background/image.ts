@@ -1,9 +1,19 @@
 import { imageSearchDao } from '../dao/imageSearchDao';
-import { ISearchResult } from '../searchResult/stores/searchResultStore';
+import {
+  EngineStatusType,
+  ISearchResult,
+  ISingleSearchResultItem
+} from '../searchResult/stores/searchResultStore';
 import { ajax, IAjaxRequest } from '../utils/ajax';
 import { logEvent } from '../utils/bello';
 import { checkUrlOrBase64 } from '../utils/checkImageType';
-import { ENGINE_LIST, EngineType } from '../utils/constants';
+import {
+  ENGINE_DEFAULT_ENABLED,
+  ENGINE_LIST,
+  ENGINE_WEIGHTS,
+  EngineType,
+  getEngineOptionKey
+} from '../utils/constants';
 import { convertDataUriToBinary } from '../utils/convertDataURIToBinary';
 import { get, getDB, setDB } from '../utils/db';
 import { logDebug } from '../utils/debugReporter';
@@ -13,35 +23,72 @@ import { openSearchResultTab } from '../utils/openSearchResultTab';
 import { getGlobalScope, isManifestV3 } from '../utils/runtime';
 import { stringOrArrayBufferToString } from '../utils/stringOrArrayBufferToString';
 import { voidFunc } from '../utils/voidFunc';
-import { Ascii2dImageSearch } from './imageSearch/ascii2dImageSearch';
-import { BaiduImageSearch } from './imageSearch/baiduImageSearch';
-import { BaseImageSearch } from './imageSearch/baseImageSearch';
-import { BingImageSearch } from './imageSearch/bingImageSearch';
-import { GoogleImageSearch } from './imageSearch/googleImageSearch';
-import { IqdbImageSearch } from './imageSearch/iqdbImageSearch';
-import { SauceNaoImageSearch } from './imageSearch/saucenaoImageSearch';
-import { TineyeImageSearch } from './imageSearch/tineyeImageSearch';
-import { YandexImageSearch } from './imageSearch/yandexImageSearch';
+import { sendMessageToFrontend } from '../utils/sendMessageToFrontend';
+import { EngineTabHooks, EngineTabManager } from './engineTabs';
+
+interface IContentScriptResultItemPayload {
+  title?: string;
+  thumbUrl?: string;
+  imageUrl?: string;
+  sourceUrl?: string;
+  description?: string;
+  width?: number;
+  height?: number;
+  imageInfo?: {
+    width?: number;
+    height?: number;
+  };
+}
+
+interface IEngineSectionError {
+  section: string;
+  message: string;
+}
+
+interface IEngineResultPayload {
+  type?: 'engine:result';
+  engine: EngineType;
+  cursor?: number;
+  keyword?: string;
+  keywordLink?: string;
+  results?: IContentScriptResultItemPayload[];
+  docTitle?: string;
+  url?: string;
+  override?: boolean;
+  aiOverview?: any;
+  aboutImage?: any;
+  errors?: IEngineSectionError[];
+}
+
+interface IEngineErrorPayload {
+  type?: 'engine:error';
+  engine: EngineType;
+  cursor?: number;
+  error?: string;
+}
+
+interface IEngineProgressPayload {
+  type?: 'engine:progress';
+  engine: EngineType;
+  cursor?: number;
+  stage?: string;
+  message?: string;
+}
 
 export class Image {
   private imageUploadUrl: string = '';
   private imageDownloadUrl: string = '';
   private imageServerUrl = 'https://ainoob.com/api/get/imageServers/';
-  private imageSearchMap: { [index in EngineType]: BaseImageSearch } = {
-    ascii2d: new Ascii2dImageSearch('ascii2d'),
-    baidu: new BaiduImageSearch('baidu'),
-    bing: new BingImageSearch('bing'),
-    iqdb: new IqdbImageSearch('iqdb'),
-    saucenao: new SauceNaoImageSearch('saucenao'),
-    tineye: new TineyeImageSearch('tineye'),
-    google: new GoogleImageSearch('google'),
-    yandex: new YandexImageSearch('yandex')
-  };
+  private readonly engineTabs: EngineTabManager;
 
   constructor() {
     this.updateImageUploadUrl('ainoob.com');
     this.updateImageDownloadUrl('ainoob.com');
     this.migrateHistory().catch(console.error);
+    this.engineTabs = new EngineTabManager({
+      handleEngineLinkUpdate: this.handleEngineLinkUpdate,
+      handleEngineError: this.handleEngineBootstrapError
+    });
   }
 
   public async init() {
@@ -176,7 +223,7 @@ export class Image {
     let cursor: number = (await getDB('imageCursor')) || 0;
     cursor++;
     await setDB('imageCursor', cursor);
-    let imageLink: string;
+    let imageLink: string = '';
     // Check base64 or Url
     const imageType = checkUrlOrBase64(base64orUrl);
 
@@ -188,13 +235,22 @@ export class Image {
       searchResult: [],
       url: imageType === 'url' ? base64orUrl : ''
     };
+    const enabledEngines = await this.getEnabledEngines();
+    ENGINE_LIST.forEach((engine) => {
+      result.engineStatus![engine] = enabledEngines.includes(engine)
+        ? 'loading'
+        : 'disabled';
+    });
     await imageSearchDao.add({
       id: cursor,
       createdAt: Date.now(),
       result
     });
 
-    await openSearchResultTab(cursor);
+    const searchTab = await openSearchResultTab(cursor);
+    if (searchTab?.id != null) {
+      this.engineTabs.registerSearchTab(cursor, searchTab.id);
+    }
     logDebug({
       event: 'search:init',
       engine: 'all',
@@ -234,12 +290,154 @@ export class Image {
       imageLink = base64orUrl;
     }
 
-    // Get Opened Engine and send request
-    ENGINE_LIST.forEach(async (engine) => {
-      this.imageSearchMap[engine]
-        .search(imageLink, cursor, result)
-        .catch(console.error);
+    if (!imageLink) {
+      imageLink = base64orUrl;
+    }
+
+    await this.engineTabs
+      .openTabsForEngines(cursor, imageLink, enabledEngines)
+      .catch((error) => {
+        console.error('Failed to open engine tabs', error);
+      });
+  }
+
+  public async handleEngineResultMessage(
+    payload: IEngineResultPayload,
+    sender: chrome.runtime.MessageSender
+  ) {
+    const context = this.engineTabs.resolveContextByTab(sender?.tab?.id);
+    const engine = payload.engine || context?.engine;
+    const cursor = payload.cursor ?? context?.cursor;
+    if (!engine || cursor == null) {
+      return;
+    }
+    const resolvedUrl =
+      payload.url ||
+      sender?.tab?.url ||
+      this.engineTabs.getEngineUrl(cursor, engine);
+    if (resolvedUrl) {
+      await this.handleEngineLinkUpdate(cursor, engine, resolvedUrl);
+      this.engineTabs.updateKnownUrl(cursor, engine, resolvedUrl);
+    }
+    const normalizedResults = this.normalizeResults(
+      engine,
+      payload.results || []
+    );
+    const isOverride = Boolean(payload.override);
+    await this.mutateSearchResult(cursor, (result) => {
+      result.engineStatus = result.engineStatus || {};
+      result.engineStatus[engine] = 'loaded';
+      if (isOverride && Array.isArray(result.searchResult)) {
+        result.searchResult = result.searchResult.filter(
+          (item) => item.searchEngine !== engine
+        );
+      }
+      if (payload.keyword) {
+        this.appendKeyword(result, {
+          engine,
+          keyword: payload.keyword,
+          keywordLink: payload.keywordLink || resolvedUrl || ''
+        });
+      }
+      if (normalizedResults.length) {
+        this.appendResults(result, normalizedResults);
+      }
     });
+    await logDebug({
+      event: 'engine:result',
+      engine,
+      url: resolvedUrl,
+      extra: {
+        cursor,
+        keyword: payload.keyword,
+        count: normalizedResults.length,
+        override: isOverride,
+        errors: payload.errors?.length || 0
+      }
+    }).catch(() => undefined);
+  }
+
+  public async handleEngineErrorMessage(
+    payload: IEngineErrorPayload,
+    sender: chrome.runtime.MessageSender
+  ) {
+    const context = this.engineTabs.resolveContextByTab(sender?.tab?.id);
+    const engine = payload.engine || context?.engine;
+    const cursor = payload.cursor ?? context?.cursor;
+    if (!engine || cursor == null) {
+      return;
+    }
+    await this.updateEngineStatus(cursor, engine, 'error');
+    await logDebug({
+      event: 'engine:error',
+      engine,
+      url: sender?.tab?.url,
+      error: payload.error,
+      extra: {
+        cursor
+      }
+    }).catch(() => undefined);
+  }
+
+  public async handleEngineProgressMessage(
+    payload: IEngineProgressPayload,
+    sender: chrome.runtime.MessageSender
+  ) {
+    const context = this.engineTabs.resolveContextByTab(sender?.tab?.id);
+    const engine = payload.engine || context?.engine;
+    const cursor = payload.cursor ?? context?.cursor;
+    if (!engine || cursor == null) {
+      return;
+    }
+    await logDebug({
+      event: 'engine:progress',
+      engine,
+      url: sender?.tab?.url,
+      extra: {
+        cursor,
+        stage: payload.stage,
+        message: payload.message
+      }
+    }).catch(() => undefined);
+  }
+
+  public async focusEngineTab(cursor: number, engine: EngineType) {
+    await this.engineTabs.focusEngineTab(cursor, engine);
+  }
+
+  public async debugEngineEval(
+    cursor: number,
+    engine: EngineType,
+    code: string
+  ) {
+    try {
+      const result = await this.engineTabs.executeDebugScript(
+        cursor,
+        engine,
+        code
+      );
+      await logDebug({
+        event: 'engine:eval',
+        engine,
+        extra: {
+          cursor,
+          snippet: typeof result === 'string' ? result.slice(0, 120) : result,
+          ts: Date.now()
+        }
+      }).catch(() => undefined);
+      return result;
+    } catch (error) {
+      await logDebug({
+        event: 'engine:eval:error',
+        engine,
+        error: error instanceof Error ? error.message : String(error),
+        extra: {
+          cursor,
+          ts: Date.now()
+        }
+      }).catch(() => undefined);
+      throw error;
+    }
   }
 
   public async screenshotSearch(
@@ -332,6 +530,150 @@ export class Image {
       }
     );
   }
+
+  private async getEnabledEngines(): Promise<EngineType[]> {
+    const enabled: EngineType[] = [];
+    for (const engine of ENGINE_LIST) {
+      const key = getEngineOptionKey(engine) as any;
+      const enabledSetting = await get(key, ENGINE_DEFAULT_ENABLED[engine]);
+      if (enabledSetting) {
+        enabled.push(engine);
+      }
+    }
+    return enabled;
+  }
+
+  private async mutateSearchResult(
+    cursor: number,
+    mutator: (result: ISearchResult) => boolean | void,
+    options: { notify?: boolean } = {}
+  ): Promise<ISearchResult | null> {
+    const record = await imageSearchDao.get(cursor);
+    if (!record) {
+      return null;
+    }
+    const shouldPersist = mutator(record.result);
+    if (shouldPersist === false) {
+      return record.result;
+    }
+    await imageSearchDao.add(record);
+    if (options.notify !== false) {
+      await sendMessageToFrontend({
+        job: 'image_result_update',
+        value: {
+          cursor
+        }
+      }).catch(() => undefined);
+    }
+    return record.result;
+  }
+
+  private async updateEngineStatus(
+    cursor: number,
+    engine: EngineType,
+    status: EngineStatusType
+  ) {
+    await this.mutateSearchResult(cursor, (result) => {
+      result.engineStatus = result.engineStatus || {};
+      result.engineStatus[engine] = status;
+    });
+  }
+
+  private appendKeyword(
+    result: ISearchResult,
+    keyword: { engine: EngineType; keyword: string; keywordLink: string }
+  ) {
+    if (!keyword.keyword) {
+      return;
+    }
+    const list = result.searchImageInfo || (result.searchImageInfo = []);
+    const exists = list.some(
+      (item) =>
+        item.engine === keyword.engine && item.keyword === keyword.keyword
+    );
+    if (!exists) {
+      list.push(keyword);
+    }
+  }
+
+  private appendResults(
+    result: ISearchResult,
+    items: ISingleSearchResultItem[]
+  ) {
+    const list = result.searchResult || (result.searchResult = []);
+    const seen = new Set(list.map((item) => this.getResultSignature(item)));
+    items.forEach((item) => {
+      const signature = this.getResultSignature(item);
+      if (seen.has(signature)) {
+        return;
+      }
+      seen.add(signature);
+      list.push(item);
+    });
+  }
+
+  private normalizeResults(
+    engine: EngineType,
+    rawItems: IContentScriptResultItemPayload[]
+  ) {
+    const baseWeight = ENGINE_WEIGHTS[engine] || 0;
+    return rawItems.map((item, index) => {
+      const width = item.imageInfo?.width ?? item.width ?? -1;
+      const height = item.imageInfo?.height ?? item.height ?? -1;
+      return {
+        title: item.title || 'Possible Match',
+        thumbUrl: item.thumbUrl || item.imageUrl || '',
+        imageUrl: item.imageUrl || item.thumbUrl || '',
+        sourceUrl: item.sourceUrl || '',
+        imageInfo: {
+          width,
+          height
+        },
+        searchEngine: engine,
+        description: item.description || '',
+        weight: baseWeight - index + Math.random()
+      } as ISingleSearchResultItem;
+    });
+  }
+
+  private getResultSignature(item: ISingleSearchResultItem) {
+    return `${item.sourceUrl || ''}|${item.imageUrl || ''}`;
+  }
+
+  private handleEngineLinkUpdate: EngineTabHooks['handleEngineLinkUpdate'] = async (
+    cursor,
+    engine,
+    url
+  ) => {
+    if (!url) {
+      return;
+    }
+    await this.mutateSearchResult(cursor, (result) => {
+      result.engineLink = result.engineLink || {};
+      if (result.engineLink[engine] === url) {
+        return false;
+      }
+      result.engineLink[engine] = url;
+      return true;
+    });
+  };
+
+  private handleEngineBootstrapError: EngineTabHooks['handleEngineError'] = async (
+    cursor,
+    engine,
+    error
+  ) => {
+    await this.updateEngineStatus(cursor, engine, 'error');
+    await logDebug({
+      event: 'engine:error',
+      engine,
+      error,
+      extra: {
+        cursor,
+        phase: 'bootstrap'
+      }
+    }).catch(() => undefined);
+  };
 
   private createMenu(
     id: string,
