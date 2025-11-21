@@ -145,10 +145,8 @@ export class Image {
     if (isManifestV3()) {
       if (sender.tab?.id) {
         chrome.tabs.sendMessage(sender.tab.id, {
-          job: 'downloadError',
-          message:
-            getI18nMessage('ls_3') ||
-            'Please use the MV2 build to download ZIP files.'
+          job: 'downloadExtractImages',
+          files
         });
       }
       return;

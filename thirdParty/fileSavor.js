@@ -229,11 +229,26 @@ var saveAs = saveAs
 	FS_proto.onwriteend =
 		null;
 
-	view.addEventListener("unload", process_deletion_queue, false);
-	saveAs.unload = function() {
-		process_deletion_queue();
-		view.removeEventListener("unload", process_deletion_queue, false);
-	};
+	// Some hosts disable the unload event via Permissions-Policy (`unload=()`).
+	// Guard the listener to avoid noisy console violations.
+	var can_attach_unload = true;
+	try {
+		var policy = doc && (doc.featurePolicy || doc.permissionsPolicy);
+		if (policy && typeof policy.allowsFeature === "function") {
+			can_attach_unload = policy.allowsFeature("unload");
+		}
+	} catch (e) {
+		can_attach_unload = false;
+	}
+	if (can_attach_unload) {
+		view.addEventListener("unload", process_deletion_queue, false);
+		saveAs.unload = function() {
+			process_deletion_queue();
+			view.removeEventListener("unload", process_deletion_queue, false);
+		};
+	} else {
+		saveAs.unload = function() {};
+	}
 	return saveAs;
 }(
 	   typeof self !== "undefined" && self

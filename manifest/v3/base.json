@@ -3,7 +3,7 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "short_name": "NB",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "action": {
     "default_icon": "images/icon_128.png",
     "default_title": "NooBox~",
@@ -20,6 +20,8 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": [
         "thirdParty/jquery.min.js",
+        "thirdParty/fileSavor.js",
+        "thirdParty/jszip.min.js",
         "contentScript/videoControl.js",
         "contentScript/extractImages.js"
       ],

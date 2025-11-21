@@ -1,6 +1,17 @@
-if (window.browser) {
-  window.chrome = window.browser;
-}
+// Pick the extension messaging API without clobbering the native `chrome` object.
+var __extApi =
+  (typeof chrome !== 'undefined' && chrome.runtime && chrome) ||
+  (typeof browser !== 'undefined' && browser.runtime && browser) ||
+  null;
+var __runtime = (__extApi && __extApi.runtime) || null;
+var __addOnMessageListener =
+  (__runtime && __runtime.onMessage && __runtime.onMessage.addListener
+    ? __runtime.onMessage.addListener.bind(__runtime.onMessage)
+    : function() {});
+var __sendMessage =
+  (__runtime && __runtime.sendMessage
+    ? __runtime.sendMessage.bind(__runtime)
+    : function() {});
 
 var screenshotDataURL;
 var halfBall = 6;
@@ -57,13 +68,13 @@ function moveCover(parent) {
     opacity: buttonOpacity === 1 ? 0.7 : 1,
   });
 }
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+__addOnMessageListener(function(request, sender, sendResponse) {
   if (request === 'loaded') {
     sendResponse('yes');
   }
   if ('job' in request) {
     if (request.job === 'screenshotSearch') {
-      chrome.runtime.sendMessage(
+      __sendMessage(
         {
           job: 'analytics',
           value: {
@@ -185,7 +196,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           var ctx = canvas1.getContext('2d');
           ctx.putImageData(imgData, 0, 0);
           var dataURL = canvas1.toDataURL();
-          chrome.extension.sendMessage({
+          __sendMessage({
             job: 'beginImageSearch',
             value: {
               base64OrUrl: dataURL

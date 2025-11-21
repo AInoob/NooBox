@@ -294,6 +294,65 @@ const initExtractImage = function() {
           $('#NooBox-extractImages-downloadRemaining').text(
             request.total - request.remains + '/' + request.total,
           );
+        } else if (request.job == 'downloadError') {
+          // MV3 cannot create ZIPs; surface the background error to the user.
+          alert(
+            request.message ||
+              chrome.i18n.getMessage('ls_3') ||
+              'Image ZIP download is not available in this build.'
+          );
+        } else if (request.job === 'downloadExtractImages') {
+          const files = request.files || [];
+          const JSZipRef = (typeof window !== 'undefined' && window.JSZip) || null;
+          const saveAsRef = (typeof window !== 'undefined' && window.saveAs) || null;
+          if (!JSZipRef || !saveAsRef) {
+            alert(
+              chrome.i18n.getMessage('ls_3') ||
+                'ZIP download is not available in this build.'
+            );
+            return;
+          }
+          const zip = new JSZipRef();
+          let remains = files.length;
+          let total = files.length;
+
+          const updateProgress = function() {
+            $('#NooBox-extractImages-downloadRemaining').text(
+              total - remains + '/' + total,
+            );
+          };
+
+          const guessExt = function(mime) {
+            if (!mime) return 'png';
+            const parts = mime.split('/');
+            if (parts.length < 2) return 'png';
+            return (parts[1] || 'png').split(/[+;]/)[0];
+          };
+
+          const addFile = function(file) {
+            fetch(file.url)
+              .then(function(res) {
+                return res.blob();
+              })
+              .then(function(blob) {
+                const ext = guessExt(blob.type);
+                zip.file(file.name + '.' + ext, blob);
+              })
+              .catch(function() {
+                total--;
+              })
+              .finally(function() {
+                remains--;
+                updateProgress();
+                if (remains === 0 && total > 0) {
+                  zip.generateAsync({ type: 'blob' }).then(function(content) {
+                    saveAsRef(content, 'NooBox.zip');
+                  });
+                }
+              });
+          };
+
+          files.forEach(addFile);
         }
       }
     });
